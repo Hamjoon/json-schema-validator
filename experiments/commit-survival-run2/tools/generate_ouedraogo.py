@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import sys
 import time
-from start import EXP, REPO, RESULTS, write_json
+from start import EXP, REPO, RESULTS, SHARED, write_json
 from select_scope import csvout
 
 
@@ -16,7 +16,7 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--round',type=int,required=True);args=parser.parse_args()
     started=time.monotonic();out=EXP/f'generated/ouedraogo/round{args.round}'
     out.mkdir(parents=True,exist_ok=True)
-    sys.path.insert(0,str(EXP/'work/python'))
+    sys.path.insert(0,str(SHARED/'work/python'))
     sys.path.insert(0,str(EXP/'tools/ouedraogo'))
     import generate
     from extract_jsoup import extract

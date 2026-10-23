@@ -19,7 +19,8 @@ def main():
     parser=argparse.ArgumentParser();parser.add_argument('--round',type=int,required=True);parser.add_argument('--attempt',type=int,choices=[1,2],default=1);args=parser.parse_args()
     label=f'round{args.round}'+('-retry' if args.attempt==2 else '')
     ds=Path('/work/data/commit-survival/json-schema-validator')
-    out=ds/'rounds'/label
+    assert args.round == 1, 'Run 2 allows one KTester round only'
+    out=ds/'rounds'/('run2-'+label)
     assert not out.exists(),'Refuse replacing an existing model round'
     out.mkdir(parents=True)
     os.chdir('/work/code');sys.path.insert(0,'/work/code')

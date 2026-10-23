@@ -3,7 +3,7 @@ import collections
 import csv
 import json
 import sys
-from start import EXP, RESULTS, write_json
+from start import EXP, RESULTS, SHARED, write_json
 from select_scope import csvout
 from run_commit import GROUPS,denominator
 
@@ -61,7 +61,7 @@ def main():
     consistency=dict(nonincreasing=nonincreasing,index_zero_equals_denominators=all(curves[0][g+'_alive']==len(denominators[g]) for g in GROUPS),raw_records=actual,expected_raw_records=expected,raw_count_matches=actual==expected,missing_records=missing,build_fail_indices=failed)
     write_json(RESULTS/'survival-consistency.json',consistency)
     (RESULTS/'consistency.md').write_text('# Consistency checks\n\n```json\n'+json.dumps(consistency,indent=2)+'\n```\n')
-    sys.path.insert(0,str(EXP/'work/python'))
+    sys.path.insert(0,str(SHARED/'work/python'))
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt

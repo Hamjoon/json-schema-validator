@@ -149,7 +149,7 @@ def run_group(index,group,phase='a',selected_ids=None):
     result=dict(index=index,sha=commit['sha'],group=group,phase=phase,status='evaluated',input_sha256=fingerprint,runner_sha256=runner_hashes,files=files,methods=[r for f in files for r in f['methods']],requested_ids=[r['id'] for r in rows])
     if coverage:
         folder,_=classpath(index);xml=RESULTS/f'coverage/{index}-{group}.xml';xml.parent.mkdir(parents=True,exist_ok=True)
-        run=execute(['java','-Xmx1g','-jar',str(EXP/'work/libs/org.jacoco.cli-0.8.12-nodeps.jar'),'report',*([str(execfile)] if execfile.exists() else []),'--classfiles',str(folder/'target/classes'),'--sourcefiles',str(folder/'src/main/java'),'--xml',str(xml)],folder,work/'coverage-report.txt',300)
+        run=execute(['java','-Xmx1g','-jar',str(SHARED/'work/libs/org.jacoco.cli-0.8.12-nodeps.jar'),'report',*([str(execfile)] if execfile.exists() else []),'--classfiles',str(folder/'target/classes'),'--sourcefiles',str(folder/'src/main/java'),'--xml',str(xml)],folder,work/'coverage-report.txt',300)
         result['coverage_report']=run
         if run['exit_code']==0:
             csvout(xml.with_name(xml.stem+'-lines.csv'),line_rows(xml),['file','line','missed','covered'])

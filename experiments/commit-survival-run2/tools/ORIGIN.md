@@ -66,3 +66,7 @@ Copied binary dependencies are listed with origin path, coordinates and SHA-256 
 - Adapted `renumber_dataset_ids.py` source: `/Users/donggi/_projects/experiment-projects/commons-codec/experiments/ktester-commit-survival/tools/renumber_dataset_ids.py`, commit `11c48ae5920131db610c7bd4102403f68c67f16e`, original SHA-256 `24f53f098e5bc36231ee9d5d7c4214eca24034974792936cf736bdbc9846b516`.
 
 Runtime fixture isolation: class launches use an ignored work/runtime directory containing copied frozen src/test/resources and src/test/suite trees. This preserves relative-path inputs such as PrefixItemsValidatorTest. Compilation still targets the evaluated commit, with absolute classpaths.
+
+## Addendum adaptations
+
+AccessorAudit.java and select_scope_run2.py implement the revised source-syntax filter and ranking. generate_ktester.py isolates run2-round1 and prohibits extra rounds. Generation/aggregation read run 1 Python dependencies in place; runner cache and JaCoCo paths reuse run 1. Downstream adaptations are recorded in subsequent commits.
