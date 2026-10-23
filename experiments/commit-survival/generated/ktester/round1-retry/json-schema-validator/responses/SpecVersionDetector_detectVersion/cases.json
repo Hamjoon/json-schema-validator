@@ -1,0 +1,345 @@
+[
+  {
+    "group": "SpecVersionDetector.detectVersion - Branch Coverage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-07/schema#\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "null"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V7",
+        "description": "First optional version is present (detectOptionalVersion returns V7). The method should return this version without consulting the path."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "\"/tmp/schemas/draft-06/schema.json\""
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V6",
+        "description": "detectOptionalVersion returns empty, but detectVersionFromPath extracts V6 from the file name. The method should return V6."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "\"/tmp/schemas/unknown/schema.json\""
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V4",
+        "description": "Both optional detections are empty (no $schema in JSON and path does not contain a known version). The method should fall back to the supplied default version."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "specification",
+            "value": "\"/tmp/schemas/draft-07/schema.json\""
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V7",
+        "description": "jsonNode is null, detectOptionalVersion should handle the null gracefully and return empty (or be mocked to return empty). Path detection yields V7, so the method returns V7."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-04/schema#\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "\"/tmp/schemas/draft-07/schema.json\""
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V6"
+          }
+        ],
+        "expected": "VersionFlag.V4",
+        "description": "Both detections are present, but the stream order gives priority to the first (JSON\u2011based) detection. The method must return V4 even though the path indicates V7."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "null"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V6"
+          }
+        ],
+        "expected": "VersionFlag.V6",
+        "description": "Both jsonNode and specification are empty/null, resulting in no optional version. The method should return the provided default version V6."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - JSON overrides path (draft-06 vs draft-04)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-06/schema#\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-04/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V7"
+          }
+        ],
+        "expected": "VersionFlag.V6",
+        "description": "Both detections are present but the JSON\u2011based detection (draft\u201106) should take precedence over the path\u2011based detection (draft\u201104). The method must return V6."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Both detections return same version (draft-06)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-06/schema#\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-06/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V6",
+        "description": "JSON detection yields V6 and the path also yields V6; the method should return V6 (the first present optional version)."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Unknown path version falls back to default",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-99/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V4",
+        "description": "Path contains an unrecognised draft number (draft\u201199). JSON has no $schema, so both optional detections are empty and the method must return the supplied default version V4."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Null defaultVersion results in null return",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "null"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "null"
+          }
+        ],
+        "expected": "null",
+        "description": "Both JSON and path detections are empty and the caller supplies a null defaultVersion. The method should propagate the null and return null."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Specification is a directory (no file name) falls back to default",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-07/"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V4",
+        "description": "The Path points to a directory, so version detection from the path yields empty. JSON also provides no $schema, therefore the method should return the default version V4."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - JSON node is an array, path provides version",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "[]"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-07/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "VersionFlag.V7",
+        "description": "The JSON node is an array, so detectOptionalVersion cannot find a $schema property and returns empty. The path contains \"draft-07\", therefore the method should return V7."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Null jsonNode causes NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-07/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When jsonNode is null the internal call to detectOptionalVersion is expected to throw a NullPointerException, which propagates out of detectVersion."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Null specification causes NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-07/schema#\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "null"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When specification (Path) is null the internal call to detectVersionFromPath is expected to throw a NullPointerException, which propagates out of detectVersion."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - Invalid Path throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "specification",
+            "value": ":::invalid_path:::"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A malformed string that cannot be converted to a valid Path should cause detectVersionFromPath to throw an IllegalArgumentException, which propagates out of detectVersion."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector.detectVersion - detectOptionalVersion throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"invalid\": \"@@@\" }"
+          },
+          {
+            "parameter": "specification",
+            "value": "/tmp/schemas/draft-07/schema.json"
+          },
+          {
+            "parameter": "defaultVersion",
+            "value": "VersionFlag.V4"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the JSON node is malformed in a way that detectOptionalVersion cannot process (e.g., unexpected token), it may throw a RuntimeException. The test verifies that such an exception propagates from detectVersion."
+      }
+    ]
+  }
+]

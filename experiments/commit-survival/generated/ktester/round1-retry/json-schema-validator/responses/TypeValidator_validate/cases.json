@@ -1,0 +1,299 @@
+[
+  {
+    "group": "Union type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext with empty evaluatedItems/evaluatedProperties)"
+          },
+          {
+            "parameter": "node",
+            "value": "any JsonNode (e.g., JsonNodeFactory.instance.textNode(\"any\"))"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode (e.g., JsonNodeFactory.instance.objectNode())"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/some/path\""
+          }
+        ],
+        "expected": "Set returned by UnionTypeValidator.validate \u2013 verify that UnionTypeValidator.validate is invoked exactly once with the same parameters and its result is returned unchanged.",
+        "description": "When the schema type is UNION the validator should delegate to UnionTypeValidator and return whatever it produces, without performing any further checks."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011union \u2013 node type does NOT match schema type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext not used in this branch)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a number (e.g., JsonNodeFactory.instance.numberNode(42))"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNode representing the whole document (any, e.g., objectNode)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/age\""
+          }
+        ],
+        "expected": "A singleton Set containing a ValidationMessage whose message includes: at=\"/age\", nodeType=\"INTEGER\" (or whatever TypeFactory returns for a number), schemaType equals the configured schemaType (e.g., \"STRING\").",
+        "description": "When the node\u2019s actual type differs from the schema\u2019s declared type, validate() must return a single ValidationMessage describing the mismatch."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011union \u2013 node type matches, schemaPath ends with \"/type\", rootNode is an ARRAY",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext with CollectorContext that exposes getEvaluatedItems() set"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode that equals the schema type (e.g., a string node when schemaType=STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/0\""
+          }
+        ],
+        "expected": "Empty Set (no validation errors) and the CollectorContext\u2019s evaluatedItems set contains the string \"/0\".",
+        "description": "When the schemaPath ends with \"/type\" and the root document is an array, the validator must record the location in evaluatedItems while returning no errors."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011union \u2013 node type matches, schemaPath ends with \"/type\", rootNode is an OBJECT",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext with CollectorContext that exposes getEvaluatedProperties() set"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode that equals the schema type (e.g., a string node when schemaType=STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/name\""
+          }
+        ],
+        "expected": "Empty Set and the CollectorContext\u2019s evaluatedProperties set contains the string \"/name\".",
+        "description": "When the schemaPath ends with \"/type\" and the root document is an object, the validator must record the location in evaluatedProperties while returning no errors."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011union \u2013 node type matches, schemaPath does NOT end with \"/type\"",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext not used)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode that equals the schema type (e.g., a boolean node when schemaType=BOOLEAN)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode (object or array \u2013 does not matter because schemaPath check fails)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/flag\""
+          }
+        ],
+        "expected": "Empty Set with no modifications to evaluatedItems/evaluatedProperties.",
+        "description": "When the node matches the schema type but the schemaPath does not end with \"/type\", the validator should simply return an empty error set and perform no side\u2011effects."
+      }
+    ]
+  },
+  {
+    "group": "Union type handling \u2013 null UnionTypeValidator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext with empty sets)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"any\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/some/path\""
+          }
+        ],
+        "expected": "NullPointerException when schemaType == JsonType.UNION and unionTypeValidator is null",
+        "description": "The validator\u2019s schemaType is set to UNION but the UnionTypeValidator instance has not been injected (null). Calling validate() should throw a NullPointerException when it attempts to invoke unionTypeValidator.validate(...)."
+      }
+    ]
+  },
+  {
+    "group": "Schema path null \u2013 endsWith call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext with empty sets)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"match\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/prop\""
+          }
+        ],
+        "expected": "NullPointerException when this.schemaPath is null and the code executes this.schemaPath.endsWith(\"/type\")",
+        "description": "When the validator is constructed without a schemaPath (null), the conditional check schemaPath.endsWith(\"/type\") triggers an NPE. The test verifies that the exception is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Root node null \u2013 isArray / isObject call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext with empty sets)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"match\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/0\""
+          }
+        ],
+        "expected": "NullPointerException when rootNode.isArray() or rootNode.isObject() is invoked",
+        "description": "If the rootNode argument is null, the validator reaches the hack block (when schemaPath ends with \"/type\") and attempts to call isArray()/isObject() on a null reference, causing an NPE."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext null \u2013 getCollectorContext call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"match\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/prop\""
+          }
+        ],
+        "expected": "NullPointerException when executionContext.getCollectorContext() is invoked",
+        "description": "Passing a null ExecutionContext causes an NPE at the point where the validator tries to obtain the CollectorContext for evaluated items/properties."
+      }
+    ]
+  },
+  {
+    "group": "CollectorContext null \u2013 evaluated set access",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext where getCollectorContext() returns null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"match\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/0\""
+          }
+        ],
+        "expected": "NullPointerException when attempting to call getEvaluatedItems() on a null CollectorContext",
+        "description": "Even with a non\u2011null ExecutionContext, if its CollectorContext is null the validator will throw an NPE while trying to record the evaluated location."
+      }
+    ]
+  },
+  {
+    "group": "Node null \u2013 equalsToSchemaType / TypeFactory call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext with empty sets)"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/missing\""
+          }
+        ],
+        "expected": "NullPointerException either inside equalsToSchemaType(node) or TypeFactory.getValueNodeType(node, ...) when node is null",
+        "description": "Providing a null JsonNode as the node to validate should cause an NPE because the validator assumes a non\u2011null node when checking its type."
+      }
+    ]
+  }
+]

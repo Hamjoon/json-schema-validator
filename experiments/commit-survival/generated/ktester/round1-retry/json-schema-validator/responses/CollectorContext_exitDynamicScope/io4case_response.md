@@ -1,0 +1,44 @@
+{
+    "testCases": [
+        {
+            "group": "Multiple dynamic scopes - LIFO behavior",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "Returns the Scope instance that was entered last (Scope2) when two scopes (Scope1 then Scope2) have been entered via enterDynamicScope()",
+                    "description": "Create a CollectorContext, call enterDynamicScope() twice to push Scope1 and then Scope2 onto the internal deque, then invoke exitDynamicScope(). The method should pop and return Scope2, confirming LIFO ordering."
+                }
+            ]
+        },
+        {
+            "group": "Dynamic scope stack state after exit",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "After exiting the most recent scope, getDynamicScope() returns the previously entered scope (Scope1)",
+                    "description": "Create a CollectorContext, push two scopes (Scope1 then Scope2) using enterDynamicScope(), call exitDynamicScope() to remove Scope2, then call getDynamicScope(). The returned scope should be Scope1, verifying that the internal deque state is correctly updated after a pop."
+                }
+            ]
+        },
+        {
+            "group": "Repeated exits until empty - final exception",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "Throws java.util.NoSuchElementException on the third call to exitDynamicScope() after two scopes have been popped",
+                    "description": "Create a CollectorContext, push two scopes via enterDynamicScope(), call exitDynamicScope() twice to empty the deque, then call exitDynamicScope() a third time. The third call should throw NoSuchElementException, confirming that the method consistently throws when the stack is empty after multiple pops."
+                }
+            ]
+        },
+        {
+            "group": "Enter dynamic scope with containing schema and exit",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "Returns the Scope instance that was created by enterDynamicScope(JsonSchema) when it is the most recent scope",
+                    "description": "Create a CollectorContext, call enterDynamicScope(JsonSchema) with a mock or real JsonSchema object to push a scoped entry, then invoke exitDynamicScope(). The method should pop and return that specific Scope, ensuring that scopes created via the overloaded method are handled identically."
+                }
+            ]
+        }
+    ]
+}

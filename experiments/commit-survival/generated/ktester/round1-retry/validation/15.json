@@ -1,0 +1,608 @@
+{
+  "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/classes",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.823,
+    "log": "generated/ktester/round1-retry/validation-logs/15/test/javac.txt"
+  },
+  "runs": [
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival/dev/src-test-t/resources:/repo/experiments/commit-survival/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateNonArrayReturnsEmpty()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayAllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayWithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateEmptyTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_WithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testAtPathConstructionVerification()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullNodeHandledGracefully()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullExecutionContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullCollectorContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullEvaluatedItems()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchemaElement()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testTupleSchemaValidateThrowsException()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullAtParameter()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#parameterizedArraySizeLessThanTupleSchema(java.lang.String,java.lang.String,java.util.Set,java.util.Set)",
+        "--reports-dir",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/run1"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 0.818,
+      "log": "generated/ktester/round1-retry/validation-logs/15/test/run1/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival/dev/src-test-t/resources:/repo/experiments/commit-survival/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateNonArrayReturnsEmpty()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayAllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayWithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateEmptyTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_WithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testAtPathConstructionVerification()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullNodeHandledGracefully()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullExecutionContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullCollectorContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullEvaluatedItems()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchemaElement()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testTupleSchemaValidateThrowsException()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullAtParameter()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#parameterizedArraySizeLessThanTupleSchema(java.lang.String,java.lang.String,java.util.Set,java.util.Set)",
+        "--reports-dir",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/run2"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 0.82,
+      "log": "generated/ktester/round1-retry/validation-logs/15/test/run2/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival/dev/src-test-t/resources:/repo/experiments/commit-survival/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateNonArrayReturnsEmpty()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayAllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayWithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateEmptyTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_WithErrors()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_AllValid()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testAtPathConstructionVerification()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullNodeHandledGracefully()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullExecutionContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullCollectorContext()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullEvaluatedItems()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchema()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchemaElement()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testTupleSchemaValidateThrowsException()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullAtParameter()",
+        "--select-method",
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#parameterizedArraySizeLessThanTupleSchema(java.lang.String,java.lang.String,java.util.Set,java.util.Set)",
+        "--reports-dir",
+        "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/15/test/run3"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.174,
+      "log": "generated/ktester/round1-retry/validation-logs/15/test/run3/console.txt"
+    }
+  ],
+  "methods": [
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testValidateNonArrayReturnsEmpty",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testValidateNonArrayReturnsEmpty",
+      "body_hash": "7a85c9dca2e67191630a09fed268b33b547333ebc54f96df164103310f6366e9",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateNonArrayReturnsEmpty()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testValidateArrayAllValid",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testValidateArrayAllValid",
+      "body_hash": "215415fd3321d7c64f66e82ec2b5102bff3b329a36d07da9b33b6d0d066e69ae",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayAllValid()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testValidateArrayWithErrors",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testValidateArrayWithErrors",
+      "body_hash": "1a1fa712900227674fc5e2146b5e6c91d13a4a059312a3a3f8c31daa99dfaa0f",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateArrayWithErrors()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testValidateEmptyTupleSchema",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testValidateEmptyTupleSchema",
+      "body_hash": "f3ac84fc13d606a53fe8ed64bedfce61ef39e607be8bf339a380b813c5ec7803",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testValidateEmptyTupleSchema()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testArraySizeLessThanTupleSchema_AllValid",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testArraySizeLessThanTupleSchema_AllValid",
+      "body_hash": "1ce8c53f476bf5c58716b2265bd5aedc97c9f31dcf476bdf37520a61c7395560",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_AllValid()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testArraySizeLessThanTupleSchema_WithErrors",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testArraySizeLessThanTupleSchema_WithErrors",
+      "body_hash": "c73372dd566be417c7e9164c7d290c149cf31a1a4ee95383a5a8a8c9394d6515",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeLessThanTupleSchema_WithErrors()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testArraySizeGreaterThanTupleSchema_AllValid",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testArraySizeGreaterThanTupleSchema_AllValid",
+      "body_hash": "222d5cad0ff2a4626bba30fbf90dcdca5b603d785757852ff592d4de18727874",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_AllValid()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema",
+      "body_hash": "d02cf7a61788209c9d201d1f5e82f0850c35c1ce37cd2ae9feb888939a1ce4fe",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testArraySizeGreaterThanTupleSchema_WithErrorInFirstSchema()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testAtPathConstructionVerification",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testAtPathConstructionVerification",
+      "body_hash": "ff07af21c8087b4b5b6d1a9543f96794ef029d65c9c69cf85c1b5bd9b31176f5",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testAtPathConstructionVerification()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullNodeHandledGracefully",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullNodeHandledGracefully",
+      "body_hash": "1de80df77fff24aafa6b32975601bfca730e23b0f8562b8ee3632d36425d7a8e",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullNodeHandledGracefully()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullExecutionContext",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullExecutionContext",
+      "body_hash": "a9fd9086dd2523f04e01de2286c542dfedc8ffb9ffb322c91d12b1bb7e517147",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullExecutionContext()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullCollectorContext",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullCollectorContext",
+      "body_hash": "aa385a6f58c44faedbcca9263d67369038eae61cec8c69066157f9245bdaae8c",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullCollectorContext()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullEvaluatedItems",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullEvaluatedItems",
+      "body_hash": "1d9b59d77eece8194a647ae93b06500b76537add04fdd4fddafb1216e5354231",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullEvaluatedItems()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullTupleSchema",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullTupleSchema",
+      "body_hash": "b501934fb14e294a4c2fc05b21c9d59990fad586994fbcd4e4446e7feecb4446",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchema()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullTupleSchemaElement",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullTupleSchemaElement",
+      "body_hash": "9b42de1304591943f7b853bc3e317d370cec7153c1c21a6fcf1bbeec5d79fe17",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullTupleSchemaElement()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testTupleSchemaValidateThrowsException",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testTupleSchemaValidateThrowsException",
+      "body_hash": "bddad60a4121f10c36e040a896ac83e1fc3c0df81b0248f0a8044b97f4150787",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testTupleSchemaValidateThrowsException()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "testNullAtParameter",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|testNullAtParameter",
+      "body_hash": "98c7ef33ce8e54e308993a53e3be82826ea041589d21ae113545edce253c1c29",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#testNullAtParameter()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java",
+      "class": "com.networknt.schema.PrefixItemsValidator_validate_Test",
+      "method": "parameterizedArraySizeLessThanTupleSchema",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java|com.networknt.schema.PrefixItemsValidator_validate_Test|parameterizedArraySizeLessThanTupleSchema",
+      "body_hash": "f2ba6ceac511535a4b53ec69ed9d3d3a3575a398a2a027cf917cdf08fcdd2575",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "error",
+      "message": "Cannot mock class class com.networknt.schema.ValidationContext",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.PrefixItemsValidator_validate_Test#parameterizedArraySizeLessThanTupleSchema(java.lang.String,java.lang.String,java.util.Set,java.util.Set)"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/PrefixItemsValidator_validate_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.468,
+    "log": "generated/ktester/round1-retry/validation-logs/15/inventory.tsv"
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "group": "Empty schemas map",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is invoked with an empty collection and no exception is thrown",
+        "description": "When the internal `schemas` map is empty, `preloadJsonSchema()` should call `preloadJsonSchemas` with an empty iterable. The method must complete normally without throwing any exception."
+      }
+    ]
+  },
+  {
+    "group": "Single schema entry",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is invoked with a collection containing exactly the single added JsonSchema instance",
+        "description": "Add one `JsonSchema` object to the private `schemas` map, then call `preloadJsonSchema()`. The method should forward a collection that contains exactly that schema to `preloadJsonSchemas`."
+      }
+    ]
+  },
+  {
+    "group": "Multiple schema entries",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is invoked with a collection containing all added JsonSchema instances in insertion order",
+        "description": "Populate the `schemas` map with several `JsonSchema` objects (e.g., three). After invoking `preloadJsonSchema()`, verify that `preloadJsonSchemas` receives a collection that includes all those schemas preserving the map's insertion order."
+      }
+    ]
+  },
+  {
+    "group": "Null schema value in map",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is invoked with a collection that contains a null element, leading to a NullPointerException inside `preloadJsonSchemas` (if it does not tolerate nulls)",
+        "description": "Insert a key with a `null` value into the `schemas` map. When `preloadJsonSchema()` is executed, it forwards the map values (including the null). The expected behavior is that the underlying `preloadJsonSchemas` method will throw a `NullPointerException` because a null schema cannot be pre\u2011loaded. The test asserts that the exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation from a schema during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas propagates the RuntimeException thrown by the offending JsonSchema",
+        "description": "Insert a mock JsonSchema into the internal `schemas` map whose `preloadJsonSchema` implementation throws a RuntimeException. When `PropertiesValidator.preloadJsonSchema()` is invoked, the exception should bubble up unchanged, confirming that the method does not swallow unexpected errors from individual schemas."
+      }
+    ]
+  },
+  {
+    "group": "Repeated invocation does not alter internal state",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives the same collection on each call and the internal `schemas` map remains unchanged after each invocation",
+        "description": "Populate the `schemas` map with two distinct JsonSchema instances. Call `preloadJsonSchema()` twice in succession. Verify that both calls forward identical collections (same size, same order) and that the internal map still contains the original two entries after the second call."
+      }
+    ]
+  },
+  {
+    "group": "Order preservation with mixed insertion patterns",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives schemas in the exact insertion order, even after intermediate removals and re\u2011insertions",
+        "description": "Add three schemas A, B, C to the map in that order, then remove B and re\u2011add a new schema D under the same key as B. The final insertion order should be A, C, D. After invoking `preloadJsonSchema()`, assert that the collection passed to `preloadJsonSchemas` follows this order, demonstrating that the LinkedHashMap ordering semantics are respected."
+      }
+    ]
+  },
+  {
+    "group": "Circular reference schema handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas throws a ValidationException (or StackOverflowError) due to circular reference, which propagates from preloadJsonSchema",
+        "description": "Create two mock JsonSchema objects where each references the other (e.g., schema1's `$ref` points to schema2 and vice\u2011versa). Insert both into the `schemas` map. When `preloadJsonSchema()` is called, the underlying preload logic will encounter a circular reference and raise an exception. The test verifies that this exception is not caught inside `preloadJsonSchema`."
+      }
+    ]
+  },
+  {
+    "group": "Null collection handling after map mutation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives a collection that reflects the map state at call time; subsequent mutations to the map do not affect the already\u2011passed collection",
+        "description": "Add a JsonSchema instance to the map, invoke `preloadJsonSchema()`, then immediately clear the map. Using a spy on `preloadJsonSchemas`, confirm that the collection received during the call still contains the original schema, proving that the method passes a snapshot rather than a live view."
+      }
+    ]
+  },
+  {
+    "group": "Concurrent modification during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ConcurrentModificationException propagates",
+        "description": "Insert a mock JsonSchema whose preloadJsonSchema implementation mutates the validator's internal `schemas` map (e.g., adds a new entry) while `preloadJsonSchemas` is iterating over `schemas.values()`. When `PropertiesValidator.preloadJsonSchema()` is called, the concurrent modification should cause a `ConcurrentModificationException` which must propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Error propagation from schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "AssertionError propagates",
+        "description": "Add a mock JsonSchema to the validator where the schema's `preloadJsonSchema` method throws an `AssertionError`. Invoke `preloadJsonSchema()` and verify that the `AssertionError` is not caught by the method and bubbles up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Null internal schemas map",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException when accessing schemas.values()",
+        "description": "Using reflection, set the private `schemas` field of a `PropertiesValidator` instance to `null`. Call `preloadJsonSchema()` and expect a `NullPointerException` because the method attempts to invoke `values()` on a null map."
+      }
+    ]
+  }
+]

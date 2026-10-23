@@ -1,0 +1,127 @@
+[
+  {
+    "group": "State Independence",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Scope creation succeeds regardless of whether loadCollectors() has been invoked beforehand",
+        "description": "Create a CollectorContext, optionally call loadCollectors() (or skip it), then call enterDynamicScope(). The method should still create a dynamic scope without depending on collector loading."
+      }
+    ]
+  },
+  {
+    "group": "Default Scope Creation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A non\u2011null Scope instance is returned and CollectorContext.getDynamicScope() reflects this new scope",
+        "description": "Invoke enterDynamicScope() with no arguments and verify that the returned Scope object is not null and becomes the current dynamic scope of the CollectorContext."
+      }
+    ]
+  },
+  {
+    "group": "Explicit Null Parameter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "containingSchema",
+            "value": null
+          }
+        ],
+        "expected": "A non\u2011null Scope instance is returned, identical in behaviour to the no\u2011arg overload",
+        "description": "Call the overloaded enterDynamicScope(null) and assert that it creates a Scope just like the default method (no\u2011arg) and that the current dynamic scope is set accordingly."
+      }
+    ]
+  },
+  {
+    "group": "Scope With Containing Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "containingSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": "A non\u2011null Scope instance is returned that records the supplied JsonSchema",
+        "description": "Pass a mock JsonSchema object to enterDynamicScope(JsonSchema) and verify that the returned Scope is not null and that the scope internally references the provided schema (e.g., via a getContainingSchema() accessor if available)."
+      }
+    ]
+  },
+  {
+    "group": "Nested Dynamic Scopes",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Two distinct Scope objects are created; the second scope\u2019s parent (or previous) is the first scope",
+        "description": "Invoke enterDynamicScope() twice in succession. Verify that each call returns a distinct Scope instance and that the second scope is linked to the first (e.g., via a getParent() method or by checking that getDynamicScope() after the second call returns the second scope while the first is still reachable as its predecessor)."
+      }
+    ]
+  },
+  {
+    "group": "Exit Returns Previous Scope",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Calling exitDynamicScope() after two enters returns the first entered Scope",
+        "description": "Enter two dynamic scopes, then call exitDynamicScope(). The method should return the Scope that was active before the most recent enter (i.e., the first Scope). After exit, CollectorContext.getDynamicScope() should point to that first Scope."
+      }
+    ]
+  },
+  {
+    "group": "Exit Without Prior Enter Throws",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException (or a similar runtime exception) is thrown",
+        "description": "Create a fresh CollectorContext and directly invoke exitDynamicScope() without any prior enterDynamicScope() call. The method is expected to signal improper state by throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Multiple Exits Return To Null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "After exiting all entered scopes, CollectorContext.getDynamicScope() returns null",
+        "description": "Enter a dynamic scope, exit it, then call exitDynamicScope() again. The second exit should either throw an exception or leave the dynamic scope as null; the test asserts that the current dynamic scope is null after all scopes have been closed."
+      }
+    ]
+  },
+  {
+    "group": "Enter With Already Associated Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "containingSchema",
+            "value": "mockJsonSchemaAssociatedWithOtherContext"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Pass a JsonSchema instance that is already linked to a different CollectorContext (simulated via reflection or a stub that reports an existing association). The method should reject re\u2011using the same schema in another context and throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Enter When Internal Collector Map Is Null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Create a CollectorContext, force its internal collector map (or similar required field) to null using reflection, then invoke enterDynamicScope(). The method is expected to attempt to access the map and consequently throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Enter After Context Has Been Marked As Finished",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException",
+        "description": "Assume CollectorContext provides a way to mark the context as finished (e.g., a hypothetical close() or freeze() method). After invoking that method, call enterDynamicScope(). The method should detect the illegal state and throw IllegalStateException."
+      }
+    ]
+  }
+]

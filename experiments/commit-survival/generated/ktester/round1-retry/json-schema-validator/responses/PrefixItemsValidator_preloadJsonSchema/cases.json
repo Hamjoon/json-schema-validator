@@ -1,0 +1,102 @@
+[
+  {
+    "group": "Preload with null tupleSchema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called with null argument (should handle gracefully)",
+        "description": "When the PrefixItemsValidator is constructed with a null tupleSchema, calling preloadJsonSchema() must not throw NullPointerException and must delegate the null list to preloadJsonSchemas."
+      }
+    ]
+  },
+  {
+    "group": "Preload with empty tupleSchema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called exactly once with an empty list",
+        "description": "Validate that an empty tupleSchema results in a single call to preloadJsonSchemas passing an empty collection, ensuring the method correctly handles the empty case."
+      }
+    ]
+  },
+  {
+    "group": "Preload with multiple schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called once with a list containing three JsonSchema instances",
+        "description": "When tupleSchema holds several JsonSchema objects, preloadJsonSchema() must forward the whole list to preloadJsonSchemas, allowing each schema to be pre\u2011loaded."
+      }
+    ]
+  },
+  {
+    "group": "Preload with tupleSchema containing null element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called with a list that includes a null entry",
+        "description": "Ensure that the method tolerates a null element inside tupleSchema and still forwards the list to preloadJsonSchemas without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Preload with single schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called exactly once with a list containing the single JsonSchema instance, preserving its reference",
+        "description": "When PrefixItemsValidator is constructed with a tupleSchema list that holds one JsonSchema, calling preloadJsonSchema() must forward that list to preloadJsonSchemas without alteration."
+      }
+    ]
+  },
+  {
+    "group": "Preload with duplicate schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called once with a list containing the duplicate JsonSchema objects in the original order",
+        "description": "Validate that duplicate entries in tupleSchema are not deduplicated by preloadJsonSchema() and the exact list (including duplicates) is passed to preloadJsonSchemas."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates exception from schema preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException thrown from preloadJsonSchemas is propagated to the caller of preloadJsonSchema()",
+        "description": "If any JsonSchema in tupleSchema causes preloadJsonSchemas to throw a RuntimeException, preloadJsonSchema() must not swallow it; the exception should bubble up."
+      }
+    ]
+  },
+  {
+    "group": "Preload with unmodifiable tupleSchema list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas is called once with the unmodifiable list instance",
+        "description": "When tupleSchema is created via Collections.unmodifiableList(...), preloadJsonSchema() should still be able to pass the list to preloadJsonSchemas without attempting to modify it."
+      }
+    ]
+  },
+  {
+    "group": "Preload preserves order of schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception thrown; preloadJsonSchemas receives the list in the same order as defined in tupleSchema (e.g., schemaA, schemaB, schemaC)",
+        "description": "Ensures that preloadJsonSchema() does not reorder the tupleSchema elements before delegating to preloadJsonSchemas, which is important for positional validation semantics."
+      }
+    ]
+  },
+  {
+    "group": "Preload with list that throws UnsupportedOperationException on modification",
+    "cases": [
+      {
+        "input": [],
+        "expected": "UnsupportedOperationException thrown from preloadJsonSchema() and propagated to the caller",
+        "description": "Provide a tupleSchema implemented as a custom List that throws UnsupportedOperationException when a mutating method (e.g., add) is called. If preloadJsonSchemas attempts to modify the list, the exception should bubble up."
+      }
+    ]
+  }
+]

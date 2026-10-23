@@ -1,0 +1,180 @@
+{
+  "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/12/test/classes",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.721,
+    "log": "generated/ktester/round1-retry/validation-logs/12/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "shouldLoadCollectorResultIntoContext",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|shouldLoadCollectorResultIntoContext",
+      "body_hash": "b16f1fe00b38a0f0d0af95b85fbc2a91d5a060602ff862ecc42c2676b43e307d",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "shouldIgnoreNonCollectorEntries",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|shouldIgnoreNonCollectorEntries",
+      "body_hash": "fcd31143b89ef00df4272fb650be5e752d2505d001c1f0d50ee0199f9194f74f",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "emptyCollectorMapShouldLeaveLoadMapEmpty",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|emptyCollectorMapShouldLeaveLoadMapEmpty",
+      "body_hash": "597baf3a431ddd753af462fa40c0d1fe08884867fb7df9e40ba55cf6823d2dfe",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "singleCollectorShouldPopulateLoadMap",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|singleCollectorShouldPopulateLoadMap",
+      "body_hash": "46ddfd1bbfc917b8d450a615a2f782740069d9561c08df06e282ed2e0a0a2c3a",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "multipleCollectorsShouldAllBeLoaded",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|multipleCollectorsShouldAllBeLoaded",
+      "body_hash": "2949a03c80183bd6650496155d8b56a8cb6103cb46395255fe6c4b4cbbdcf056",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "nonCollectorEntriesShouldBeIgnored",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|nonCollectorEntriesShouldBeIgnored",
+      "body_hash": "0042550c0b980c59ba1793da16b45f721ae2b0a8f19d3b4fd4131ba90074a463",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "mixedCollectorsAndNonCollectorsShouldProcessOnlyCollectors",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|mixedCollectorsAndNonCollectorsShouldProcessOnlyCollectors",
+      "body_hash": "cbb56337a68313fbbf40a4f7da0773520b2e2d50972224b03f5c704e7f05ce37",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "collectorReturningNullShouldStoreNullValue",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|collectorReturningNullShouldStoreNullValue",
+      "body_hash": "2381375e71f0e41e12bd7eaaa8d2632a9338c786b66fd3a1ae961482a434730b",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "collectorThrowingExceptionShouldPropagate",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|collectorThrowingExceptionShouldPropagate",
+      "body_hash": "2932e0623c0a9850e1043c3fb9d9483a291db7c61b565ceb784f3d8a3a4ac1f9",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "subsequentLoadCollectorsCallShouldOverwritePreviousValues",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|subsequentLoadCollectorsCallShouldOverwritePreviousValues",
+      "body_hash": "57016b480635b4ca0161bfd491b95297c4aa4b0e9cbfa72f547144ca15c09cf0",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java",
+      "class": "com.networknt.schema.CollectorContext_loadCollectors_Test",
+      "method": "collectorModifyingCollectorMapDuringLoadShouldThrowConcurrentModification",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java|com.networknt.schema.CollectorContext_loadCollectors_Test|collectorModifyingCollectorMapDuringLoadShouldThrowConcurrentModification",
+      "body_hash": "6a6546103d817d17ea96f616fba00f7b317aedd7eb5aa2f0fd0719cd18a691e9",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java:287: error: <anonymous com.networknt.schema.CollectorContext_loadCollectors_Test$1> is not abstract and does not override abstract method combine(Object) in Collector\n        Collector<Object> mutatingCollector = new Collector<Object>() {\n                                                                      ^\nNote: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_loadCollectors_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.417,
+    "log": "generated/ktester/round1-retry/validation-logs/12/inventory.tsv"
+  }
+}

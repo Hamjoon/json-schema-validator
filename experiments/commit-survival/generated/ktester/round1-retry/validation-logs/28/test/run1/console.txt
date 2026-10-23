@@ -1,0 +1,187 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+
+Failures (12):
+  JUnit Jupiter:TypeValidator_validate_Test:whenNodeMatchesSchemaType_thenEmptySetReturned()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenNodeMatchesSchemaType_thenEmptySetReturned', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenNodeDoesNotMatchSchemaType_thenMessageReturned()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenNodeDoesNotMatchSchemaType_thenMessageReturned', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenSchemaPathEndsWithTypeAndRootIsArray_thenEvaluatedItemsUpdated()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenSchemaPathEndsWithTypeAndRootIsArray_thenEvaluatedItemsUpdated', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenSchemaPathEndsWithTypeAndRootIsObject_thenEvaluatedPropertiesUpdated()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenSchemaPathEndsWithTypeAndRootIsObject_thenEvaluatedPropertiesUpdated', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenSchemaIsUnion_thenDelegateToUnionValidator()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenSchemaIsUnion_thenDelegateToUnionValidator', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenUnionTypeValidatorIsNull_thenNpeOnValidate()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenUnionTypeValidatorIsNull_thenNpeOnValidate', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenSchemaPathIsNull_thenNpeDuringEndsWithCheck()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenSchemaPathIsNull_thenNpeDuringEndsWithCheck', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenRootNodeIsNull_thenNpeOnIsArrayOrIsObject()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenRootNodeIsNull_thenNpeOnIsArrayOrIsObject', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenExecutionContextIsNull_thenNpeOnCollectorAccess()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenExecutionContextIsNull_thenNpeOnCollectorAccess', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenCollectorContextIsNull_thenNpeOnEvaluatedSetAccess(ExecutionContext)
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenCollectorContextIsNull_thenNpeOnEvaluatedSetAccess', methodParameterTypes = 'com.networknt.schema.ExecutionContext']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenNodeIsNull_thenNpeDuringTypeCheck()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenNodeIsNull_thenNpeDuringTypeCheck', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:TypeValidator_validate_Test:whenNodeMatchesAndSchemaPathDoesNotEndWithType_thenNoSideEffect()
+    MethodSource [className = 'com.networknt.schema.TypeValidator_validate_Test', methodName = 'whenNodeMatchesAndSchemaPathDoesNotEndWithType_thenNoSideEffect', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.get(String)" because the return value of "com.networknt.schema.JsonSchema.getSchemaNode()" is null
+       com.networknt.schema.ValidationMessageHandler.parseErrorCode(ValidationMessageHandler.java:92)
+       com.networknt.schema.TypeValidator.<init>(TypeValidator.java:42)
+       com.networknt.schema.TypeValidator_validate_Test.setupBeforeEach(TypeValidator_validate_Test.java:53)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+
+Test run finished after 1154 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        12 tests found           ]
+[         0 tests skipped         ]
+[        12 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[        12 tests failed          ]
+

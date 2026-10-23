@@ -1,0 +1,177 @@
+[
+  {
+    "group": "detectOptionalVersion",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "When the JSON object does not contain the \"$schema\" property, the method should return an empty Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-07/schema#\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_07)",
+        "description": "A recognizable schema URI is provided. After normalization the URI maps to VersionFlag.DRAFT_07, so the method returns an Optional containing that flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://example.com/unknown-schema\" }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'http://example.com/unknown-schema' is unrecognizable schema\"",
+        "description": "The \"$schema\" value is not known to SpecVersion.VersionFlag. The method should throw a JsonSchemaException with a message indicating the schema is unrecognizable."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"draft-07\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_07)",
+        "description": "A short form schema identifier that requires normalization. JsonSchemaFactory.normalizeMetaSchemaUri converts \"draft-07\" to the full URI, which is then resolved to VersionFlag.DRAFT_07."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_04)",
+        "description": "A full meta\u2011schema URI for Draft\u201104 is supplied; after normalization it maps to VersionFlag.DRAFT_04."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"draft-06\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_06)",
+        "description": "A short\u2011form identifier for Draft\u201106 is provided; normalizeMetaSchemaUri expands it to the known URI and the method returns the corresponding flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"https://json-schema.org/draft/2019-09/schema\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_2019_09)",
+        "description": "The 2019\u201109 meta\u2011schema URI is recognized and resolved to VersionFlag.DRAFT_2019_09."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"https://json-schema.org/draft/2020-12/schema\" }"
+          }
+        ],
+        "expected": "Optional.of(VersionFlag.DRAFT_2020_12)",
+        "description": "The 2020\u201112 meta\u2011schema URI is recognized and resolved to VersionFlag.DRAFT_2020_12."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"\" }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'' is unrecognizable schema\"",
+        "description": "An empty string is supplied for $schema; after normalization the identifier is still empty, causing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": 123 }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'123' is unrecognizable schema\"",
+        "description": "A numeric value is supplied for $schema; asText() converts it to \"123\", which is not a known schema URI, leading to an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": null }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'null' is unrecognizable schema\"",
+        "description": "Explicit null is provided for $schema; NullNode.asText() yields \"null\", which is not a recognized schema, so an exception is thrown."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The method is invoked with a null JsonNode argument; a NullPointerException is expected because the implementation dereferences the argument without a null check."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": true }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'true' is unrecognizable schema\"",
+        "description": "The $schema value is a boolean true. asText() converts it to \"true\", which is not a known schema URI, causing a JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": false }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'false' is unrecognizable schema\"",
+        "description": "The $schema value is a boolean false. asText() converts it to \"false\", leading to an unrecognizable schema exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": [ \"http://json-schema.org/draft-07/schema#\" ] }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'[\\\"http://json-schema.org/draft-07/schema#\\\"]' is unrecognizable schema\"",
+        "description": "The $schema value is an array. asText() yields the JSON array representation, which does not match any known schema URI, resulting in a JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"   \" }"
+          }
+        ],
+        "expected": "JsonSchemaException: \"'   ' is unrecognizable schema\"",
+        "description": "The $schema value consists only of whitespace. After normalization the identifier remains blank, causing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "[ { \"$schema\": \"http://json-schema.org/draft-07/schema#\" } ]"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "The root node is an array; get(\"$schema\") returns null, so the method should return an empty Optional."
+      }
+    ]
+  }
+]

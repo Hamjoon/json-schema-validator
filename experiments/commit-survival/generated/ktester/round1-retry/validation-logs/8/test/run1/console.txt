@@ -1,0 +1,32 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (1):
+  JUnit Jupiter:CollectorContext_getEvaluatedItems_Test:getEvaluatedItems_ExitBeyondRoot_ThrowsNPE()
+    MethodSource [className = 'com.networknt.schema.CollectorContext_getEvaluatedItems_Test', methodName = 'getEvaluatedItems_ExitBeyondRoot_ThrowsNPE', methodParameterTypes = '']
+    => java.util.NoSuchElementException
+       java.base/java.util.LinkedList.removeFirst(LinkedList.java:274)
+       java.base/java.util.LinkedList.pop(LinkedList.java:805)
+       com.networknt.schema.CollectorContext.exitDynamicScope(CollectorContext.java:84)
+       com.networknt.schema.CollectorContext_getEvaluatedItems_Test.getEvaluatedItems_ExitBeyondRoot_ThrowsNPE(CollectorContext_getEvaluatedItems_Test.java:160)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+
+Test run finished after 163 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        13 tests found           ]
+[         0 tests skipped         ]
+[        13 tests started         ]
+[         0 tests aborted         ]
+[        12 tests successful      ]
+[         1 tests failed          ]
+

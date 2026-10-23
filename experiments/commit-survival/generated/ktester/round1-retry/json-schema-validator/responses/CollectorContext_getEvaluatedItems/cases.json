@@ -1,0 +1,170 @@
+[
+  {
+    "group": "Default behavior \u2013 enabled unevaluated items",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "notNull": true,
+          "initialSize": 0,
+          "addResult": true,
+          "sizeAfterAdd": 1,
+          "containsAdded": true
+        },
+        "description": "CollectorContext uses the default dynamic scope where unevaluated items are enabled. getEvaluatedItems() should return a mutable, non\u2011null collection. Adding an element must succeed, increasing the size to 1 and the element must be present."
+      }
+    ]
+  },
+  {
+    "group": "Disabled unevaluated items \u2013 collection is inert",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "notNull": true,
+          "initialSize": 0,
+          "addResult": false,
+          "sizeAfterAdd": 0,
+          "containsAdded": false
+        },
+        "description": "Create a CollectorContext whose dynamic scope is constructed with disableUnevaluatedItems = true. getEvaluatedItems() must return the special AbstractCollection that rejects additions. The collection must be non\u2011null, have size 0, add() must return false, size must stay 0 and the element must not be present."
+      }
+    ]
+  },
+  {
+    "group": "Null\u2011safety guarantee",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "notNull": true
+        },
+        "description": "Regardless of how the scope is created, getEvaluatedItems() must never return null. This test simply asserts the returned reference is not null."
+      }
+    ]
+  },
+  {
+    "group": "Effect of merging scopes on the returned collection",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "mergedSize": 3,
+          "containsAll": [
+            "a",
+            "b",
+            "c"
+          ]
+        },
+        "description": "Create two Scope instances with enabled unevaluated items. Populate the first with \"a\" and \"b\", the second with \"c\". Merge the second into the first via Scope.mergeWith(). Override CollectorContext#getDynamicScope() to return the merged scope. getEvaluatedItems() must reflect all three entries."
+      }
+    ]
+  },
+  {
+    "group": "Entering a new dynamic scope creates a distinct collection",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "outerCollectionNotNull": true,
+          "innerCollectionNotNull": true,
+          "differentInstance": true,
+          "outerInitialSize": 0,
+          "innerInitialSize": 0
+        },
+        "description": "Create a CollectorContext with default (enabled) unevaluated items. Capture the collection returned by getEvaluatedItems() (outer). Call enterDynamicScope() to push a new Scope and capture the collection again (inner). Verify both collections are non\u2011null, have size 0, and are different objects (inner is a fresh collection)."
+      }
+    ]
+  },
+  {
+    "group": "Exiting a dynamic scope restores the previous collection",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "outerCollectionNotNull": true,
+          "innerCollectionNotNull": true,
+          "outerContainsAdded": false,
+          "innerContainsAdded": true,
+          "afterExitContainsAdded": false,
+          "sameInstanceAfterExit": true
+        },
+        "description": "Start with a CollectorContext (default). Obtain outer collection. Enter a new dynamic scope, obtain inner collection and add a marker element \"x\" via inner.add(\"x\"). Exit the dynamic scope. Verify that the collection returned by getEvaluatedItems() after exit is the original outer collection (same instance) and does not contain the element added in the inner scope."
+      }
+    ]
+  },
+  {
+    "group": "Multiple calls to getEvaluatedItems return the same instance",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "firstCallNotNull": true,
+          "secondCallNotNull": true,
+          "sameInstance": true
+        },
+        "description": "For a freshly created CollectorContext (default), invoke getEvaluatedItems() twice and assert that both returned references are identical (==) and non\u2011null."
+      }
+    ]
+  },
+  {
+    "group": "Adding null element to an enabled collection succeeds",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "collectionEnabled": true,
+          "addResult": true,
+          "sizeAfterAdd": 1,
+          "containsNull": true
+        },
+        "description": "Create a CollectorContext where unevaluated items are enabled. Retrieve the collection via getEvaluatedItems() and call add(null). Verify that add returns true, the size becomes 1, and the collection reports that it contains a null element."
+      }
+    ]
+  },
+  {
+    "group": "Adding null element to a disabled collection fails",
+    "cases": [
+      {
+        "input": [],
+        "expected": {
+          "collectionDisabled": true,
+          "addResult": false,
+          "sizeAfterAdd": 0,
+          "containsNull": false
+        },
+        "description": "Create a CollectorContext whose dynamic scope is constructed with disableUnevaluatedItems = true. Retrieve the collection via getEvaluatedItems() and attempt to add(null). Verify that add returns false, the size remains 0, and the collection does not contain null."
+      }
+    ]
+  },
+  {
+    "group": "Null dynamic scope \u2013 NPE",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "Create a subclass of CollectorContext that overrides getDynamicScope() to return null. Invoking getEvaluatedItems() should throw a NullPointerException because the method attempts to call getEvaluatedItems() on a null Scope."
+      }
+    ]
+  },
+  {
+    "group": "Immutable evaluated items collection \u2013 UnsupportedOperationException on add",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.UnsupportedOperationException",
+        "description": "Create a custom Scope whose evaluatedItems collection is an unmodifiable collection (e.g., Collections.unmodifiableList(new ArrayList<>())). Override CollectorContext#getDynamicScope() to return this Scope. Calling getEvaluatedItems() returns the unmodifiable collection; attempting to add an element to that collection must throw UnsupportedOperationException."
+      }
+    ]
+  },
+  {
+    "group": "Exiting beyond root scope \u2013 NPE on getEvaluatedItems",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "Instantiate a fresh CollectorContext (default). Call exitDynamicScope() more times than enterDynamicScope() (e.g., call exitDynamicScope() twice). After the extra exit, the internal dynamic scope reference becomes null. A subsequent call to getEvaluatedItems() should throw NullPointerException."
+      }
+    ]
+  }
+]

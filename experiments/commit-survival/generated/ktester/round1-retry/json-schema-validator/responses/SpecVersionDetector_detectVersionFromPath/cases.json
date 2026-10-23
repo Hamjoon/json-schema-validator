@@ -1,0 +1,147 @@
+[
+  {
+    "group": "detectVersionFromPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "emptyPath"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "The supplied Path has no elements (spliterator is empty). The stream produces no strings, so the method must return an empty Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithUnsupported"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "The Path contains a single element whose string representation is not present in `supportedVersions`. After the map lookup the value is null, filtered out, and the method returns an empty Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithSupported"
+          }
+        ],
+        "expected": "Optional[VersionFlag.DRAFT_4]",
+        "description": "The Path contains one element whose string matches a key in `supportedVersions` (e.g., \"draft4\" \u2192 VersionFlag.DRAFT_4). The lookup yields a non\u2011null VersionFlag, which passes the filter and is returned wrapped in an Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathMixedSupportedFirstUnsupportedSecond"
+          }
+        ],
+        "expected": "Optional[VersionFlag.DRAFT_7]",
+        "description": "The Path contains two elements: the first maps to null (unsupported), the second maps to a supported version (e.g., \"draft7\" \u2192 VersionFlag.DRAFT_7). The stream skips the null and returns the first non\u2011null VersionFlag wrapped in an Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithMultipleSupported"
+          }
+        ],
+        "expected": "Optional[VersionFlag.DRAFT_4] or Optional[VersionFlag.DRAFT_7]",
+        "description": "The Path contains several elements, all of which map to supported versions (e.g., \"draft4\" and \"draft7\"). The method uses `findAny()`, so any one of the matching VersionFlag values may be returned. The test verifies that the result is present and belongs to the set of expected supported flags."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithNullElement"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "If the Path's spliterator yields a null element, the `Path::toString` call will throw a NullPointerException. This case confirms the method does not guard against null entries in the Path."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "nullPath"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The method is invoked with a null Path reference; the call to `path.spliterator()` should raise a NullPointerException because the implementation does not guard against a null argument."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithEmptyString"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "The Path consists of a single element whose string representation is an empty string \"\". No entry for an empty key exists in `supportedVersions`, so the lookup yields null and the method returns an empty Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithCaseMismatchSupported"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "The Path contains an element \"DRAFT4\" (upper\u2011case) while the map stores the key in lower\u2011case (e.g., \"draft4\"). Because the lookup is case\u2011sensitive, the result is null and the method returns Optional.empty."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithManyUnsupportedThenSupported"
+          }
+        ],
+        "expected": "Optional[VersionFlag.DRAFT_2020_12]",
+        "description": "The Path has several unsupported elements (e.g., \"foo\", \"bar\", \"baz\") followed by a supported element \"draft2020-12\". After filtering out the null look\u2011ups, the first non\u2011null VersionFlag is returned, wrapped in an Optional."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithDuplicateSupported"
+          }
+        ],
+        "expected": "Optional[VersionFlag.DRAFT_7]",
+        "description": "The Path contains two identical supported elements (e.g., \"draft7\", \"draft7\"). Both map to the same VersionFlag; `findAny()` will return that flag, resulting in an Optional containing VersionFlag.DRAFT_7."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithSupportedWhenMapCleared"
+          }
+        ],
+        "expected": "Optional.empty",
+        "description": "Before invoking the method the static `supportedVersions` map is cleared (e.g., via reflection). Even though the Path contains a string that would normally be supported (e.g., \"draft4\"), the lookup now yields null, so the method returns Optional.empty."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWhenMapNull"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The static `supportedVersions` map is set to null (e.g., via reflection) before invoking the method. When the stream reaches the `supportedVersions::get` mapping step, a NullPointerException is thrown because the map reference is null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "path",
+            "value": "pathWithSpliteratorException"
+          }
+        ],
+        "expected": "throws RuntimeException",
+        "description": "The supplied Path returns a custom Spliterator whose `tryAdvance` (or `forEachRemaining`) throws a RuntimeException during stream traversal. The exception propagates out of the stream pipeline, causing the method to throw that RuntimeException."
+      }
+    ]
+  }
+]

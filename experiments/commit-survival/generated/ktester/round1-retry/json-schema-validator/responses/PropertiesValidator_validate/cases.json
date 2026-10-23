@@ -1,0 +1,434 @@
+[
+  {
+    "group": "Property node present - walk disabled, simple validator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=false, walkEnabled=false, validationEnabled=true}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with field \"name\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode (not used in this branch)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Set containing ValidationMessage(s) returned from propertySchema.validate call (simulated as [\"error1\"]). The CollectorContext.evaluatedProperties should contain \"#/name\". No walkSchema invocation.",
+        "description": "Verifies the path where the property exists, walk is disabled, and the validator is not complex. The child schema is validated directly and its errors are propagated."
+      }
+    ]
+  },
+  {
+    "group": "Property node present - walk enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=false, walkEnabled=true, validationEnabled=true}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with field \"age\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set (walkSchema handles validation). The walkSchema method should be invoked once with the entry for \"age\".",
+        "description": "Ensures that when walk is enabled the validator delegates to walkSchema instead of directly calling the child schema's validate method."
+      }
+    ]
+  },
+  {
+    "group": "Property node present - complex validator handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=true, walkEnabled=false, validationEnabled=true, matchedNode initially false}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with field \"type\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Set containing ValidationMessage(s) from child validation. After validation, ValidatorState.matchedNode should be true (set before and after the recursive call). The original complex flag (true) must be restored.",
+        "description": "Tests the logic that marks the node as matched before and after validation when the parent validator is complex (e.g., oneOf)."
+      }
+    ]
+  },
+  {
+    "group": "Property node absent - required validator returns no errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=false}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode without field \"requiredField\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set (no required errors). The parent schema must have a RequiredValidator that returns an empty set.",
+        "description": "Validates that when a property is missing but the required validator reports no errors, the validator returns an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "Property node absent - required validator returns errors, non\u2011complex validator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=false}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode without field \"mandatory\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Set containing the required ValidationMessage(s) (e.g., [\"'mandatory' is required\"]). Since the validator is not complex, errors are added to the result set.",
+        "description": "Ensures that missing mandatory properties generate required\u2011validation errors when the validator is not part of a complex construct."
+      }
+    ]
+  },
+  {
+    "group": "Property node absent - required validator returns errors, complex validator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState {complexValidator=true}"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode without field \"choice\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set (method returns early). ValidatorState.matchedNode should be set to false before returning.",
+        "description": "Checks the early\u2011exit behavior when a required property is missing inside a complex validator (e.g., oneOf). The validator should clear errors and indicate the node did not match."
+      }
+    ]
+  },
+  {
+    "group": "No schemas defined",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing a default ValidatorState (complexValidator=false, walkEnabled=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "any mock JsonNode (properties map is empty, so node.get(...) always returns null)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode (not used when schemas map is empty)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set. Since the validator holds no property schemas, the loop body is never executed and no ValidationMessage is produced.",
+        "description": "Verifies that when the PropertiesValidator has an empty `schemas` map the method returns an empty, immutable set without touching the CollectorContext or ValidatorState."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema without required validator, property absent",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing a default ValidatorState (complexValidator=false, walkEnabled=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode that does NOT contain the field \"optional\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set. The parent schema reports `hasRequiredValidator() == false`, therefore the missing property is ignored and no errors are added.",
+        "description": "Ensures that when a property is missing but the parent schema does not define a RequiredValidator, the validator simply returns an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "Property node present - walk enabled with validation errors from walkSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState (complexValidator=false, walkEnabled=true, validationEnabled=true) and a stub WalkListenerRunner that records the call"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with field \"age\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Set containing a ValidationMessage \"walkError\" that is added by the stubbed `walkSchema` implementation. No direct call to `propertySchema.validate` should occur.",
+        "description": "Checks that when walk is enabled the validator delegates to `walkSchema`; the stubbed walkSchema injects an error, which must be returned to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Multiple properties - mixed present and absent with required validator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState (complexValidator=false, walkEnabled=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode containing field \"presentProp\" only"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Set containing two ValidationMessages: \"presentError\" (produced by the child schema for \"presentProp\") and \"'missingProp' is required\" (produced by the parent RequiredValidator for the absent property). The evaluatedProperties set should contain \"#/presentProp\" only.",
+        "description": "Validates that the validator correctly processes several entries: it validates the existing property, adds its error, and for the missing property it invokes the RequiredValidator, adding its error to the final set."
+      }
+    ]
+  },
+  {
+    "group": "Property node present - walk disabled, non\u2011complex validator, matchedNode unchanged",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing ValidatorState (complexValidator=false, walkEnabled=false, validationEnabled=true, matchedNode initially false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with field \"simple\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "Empty Set (child schema returns no errors). After the call `ValidatorState.matchedNode` remains false because the validator is not part of a complex construct.",
+        "description": "Ensures that when the validator is not marked as complex, the `matchedNode` flag is never toggled, even though the property exists and validation is performed."
+      }
+    ]
+  },
+  {
+    "group": "validate - null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "any non\u2011null JsonNode (e.g., mock with empty object)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling validate with a null ExecutionContext should cause a NullPointerException when the method attempts to call executionContext.getCollectorContext()."
+      }
+    ]
+  },
+  {
+    "group": "validate - null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with a valid CollectorContext containing a default ValidatorState"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the node argument is null, the call to node.get(entry.getKey()) inside the loop will throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "validate - collectorContext missing ValidatorState",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose getCollectorContext() returns a CollectorContext without the VALIDATOR_STATE_KEY entry"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with a field matching a defined schema entry"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "ClassCastException or NullPointerException",
+        "description": "The method casts the object retrieved from CollectorContext to ValidatorState. If the key is missing, the cast will receive null, leading to a NullPointerException when state.isComplexValidator() is invoked (or a ClassCastException if a wrong type is stored)."
+      }
+    ]
+  },
+  {
+    "group": "validate - null parent schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing a valid ValidatorState"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode that does NOT contain the property defined in schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If getParentSchema() returns null, the subsequent call to hasRequiredValidator() will throw a NullPointerException. This scenario can be forced by creating a PropertiesValidator instance whose parent schema reference is deliberately set to null (e.g., via reflection or a test subclass)."
+      }
+    ]
+  },
+  {
+    "group": "validate - null \"at\" path parameter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with CollectorContext containing a default ValidatorState"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode with a field \"name\" present"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The atPath utility concatenates the provided path with the property key. Passing a null \"at\" argument will cause a NullPointerException inside atPath (or later when adding to evaluatedProperties)."
+      }
+    ]
+  }
+]

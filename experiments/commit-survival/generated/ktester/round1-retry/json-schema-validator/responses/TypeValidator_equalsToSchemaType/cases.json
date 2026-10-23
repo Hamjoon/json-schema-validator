@@ -1,0 +1,681 @@
+[
+  {
+    "group": "Matching schema type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer value 42"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "The JSON node is an integer and the validator's schema type is INTEGER, so equalsToSchemaType should return true."
+      }
+    ]
+  },
+  {
+    "group": "Mismatching schema type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing string \"hello\""
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "The JSON node is a string while the validator expects an INTEGER, therefore equalsToSchemaType must return false."
+      }
+    ]
+  },
+  {
+    "group": "Null JSON node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null (Jackson NullNode)"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.NULL"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "When the node is a JSON null and the schema type is NULL, equalsToSchemaType should recognise the match and return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null (Jackson NullNode)"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "A JSON null does not satisfy a non\u2011NULL schema type (e.g., STRING), so the method must return false."
+      }
+    ]
+  },
+  {
+    "group": "Undefined schema type (null schemaType)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing boolean true"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "null"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "If the validator's schemaType is null, the method cannot perform a type comparison and must return false."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema overrides type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing string \"2021-01-01\""
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "JsonSchema whose type is STRING and format is date"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "When a parent schema is present, equalsToSchemaType must also consider the parent\u2019s declared type. The node matches the parent\u2019s STRING type, so the method returns true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 10"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "JsonSchema whose type is STRING"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "Even though the node matches the validator\u2019s own schemaType (INTEGER), the parent schema forces a STRING type, causing a mismatch and the method must return false."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext influences type checking",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 5"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "ValidationContext with option \"typeLoose\" set to true"
+          }
+        ],
+        "expected": "true",
+        "description": "When the ValidationContext is configured for loose type checking, an integer node may be accepted for a STRING schema type, so equalsToSchemaType should return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 5"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext (strict type checking)"
+          }
+        ],
+        "expected": "false",
+        "description": "With strict type checking (default context), an integer node does not satisfy a STRING schema type, therefore the method must return false."
+      }
+    ]
+  },
+  {
+    "group": "Number type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer value 7"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.NUMBER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext (strict)"
+          }
+        ],
+        "expected": "true",
+        "description": "An integer JSON node satisfies the NUMBER schema type because integers are a subset of numbers."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing floating point value 3.14"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.NUMBER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext (strict)"
+          }
+        ],
+        "expected": "true",
+        "description": "A floating\u2011point JSON node matches the NUMBER schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing floating point value 2.718"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext (strict)"
+          }
+        ],
+        "expected": "false",
+        "description": "A floating\u2011point node does not satisfy an INTEGER schema type under strict checking."
+      }
+    ]
+  },
+  {
+    "group": "Boolean type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing boolean true"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.BOOLEAN"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "A JSON boolean true matches the BOOLEAN schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing boolean false"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.BOOLEAN"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "A JSON boolean false matches the BOOLEAN schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing boolean true"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "A boolean node does not satisfy a STRING schema type."
+      }
+    ]
+  },
+  {
+    "group": "Array type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing empty array []"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.ARRAY"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "An empty JSON array matches the ARRAY schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing array [1, \"two\", true]"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.ARRAY"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "A non\u2011empty JSON array also satisfies the ARRAY schema type regardless of its element types."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing array [1,2,3]"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.OBJECT"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "An array node does not satisfy an OBJECT schema type."
+      }
+    ]
+  },
+  {
+    "group": "Object type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing object {\"a\":1,\"b\":\"x\"}"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.OBJECT"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "A JSON object matches the OBJECT schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing object {\"key\":\"value\"}"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.ARRAY"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "A JSON object does not satisfy an ARRAY schema type."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema without declared type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 12"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "JsonSchema with no explicit type (type = null)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "true",
+        "description": "When the parent schema does not declare a type, the validator falls back to its own schemaType; the integer node matches INTEGER."
+      }
+    ]
+  },
+  {
+    "group": "Null node with non\u2011NULL schema type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null (Jackson NullNode)"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.BOOLEAN"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "false",
+        "description": "A JSON null does not satisfy a BOOLEAN schema type."
+      }
+    ]
+  },
+  {
+    "group": "Loose type checking does not accept floating point for INTEGER",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing floating point value 9.99"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "ValidationContext with option \"typeLoose\" set to true"
+          }
+        ],
+        "expected": "false",
+        "description": "Even with \"typeLoose\" enabled, a floating\u2011point number should not be considered an INTEGER."
+      }
+    ]
+  },
+  {
+    "group": "Null validationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 10"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The ValidationContext argument is null; equalsToSchemaType should propagate a NullPointerException because the delegate method expects a non\u2011null context."
+      }
+    ]
+  },
+  {
+    "group": "Null node reference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null (Java null reference, not Jackson NullNode)"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.STRING"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a literal null for the JsonNode argument (instead of a Jackson NullNode) should cause a NullPointerException inside JsonNodeUtil.equalsToSchemaType."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema type enum",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing string \"test\""
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.UNKNOWN (non\u2011existent enum constant)"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Supplying a schema type that is not part of the JsonType enum should cause the utility method to throw IllegalArgumentException because it cannot map the type to a known JSON primitive."
+      }
+    ]
+  },
+  {
+    "group": "Malformed parent schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing integer 5"
+          },
+          {
+            "parameter": "schemaType",
+            "value": "JsonType.INTEGER"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "JsonSchema whose declared type is a non\u2011JsonType value (e.g., \"invalid-type\")"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "default ValidationContext"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the parent schema contains an invalid or unrecognisable type definition, JsonNodeUtil.equalsToSchemaType should raise IllegalArgumentException while trying to resolve the parent type."
+      }
+    ]
+  }
+]

@@ -1,0 +1,132 @@
+[
+  {
+    "group": "CollectorContext#get",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"missingKey\""
+          }
+        ],
+        "expected": "null",
+        "description": "When the requested key is not present in collectorMap, the method should return null (collectorLoadMap is irrelevant because the first lookup yields null)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"plainObject\""
+          }
+        ],
+        "expected": "\"plainValue\"",
+        "description": "Key exists in collectorMap with a value that is NOT a Collector. The condition fails, so the original value from collectorMap is returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"collectorOnly\""
+          }
+        ],
+        "expected": "collectorInstance",
+        "description": "Key maps to an object that implements Collector, but collectorLoadMap does NOT contain a loaded value for that key (value is null). The method should fall back to returning the Collector instance from collectorMap."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"collectorWithLoad\""
+          }
+        ],
+        "expected": "\"loadedData\"",
+        "description": "Key maps to a Collector and collectorLoadMap holds a non\u2011null loaded value for the same key. The if\u2011branch is taken and the loaded value is returned, not the Collector itself."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"loadOnly\""
+          }
+        ],
+        "expected": "null",
+        "description": "collectorLoadMap contains a value for the key but collectorMap does NOT. Because the first lookup yields null, the instanceof check fails and the method returns null (the value in collectorLoadMap is ignored)."
+      }
+    ]
+  },
+  {
+    "group": "CollectorContext#get - additional cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "null"
+          }
+        ],
+        "expected": "null",
+        "description": "Calling get(null) when both maps are empty should return null (Map#get accepts null keys and returns null)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"\""
+          }
+        ],
+        "expected": "\"emptyValue\"",
+        "description": "Key is empty string; collectorMap contains a plain (non\u2011Collector) value and collectorLoadMap also contains a value. Since the value in collectorMap is not a Collector, the method must return the plain value, ignoring the load map."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"collectorNullLoad\""
+          }
+        ],
+        "expected": "collectorInstance",
+        "description": "collectorMap holds a Collector instance, collectorLoadMap holds an explicit null for the same key. The load\u2011map check fails (null), so the Collector from collectorMap is returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"nullCollector\""
+          }
+        ],
+        "expected": "null",
+        "description": "collectorMap contains a null entry for the key, while collectorLoadMap contains a non\u2011null loaded value. Because the first lookup yields null (object is not a Collector), the method returns the null from collectorMap, ignoring the load map."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"bothNull\""
+          }
+        ],
+        "expected": "null",
+        "description": "Both collectorMap and collectorLoadMap contain explicit null values for the key. The method returns null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"plainWithLoad\""
+          }
+        ],
+        "expected": "\"plain\"",
+        "description": "collectorMap holds a plain object (String) and collectorLoadMap holds a different value. Since the object is not a Collector, the method must return the plain value from collectorMap, ignoring the load map."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"collectorWithIntegerLoad\""
+          }
+        ],
+        "expected": "42",
+        "description": "collectorMap holds a Collector instance, collectorLoadMap holds an Integer (non\u2011null). The method should return the Integer loaded value, demonstrating that the loaded value can be of any type."
+      }
+    ]
+  }
+]

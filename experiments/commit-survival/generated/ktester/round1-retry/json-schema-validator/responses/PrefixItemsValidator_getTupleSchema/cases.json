@@ -1,0 +1,102 @@
+[
+  {
+    "group": "Empty tuple schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "An empty List instance (size 0) returned by getTupleSchema()",
+        "description": "Validate that when PrefixItemsValidator is constructed with an empty tupleSchema, getTupleSchema() returns a non\u2011null List with zero elements."
+      }
+    ]
+  },
+  {
+    "group": "Single element tuple schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A List containing exactly the provided JsonSchema mock instance (size 1)",
+        "description": "Validate that when PrefixItemsValidator is constructed with a List that holds one JsonSchema mock, getTupleSchema() returns that same List preserving the element."
+      }
+    ]
+  },
+  {
+    "group": "Multiple elements tuple schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A List containing the three supplied JsonSchema mock instances in the same order (size 3)",
+        "description": "Validate that when PrefixItemsValidator is constructed with a List of several JsonSchema objects, getTupleSchema() returns the exact List with all elements in the original order."
+      }
+    ]
+  },
+  {
+    "group": "Mutable reference test",
+    "cases": [
+      {
+        "input": [],
+        "expected": "After adding a new JsonSchema to the List returned by getTupleSchema(), the internal tupleSchema of the validator reflects the added element (size increased).",
+        "description": "Confirm that getTupleSchema() returns a live reference to the internal list, not a copy, by mutating the returned list and checking the validator\u2019s internal state."
+      }
+    ]
+  },
+  {
+    "group": "Null tuple schema handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Using reflection to set the private field `tupleSchema` to null, verify that getTupleSchema() returns null (no NullPointerException is thrown by the method itself)."
+      }
+    ]
+  },
+  {
+    "group": "Original list mutation effect",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The List returned by getTupleSchema() reflects the element added to the original List after the PrefixItemsValidator was constructed (size increased).",
+        "description": "Create a mutable List, construct PrefixItemsValidator with it, then add a new JsonSchema to the original List. Verify that getTupleSchema() returns a List that now includes the newly added element, demonstrating that the validator holds a live reference to the supplied list."
+      }
+    ]
+  },
+  {
+    "group": "Reference equality across calls",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Two successive calls to getTupleSchema() return the exact same List instance (reference equality).",
+        "description": "Invoke getTupleSchema() twice on the same PrefixItemsValidator instance and assert that the returned objects are `==` (the same reference), confirming that the method does not create a new List on each call."
+      }
+    ]
+  },
+  {
+    "group": "Immutable list behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Calling add() on the List returned by getTupleSchema() throws UnsupportedOperationException.",
+        "description": "Construct PrefixItemsValidator with `Collections.unmodifiableList(new ArrayList<>())`. Retrieve the tuple schema via getTupleSchema() and attempt to modify it. The operation should fail with an UnsupportedOperationException, showing that the validator does not wrap or copy the list."
+      }
+    ]
+  },
+  {
+    "group": "List containing null element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A List of size 1 containing a null entry is returned by getTupleSchema().",
+        "description": "Pass a List that contains a single `null` element to the PrefixItemsValidator constructor. Verify that getTupleSchema() returns a non\u2011null List whose sole element is `null`, confirming that the validator does not filter out null entries."
+      }
+    ]
+  },
+  {
+    "group": "List with duplicate schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A List containing the duplicate JsonSchema instances in the order supplied (size reflects duplicates).",
+        "description": "Create a List with the same JsonSchema mock instance added multiple times, construct the validator, and assert that getTupleSchema() returns a List preserving the duplicates and order, proving that no deduplication occurs."
+      }
+    ]
+  }
+]

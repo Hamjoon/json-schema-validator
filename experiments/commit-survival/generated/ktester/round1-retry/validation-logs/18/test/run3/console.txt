@@ -1,0 +1,241 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+
+Failures (12):
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:testPreloadJsonSchemaInvokesPreloadOnEachSchema()
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'testPreloadJsonSchemaInvokesPreloadOnEachSchema', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.PotentialStubbingProblem: 
+Strict stubbing argument mismatch. Please check:
+ - this invocation of 'newSchema' method:
+    validationContext.newSchema(
+    "testSchema/type",
+    "object",
+    null
+);
+    -> at com.networknt.schema.PropertiesValidator.<init>(PropertiesValidator.java:39)
+ - has following stubbing(s) with different arguments:
+    1. validationContext.newSchema("", null, null);
+      -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Typically, stubbing argument mismatch indicates user mistake when writing tests.
+Mockito fails early so that you can debug potential problem easily.
+However, there are legit scenarios when this exception generates false negative signal:
+  - stubbing the same method multiple times using 'given().will()' or 'when().then()' API
+    Please use 'will().given()' or 'doReturn().when()' API for stubbing.
+  - stubbed method is intentionally invoked with different arguments by code under test
+    Please use default or 'silent' JUnit Rule (equivalent of Strictness.LENIENT).
+For more information see javadoc for PotentialStubbingProblem class.
+       com.networknt.schema.ValidationContext.newSchema(ValidationContext.java:58)
+       com.networknt.schema.PropertiesValidator.<init>(PropertiesValidator.java:39)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.testPreloadJsonSchemaInvokesPreloadOnEachSchema(PropertiesValidator_preloadJsonSchema_Test.java:98)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Empty schemas map – should invoke preloadJsonSchemas with empty collection
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'emptySchemasMap', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Single schema entry – collection contains exactly that schema
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'singleSchemaEntry', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Multiple schema entries – preserves insertion order
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'multipleSchemaEntriesPreserveOrder', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Null schema value in map – propagates NullPointerException
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'nullSchemaValuePropagatesNPE', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Exception propagation from a schema during preload
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'exceptionFromSchemaPropagates', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Expected java.lang.RuntimeException to be thrown, but nothing was thrown.
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+       org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.exceptionFromSchemaPropagates(PropertiesValidator_preloadJsonSchema_Test.java:182)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Repeated invocation does not alter internal state
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'repeatedInvocationKeepsState', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Order preservation with mixed insertion patterns
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'mixedInsertionOrderPreserved', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Null collection handling after map mutation – snapshot semantics
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'collectionSnapshotAfterMutation', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Snapshot collection must still contain the original schema ==> expected: <true> but was: <false>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+       org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+       org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.lambda$collectionSnapshotAfterMutation$1(PropertiesValidator_preloadJsonSchema_Test.java:251)
+       com.networknt.schema.BaseJsonValidator.preloadJsonSchemas(BaseJsonValidator.java:242)
+       com.networknt.schema.PropertiesValidator.preloadJsonSchema(PropertiesValidator.java:167)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.collectionSnapshotAfterMutation(PropertiesValidator_preloadJsonSchema_Test.java:254)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Concurrent modification during preload – propagates CME
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'concurrentModificationDuringPreload', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Modifying the map during iteration should cause CME ==> Expected java.util.ConcurrentModificationException to be thrown, but nothing was thrown.
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:39)
+       org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3131)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.concurrentModificationDuringPreload(PropertiesValidator_preloadJsonSchema_Test.java:275)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Error propagation from schema – AssertionError bubbles up
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'assertionErrorFromSchemaPropagates', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Expected java.lang.AssertionError to be thrown, but nothing was thrown.
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+       org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+       org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3115)
+       com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.assertionErrorFromSchemaPropagates(PropertiesValidator_preloadJsonSchema_Test.java:286)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       [...]
+  JUnit Jupiter:PropertiesValidator_preloadJsonSchema_Test:Null internal schemas map – NullPointerException
+    MethodSource [className = 'com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test', methodName = 'nullInternalSchemasMap', methodParameterTypes = '']
+    => org.mockito.exceptions.misusing.UnnecessaryStubbingException: 
+Unnecessary stubbings detected.
+Clean & maintainable test code requires zero unnecessary code.
+Following stubbings are unnecessary (click to navigate to relevant line of code):
+  1. -> at com.networknt.schema.PropertiesValidator_preloadJsonSchema_Test.setupBeforeEach(PropertiesValidator_preloadJsonSchema_Test.java:49)
+Please remove unnecessary stubbings or use 'lenient' strictness. More info: javadoc for UnnecessaryStubbingException class.
+       org.mockito.junit.jupiter.MockitoExtension.afterEach(MockitoExtension.java:186)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAfterEachCallbacks$12(TestMethodTestDescriptor.java:261)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$13(TestMethodTestDescriptor.java:277)
+       org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeAllAfterMethodsOrCallbacks$14(TestMethodTestDescriptor.java:277)
+       org.junit.platform.commons.util.CollectionUtils.forEachInReverseOrder(CollectionUtils.java:217)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAllAfterMethodsOrCallbacks(TestMethodTestDescriptor.java:276)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeAfterEachCallbacks(TestMethodTestDescriptor.java:260)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:145)
+       org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+       [...]
+
+Test run finished after 1545 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        12 tests found           ]
+[         0 tests skipped         ]
+[        12 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[        12 tests failed          ]
+

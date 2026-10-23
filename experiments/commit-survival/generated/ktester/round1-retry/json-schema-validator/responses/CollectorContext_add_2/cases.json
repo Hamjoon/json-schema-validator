@@ -1,0 +1,306 @@
+[
+  {
+    "group": "CollectorContext.add(String, Object) - basic functionality and edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"firstKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"firstValue\""
+          }
+        ],
+        "expected": "collectorMap contains key \"firstKey\" with value \"firstValue\"; get(\"firstKey\") returns \"firstValue\" and map size is 1",
+        "description": "Add a normal non\u2011null key/value pair and verify it is stored correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "null"
+          },
+          {
+            "parameter": "object",
+            "value": "\"nullKeyValue\""
+          }
+        ],
+        "expected": "collectorMap contains a null key with value \"nullKeyValue\"; get(null) returns \"nullKeyValue\" and map size is 1",
+        "description": "Add an entry with a null key \u2013 HashMap permits null keys, so the method should store it without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"nullValueKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "null"
+          }
+        ],
+        "expected": "collectorMap contains key \"nullValueKey\" with a null value; get(\"nullValueKey\") returns null and map size is 1",
+        "description": "Add an entry with a null value \u2013 HashMap permits null values, so the method should store it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"duplicateKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"firstObject\""
+          }
+        ],
+        "expected": "collectorMap contains key \"duplicateKey\" with value \"firstObject\"; map size is 1",
+        "description": "First insertion of a key to establish baseline."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"duplicateKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"secondObject\""
+          }
+        ],
+        "expected": "collectorMap still has size 1 and get(\"duplicateKey\") returns \"secondObject\" (value overwritten)",
+        "description": "Add a second entry with the same key but a different object; the previous value should be replaced without increasing map size."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"key1\""
+          },
+          {
+            "parameter": "object",
+            "value": "123"
+          }
+        ],
+        "expected": "collectorMap contains key \"key1\" with Integer value 123; map size reflects total distinct keys added",
+        "description": "Add an entry where the value is a non\u2011String object (Integer) to verify generic handling."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"key2\""
+          },
+          {
+            "parameter": "object",
+            "value": "new java.util.ArrayList<>()"
+          }
+        ],
+        "expected": "collectorMap contains key \"key2\" with an empty ArrayList instance; map size reflects total distinct keys added",
+        "description": "Add an entry where the value is a collection object to ensure any Object type is accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"key3\""
+          },
+          {
+            "parameter": "object",
+            "value": "new com.networknt.schema.CollectorContext()"
+          }
+        ],
+        "expected": "collectorMap contains key \"key3\" with a CollectorContext instance; map size reflects total distinct keys added",
+        "description": "Add an entry where the value is another CollectorContext instance (self\u2011reference) to test handling of complex objects."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"bulkKey1\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"value1\""
+          }
+        ],
+        "expected": "collectorMap contains key \"bulkKey1\" with value \"value1\"",
+        "description": "First of a series of bulk adds \u2013 will be followed by additional adds to verify that multiple distinct entries coexist."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"bulkKey2\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"value2\""
+          }
+        ],
+        "expected": "collectorMap contains key \"bulkKey2\" with value \"value2\" and total size is 3 (including previous keys)",
+        "description": "Second bulk add, confirming that map size increments correctly with each new distinct key."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"bulkKey3\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"value3\""
+          }
+        ],
+        "expected": "collectorMap contains key \"bulkKey3\" with value \"value3\" and total size is 4 (including previous keys)",
+        "description": "Third bulk add, final verification that all previously added entries remain unchanged."
+      }
+    ]
+  },
+  {
+    "group": "CollectorContext.add(String, Object) - additional edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"emptyKeyValue\""
+          }
+        ],
+        "expected": "collectorMap contains key \"\" with value \"emptyKeyValue\"; get(\"\") returns \"emptyKeyValue\"; map size is 1",
+        "description": "Add an entry with an empty string as the key to verify that empty keys are accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"   \""
+          },
+          {
+            "parameter": "object",
+            "value": "\"whitespaceKeyValue\""
+          }
+        ],
+        "expected": "collectorMap contains key \"   \" with value \"whitespaceKeyValue\"; get(\"   \") returns \"whitespaceKeyValue\"; map size is 1",
+        "description": "Add an entry whose key consists only of whitespace characters."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"!@#$%^&*()_+\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"specialCharsValue\""
+          }
+        ],
+        "expected": "collectorMap contains key \"!@#$%^&*()_+\" with value \"specialCharsValue\"; get(\"!@#$%^&*()_+\") returns \"specialCharsValue\"; map size is 1",
+        "description": "Add an entry with a key containing various special characters."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"\u043a\u043b\u044e\u0447\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"unicodeValue\""
+          }
+        ],
+        "expected": "collectorMap contains key \"\u043a\u043b\u044e\u0447\" with value \"unicodeValue\"; get(\"\u043a\u043b\u044e\u0447\") returns \"unicodeValue\"; map size is 1",
+        "description": "Add an entry with a Unicode (Cyrillic) key to ensure Unicode handling."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"%s\".repeat(10000)"
+          },
+          {
+            "parameter": "object",
+            "value": "\"longKeyValue\""
+          }
+        ],
+        "expected": "collectorMap contains the very\u2011long key (10,000 characters) with value \"longKeyValue\"; get(veryLongKey) returns \"longKeyValue\"; map size is 1",
+        "description": "Add an entry with an extremely long key string to test memory handling and hashing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"largeListKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "new java.util.ArrayList<>(java.util.Collections.nCopies(10000, 1))"
+          }
+        ],
+        "expected": "collectorMap contains key \"largeListKey\" with a List of size 10,000; get(\"largeListKey\").size() == 10000; map size is 1",
+        "description": "Add an entry where the value is a large collection to verify that the method accepts big objects."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "null"
+          },
+          {
+            "parameter": "object",
+            "value": "null"
+          }
+        ],
+        "expected": "collectorMap contains a null key with a null value; get(null) returns null; map size is 1",
+        "description": "Add an entry where both key and value are null \u2013 HashMap permits both."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"idempotentKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"sameValue\""
+          }
+        ],
+        "expected": "collectorMap size after first add is 1; after second add with identical key/value size remains 1 and get(\"idempotentKey\") still returns \"sameValue\"",
+        "description": "Add the same key/value pair twice; map size should not increase."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"overwriteWithNull\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"initialValue\""
+          }
+        ],
+        "expected": "collectorMap size after first add is 1; after second add with same key and null value size stays 1 and get(\"overwriteWithNull\") returns null",
+        "description": "Overwrite an existing non\u2011null value with null to verify that null values replace previous ones without changing size."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"sharedKey\""
+          },
+          {
+            "parameter": "object",
+            "value": "\"valueInFirstContext\""
+          }
+        ],
+        "expected": "first CollectorContext instance map size is 1 with key \"sharedKey\"; second CollectorContext instance map size is 0 before its own add; after adding same key to second instance, its map size is 1 with its own value; maps are independent.",
+        "description": "Create two separate CollectorContext objects and add the same key to each; ensure they maintain independent internal maps."
+      }
+    ]
+  }
+]

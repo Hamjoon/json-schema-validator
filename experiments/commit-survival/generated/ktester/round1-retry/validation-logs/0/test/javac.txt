@@ -1,0 +1,42 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:52: error: cannot find symbol
+    private static Stream<Arguments> basicAddProvider() {
+                          ^
+  symbol:   class Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:54: error: cannot find symbol
+        Arguments.of("firstKey", "firstValue", "normal key/value"), // null key, non‑null value
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:55: error: cannot find symbol
+        Arguments.of(null, "nullKeyValue", "null key"), // non‑null key, null value
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:56: error: cannot find symbol
+        Arguments.of("nullValueKey", null, "null value"), // empty string key
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:57: error: cannot find symbol
+        Arguments.of("", "emptyKeyValue", "empty key"), // whitespace key
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:58: error: cannot find symbol
+        Arguments.of("   ", "whitespaceKeyValue", "whitespace key"), // special chars key
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:59: error: cannot find symbol
+        Arguments.of("!@#$%^&*()_+", "specialCharsValue", "special chars key"), // Unicode key
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_add_2_Test.java:60: error: cannot find symbol
+        Arguments.of("ключ", "unicodeValue", "unicode key"));
+        ^
+  symbol:   variable Arguments
+  location: class CollectorContext_add_2_Test
+8 errors

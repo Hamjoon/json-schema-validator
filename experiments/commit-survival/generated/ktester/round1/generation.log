@@ -1,0 +1,16 @@
+2026-10-23 14:13:07,705 INFO prompt list: ['condition4case', 'io4case', 'exception4case', 'gencode']
+2026-10-23 14:13:07,716 INFO Construct init prompts for project json-schema-validator...
+2026-10-23 14:13:07,716 INFO Loading code index for json-schema-validator
+2026-10-23 14:13:07,759 ERROR KTester round failed
+Traceback (most recent call last):
+  File "/repo/experiments/commit-survival/tools/generate_ktester.py", line 82, in main
+    generate_unit_test.run()
+    ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/work/code/generate_unit_test.py", line 67, in run
+    GenPrompt.generate_init_prompts(FS, TS, dataset_info)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/code/procedure/generate_prompt.py", line 30, in generate_init_prompts
+    construct_context = searcher.collect_construct_context(test_info["class"], test_info["method-name"], test_info["source-path"])
+  File "/work/code/tools/code_search.py", line 180, in collect_construct_context
+    raise ValueError(f"Method `{method_name}` not found in class `{class_name}`")
+ValueError: Method `add(String, Collector)` not found in class `com.networknt.schema.CollectorContext`

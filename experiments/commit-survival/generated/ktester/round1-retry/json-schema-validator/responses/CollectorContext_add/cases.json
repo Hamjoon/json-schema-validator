@@ -1,0 +1,244 @@
+[
+  {
+    "group": "CollectorContext.add(String, Collector<E>) - basic functionality and edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"testCollector\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"testCollector\") returns the same SimpleCollector instance that was added",
+        "description": "Verify that a normal collector can be added and retrieved using the same name."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "null"
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(null) returns the SimpleCollector instance (HashMap permits null keys)",
+        "description": "Check behaviour when the name argument is null \u2013 the map should store the entry under a null key without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"nullCollector\""
+          },
+          {
+            "parameter": "collector",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectorContext.get(\"nullCollector\") returns null",
+        "description": "Validate that adding a null collector stores a null value for the given name."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"duplicate\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>(\"first\")"
+          }
+        ],
+        "expected": "After first add, get(\"duplicate\") returns the first collector; after second add with a different collector, get(\"duplicate\") returns the second collector",
+        "description": "Ensure that adding a collector with an existing name overwrites the previous entry."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"c1\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>(\"c1\")"
+          },
+          {
+            "parameter": "name2",
+            "value": "\"c2\""
+          },
+          {
+            "parameter": "collector2",
+            "value": "new SimpleCollector<>(\"c2\")"
+          }
+        ],
+        "expected": "CollectorContext.getAll().size() == 2 and each name maps to its respective collector",
+        "description": "Add two distinct collectors and verify that both are present and the map size reflects the number of distinct keys."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"genericString\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<String>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"genericString\") returns a Collector<String> instance",
+        "description": "Confirm that the generic type parameter does not affect the storage \u2013 a Collector<String> can be stored and retrieved."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"genericInteger\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<Integer>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"genericInteger\") returns a Collector<Integer> instance",
+        "description": "Same as previous test but with a different generic type to prove type\u2011erasure handling."
+      }
+    ]
+  },
+  {
+    "group": "CollectorContext.add(String, Collector<E>) - additional edge cases and robustness",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"\") returns the SimpleCollector instance that was added",
+        "description": "Verify that an empty string is a valid key and can be used to store and retrieve a collector."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"   \""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"   \") returns the SimpleCollector instance that was added",
+        "description": "Check that a name consisting only of whitespace characters is accepted as a map key."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"!@#$%^&*()_+|~=`{}[]:\\\\;'<>,.?/\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"!@#$%^&*()_+|~=`{}[]:\\\\;'<>,.?/\") returns the SimpleCollector instance",
+        "description": "Ensure that special characters in the name do not affect storage/retrieval."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "String.join(\"\", java.util.Collections.nCopies(5000, \"a\"))"
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(veryLongName) returns the SimpleCollector instance without throwing any exception",
+        "description": "Stress test with a very long (5,000\u2011character) name to confirm the method handles large keys gracefully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"subCollector\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new CustomCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"subCollector\") returns the same CustomCollector instance",
+        "description": "Validate that a collector of a subclass type (CustomCollector extends SimpleCollector) is stored and retrieved correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"nullThenReal\""
+          },
+          {
+            "parameter": "collector",
+            "value": "null"
+          }
+        ],
+        "expected": "After adding null, CollectorContext.get(\"nullThenReal\") returns null; after a second add with a non\u2011null collector, get returns the new collector and getAll().size() remains 1",
+        "description": "Test overwriting a previously stored null value with a real collector; map size should not increase."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"sameInstance\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "After adding the same collector instance a second time with the same name, CollectorContext.get(\"sameInstance\") still returns that instance and getAll().size() stays 1",
+        "description": "Confirm that adding the identical instance under an existing key does not change the map size or the stored reference."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "\"\u30e6\u30cb\u30b3\u30fc\u30c9\""
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>()"
+          }
+        ],
+        "expected": "CollectorContext.get(\"\u30e6\u30cb\u30b3\u30fc\u30c9\") returns the SimpleCollector instance",
+        "description": "Check that Unicode characters in the name are handled correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "name",
+            "value": "new String(\"duplicateKey\")"
+          },
+          {
+            "parameter": "collector",
+            "value": "new SimpleCollector<>(\"first\")"
+          }
+        ],
+        "expected": "After a second add with name = new String(\"duplicateKey\") and collector = new SimpleCollector<>(\"second\"), CollectorContext.get(\"duplicateKey\") returns the second collector and getAll().size() remains 1",
+        "description": "Verify that map key equality is based on String.equals, not object identity; a different String object with the same content overwrites the previous entry."
+      }
+    ]
+  }
+]

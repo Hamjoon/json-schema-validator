@@ -1,0 +1,141 @@
+{
+  "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ktester/round1-retry/2/test/classes",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.723,
+    "log": "generated/ktester/round1-retry/validation-logs/2/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldCombineDataWhenCollectorIsPresent",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldCombineDataWhenCollectorIsPresent",
+      "body_hash": "cd1f1407d41b46ee9c9d9c91e3ca89c9f30f8cab3ce7a0aa8ed6fc01a43386ed",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldDoNothingWhenEntryIsNotACollector",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldDoNothingWhenEntryIsNotACollector",
+      "body_hash": "1ffe5bb2fbe2984d58e5a594d30d0bb6f4155c4424cd73ea517227d6c4778e40",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldDoNothingWhenNoEntryExists",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldDoNothingWhenNoEntryExists",
+      "body_hash": "85f62f1548da53ac2eee96340f0c93dd99a968e5ef5212bbe535034c1463d82c",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldPassNullDataToCollector",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldPassNullDataToCollector",
+      "body_hash": "4591e29e54affaf99a64d845c0b950a34f26f9ae81426e238627e133ae73c792",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldCombineWhenNameIsNullAndCollectorExists",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldCombineWhenNameIsNullAndCollectorExists",
+      "body_hash": "7a5ff4530ca42ee3ff7eb2f72dbd2457baf67a78c01ee189939455155617a374",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldDoNothingWhenNullNameHasNoCollector",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldDoNothingWhenNullNameHasNoCollector",
+      "body_hash": "ed47279126f643b24c706015660b562b28228404cbb5bc3228b604f70334e6ed",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldPropagateExceptionFromCollector",
+      "kind": "plain",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldPropagateExceptionFromCollector",
+      "body_hash": "5624d0f79cf6d1ed5dec53a47e26d1729bb71f1660774176b44a9b58fe120bae",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java",
+      "class": "com.networknt.schema.CollectorContext_combineWithCollector_Test",
+      "method": "shouldForwardVariousPayloadTypes",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java|com.networknt.schema.CollectorContext_combineWithCollector_Test|shouldForwardVariousPayloadTypes",
+      "body_hash": "a1479ad819ae23d2c4fe1c4ae6ca53a0750a10b133dac040cde49472b84d2e05",
+      "round": "round1-retry",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java:13: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/CollectorContext_combineWithCollector_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.671,
+    "log": "generated/ktester/round1-retry/validation-logs/2/inventory.tsv"
+  }
+}

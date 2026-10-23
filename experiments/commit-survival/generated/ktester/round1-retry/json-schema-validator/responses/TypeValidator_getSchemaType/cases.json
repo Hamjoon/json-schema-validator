@@ -1,0 +1,177 @@
+[
+  {
+    "group": "TypeValidator.getSchemaType() returns the schema type that was set",
+    "cases": [
+      {
+        "input": [],
+        "expected": "JsonType.STRING",
+        "description": "When the internal field `schemaType` is set to JsonType.STRING (via reflection or a suitable constructor), getSchemaType() should return JsonType.STRING."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.NUMBER",
+        "description": "When the internal field `schemaType` is set to JsonType.NUMBER, getSchemaType() should return JsonType.NUMBER."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.INTEGER",
+        "description": "When the internal field `schemaType` is set to JsonType.INTEGER, getSchemaType() should return JsonType.INTEGER."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.BOOLEAN",
+        "description": "When the internal field `schemaType` is set to JsonType.BOOLEAN, getSchemaType() should return JsonType.BOOLEAN."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.OBJECT",
+        "description": "When the internal field `schemaType` is set to JsonType.OBJECT, getSchemaType() should return JsonType.OBJECT."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.ARRAY",
+        "description": "When the internal field `schemaType` is set to JsonType.ARRAY, getSchemaType() should return JsonType.ARRAY."
+      },
+      {
+        "input": [],
+        "expected": "JsonType.NULL",
+        "description": "When the internal field `schemaType` is set to JsonType.NULL, getSchemaType() should return JsonType.NULL."
+      },
+      {
+        "input": [],
+        "expected": "null",
+        "description": "When the internal field `schemaType` has not been initialized (remains null), getSchemaType() should return null."
+      }
+    ]
+  },
+  {
+    "group": "TypeValidator.getSchemaType() initialized via schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"string\"}"
+          }
+        ],
+        "expected": "JsonType.STRING",
+        "description": "When a TypeValidator is constructed with a schema node that defines \"type\":\"string\", the internal schemaType should be set to JsonType.STRING and getSchemaType() must return JsonType.STRING."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"number\"}"
+          }
+        ],
+        "expected": "JsonType.NUMBER",
+        "description": "When the schema node defines \"type\":\"number\", the validator should initialise schemaType to JsonType.NUMBER; getSchemaType() should return JsonType.NUMBER."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"integer\"}"
+          }
+        ],
+        "expected": "JsonType.INTEGER",
+        "description": "When the schema node defines \"type\":\"integer\", getSchemaType() must return JsonType.INTEGER."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"boolean\"}"
+          }
+        ],
+        "expected": "JsonType.BOOLEAN",
+        "description": "When the schema node defines \"type\":\"boolean\", getSchemaType() must return JsonType.BOOLEAN."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"object\"}"
+          }
+        ],
+        "expected": "JsonType.OBJECT",
+        "description": "When the schema node defines \"type\":\"object\", getSchemaType() must return JsonType.OBJECT."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"array\"}"
+          }
+        ],
+        "expected": "JsonType.ARRAY",
+        "description": "When the schema node defines \"type\":\"array\", getSchemaType() must return JsonType.ARRAY."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"null\"}"
+          }
+        ],
+        "expected": "JsonType.NULL",
+        "description": "When the schema node defines \"type\":\"null\", getSchemaType() must return JsonType.NULL."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{}"
+          }
+        ],
+        "expected": "null",
+        "description": "When the schema node does not contain a \"type\" property, the validator cannot infer a schema type; getSchemaType() should return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":\"unknown\"}"
+          }
+        ],
+        "expected": "null",
+        "description": "When the schema node contains an unrecognised type string, the validator should leave schemaType unset; getSchemaType() must return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{\"type\":[\"string\",\"null\"]}"
+          }
+        ],
+        "expected": "null",
+        "description": "When the schema node defines a type array (multiple possible types), the validator does not map it to a single JsonType; getSchemaType() should return null."
+      }
+    ]
+  },
+  {
+    "group": "TypeValidator.getSchemaType() exception scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validatorInstance",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling getSchemaType() on a null reference of TypeValidator should throw NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaTypeViaReflection",
+            "value": "\"invalid-type\""
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "When the private field `schemaType` is forcibly set (via reflection) to a value that is not a JsonType (e.g., a String), invoking getSchemaType() should result in a ClassCastException because the returned object cannot be cast to JsonType."
+      }
+    ]
+  }
+]

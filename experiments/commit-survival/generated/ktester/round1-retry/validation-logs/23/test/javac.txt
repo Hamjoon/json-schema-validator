@@ -1,0 +1,86 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:73: error: cannot find symbol
+        Path emptyPath = mock(Path.class);
+                         ^
+  symbol:   method mock(Class<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:74: error: cannot find symbol
+        when(emptyPath.spliterator()).thenReturn(Collections.emptyIterator().spliterator());
+        ^
+  symbol:   method when(Spliterator<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:74: error: cannot find symbol
+        when(emptyPath.spliterator()).thenReturn(Collections.emptyIterator().spliterator());
+                                                                            ^
+  symbol:   method spliterator()
+  location: interface Iterator<Object>
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:127: error: cannot find symbol
+        Path path = mock(Path.class);
+                    ^
+  symbol:   method mock(Class<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:128: error: cannot find symbol
+        when(path.spliterator()).thenReturn(spliterator);
+        ^
+  symbol:   method when(Spliterator<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:140: error: cannot find symbol
+        Path emptyStringElement = mock(Path.class);
+                                  ^
+  symbol:   method mock(Class<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:141: error: cannot find symbol
+        when(emptyStringElement.toString()).thenReturn("");
+        ^
+  symbol:   method when(String)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:142: error: no suitable method found for spliterator(Iterator<Path>,int)
+        Spliterator<Path> spliterator = Spliterators.spliterator(Collections.singletonList(emptyStringElement).iterator(), 0);
+                                                    ^
+    method Spliterators.<T#1>spliterator(Object[],int) is not applicable
+      (cannot infer type-variable(s) T#1
+        (argument mismatch; Iterator<Path> cannot be converted to Object[]))
+    method Spliterators.<T#2>spliterator(Object[],int,int,int) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method Spliterators.spliterator(int[],int) is not applicable
+      (argument mismatch; Iterator<Path> cannot be converted to int[])
+    method Spliterators.spliterator(long[],int) is not applicable
+      (argument mismatch; Iterator<Path> cannot be converted to long[])
+    method Spliterators.spliterator(double[],int) is not applicable
+      (argument mismatch; Iterator<Path> cannot be converted to double[])
+    method Spliterators.<T#3>spliterator(Collection<? extends T#3>,int) is not applicable
+      (cannot infer type-variable(s) T#3
+        (argument mismatch; Iterator<Path> cannot be converted to Collection<? extends T#3>))
+    method Spliterators.<T#4>spliterator(Iterator<? extends T#4>,long,int) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+  where T#1,T#2,T#3,T#4 are type-variables:
+    T#1 extends Object declared in method <T#1>spliterator(Object[],int)
+    T#2 extends Object declared in method <T#2>spliterator(Object[],int,int,int)
+    T#3 extends Object declared in method <T#3>spliterator(Collection<? extends T#3>,int)
+    T#4 extends Object declared in method <T#4>spliterator(Iterator<? extends T#4>,long,int)
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:143: error: cannot find symbol
+        Path path = mock(Path.class);
+                    ^
+  symbol:   method mock(Class<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:144: error: cannot find symbol
+        when(path.spliterator()).thenReturn(spliterator);
+        ^
+  symbol:   method when(Spliterator<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:230: error: cannot find symbol
+        Path path = mock(Path.class);
+                    ^
+  symbol:   method mock(Class<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+/repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java:231: error: cannot find symbol
+        when(path.spliterator()).thenReturn(badSpliterator);
+        ^
+  symbol:   method when(Spliterator<Path>)
+  location: class SpecVersionDetector_detectVersionFromPath_Test
+Note: /repo/experiments/commit-survival/generated/ktester/round1-retry/json-schema-validator/test_classes/SpecVersionDetector_detectVersionFromPath_Test.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+12 errors

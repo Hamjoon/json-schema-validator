@@ -1,0 +1,54 @@
+{
+    "testCases": [
+        {
+            "group": "CollectorContext.getDynamicScope - after single enter",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "non-null Scope instance (the one returned by enterDynamicScope())",
+                    "description": "Enter a dynamic scope once and then call getDynamicScope(). The method should return the same Scope object that was pushed onto the internal Deque."
+                }
+            ]
+        },
+        {
+            "group": "CollectorContext.getDynamicScope - after multiple enters",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "non-null Scope instance (the most recently entered scope)",
+                    "description": "Enter three dynamic scopes sequentially. getDynamicScope() must return the Scope that was entered last (top of the stack), confirming LIFO ordering."
+                }
+            ]
+        },
+        {
+            "group": "CollectorContext.getDynamicScope - after exit returns previous scope",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "non-null Scope instance (the scope that was entered before the last one)",
+                    "description": "Enter two dynamic scopes, then exit one. getDynamicScope() should now return the first scope that was entered, proving that exitDynamicScope() correctly removes the top element."
+                }
+            ]
+        },
+        {
+            "group": "CollectorContext.getDynamicScope - after exit to empty returns null",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "null",
+                    "description": "Enter a single dynamic scope and then exit it. The internal Deque becomes empty, so a subsequent call to getDynamicScope() must return null, similar to the empty‑stack case but reached via state changes."
+                }
+            ]
+        },
+        {
+            "group": "CollectorContext.getDynamicScope - idempotent peek",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "same Scope instance on consecutive calls",
+                    "description": "Enter a dynamic scope and call getDynamicScope() multiple times without modifying the stack. Each call should return the identical Scope object, confirming that getDynamicScope() does not alter the Deque."
+                }
+            ]
+        }
+    ]
+}

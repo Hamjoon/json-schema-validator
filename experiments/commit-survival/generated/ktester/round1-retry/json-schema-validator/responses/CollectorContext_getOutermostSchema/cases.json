@@ -1,0 +1,67 @@
+[
+  {
+    "group": "getOutermostSchema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException",
+        "description": "When the current dynamic scope's containing schema is null, the method must throw IllegalStateException (\"Missing a root schema in the dynamic scope.\")."
+      },
+      {
+        "input": [],
+        "expected": "lexicalRootSchema",
+        "description": "Lexical root is not a dynamic anchor. The method should return the lexical root schema returned by `context.findLexicalRoot()`."
+      },
+      {
+        "input": [],
+        "expected": "innerDynamicAnchorSchema",
+        "description": "Lexical root is a dynamic anchor, but a deeper dynamic scope (the most recent one in the deque) contains a non\u2011null schema that is also a dynamic anchor. The method must return that deeper schema."
+      },
+      {
+        "input": [],
+        "expected": "lexicalRootSchema",
+        "description": "Lexical root is a dynamic anchor, yet none of the dynamic scopes contain a non\u2011null schema that is a dynamic anchor (either all are null or `isDynamicAnchor()` returns false). The method should fall back to returning the lexical root schema."
+      }
+    ]
+  },
+  {
+    "group": "getOutermostSchema_additional",
+    "cases": [
+      {
+        "input": [],
+        "expected": "lexicalRootSchema",
+        "description": "Lexical root is **not** a dynamic anchor, while a deeper dynamic scope contains a non\u2011null schema that *is* a dynamic anchor. The method must ignore the dynamic scopes and return the lexical root schema obtained from `context.findLexicalRoot()`."
+      },
+      {
+        "input": [],
+        "expected": "mostRecentDynamicAnchorSchema",
+        "description": "Lexical root is a dynamic anchor. The dynamic scope stack contains (from oldest to newest): a `null` containing schema, a non\u2011null schema that is **not** a dynamic anchor, and finally a non\u2011null schema that *is* a dynamic anchor. The method should iterate from the newest scope and return the first schema that is a dynamic anchor \u2013 i.e., the most recent one."
+      },
+      {
+        "input": [],
+        "expected": "lexicalRootSchema",
+        "description": "Lexical root is a dynamic anchor, but the dynamic scope stack contains only non\u2011dynamic\u2011anchor schemas (or null schemas). The method must fall back to returning the lexical root schema."
+      },
+      {
+        "input": [],
+        "expected": "newestDynamicAnchorSchema",
+        "description": "Lexical root is a dynamic anchor and the dynamic scope stack contains **multiple** non\u2011null schemas that are dynamic anchors. The method should return the *newest* (most recent) dynamic anchor schema, not an older one."
+      }
+    ]
+  },
+  {
+    "group": "getOutermostSchema_exceptions",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The internal call getDynamicScope() returns null (e.g., the dynamic scope stack is empty). The subsequent call to getContainingSchema() on a null reference triggers a NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The current dynamic scope's containing schema is non\u2011null, but its findLexicalRoot() method returns null. When the code attempts lexicalRoot.isDynamicAnchor(), a NullPointerException is thrown."
+      }
+    ]
+  }
+]
