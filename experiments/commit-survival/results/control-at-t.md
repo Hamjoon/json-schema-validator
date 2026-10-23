@@ -1,0 +1,30 @@
+# Final anchor control
+
+```json
+{
+  "dev": {
+    "denominator": 10,
+    "states": {
+      "pass": 10
+    },
+    "seconds": 5.758,
+    "passed": true
+  },
+  "ktester": {
+    "denominator": 32,
+    "states": {
+      "pass": 32
+    },
+    "seconds": 7.577,
+    "passed": true
+  },
+  "ouedraogo": {
+    "denominator": 23,
+    "states": {
+      "pass": 23
+    },
+    "seconds": 2.035,
+    "passed": true
+  }
+}
+```
