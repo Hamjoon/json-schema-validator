@@ -1,0 +1,37 @@
+{
+  "index": 99,
+  "sha": "a9e8a49efcb83f68ebdfed5b2c5cd949916e67ba",
+  "parent": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      394,
+      399,
+      400,
+      403,
+      404,
+      408
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      395,
+      396,
+      397,
+      401,
+      402,
+      403,
+      404,
+      405,
+      406,
+      407,
+      408,
+      411,
+      412,
+      413,
+      416,
+      417,
+      419
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/BaseJsonValidator.java b/src/main/java/com/networknt/schema/BaseJsonValidator.java\nindex 7c3ee183..b2775be7 100644\n--- a/src/main/java/com/networknt/schema/BaseJsonValidator.java\n+++ b/src/main/java/com/networknt/schema/BaseJsonValidator.java\n@@ -394 +393,0 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-        boolean hasValidator = false;\n@@ -395,0 +395,3 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n+        boolean checkInstance = false;\n+        boolean anchor = false;\n+        boolean stop = false;\n@@ -399,2 +401,8 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-                    hasValidator = true;\n-                    break;\n+                    return true;\n+                }\n+                if (checkInstance) {\n+                    if (\"properties\".equals(validator.getKeyword()) || \"items\".equals(validator.getKeyword())) {\n+                        stop = true;\n+                    } else if (\"$dynamicAnchor\".equals(validator.getKeyword()) || \"$recursiveAnchor\".equals(validator.getKeyword())) {\n+                        anchor = true;\n+                    }\n@@ -403,2 +411,3 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-            if (hasValidator) {\n-                break;\n+            if (stop && !anchor) {\n+                // If there is a change in instance location then return false\n+                return false;\n@@ -406,0 +416,2 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n+            checkInstance = true;\n+            anchor = false;\n@@ -408 +419 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-        return hasValidator;\n+        return false;"
+}

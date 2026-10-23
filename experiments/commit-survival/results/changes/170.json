@@ -1,0 +1,107 @@
+{
+  "index": 170,
+  "sha": "9df7d32267ae1e3469cb2f8b99a93a97b1bbbc64",
+  "parent": "2686725fea25b3dbb63fa9388c949dd63af5efbd",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/Schema.java": [
+      1191,
+      1192,
+      1193,
+      1194,
+      1195
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      587,
+      591,
+      619,
+      620,
+      621,
+      622,
+      623,
+      624,
+      625,
+      652,
+      653,
+      654,
+      655,
+      656,
+      657,
+      658,
+      694,
+      695,
+      696,
+      697,
+      698,
+      699,
+      700,
+      712,
+      713,
+      714,
+      715,
+      716,
+      717,
+      718
+    ],
+    "src/main/java/com/networknt/schema/serialization/BasicNodeReader.java": [
+      19,
+      20,
+      21,
+      24,
+      42,
+      47
+    ],
+    "src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java": [
+      3,
+      36,
+      45
+    ],
+    "src/main/java/com/networknt/schema/serialization/NodeReader.java": [
+      18,
+      35,
+      37,
+      45,
+      47
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      20,
+      92,
+      93,
+      112,
+      113
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/Schema.java": [
+      1191
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      587,
+      591,
+      619,
+      620,
+      647,
+      648,
+      684,
+      685,
+      697,
+      698
+    ],
+    "src/main/java/com/networknt/schema/serialization/BasicNodeReader.java": [
+      19,
+      22,
+      23,
+      41,
+      46
+    ],
+    "src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java": [
+      35,
+      44
+    ],
+    "src/main/java/com/networknt/schema/serialization/NodeReader.java": [
+      35,
+      44
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": []
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/Schema.java b/src/main/java/com/networknt/schema/Schema.java\nindex 87999f10..a91e2325 100644\n--- a/src/main/java/com/networknt/schema/Schema.java\n+++ b/src/main/java/com/networknt/schema/Schema.java\n@@ -1191,5 +1191 @@ public class Schema implements Validator {\n-        try {\n-            return this.getSchemaContext().getSchemaRegistry().readTree(input, inputFormat);\n-        } catch (IOException e) {\n-            throw new UncheckedIOException(\"Invalid input\", e);\n-        }\n+        return this.getSchemaContext().getSchemaRegistry().readTree(input, inputFormat);\ndiff --git a/src/main/java/com/networknt/schema/SchemaRegistry.java b/src/main/java/com/networknt/schema/SchemaRegistry.java\nindex d5f4acfe..38ed062b 100644\n--- a/src/main/java/com/networknt/schema/SchemaRegistry.java\n+++ b/src/main/java/com/networknt/schema/SchemaRegistry.java\n@@ -587 +587 @@ public class SchemaRegistry {\n-    JsonNode readTree(String content, InputFormat inputFormat) throws IOException {\n+    JsonNode readTree(String content, InputFormat inputFormat) {\n@@ -591 +591 @@ public class SchemaRegistry {\n-    JsonNode readTree(InputStream content, InputFormat inputFormat) throws IOException {\n+    JsonNode readTree(InputStream content, InputFormat inputFormat) {\n@@ -619,7 +619,2 @@ public class SchemaRegistry {\n-        try {\n-            final JsonNode schemaNode = readTree(schema, inputFormat);\n-            return newSchema(null, schemaNode);\n-        } catch (IOException ioe) {\n-            logger.error(\"Failed to load json schema!\", ioe);\n-            throw new SchemaException(ioe);\n-        }\n+        final JsonNode schemaNode = readTree(schema, inputFormat);\n+        return newSchema(null, schemaNode);\n@@ -652,7 +647,2 @@ public class SchemaRegistry {\n-        try {\n-            final JsonNode schemaNode = readTree(schemaStream, inputFormat);\n-            return newSchema(null, schemaNode);\n-        } catch (IOException ioe) {\n-            logger.error(\"Failed to load json schema!\", ioe);\n-            throw new SchemaException(ioe);\n-        }\n+        final JsonNode schemaNode = readTree(schemaStream, inputFormat);\n+        return newSchema(null, schemaNode);\n@@ -694,7 +684,2 @@ public class SchemaRegistry {\n-        try {\n-            final JsonNode schemaNode = readTree(schema, inputFormat);\n-            return newSchema(schemaUri, schemaNode);\n-        } catch (IOException ioe) {\n-            logger.error(\"Failed to load json schema!\", ioe);\n-            throw new SchemaException(ioe);\n-        }\n+        final JsonNode schemaNode = readTree(schema, inputFormat);\n+        return newSchema(schemaUri, schemaNode);\n@@ -712,7 +697,2 @@ public class SchemaRegistry {\n-        try {\n-            final JsonNode schemaNode = readTree(schemaStream, inputFormat);\n-            return newSchema(schemaUri, schemaNode);\n-        } catch (IOException ioe) {\n-            logger.error(\"Failed to load json schema!\", ioe);\n-            throw new SchemaException(ioe);\n-        }\n+        final JsonNode schemaNode = readTree(schemaStream, inputFormat);\n+        return newSchema(schemaUri, schemaNode);\ndiff --git a/src/main/java/com/networknt/schema/serialization/BasicNodeReader.java b/src/main/java/com/networknt/schema/serialization/BasicNodeReader.java\nindex 33e982e1..5ba2ea31 100644\n--- a/src/main/java/com/networknt/schema/serialization/BasicNodeReader.java\n+++ b/src/main/java/com/networknt/schema/serialization/BasicNodeReader.java\n@@ -19,3 +19 @@ package com.networknt.schema.serialization;\n-import java.io.IOException;\n-import java.io.InputStream;\n-\n+import com.networknt.schema.InputFormat;\n@@ -24 +22,2 @@ import tools.jackson.databind.ObjectMapper;\n-import com.networknt.schema.InputFormat;\n+\n+import java.io.InputStream;\n@@ -42 +41 @@ public class BasicNodeReader implements NodeReader {\n-    public JsonNode readTree(String content, InputFormat inputFormat) throws IOException {\n+    public JsonNode readTree(String content, InputFormat inputFormat) {\n@@ -47 +46 @@ public class BasicNodeReader implements NodeReader {\n-    public JsonNode readTree(InputStream content, InputFormat inputFormat) throws IOException {\n+    public JsonNode readTree(InputStream content, InputFormat inputFormat) {\ndiff --git a/src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java b/src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java\nindex dc2e7da4..d079ee8f 100644\n--- a/src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java\n+++ b/src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java\n@@ -3 +2,0 @@ package com.networknt.schema.serialization;\n-import java.io.IOException;\n@@ -36 +35 @@ public class DefaultNodeReader implements NodeReader {\n-    public JsonNode readTree(String content, InputFormat inputFormat) throws IOException {\n+    public JsonNode readTree(String content, InputFormat inputFormat) {\n@@ -45 +44 @@ public class DefaultNodeReader implements NodeReader {\n-    public JsonNode readTree(InputStream content, InputFormat inputFormat) throws IOException {\n+    public JsonNode readTree(InputStream content, InputFormat inputFormat) {\ndiff --git a/src/main/java/com/networknt/schema/serialization/NodeReader.java b/src/main/java/com/networknt/schema/serialization/NodeReader.java\nindex 2e161527..1bf2cb06 100644\n--- a/src/main/java/com/networknt/schema/serialization/NodeReader.java\n+++ b/src/main/java/com/networknt/schema/serialization/NodeReader.java\n@@ -18 +17,0 @@ package com.networknt.schema.serialization;\n-import java.io.IOException;\n@@ -35 +33,0 @@ public interface NodeReader {\n-     * @throws IOException IOException\n@@ -37 +35 @@ public interface NodeReader {\n-    JsonNode readTree(String content, InputFormat inputFormat) throws IOException;\n+    JsonNode readTree(String content, InputFormat inputFormat);\n@@ -45 +42,0 @@ public interface NodeReader {\n-     * @throws IOException IOException\n@@ -47 +44 @@ public interface NodeReader {\n-    JsonNode readTree(InputStream content, InputFormat inputFormat) throws IOException;\n+    JsonNode readTree(InputStream content, InputFormat inputFormat);\ndiff --git a/src/main/java/com/networknt/schema/utils/JsonNodes.java b/src/main/java/com/networknt/schema/utils/JsonNodes.java\nindex aa254da4..93ca942c 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodes.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodes.java\n@@ -20 +19,0 @@ import java.io.InputStream;\n-import tools.jackson.core.JacksonException;\n@@ -92,2 +90,0 @@ public class JsonNodes {\n-        } catch (JacksonException e) {\n-            throw new IllegalArgumentException(\"Invalid input\", e);\n@@ -112,2 +108,0 @@ public class JsonNodes {\n-        } catch (JacksonException e) {\n-            throw new IllegalArgumentException(\"Invalid input\", e);"
+}

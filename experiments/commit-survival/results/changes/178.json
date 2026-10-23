@@ -1,0 +1,18 @@
+{
+  "index": 178,
+  "sha": "f75875e54279a176bcb1e0018897fe5e41d6a97d",
+  "parent": "eec384cfec5484e26d62685340fde27cff0a8256",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java": [
+      189,
+      190,
+      191
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java": [
+      189
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java b/src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java\nindex 377e837c..5f39353e 100644\n--- a/src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java\n@@ -189,3 +189 @@ public class ItemsLegacyValidator extends BaseKeywordValidator {\n-                    if (this.additionalItems) {\n-//                        evaluatedItems.add(path);\n-                    } else {\n+                    if (!this.additionalItems) {"
+}

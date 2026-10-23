@@ -1,0 +1,21 @@
+{
+  "index": 124,
+  "sha": "77c91a23087b569ea7bab2841c9202e05217b480",
+  "parent": "4e8a2b8d6565250f68b0932d039018df22cc363c",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      820
+    ],
+    "src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      820
+    ],
+    "src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java": [
+      52,
+      53
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\nindex c9d9b7a4..beb25d7d 100644\n--- a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n+++ b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n@@ -820 +820 @@ public class SchemaValidatorsConfig {\n-        private Boolean formatAssertionsEnabled = false;\n+        private Boolean formatAssertionsEnabled = null;\ndiff --git a/src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java b/src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java\nindex 64125069..f2665bbf 100644\n--- a/src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java\n+++ b/src/main/java/com/networknt/schema/format/BaseFormatJsonValidator.java\n@@ -51,0 +52,2 @@ public abstract class BaseFormatJsonValidator extends BaseJsonValidator {\n+        } else if (Boolean.FALSE.equals(executionContext.getExecutionConfig().getFormatAssertionsEnabled())) {\n+            return false;"
+}

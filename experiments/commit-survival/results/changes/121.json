@@ -1,0 +1,16 @@
+{
+  "index": 121,
+  "sha": "d9a7219139da7f56d311664fd11e6987c4c27e26",
+  "parent": "1b379b74d7bbf3cf3829a910cace8c5a21db690b",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/UnionTypeValidator.java": [
+      38
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/UnionTypeValidator.java": [
+      38
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/UnionTypeValidator.java b/src/main/java/com/networknt/schema/UnionTypeValidator.java\nindex c6292ef8..3dd0e32f 100644\n--- a/src/main/java/com/networknt/schema/UnionTypeValidator.java\n+++ b/src/main/java/com/networknt/schema/UnionTypeValidator.java\n@@ -38 +38 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n-        super(schemaLocation, evaluationPath, schemaNode, parentSchema, ValidatorTypeCode.UNION_TYPE, validationContext);\n+        super(schemaLocation, evaluationPath, schemaNode, parentSchema, ValidatorTypeCode.TYPE, validationContext);"
+}

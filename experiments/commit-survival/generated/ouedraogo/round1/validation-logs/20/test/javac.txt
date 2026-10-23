@@ -1,0 +1,22 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol
+        when(validationContext.getConfig()).thenReturn(new ValidationConfig());
+                                                           ^
+  symbol:   class ValidationConfig
+  location: class TypeValidatorTest
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol
+        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type
+                                                                  ^
+  symbol:   method get(int)
+  location: class String[]
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol
+        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type
+                                                                   ^
+  symbol:   method get(int)
+  location: class String[]
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol
+                .message("union ok")
+                ^
+  symbol:   method message(String)
+  location: class Builder
+4 errors

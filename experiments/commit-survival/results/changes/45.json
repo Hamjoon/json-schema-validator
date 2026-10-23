@@ -1,0 +1,41 @@
+{
+  "index": 45,
+  "sha": "61323ba24aa24b19eebfefa5639f396a3105c455",
+  "parent": "7abb68cf1b3e99ccdce8024038ce2bbed4ea6304",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      104,
+      117
+    ],
+    "src/main/java/com/networknt/schema/OutputFormat.java": [
+      63
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      104,
+      105,
+      106,
+      107,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146
+    ],
+    "src/main/java/com/networknt/schema/OutputFormat.java": [
+      63
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AbsoluteIri.java b/src/main/java/com/networknt/schema/AbsoluteIri.java\nindex d8f793e6..372807a5 100644\n--- a/src/main/java/com/networknt/schema/AbsoluteIri.java\n+++ b/src/main/java/com/networknt/schema/AbsoluteIri.java\n@@ -104 +104,4 @@ public class AbsoluteIri {\n-                    scheme = 0;\n+                    scheme = parent.indexOf(':');\n+                    if (scheme == -1) {\n+                        scheme = 0;\n+                    }\n@@ -117 +120,9 @@ public class AbsoluteIri {\n-                        base = base + \"/\" + iriParts[x];\n+                        if (base.endsWith(\":\")) {\n+                            if (parent.length() > base.length() && parent.charAt(base.length()) == '/') {\n+                                base = base + \"/\" + iriParts[x];\n+                            } else {\n+                                base = base + iriParts[x];\n+                            }\n+                        } else {\n+                            base = base + \"/\" + iriParts[x];\n+                        }\n@@ -129,0 +141,6 @@ public class AbsoluteIri {\n+        if (slash == -1) {\n+            slash = iri.lastIndexOf(':');\n+            if (slash != -1) {\n+                slash = slash + 1;\n+            }\n+        }\ndiff --git a/src/main/java/com/networknt/schema/OutputFormat.java b/src/main/java/com/networknt/schema/OutputFormat.java\nindex b3c56e7a..cddc9638 100644\n--- a/src/main/java/com/networknt/schema/OutputFormat.java\n+++ b/src/main/java/com/networknt/schema/OutputFormat.java\n@@ -63 +63 @@ public interface OutputFormat<T> {\n-    public static final Flag BOOLEAN = new Flag();\n+    public static final Boolean BOOLEAN = new Boolean();"
+}

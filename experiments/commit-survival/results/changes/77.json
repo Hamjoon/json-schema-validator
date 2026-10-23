@@ -1,0 +1,96 @@
+{
+  "index": 77,
+  "sha": "d92caed93c7ebf29f3dde0f19f8ce5ff7cb76482",
+  "parent": "4e5a808dd10af09f57301748ae16646f8f7db811",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java": [
+      74
+    ],
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [
+      34
+    ],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      34
+    ],
+    "src/main/java/com/networknt/schema/ItemsValidator.java": [
+      53
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      494
+    ],
+    "src/main/java/com/networknt/schema/NotAllowedValidator.java": [
+      31
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      33
+    ],
+    "src/main/java/com/networknt/schema/PrefixItemsValidator.java": [
+      47,
+      48
+    ],
+    "src/main/java/com/networknt/schema/RequiredValidator.java": [
+      31
+    ],
+    "src/main/java/com/networknt/schema/UnionTypeValidator.java": [
+      34,
+      44,
+      53,
+      56,
+      57,
+      58
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java": [
+      74
+    ],
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [
+      34,
+      47
+    ],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      34,
+      49
+    ],
+    "src/main/java/com/networknt/schema/ItemsValidator.java": [
+      59,
+      62
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      494,
+      496,
+      512
+    ],
+    "src/main/java/com/networknt/schema/NotAllowedValidator.java": [
+      31,
+      37,
+      41,
+      42
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      33,
+      48
+    ],
+    "src/main/java/com/networknt/schema/PrefixItemsValidator.java": [
+      49
+    ],
+    "src/main/java/com/networknt/schema/RequiredValidator.java": [
+      31,
+      36,
+      40,
+      41
+    ],
+    "src/main/java/com/networknt/schema/UnionTypeValidator.java": [
+      34,
+      44,
+      46,
+      49,
+      55,
+      58,
+      59,
+      60,
+      61
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java b/src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java\nindex d2c21f97..0f978a0f 100644\n--- a/src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java\n+++ b/src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java\n@@ -74 +74 @@ public class AdditionalPropertiesValidator extends BaseJsonValidator {\n-            this.patternProperties = new ArrayList<>();\n+            this.patternProperties = new ArrayList<>(patternPropertiesNode.size());\ndiff --git a/src/main/java/com/networknt/schema/AllOfValidator.java b/src/main/java/com/networknt/schema/AllOfValidator.java\nindex 884930c1..01bc1b6d 100644\n--- a/src/main/java/com/networknt/schema/AllOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AllOfValidator.java\n@@ -34 +34 @@ public class AllOfValidator extends BaseJsonValidator {\n-    private final List<JsonSchema> schemas = new ArrayList<>();\n+    private final List<JsonSchema> schemas;\n@@ -46,0 +47 @@ public class AllOfValidator extends BaseJsonValidator {\n+        this.schemas = new ArrayList<>(size);\ndiff --git a/src/main/java/com/networknt/schema/AnyOfValidator.java b/src/main/java/com/networknt/schema/AnyOfValidator.java\nindex 5e9773b4..202b98db 100644\n--- a/src/main/java/com/networknt/schema/AnyOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AnyOfValidator.java\n@@ -34 +34 @@ public class AnyOfValidator extends BaseJsonValidator {\n-    private final List<JsonSchema> schemas = new ArrayList<>();\n+    private final List<JsonSchema> schemas;\n@@ -48,0 +49 @@ public class AnyOfValidator extends BaseJsonValidator {\n+        this.schemas = new ArrayList<>(size);\ndiff --git a/src/main/java/com/networknt/schema/ItemsValidator.java b/src/main/java/com/networknt/schema/ItemsValidator.java\nindex 4407f91b..5a6932f5 100644\n--- a/src/main/java/com/networknt/schema/ItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/ItemsValidator.java\n@@ -53 +52,0 @@ public class ItemsValidator extends BaseJsonValidator {\n-        this.tupleSchema = new ArrayList<>();\n@@ -59,0 +59 @@ public class ItemsValidator extends BaseJsonValidator {\n+            this.tupleSchema = Collections.emptyList();\n@@ -61,0 +62 @@ public class ItemsValidator extends BaseJsonValidator {\n+            this.tupleSchema = new ArrayList<>(schemaNode.size());\ndiff --git a/src/main/java/com/networknt/schema/JsonSchema.java b/src/main/java/com/networknt/schema/JsonSchema.java\nindex b110fe63..cddee9f6 100644\n--- a/src/main/java/com/networknt/schema/JsonSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonSchema.java\n@@ -494 +494 @@ public class JsonSchema extends BaseJsonValidator {\n-        List<JsonValidator> validators = new ArrayList<>();\n+        List<JsonValidator> validators;\n@@ -495,0 +496 @@ public class JsonSchema extends BaseJsonValidator {\n+            validators = new ArrayList<>(1);\n@@ -510,0 +512 @@ public class JsonSchema extends BaseJsonValidator {\n+            validators = new ArrayList<>(schemaNode.size());\ndiff --git a/src/main/java/com/networknt/schema/NotAllowedValidator.java b/src/main/java/com/networknt/schema/NotAllowedValidator.java\nindex 401729d6..448bd978 100644\n--- a/src/main/java/com/networknt/schema/NotAllowedValidator.java\n+++ b/src/main/java/com/networknt/schema/NotAllowedValidator.java\n@@ -31 +31 @@ public class NotAllowedValidator extends BaseJsonValidator implements JsonValida\n-    private final List<String> fieldNames = new ArrayList<>();\n+    private final List<String> fieldNames;\n@@ -36,0 +37 @@ public class NotAllowedValidator extends BaseJsonValidator implements JsonValida\n+            this.fieldNames = new ArrayList<>(size);\n@@ -39,0 +41,2 @@ public class NotAllowedValidator extends BaseJsonValidator implements JsonValida\n+        } else {\n+            this.fieldNames = Collections.emptyList();\ndiff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex c78df983..35505b24 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -33 +33 @@ public class OneOfValidator extends BaseJsonValidator {\n-    private final List<JsonSchema> schemas = new ArrayList<>();\n+    private final List<JsonSchema> schemas;\n@@ -47,0 +48 @@ public class OneOfValidator extends BaseJsonValidator {\n+        this.schemas = new ArrayList<>(size);\ndiff --git a/src/main/java/com/networknt/schema/PrefixItemsValidator.java b/src/main/java/com/networknt/schema/PrefixItemsValidator.java\nindex a1db79a0..f79bf834 100644\n--- a/src/main/java/com/networknt/schema/PrefixItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/PrefixItemsValidator.java\n@@ -47,2 +46,0 @@ public class PrefixItemsValidator extends BaseJsonValidator {\n-        this.tupleSchema = new ArrayList<>();\n-\n@@ -50,0 +49 @@ public class PrefixItemsValidator extends BaseJsonValidator {\n+            this.tupleSchema = new ArrayList<>(schemaNode.size());\ndiff --git a/src/main/java/com/networknt/schema/RequiredValidator.java b/src/main/java/com/networknt/schema/RequiredValidator.java\nindex 1e084c10..b0bf63b6 100644\n--- a/src/main/java/com/networknt/schema/RequiredValidator.java\n+++ b/src/main/java/com/networknt/schema/RequiredValidator.java\n@@ -31 +31 @@ public class RequiredValidator extends BaseJsonValidator implements JsonValidato\n-    private final List<String> fieldNames = new ArrayList<>();\n+    private final List<String> fieldNames;\n@@ -35,0 +36 @@ public class RequiredValidator extends BaseJsonValidator implements JsonValidato\n+            this.fieldNames = new ArrayList<>(schemaNode.size());\n@@ -38,0 +40,2 @@ public class RequiredValidator extends BaseJsonValidator implements JsonValidato\n+        } else {\n+            this.fieldNames = Collections.emptyList();\ndiff --git a/src/main/java/com/networknt/schema/UnionTypeValidator.java b/src/main/java/com/networknt/schema/UnionTypeValidator.java\nindex 184a119f..c6292ef8 100644\n--- a/src/main/java/com/networknt/schema/UnionTypeValidator.java\n+++ b/src/main/java/com/networknt/schema/UnionTypeValidator.java\n@@ -34 +34 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n-    private final List<JsonValidator> schemas = new ArrayList<>();\n+    private final List<JsonValidator> schemas;\n@@ -44 +44 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n-        if (!schemaNode.isArray())\n+        if (!schemaNode.isArray()) {\n@@ -45,0 +46 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n+        }\n@@ -47,0 +49 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n+        this.schemas = new ArrayList<>(schemaNode.size());\n@@ -53 +55 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n-            if (n.isObject())\n+            if (n.isObject()) {\n@@ -56,3 +58,4 @@ public class UnionTypeValidator extends BaseJsonValidator implements JsonValidat\n-            else\n-                schemas.add(new TypeValidator(schemaLocation.append(i), evaluationPath.append(i), n, parentSchema, validationContext));\n-\n+            } else {\n+                schemas.add(new TypeValidator(schemaLocation.append(i), evaluationPath.append(i), n, parentSchema,\n+                        validationContext));\n+            }"
+}

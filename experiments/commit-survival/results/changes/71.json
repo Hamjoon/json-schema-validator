@@ -1,0 +1,32 @@
+{
+  "index": 71,
+  "sha": "2d645e60d8d3b987368fac8433e6e45519516d02",
+  "parent": "39571635d96b31eb50902ac2bf8fe4bcefe425bf",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/CachedSupplier.java": [
+      26,
+      27,
+      35,
+      36,
+      38,
+      39
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/CachedSupplier.java": [
+      26,
+      27,
+      35,
+      36,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/CachedSupplier.java b/src/main/java/com/networknt/schema/CachedSupplier.java\nindex 109f36cb..4411bdd0 100644\n--- a/src/main/java/com/networknt/schema/CachedSupplier.java\n+++ b/src/main/java/com/networknt/schema/CachedSupplier.java\n@@ -26,2 +26,2 @@ public class CachedSupplier<T> implements Supplier<T> {\n-    private final Supplier<T> delegate;\n-    private T cache = null;\n+    private volatile Supplier<T> delegate;\n+    private volatile T cache = null;\n@@ -35,2 +35,2 @@ public class CachedSupplier<T> implements Supplier<T> {\n-        if (cache == null) {\n-            cache = delegate.get();\n+        if (this.delegate == null) {\n+            return this.cache;\n@@ -38,2 +37,0 @@ public class CachedSupplier<T> implements Supplier<T> {\n-        return cache;\n-    }\n@@ -40,0 +39,8 @@ public class CachedSupplier<T> implements Supplier<T> {\n+        synchronized(this) {\n+            if (this.delegate != null) {\n+                this.cache = this.delegate.get();\n+                this.delegate = null;\n+            }\n+        }\n+        return this.cache;\n+    }"
+}

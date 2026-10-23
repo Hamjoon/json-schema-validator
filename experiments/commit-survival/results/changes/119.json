@@ -1,0 +1,19 @@
+{
+  "index": 119,
+  "sha": "a88b142ef5428a9791a6a965ea75ebb030e85ddc",
+  "parent": "45b4f09b5bcfe0c3d386044221cebeb6d191e45c",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/utils/JsonNodeUtil.java": [
+      87,
+      89,
+      90
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/utils/JsonNodeUtil.java": [
+      87,
+      89
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java b/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\nindex 083efc06..df2b91bc 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\n@@ -87 +87 @@ public class JsonNodeUtil {\n-                if (parentSchema != null) {\n+                if (parentSchema != null && config.isNullableKeywordEnabled()) {\n@@ -89,2 +89 @@ public class JsonNodeUtil {\n-                    if (grandParentSchema != null\n-                            && JsonNodeUtil.isNodeNullable(grandParentSchema.getSchemaNode(), config)\n+                    if (grandParentSchema != null && JsonNodeUtil.isNodeNullable(grandParentSchema.getSchemaNode())"
+}

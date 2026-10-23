@@ -1,0 +1,32 @@
+{
+  "jars": 23,
+  "helper": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-d",
+      "/repo/experiments/commit-survival/work/runner-tools",
+      "/repo/experiments/commit-survival/tools/upstream/MethodSelectors.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.379,
+    "log": "results/runner-helper-compile.txt"
+  },
+  "classpath": {
+    "command": [
+      "mvn",
+      "-q",
+      "-o",
+      "dependency:build-classpath",
+      "-DincludeScope=test",
+      "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpath-t.txt"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 1.234,
+    "log": "results/runner-classpath-t-1.txt"
+  }
+}

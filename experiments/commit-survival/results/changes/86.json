@@ -1,0 +1,31 @@
+{
+  "index": 86,
+  "sha": "d07f80fd0f4262eb203f6c077855c4550866ce0f",
+  "parent": "b97ab80261dc226871e1155fae217be5b7ed1ae7",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java": [
+      19
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java": [
+      5,
+      14,
+      15,
+      22,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java b/src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java\nindex 0b0748b5..2500d88e 100644\n--- a/src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java\n+++ b/src/main/java/com/networknt/schema/format/AbstractRFC3986Format.java\n@@ -4,0 +5 @@ import java.net.URISyntaxException;\n+import java.util.regex.Pattern;\n@@ -12,0 +14,2 @@ public abstract class AbstractRFC3986Format implements Format {\n+    private static final Pattern VALID = Pattern.compile(\"([A-Za-z0-9+-\\\\.]*:)?//|[A-Za-z0-9+-\\\\.]+:\");\n+\n@@ -19 +22 @@ public abstract class AbstractRFC3986Format implements Format {\n-            return false;\n+            return handleException(e);\n@@ -30,0 +34,12 @@ public abstract class AbstractRFC3986Format implements Format {\n+    /**\n+     * Determines if the uri matches the format.\n+     *\n+     * @param e the URISyntaxException\n+     * @return false if it does not match\n+     */\n+    protected boolean handleException(URISyntaxException e) {\n+        if (VALID.matcher(e.getInput()).matches()) {\n+            return true;\n+        }\n+        return false;\n+    }"
+}

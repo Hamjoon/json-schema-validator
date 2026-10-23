@@ -9,6 +9,7 @@ import time
 from start import EXP, REPO, RESULTS, execute, write_json
 from select_scope import csvout
 from run_commit import run_file
+from archive_validation import archive
 
 
 def main():
@@ -30,12 +31,12 @@ def main():
                     _,cls,method,kind,eligible,signature,display,lineno,body_hash=parts
                     file=str(source.relative_to(EXP))
                     members.append(dict(file=file,**{'class':cls},method=method,kind=kind,id='|'.join([file,cls,method]),body_hash=body_hash,round=args.round,technique=source.parent.name if args.group=='ouedraogo' else 'KTester'))
-        if members:
+        if parse['exit_code']==0:
             result=run_file(0,args.group,str(source.relative_to(EXP)),members,work/'test',repetitions=3,retry=False)
         else:
             result=dict(file=str(source.relative_to(EXP)),methods=[],compile=None,runs=[])
         result['parse']=parse
-        write_json(base/'validation'/f'{number}.json',result)
+        result=archive(base,number,result)
         print(json.dumps(dict(group=args.group,file=source.name,methods=len(members),passed=sum(m['state']=='pass' for m in result['methods']))),flush=True)
         return result
     paths=sorted(sources.glob('*.java') if args.group=='ktester' else sources.rglob('*.java')) if sources.exists() else []

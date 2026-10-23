@@ -1,0 +1,870 @@
+[
+  {
+    "index": 10,
+    "status": "R093",
+    "old": "src/main/java/com/networknt/schema/ExecutionCustomizer.java",
+    "new": "src/main/java/com/networknt/schema/ExecutionContextCustomizer.java",
+    "scope_affected": false
+  },
+  {
+    "index": 10,
+    "status": "R062",
+    "old": "src/main/java/com/networknt/schema/uri/URIFetcher.java",
+    "new": "src/main/java/com/networknt/schema/InputFormat.java",
+    "scope_affected": false
+  },
+  {
+    "index": 10,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/uri/URLFetcher.java",
+    "new": "src/main/java/com/networknt/schema/resource/UriSchemaLoader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R074",
+    "old": "src/main/java/com/networknt/schema/ValidationMessage.java",
+    "new": "src/main/java/com/networknt/schema/Error.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/MessageSourceValidationMessage.java",
+    "new": "src/main/java/com/networknt/schema/MessageSourceError.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R087",
+    "old": "src/main/java/com/networknt/schema/ValidationResult.java",
+    "new": "src/main/java/com/networknt/schema/Result.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R057",
+    "old": "src/main/java/com/networknt/schema/JsonSchema.java",
+    "new": "src/main/java/com/networknt/schema/Schema.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R075",
+    "old": "src/main/java/com/networknt/schema/JsonSchemaException.java",
+    "new": "src/main/java/com/networknt/schema/SchemaException.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R082",
+    "old": "src/main/java/com/networknt/schema/JsonSchemaIdValidator.java",
+    "new": "src/main/java/com/networknt/schema/SchemaIdValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R077",
+    "old": "src/main/java/com/networknt/schema/JsonSchemaRef.java",
+    "new": "src/main/java/com/networknt/schema/SchemaRef.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R060",
+    "old": "src/main/java/com/networknt/schema/JsonSchemaValidator.java",
+    "new": "src/main/java/com/networknt/schema/Validator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R076",
+    "old": "src/main/java/com/networknt/schema/annotation/JsonNodeAnnotation.java",
+    "new": "src/main/java/com/networknt/schema/annotation/Annotation.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R076",
+    "old": "src/main/java/com/networknt/schema/annotation/JsonNodeAnnotationPredicate.java",
+    "new": "src/main/java/com/networknt/schema/annotation/AnnotationPredicate.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R081",
+    "old": "src/main/java/com/networknt/schema/annotation/JsonNodeAnnotations.java",
+    "new": "src/main/java/com/networknt/schema/annotation/Annotations.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R066",
+    "old": "src/main/java/com/networknt/schema/JsonMetaSchema.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Dialect.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R057",
+    "old": "src/main/java/com/networknt/schema/SchemaId.java",
+    "new": "src/main/java/com/networknt/schema/dialect/DialectId.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R063",
+    "old": "src/main/java/com/networknt/schema/Version201909.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Draft201909.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/Version202012.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Draft202012.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R061",
+    "old": "src/main/java/com/networknt/schema/Version4.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Draft4.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R055",
+    "old": "src/main/java/com/networknt/schema/Version6.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Draft6.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R059",
+    "old": "src/main/java/com/networknt/schema/Version7.java",
+    "new": "src/main/java/com/networknt/schema/dialect/Draft7.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/oas/OpenApi31.java",
+    "new": "src/main/java/com/networknt/schema/dialect/OpenApi31.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/Format.java",
+    "new": "src/main/java/com/networknt/schema/format/Format.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R082",
+    "old": "src/main/java/com/networknt/schema/Formats.java",
+    "new": "src/main/java/com/networknt/schema/format/Formats.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R097",
+    "old": "src/main/java/com/networknt/schema/AbstractKeyword.java",
+    "new": "src/main/java/com/networknt/schema/keyword/AbstractKeyword.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R069",
+    "old": "src/main/java/com/networknt/schema/AbstractJsonValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/AbstractKeywordValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R080",
+    "old": "src/main/java/com/networknt/schema/AdditionalPropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/AdditionalPropertiesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R067",
+    "old": "src/main/java/com/networknt/schema/AnnotationKeyword.java",
+    "new": "src/main/java/com/networknt/schema/keyword/AnnotationKeyword.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R053",
+    "old": "src/main/java/com/networknt/schema/ConstValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ConstValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R071",
+    "old": "src/main/java/com/networknt/schema/ContainsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ContainsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/ContentEncodingValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ContentEncodingValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/ContentMediaTypeValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ContentMediaTypeValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/DependenciesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/DependenciesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/DependentRequired.java",
+    "new": "src/main/java/com/networknt/schema/keyword/DependentRequired.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R062",
+    "old": "src/main/java/com/networknt/schema/DependentSchemas.java",
+    "new": "src/main/java/com/networknt/schema/keyword/DependentSchemas.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/DisallowUnknownKeywordFactory.java",
+    "new": "src/main/java/com/networknt/schema/keyword/DisallowUnknownKeywordFactory.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R060",
+    "old": "src/main/java/com/networknt/schema/DynamicRefValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/DynamicRefValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R079",
+    "old": "src/main/java/com/networknt/schema/EnumValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/EnumValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/ExclusiveMaximumValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R079",
+    "old": "src/main/java/com/networknt/schema/ExclusiveMinimumValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R052",
+    "old": "src/main/java/com/networknt/schema/FalseValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/FalseValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/FormatKeyword.java",
+    "new": "src/main/java/com/networknt/schema/keyword/FormatKeyword.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R072",
+    "old": "src/main/java/com/networknt/schema/FormatValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/FormatValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/IfValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/IfValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R074",
+    "old": "src/main/java/com/networknt/schema/ItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ItemsLegacyValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R071",
+    "old": "src/main/java/com/networknt/schema/ItemsValidator202012.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ItemsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/Keyword.java",
+    "new": "src/main/java/com/networknt/schema/keyword/Keyword.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/KeywordFactory.java",
+    "new": "src/main/java/com/networknt/schema/keyword/KeywordFactory.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R060",
+    "old": "src/main/java/com/networknt/schema/JsonValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/KeywordValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R050",
+    "old": "src/main/java/com/networknt/schema/MaxItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MaxItemsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R055",
+    "old": "src/main/java/com/networknt/schema/MaxLengthValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MaxLengthValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R054",
+    "old": "src/main/java/com/networknt/schema/MaxPropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MaxPropertiesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R079",
+    "old": "src/main/java/com/networknt/schema/MaximumValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MaximumValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R050",
+    "old": "src/main/java/com/networknt/schema/MinItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MinItemsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R055",
+    "old": "src/main/java/com/networknt/schema/MinLengthValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MinLengthValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/MinMaxContainsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MinMaxContainsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R054",
+    "old": "src/main/java/com/networknt/schema/MinPropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MinPropertiesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R080",
+    "old": "src/main/java/com/networknt/schema/MinimumValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MinimumValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/MultipleOfValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R055",
+    "old": "src/main/java/com/networknt/schema/NonValidationKeyword.java",
+    "new": "src/main/java/com/networknt/schema/keyword/NonValidationKeyword.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R059",
+    "old": "src/main/java/com/networknt/schema/NotAllowedValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/NotAllowedValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R061",
+    "old": "src/main/java/com/networknt/schema/NotValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/NotValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/PatternPropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/PatternPropertiesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/PatternValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/PatternValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R071",
+    "old": "src/main/java/com/networknt/schema/PrefixItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/PrefixItemsValidator.java",
+    "scope_affected": true
+  },
+  {
+    "index": 151,
+    "status": "R067",
+    "old": "src/main/java/com/networknt/schema/PropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/PropertiesValidator.java",
+    "scope_affected": true
+  },
+  {
+    "index": 151,
+    "status": "R050",
+    "old": "src/main/java/com/networknt/schema/PropertyNamesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/PropertyNamesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R053",
+    "old": "src/main/java/com/networknt/schema/ReadOnlyValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ReadOnlyValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R059",
+    "old": "src/main/java/com/networknt/schema/RecursiveRefValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/RecursiveRefValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R054",
+    "old": "src/main/java/com/networknt/schema/RefValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/RefValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R068",
+    "old": "src/main/java/com/networknt/schema/RequiredValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/RequiredValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R095",
+    "old": "src/main/java/com/networknt/schema/ThresholdMixin.java",
+    "new": "src/main/java/com/networknt/schema/keyword/ThresholdMixin.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R052",
+    "old": "src/main/java/com/networknt/schema/TrueValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/TrueValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R060",
+    "old": "src/main/java/com/networknt/schema/TypeValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/TypeValidator.java",
+    "scope_affected": true
+  },
+  {
+    "index": 151,
+    "status": "R075",
+    "old": "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/UnevaluatedItemsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R066",
+    "old": "src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/UnevaluatedPropertiesValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R053",
+    "old": "src/main/java/com/networknt/schema/UnionTypeValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/UnionTypeValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R055",
+    "old": "src/main/java/com/networknt/schema/UniqueItemsValidator.java",
+    "new": "src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R089",
+    "old": "src/main/java/com/networknt/schema/UnknownKeywordFactory.java",
+    "new": "src/main/java/com/networknt/schema/keyword/UnknownKeywordFactory.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R073",
+    "old": "src/main/java/com/networknt/schema/JsonNodePath.java",
+    "new": "src/main/java/com/networknt/schema/path/NodePath.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R084",
+    "old": "src/main/java/com/networknt/schema/PathType.java",
+    "new": "src/main/java/com/networknt/schema/path/PathType.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R076",
+    "old": "src/main/java/com/networknt/schema/resource/ClasspathSchemaLoader.java",
+    "new": "src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R086",
+    "old": "src/main/java/com/networknt/schema/resource/UriSchemaLoader.java",
+    "new": "src/main/java/com/networknt/schema/resource/IriResourceLoader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R063",
+    "old": "src/main/java/com/networknt/schema/resource/MapSchemaLoader.java",
+    "new": "src/main/java/com/networknt/schema/resource/MapResourceLoader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/resource/MapSchemaMapper.java",
+    "new": "src/main/java/com/networknt/schema/resource/MapSchemaIdResolver.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R082",
+    "old": "src/main/java/com/networknt/schema/resource/MetaSchemaMapper.java",
+    "new": "src/main/java/com/networknt/schema/resource/MetaSchemaIdResolver.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R066",
+    "old": "src/main/java/com/networknt/schema/resource/PrefixSchemaMapper.java",
+    "new": "src/main/java/com/networknt/schema/resource/PrefixSchemaIdResolver.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R066",
+    "old": "src/main/java/com/networknt/schema/resource/SchemaMapper.java",
+    "new": "src/main/java/com/networknt/schema/resource/ResourceLoader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R059",
+    "old": "src/main/java/com/networknt/schema/resource/SchemaLoaders.java",
+    "new": "src/main/java/com/networknt/schema/resource/ResourceLoaders.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R057",
+    "old": "src/main/java/com/networknt/schema/JsonMetaSchemaFactory.java",
+    "new": "src/main/java/com/networknt/schema/resource/SchemaIdResolver.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R074",
+    "old": "src/main/java/com/networknt/schema/resource/SchemaMappers.java",
+    "new": "src/main/java/com/networknt/schema/resource/SchemaIdResolvers.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R079",
+    "old": "src/main/java/com/networknt/schema/result/JsonNodeResult.java",
+    "new": "src/main/java/com/networknt/schema/result/InstanceResult.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/result/JsonNodeResults.java",
+    "new": "src/main/java/com/networknt/schema/result/InstanceResults.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R087",
+    "old": "src/main/java/com/networknt/schema/serialization/DefaultJsonNodeReader.java",
+    "new": "src/main/java/com/networknt/schema/serialization/DefaultNodeReader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R086",
+    "old": "src/main/java/com/networknt/schema/serialization/JsonNodeReader.java",
+    "new": "src/main/java/com/networknt/schema/serialization/NodeReader.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R088",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAware.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAware.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R056",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareArrayNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareArrayNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareBigIntegerNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareBigIntegerNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R058",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareBinaryNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareBinaryNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareBooleanNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareBooleanNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareDecimalNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareDecimalNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareDoubleNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareDoubleNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareFloatNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareFloatNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareIntNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareIntNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareLongNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareLongNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R065",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareNullNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareNullNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R060",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareObjectNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareObjectNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwarePOJONode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwarePOJONode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareShortNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareShortNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R064",
+    "old": "src/main/java/com/networknt/schema/serialization/node/JsonLocationAwareTextNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareTextNode.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R053",
+    "old": "src/main/java/com/networknt/schema/utils/JsonNodeUtil.java",
+    "new": "src/main/java/com/networknt/schema/utils/JsonNodeTypes.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R092",
+    "old": "src/main/java/com/networknt/schema/JsonType.java",
+    "new": "src/main/java/com/networknt/schema/utils/JsonType.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R070",
+    "old": "src/main/java/com/networknt/schema/utils/JsonSchemaRefs.java",
+    "new": "src/main/java/com/networknt/schema/utils/SchemaRefs.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R053",
+    "old": "src/main/java/com/networknt/schema/utils/StringChecker.java",
+    "new": "src/main/java/com/networknt/schema/utils/Strings.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R078",
+    "old": "src/main/java/com/networknt/schema/CachedSupplier.java",
+    "new": "src/main/java/com/networknt/schema/utils/ThreadSafeCachingSupplier.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R093",
+    "old": "src/main/java/com/networknt/schema/TypeFactory.java",
+    "new": "src/main/java/com/networknt/schema/utils/TypeFactory.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R070",
+    "old": "src/main/java/com/networknt/schema/VocabularyFactory.java",
+    "new": "src/main/java/com/networknt/schema/vocabulary/VocabularyRegistry.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R091",
+    "old": "src/main/java/com/networknt/schema/ApplyDefaultsStrategy.java",
+    "new": "src/main/java/com/networknt/schema/walk/ApplyDefaultsStrategy.java",
+    "scope_affected": false
+  },
+  {
+    "index": 151,
+    "status": "R052",
+    "old": "src/main/java/com/networknt/schema/walk/JsonSchemaWalkListener.java",
+    "new": "src/main/java/com/networknt/schema/walk/WalkListener.java",
+    "scope_affected": false
+  },
+  {
+    "index": 154,
+    "status": "R095",
+    "old": "src/main/java/com/networknt/schema/walk/AbstractWalkListenerRunner.java",
+    "new": "src/main/java/com/networknt/schema/walk/AbstractWalkHandler.java",
+    "scope_affected": false
+  },
+  {
+    "index": 154,
+    "status": "R081",
+    "old": "src/main/java/com/networknt/schema/walk/ItemWalkListenerRunner.java",
+    "new": "src/main/java/com/networknt/schema/walk/ItemWalkHandler.java",
+    "scope_affected": false
+  },
+  {
+    "index": 154,
+    "status": "R087",
+    "old": "src/main/java/com/networknt/schema/walk/KeywordWalkListenerRunner.java",
+    "new": "src/main/java/com/networknt/schema/walk/KeywordWalkHandler.java",
+    "scope_affected": false
+  },
+  {
+    "index": 154,
+    "status": "R081",
+    "old": "src/main/java/com/networknt/schema/walk/PropertyWalkListenerRunner.java",
+    "new": "src/main/java/com/networknt/schema/walk/PropertyWalkHandler.java",
+    "scope_affected": false
+  },
+  {
+    "index": 159,
+    "status": "R063",
+    "old": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareTextNode.java",
+    "new": "src/main/java/com/networknt/schema/serialization/node/TokenStreamLocationAwareStringNode.java",
+    "scope_affected": false
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "index": 37,
+  "sha": "fed46cf939441c979348602a78ef16b2aacfabd7",
+  "parent": "8c2f60b508e0bff36e9b394af0ed28143ec61ddc",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/MessageSourceValidationMessage.java": [
+      69
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/MessageSourceValidationMessage.java": [
+      24,
+      25,
+      26,
+      72,
+      73,
+      74
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/MessageSourceValidationMessage.java b/src/main/java/com/networknt/schema/MessageSourceValidationMessage.java\nindex 2257deb0..1871236a 100644\n--- a/src/main/java/com/networknt/schema/MessageSourceValidationMessage.java\n+++ b/src/main/java/com/networknt/schema/MessageSourceValidationMessage.java\n@@ -23,0 +24,3 @@ import com.networknt.schema.i18n.MessageSource;\n+/**\n+ * MessageSourceValidationMessage.\n+ */\n@@ -69 +72,3 @@ public class MessageSourceValidationMessage {\n-                this.message = messagePattern;\n+                if (messagePattern != null && !\"\".equals(messagePattern)) {\n+                    this.message = messagePattern;\n+                }"
+}

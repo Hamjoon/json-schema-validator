@@ -1,0 +1,63 @@
+{
+  "index": 188,
+  "sha": "285170f885ea78c81a81659c1ecb7292c710aaa0",
+  "parent": "e877866f973fc94b2a7ab2e500b6de6ba5bee4c9",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java": [
+      48,
+      50
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java": [
+      25,
+      27,
+      29,
+      30,
+      31,
+      53,
+      55,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java b/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\nindex 5ed31ab5..cd45aa46 100644\n--- a/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\n@@ -24,0 +25 @@ import com.networknt.schema.SchemaContext;\n+import com.networknt.schema.utils.JsonNodeTypes;\n@@ -25,0 +27 @@ import com.networknt.schema.SchemaContext;\n+import java.util.ArrayList;\n@@ -26,0 +29,3 @@ import java.util.HashSet;\n+import java.util.LinkedHashMap;\n+import java.util.List;\n+import java.util.Map;\n@@ -48 +53 @@ public class UniqueItemsValidator extends BaseKeywordValidator implements Keywor\n-            Set<JsonNode> set = new HashSet<>();\n+            Set<Object> set = new HashSet<>();\n@@ -50 +55 @@ public class UniqueItemsValidator extends BaseKeywordValidator implements Keywor\n-                if (!set.add(n)) {\n+                if (!set.add(comparisonKey(n))) {\n@@ -58,0 +64,40 @@ public class UniqueItemsValidator extends BaseKeywordValidator implements Keywor\n+    /**\n+     * Builds the value this keyword compares items by.\n+     *\n+     * uniqueItems treats two numbers as the same item when they are\n+     * mathematically equal, so 1, 1.0 and 1.00 are one value. JsonNode equality\n+     * is type-sensitive -- IntNode(1) does not equal DoubleNode(1.0) -- so\n+     * comparing the nodes themselves let that duplicate through. Numbers are\n+     * therefore reduced to a scale-independent BigDecimal.\n+     *\n+     * NaN, Infinity and -Infinity have no BigDecimal form, so they are left out\n+ * of that and keep comparing as nodes, as every item did before.\n+ *\n+ * Only numbers are folded together. A number and a boolean stay distinct,\n+     * as do a number and its string form, which the suite requires: nested [1]\n+     * and [true], and [0] and [false], are unique arrays. Objects and arrays are\n+     * walked so the rule holds wherever the number sits.\n+     */\n+    private static Object comparisonKey(JsonNode node) {\n+        if (node.isNumber() && !JsonNodeTypes.isNonFiniteNumber(node)) {\n+            return node.decimalValue().stripTrailingZeros();\n+        }\n+        if (node.isArray()) {\n+            List<Object> items = new ArrayList<>(node.size());\n+            for (JsonNode item : node) {\n+                items.add(comparisonKey(item));\n+            }\n+            return items;\n+        }\n+        if (node.isObject()) {\n+            // Map equality ignores insertion order, which is what JSON objects want.\n+            Map<String, Object> properties = new LinkedHashMap<>();\n+            for (Map.Entry<String, JsonNode> property : node.properties()) {\n+                properties.put(property.getKey(), comparisonKey(property.getValue()));\n+            }\n+            return properties;\n+        }\n+        // Strings, booleans and null compare as themselves; a node is its own key.\n+        return node;\n+    }\n+"
+}

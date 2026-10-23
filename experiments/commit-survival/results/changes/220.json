@@ -1,0 +1,28 @@
+{
+  "index": 220,
+  "sha": "826adb439b3e97c7df8b77b29b53320887e2164e",
+  "parent": "0db2bc93094234e31ce31ee5aabf8e2a7166cb13",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/Error.java": [
+      392
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/Error.java": [
+      195,
+      196,
+      197,
+      198,
+      199,
+      200,
+      201,
+      202,
+      400,
+      401,
+      402,
+      403,
+      404
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/Error.java b/src/main/java/com/networknt/schema/Error.java\nindex 8c721ecf..0374ac78 100644\n--- a/src/main/java/com/networknt/schema/Error.java\n+++ b/src/main/java/com/networknt/schema/Error.java\n@@ -194,0 +195,8 @@ public class Error {\n+    /**\n+     * Gets the key of the message in the message source, such as\n+     * {@code required} or {@code format.email}. The key does not change when\n+     * the schema supplies a custom message. An error created without a key\n+     * returns its message pattern.\n+     *\n+     * @return the message key\n+     */\n@@ -392 +400,5 @@ public class Error {\n-                messageKey = this.message;\n+                // A message replaces the text, not the key. Only an error built\n+                // without a key uses its message pattern as the key.\n+                if (messageKey == null) {\n+                    messageKey = this.message;\n+                }"
+}

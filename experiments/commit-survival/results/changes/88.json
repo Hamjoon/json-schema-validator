@@ -1,0 +1,28 @@
+{
+  "index": 88,
+  "sha": "7a58366af9249cd60643e1cf6dbac700e468f1fb",
+  "parent": "7c518f672b89c3c6c9f60ed28b2aa39f37ee88a3",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      117,
+      120,
+      121,
+      122,
+      123,
+      124
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaLocation.java b/src/main/java/com/networknt/schema/SchemaLocation.java\nindex 7fa564be..d1b5f33b 100644\n--- a/src/main/java/com/networknt/schema/SchemaLocation.java\n+++ b/src/main/java/com/networknt/schema/SchemaLocation.java\n@@ -117 +116,0 @@ public class SchemaLocation {\n-        String[] iriParts = iri.split(\"#\");\n@@ -120,5 +119,8 @@ public class SchemaLocation {\n-        if (iriParts.length > 0) {\n-            absoluteIri = AbsoluteIri.of(iriParts[0]);\n-        }\n-        if (iriParts.length > 1) {\n-            fragment = Fragment.of(iriParts[1]);\n+        int index = iri.indexOf('#');\n+        if (index == -1) {\n+            absoluteIri = AbsoluteIri.of(iri);\n+        } else {\n+            absoluteIri = AbsoluteIri.of(iri.substring(0, index));\n+            if (iri.length() > index + 1) {\n+                fragment = Fragment.of(iri.substring(index + 1));\n+            }"
+}

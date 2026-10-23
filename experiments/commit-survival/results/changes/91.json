@@ -1,0 +1,36 @@
+{
+  "index": 91,
+  "sha": "bbbbd1c90aaf5310eb26f51a6e9d0be7ba08af80",
+  "parent": "92bef229a0925f66d86a54694072f243586541f6",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      19,
+      20,
+      25,
+      78,
+      138
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      29,
+      30,
+      31,
+      84,
+      88,
+      89,
+      90,
+      91,
+      92,
+      149,
+      150
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex d964defa..1807305b 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -19,2 +19,6 @@ package com.networknt.schema;\n-import com.fasterxml.jackson.databind.JsonNode;\n-import com.networknt.schema.utils.SetView;\n+import java.util.ArrayList;\n+import java.util.Collections;\n+import java.util.HashSet;\n+import java.util.LinkedHashSet;\n+import java.util.List;\n+import java.util.Set;\n@@ -25 +29,3 @@ import org.slf4j.LoggerFactory;\n-import java.util.*;\n+import com.fasterxml.jackson.databind.JsonNode;\n+import com.fasterxml.jackson.databind.node.ObjectNode;\n+import com.networknt.schema.utils.SetView;\n@@ -78 +84 @@ public class OneOfValidator extends BaseJsonValidator {\n-                \n+\n@@ -81,0 +88,5 @@ public class OneOfValidator extends BaseJsonValidator {\n+                if (discriminator != null) {\n+                    // this is just to make the discriminator context active\n+                    discriminatorContext.registerDiscriminator(discriminator.getSchemaLocation(),\n+                            (ObjectNode) discriminator.getSchemaNode());\n+                }\n@@ -138 +149,2 @@ public class OneOfValidator extends BaseJsonValidator {\n-                    } else if (currentDiscriminatorContext.isDiscriminatorIgnore()) {\n+                    } else if (currentDiscriminatorContext.isDiscriminatorIgnore()\n+                            || !currentDiscriminatorContext.isActive()) {"
+}

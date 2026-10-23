@@ -1,0 +1,46 @@
+{
+  "index": 11,
+  "sha": "b76c9f400153db8cef76ad5b3f2c21a7df7214e0",
+  "parent": "7f1ec11b7a4b391577595e0d31d5825548c9a64f",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      34
+    ],
+    "src/main/java/com/networknt/schema/Annotations.java": [],
+    "src/main/java/com/networknt/schema/OutputFormat.java": [
+      40,
+      41
+    ],
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      191
+    ],
+    "src/main/java/com/networknt/schema/SpecVersionDetector.java": [],
+    "src/main/java/com/networknt/schema/resource/InputStreamSource.java": [
+      30
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      34
+    ],
+    "src/main/java/com/networknt/schema/Annotations.java": [
+      67,
+      86
+    ],
+    "src/main/java/com/networknt/schema/OutputFormat.java": [
+      40,
+      41,
+      42
+    ],
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      191
+    ],
+    "src/main/java/com/networknt/schema/SpecVersionDetector.java": [
+      71
+    ],
+    "src/main/java/com/networknt/schema/resource/InputStreamSource.java": [
+      30
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AbsoluteIri.java b/src/main/java/com/networknt/schema/AbsoluteIri.java\nindex 858afa51..687455b0 100644\n--- a/src/main/java/com/networknt/schema/AbsoluteIri.java\n+++ b/src/main/java/com/networknt/schema/AbsoluteIri.java\n@@ -34 +34 @@ public class AbsoluteIri {\n-     * @param value\n+     * @param value String\ndiff --git a/src/main/java/com/networknt/schema/Annotations.java b/src/main/java/com/networknt/schema/Annotations.java\nindex b959f86b..55a0386c 100644\n--- a/src/main/java/com/networknt/schema/Annotations.java\n+++ b/src/main/java/com/networknt/schema/Annotations.java\n@@ -66,0 +67 @@ public class Annotations {\n+     * @return the default annotation allow set\n@@ -84,0 +86 @@ public class Annotations {\n+     * @return the default annotation allow list predicate\ndiff --git a/src/main/java/com/networknt/schema/OutputFormat.java b/src/main/java/com/networknt/schema/OutputFormat.java\nindex 84044521..6f8e84d0 100644\n--- a/src/main/java/com/networknt/schema/OutputFormat.java\n+++ b/src/main/java/com/networknt/schema/OutputFormat.java\n@@ -40,2 +40,3 @@ public interface OutputFormat<T> {\n-     * @param validationMessages\n-     * @param executionContext\n+     * @param validationMessages the validation messages\n+     * @param executionContext  the execution context\n+     * @param validationContext the validation context\ndiff --git a/src/main/java/com/networknt/schema/SchemaLocation.java b/src/main/java/com/networknt/schema/SchemaLocation.java\nindex 7e18678d..1ded8240 100644\n--- a/src/main/java/com/networknt/schema/SchemaLocation.java\n+++ b/src/main/java/com/networknt/schema/SchemaLocation.java\n@@ -191 +191 @@ public class SchemaLocation {\n-         * @param fragmentString\n+         * @param fragmentString the fragment\ndiff --git a/src/main/java/com/networknt/schema/SpecVersionDetector.java b/src/main/java/com/networknt/schema/SpecVersionDetector.java\nindex 118fe066..ce7fd9b5 100644\n--- a/src/main/java/com/networknt/schema/SpecVersionDetector.java\n+++ b/src/main/java/com/networknt/schema/SpecVersionDetector.java\n@@ -70,0 +71 @@ public final class SpecVersionDetector {\n+     * @param throwIfUnsupported whether to throw an exception if the version is not supported\ndiff --git a/src/main/java/com/networknt/schema/resource/InputStreamSource.java b/src/main/java/com/networknt/schema/resource/InputStreamSource.java\nindex fb215421..11831afa 100644\n--- a/src/main/java/com/networknt/schema/resource/InputStreamSource.java\n+++ b/src/main/java/com/networknt/schema/resource/InputStreamSource.java\n@@ -30 +30 @@ public interface InputStreamSource {\n-     * @throws IOException\n+     * @throws IOException if an I/O error occurs"
+}

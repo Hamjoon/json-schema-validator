@@ -8,10 +8,24 @@ from start import EXP, REPO, RESULTS, execute, write_json
 
 
 def main():
+    runtime=EXP/'work/runtime'
+    for name in ['resources','suite']:
+        source=EXP/'dev/src-test-t'/name
+        if source.exists():shutil.copytree(source,runtime/'src/test'/name,dirs_exist_ok=True)
     libs=EXP/'work/libs';libs.mkdir(parents=True,exist_ok=True)
     records=json.loads((EXP/'tools/upstream/classpath-artifacts.json').read_text())
     for r in records:
         src=Path('/codec/experiments/ktester-commit-survival/work/libs')/r['filename']
+        if not src.exists():
+            group,artifact,version=r['coordinate'].split(':')
+            src=Path('/root/.m2/repository')/group.replace('.','/')/artifact/version/r['filename']
+            if not src.exists():
+                coordinate=r['coordinate']+(':jar:'+r['classifier'] if r.get('classifier') else '')
+                for attempt in (1,2):
+                    if attempt==2:time.sleep(60)
+                    run=execute(['mvn','-q','dependency:get','-Dartifact='+coordinate,'-Dtransitive=false'],REPO,RESULTS/f'runner-dependency-{artifact}-{attempt}.txt')
+                    if run['exit_code']==0:break
+                assert src.exists(),run
         shutil.copy2(src,libs/r['filename'])
         digest=hashlib.sha256(src.read_bytes()).hexdigest()
         assert not r.get('supplied_sha256') or r['supplied_sha256']==digest

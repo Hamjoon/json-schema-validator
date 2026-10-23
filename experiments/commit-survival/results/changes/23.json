@@ -1,0 +1,19 @@
+{
+  "index": 23,
+  "sha": "937105f24dde6defd8f467c9da839aacf36961f0",
+  "parent": "fb40864d295dcffb225b8cd9f13fc6d30f9c4866",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/PatternPropertiesValidator.java": [
+      89
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/PatternPropertiesValidator.java": [
+      89,
+      90,
+      91,
+      92
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/PatternPropertiesValidator.java b/src/main/java/com/networknt/schema/PatternPropertiesValidator.java\nindex 1e5bc18c..797558af 100644\n--- a/src/main/java/com/networknt/schema/PatternPropertiesValidator.java\n+++ b/src/main/java/com/networknt/schema/PatternPropertiesValidator.java\n@@ -89 +89,4 @@ public class PatternPropertiesValidator extends BaseJsonValidator {\n-                            .keyword(getKeyword()).value(matchedInstancePropertyNames).build());\n+                            .keyword(getKeyword())\n+                            .value(matchedInstancePropertyNames != null ? matchedInstancePropertyNames\n+                                    : Collections.emptySet())\n+                            .build());"
+}

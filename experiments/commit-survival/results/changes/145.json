@@ -1,0 +1,37 @@
+{
+  "index": 145,
+  "sha": "61fa3a50d5a7aab700661a70e50de5257720fac3",
+  "parent": "2d9c327674b6d354a39ed7acae0fa35dde3fcff3",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/IdnHostnameFormat.java": [
+      13
+    ],
+    "src/main/java/com/networknt/schema/utils/RFC5892.java": [
+      92,
+      93
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/IdnHostnameFormat.java": [
+      13
+    ],
+    "src/main/java/com/networknt/schema/utils/RFC5892.java": [
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      99,
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/IdnHostnameFormat.java b/src/main/java/com/networknt/schema/format/IdnHostnameFormat.java\nindex 5d1ec7ee..7ba0e860 100644\n--- a/src/main/java/com/networknt/schema/format/IdnHostnameFormat.java\n+++ b/src/main/java/com/networknt/schema/format/IdnHostnameFormat.java\n@@ -13 +13 @@ public class IdnHostnameFormat implements Format {\n-        if (null == value || value.isEmpty()) return true;\n+        if (null == value) return true;\ndiff --git a/src/main/java/com/networknt/schema/utils/RFC5892.java b/src/main/java/com/networknt/schema/utils/RFC5892.java\nindex 35b30686..a21931ca 100644\n--- a/src/main/java/com/networknt/schema/utils/RFC5892.java\n+++ b/src/main/java/com/networknt/schema/utils/RFC5892.java\n@@ -90,0 +91,7 @@ public class RFC5892 {\n+    /**\n+     * Whenever dots are used as label separators, the following characters MUST be\n+     * recognized as dots: U+002E (full stop), U+3002 (ideographic full stop),\n+     * U+FF0E (fullwidth full stop), U+FF61 (halfwidth ideographic full stop)\n+     */\n+    private static String LABEL_SEPARATOR_REGEX = \"[\\\\.\\\\u3002\\\\uff0e\\\\uff61]\";\n+\n@@ -92,2 +99,8 @@ public class RFC5892 {\n-        // RFC 5892 calls each segment in a host name a label. They are separated by '.'.\n-        String[] labels = value.split(\"\\\\.\");\n+        if (\"\".equals(value)) {\n+            return false; // empty string should fail\n+        }\n+        if (value.length() == 1 && value.matches(LABEL_SEPARATOR_REGEX)) {\n+            return false; // single label separator should fail\n+        }\n+        // RFC 5892 calls each segment in a host name a label. They are separated by all the recognized label separators.\n+        String[] labels = value.split(LABEL_SEPARATOR_REGEX);"
+}

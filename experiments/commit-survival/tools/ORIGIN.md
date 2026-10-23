@@ -1,6 +1,6 @@
 # Copied tool provenance
 
-Original files are preserved without modification in `upstream/` and `ouedraogo/`. They retain source-experiment assumptions and are not directly runnable for this experiment. Local adapters will record changes separately. No cross-repository imports or symlinks.
+Original files are preserved without modification in `upstream/` and `ouedraogo/`. They retain source-experiment assumptions and are not directly runnable for this experiment. Local adapters will record changes separately. No imports from the source jsoup/commons-codec repositories and no symlinks. KTester wrappers invoke the installed KTester tool modules under /work/code; author files remain unchanged.
 
 | Destination | Source | Repository commit | Source SHA-256 |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Ouédraogo generation settings verified directly from source `scripts/generate.p
 ## Local adaptations
 
 - `run_commit.py` follows the copied Codec runner's isolated javac compilation, reflection-based method selectors, JUnit XML state mapping, one fail/error rerun, and JaCoCo line reporting. It supports three groups, cached per-pom project dependencies, frozen Java sourcepath helper resolution, 120-second class limits and 300-second compiler limits. Phase B selects only methods alive entering the index and never falls back to a whole-class run.
-- `prepare_coverage.py` uses the copied pre/post-image hunk-coordinate algorithm, with explicit no-rename file accounting and all src/main/java paths.
+- `prepare_coverage.py` uses the copied pre/post-image hunk-coordinate algorithm, preserving rename detection and using all src/main/java paths.
 - `aggregate_survival.py` and `aggregate_coverage.py` replace fixed Codec denominators, scope paths, and the 539-commit assumption with the recorded JSV inputs. Unavailable coverage is retained as unavailable.
 - `renumber_dataset_ids.py` changes only the project key from commons-codec to json-schema-validator; the renumber/validate functions are called with the observed population size.
 - `prepare_ktester.py` follows the copied fresh-index driver, using a newly copied Maven snapshot, exact indexed method signatures, and a projects/ path accepted directly by DatasetPrepare (no symlink).
@@ -58,3 +58,7 @@ Ouédraogo generation settings verified directly from source `scripts/generate.p
 - JDK compiler syntax trees supply declaration-level inventories. The dedup body definition follows copied dedup_lib.py: whitespace-stripped original body bytes, excluding declaration/name. Original generated files are preserved; duplicate methods are excluded from selected denominators.
 
 Copied binary dependencies are listed with origin path, coordinates and SHA-256 in classpath-artifacts.json. Their source repository is the same commons-codec commit recorded above; the three JUnit 4 additions come from the shared Maven repository. Jars remain ignored and are never committed.
+
+- Adapted `renumber_dataset_ids.py` source: `/Users/donggi/_projects/experiment-projects/commons-codec/experiments/ktester-commit-survival/tools/renumber_dataset_ids.py`, commit `11c48ae5920131db610c7bd4102403f68c67f16e`, original SHA-256 `24f53f098e5bc36231ee9d5d7c4214eca24034974792936cf736bdbc9846b516`.
+
+Runtime fixture isolation: class launches use an ignored work/runtime directory containing copied frozen src/test/resources and src/test/suite trees. This preserves relative-path inputs such as PrefixItemsValidatorTest. Compilation still targets the evaluated commit, with absolute classpaths.

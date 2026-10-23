@@ -1,0 +1,18 @@
+{
+  "index": 155,
+  "sha": "b4abbc296cb421ebb0ba59e866d16099a2f62803",
+  "parent": "7bebfebbbee6f7160564fadb97b3d41f44bf949b",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/RefValidator.java": [
+      149
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/RefValidator.java": [
+      26,
+      150,
+      151
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/RefValidator.java b/src/main/java/com/networknt/schema/keyword/RefValidator.java\nindex 4ea86861..e691fd8b 100644\n--- a/src/main/java/com/networknt/schema/keyword/RefValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/RefValidator.java\n@@ -25,0 +26 @@ import com.networknt.schema.SchemaRef;\n+import com.networknt.schema.SpecificationVersion;\n@@ -149 +150,2 @@ public class RefValidator extends BaseKeywordValidator {\n-        if (parentSchema.getId() != null && parentSchema.getParentSchema() != null) {\n+        if (parentSchema.getId() != null && parentSchema.getParentSchema() != null && parentSchema.getSchemaContext()\n+                .getDialect().getSpecificationVersion().getOrder() <= SpecificationVersion.DRAFT_7.getOrder()) {"
+}

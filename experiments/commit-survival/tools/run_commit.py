@@ -99,7 +99,7 @@ def run_file(index,group,filename,members,part,coverage_file=None,repetitions=1,
             for selector in selection[r['id']]:args+=['--select-method',selector]
         if not args:
             return dict(timeout=False,exit_code=2,seconds=0,selection='no compiled selector'),{}
-        run=execute([*base,*args,'--reports-dir',str(reports)],folder,reports/'console.txt',120)
+        run=execute([*base,*args,'--reports-dir',str(reports)],EXP/'work/runtime',reports/'console.txt',120)
         record['runs'].append(run)
         return run,parse_reports(reports)
     runs=[launch(members,'run'+str(i)) for i in range(1,repetitions+1)]
@@ -131,8 +131,10 @@ def run_group(index,group,phase='a',selected_ids=None):
     if selected_ids is not None:rows=[r for r in rows if r['id'] in set(selected_ids)]
     output=RESULTS/('raw' if phase=='a' else 'raw-coverage' if phase=='b' else phase)/f'{index}-{group}.json'
     fingerprint=hashlib.sha256(json.dumps([(r['id'],hashlib.sha256((EXP/r['file']).read_bytes()).hexdigest()) for r in rows],sort_keys=True).encode()).hexdigest()
+    runner_hashes={name:hashlib.sha256((EXP/'tools'/name).read_bytes()).hexdigest() for name in ['run_commit.py','start.py','upstream/MethodSelectors.java','classpath-artifacts.json']}
     if output.exists():
         old=json.loads(output.read_text());assert old['input_sha256']==fingerprint
+        assert old.get('runner_sha256')==runner_hashes,'Runner changed since this measurement'
         return old
     work=EXP/f'work/phase-{phase}/{index}/{group}'
     if work.exists():shutil.rmtree(work)
@@ -144,7 +146,7 @@ def run_group(index,group,phase='a',selected_ids=None):
     for number,(filename,members) in enumerate(sorted(by_file.items())):
         files.append(run_file(index,group,filename,members,work/str(number),execfile if coverage else None,retry=phase in ['a','b']))
     commit=json.loads((RESULTS/'anchor.json').read_text()) if index==0 else next(r for r in csv.DictReader((RESULTS/'commits.csv').open()) if int(r['index'])==index)
-    result=dict(index=index,sha=commit['sha'],group=group,phase=phase,status='evaluated',input_sha256=fingerprint,files=files,methods=[r for f in files for r in f['methods']],requested_ids=[r['id'] for r in rows])
+    result=dict(index=index,sha=commit['sha'],group=group,phase=phase,status='evaluated',input_sha256=fingerprint,runner_sha256=runner_hashes,files=files,methods=[r for f in files for r in f['methods']],requested_ids=[r['id'] for r in rows])
     if coverage:
         folder,_=classpath(index);xml=RESULTS/f'coverage/{index}-{group}.xml';xml.parent.mkdir(parents=True,exist_ok=True)
         run=execute(['java','-Xmx1g','-jar',str(EXP/'work/libs/org.jacoco.cli-0.8.12-nodeps.jar'),'report',*([str(execfile)] if execfile.exists() else []),'--classfiles',str(folder/'target/classes'),'--sourcefiles',str(folder/'src/main/java'),'--xml',str(xml)],folder,work/'coverage-report.txt',300)

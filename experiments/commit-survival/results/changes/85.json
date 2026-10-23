@@ -1,0 +1,53 @@
+{
+  "index": 85,
+  "sha": "b97ab80261dc226871e1155fae217be5b7ed1ae7",
+  "parent": "622475b5410f3aa29b93d8f4628207ed8b926322",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      193,
+      197
+    ],
+    "src/main/java/com/networknt/schema/ValidationMessageHandler.java": [
+      103
+    ],
+    "src/main/java/com/networknt/schema/serialization/JsonNodeReader.java": [
+      35,
+      42,
+      43,
+      45
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      38,
+      60
+    ],
+    "src/main/java/com/networknt/schema/walk/WalkEvent.java": [
+      86
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      193,
+      197,
+      951
+    ],
+    "src/main/java/com/networknt/schema/ValidationMessageHandler.java": [
+      103
+    ],
+    "src/main/java/com/networknt/schema/serialization/JsonNodeReader.java": [
+      35,
+      42,
+      43,
+      45
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      38,
+      39,
+      61,
+      62
+    ],
+    "src/main/java/com/networknt/schema/walk/WalkEvent.java": [
+      86
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\nindex bb6242fa..2c4f56fe 100644\n--- a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n+++ b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n@@ -193 +193 @@ public class SchemaValidatorsConfig {\n-     * <p><ul>\n+     * <ul>\n@@ -197 +197 @@ public class SchemaValidatorsConfig {\n-     * </ul><p>\n+     * </ul>\n@@ -950,0 +951 @@ public class SchemaValidatorsConfig {\n+         * @return the builder\ndiff --git a/src/main/java/com/networknt/schema/ValidationMessageHandler.java b/src/main/java/com/networknt/schema/ValidationMessageHandler.java\nindex c0ca43d3..727683c8 100644\n--- a/src/main/java/com/networknt/schema/ValidationMessageHandler.java\n+++ b/src/main/java/com/networknt/schema/ValidationMessageHandler.java\n@@ -103 +103 @@ public abstract class ValidationMessageHandler {\n-     * \n+     * @param errorMessageKeyword the error message keyword\ndiff --git a/src/main/java/com/networknt/schema/serialization/JsonNodeReader.java b/src/main/java/com/networknt/schema/serialization/JsonNodeReader.java\nindex 25e60775..46db1bc3 100644\n--- a/src/main/java/com/networknt/schema/serialization/JsonNodeReader.java\n+++ b/src/main/java/com/networknt/schema/serialization/JsonNodeReader.java\n@@ -35 +35 @@ public interface JsonNodeReader {\n-     * @throws IOException\n+     * @throws IOException IOException\n@@ -42,2 +42,2 @@ public interface JsonNodeReader {\n-     * @param content\n-     * @param inputFormat\n+     * @param content input stream\n+     * @param inputFormat input format\n@@ -45 +45 @@ public interface JsonNodeReader {\n-     * @throws IOException\n+     * @throws IOException IOException\ndiff --git a/src/main/java/com/networknt/schema/utils/JsonNodes.java b/src/main/java/com/networknt/schema/utils/JsonNodes.java\nindex d9dbad87..f1f8947c 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodes.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodes.java\n@@ -38 +38,2 @@ public class JsonNodes {\n-     * \n+     *\n+     * @param <T> the type of the node\n@@ -60 +61,2 @@ public class JsonNodes {\n-     * \n+     *\n+     * @param <T> the type of the node\ndiff --git a/src/main/java/com/networknt/schema/walk/WalkEvent.java b/src/main/java/com/networknt/schema/walk/WalkEvent.java\nindex f0a20796..a85e9554 100644\n--- a/src/main/java/com/networknt/schema/walk/WalkEvent.java\n+++ b/src/main/java/com/networknt/schema/walk/WalkEvent.java\n@@ -86 +86 @@ public class WalkEvent {\n-     * \n+     * @param <T> the type of the validator"
+}

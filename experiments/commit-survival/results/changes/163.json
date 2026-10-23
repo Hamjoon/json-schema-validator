@@ -1,0 +1,56 @@
+{
+  "index": 163,
+  "sha": "43cbcf73f265cfcaf5fe35811c6084cfd2f47290",
+  "parent": "98b842d896303b985c1438f782a929b78535a812",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java": [
+      86,
+      89,
+      91
+    ],
+    "src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java": [
+      44
+    ],
+    "src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java": [
+      48
+    ],
+    "src/main/java/com/networknt/schema/keyword/MaximumValidator.java": [
+      57
+    ],
+    "src/main/java/com/networknt/schema/keyword/MinimumValidator.java": [
+      61
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java": [
+      20,
+      87,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      103
+    ],
+    "src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java": [
+      44
+    ],
+    "src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java": [
+      48
+    ],
+    "src/main/java/com/networknt/schema/keyword/MaximumValidator.java": [
+      57
+    ],
+    "src/main/java/com/networknt/schema/keyword/MinimumValidator.java": [
+      61
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java b/src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java\nindex 342b1136..62f86436 100644\n--- a/src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/BaseKeywordValidator.java\n@@ -19,0 +20 @@ import tools.jackson.databind.JsonNode;\n+\n@@ -86 +87 @@ public abstract class BaseKeywordValidator extends AbstractKeywordValidator {\n-    protected String getNodeFieldType() {\n+    protected boolean hasType(String type) {\n@@ -89 +90,12 @@ public abstract class BaseKeywordValidator extends AbstractKeywordValidator {\n-            return typeField.asString();\n+            switch (typeField.getNodeType()) {\n+            case STRING:\n+                return type.equals(typeField.stringValue());\n+            case ARRAY:\n+                for (JsonNode item : typeField.values()) {\n+                    if (item.isString() && type.equals(item.stringValue())) {\n+                        return true;\n+                    }\n+                }\n+            default:\n+                return false;\n+            }\n@@ -91 +103 @@ public abstract class BaseKeywordValidator extends AbstractKeywordValidator {\n-        return null;\n+        return false;\ndiff --git a/src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java b/src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java\nindex c73dee01..9a4fb481 100644\n--- a/src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/ExclusiveMaximumValidator.java\n@@ -44 +44 @@ public class ExclusiveMaximumValidator extends BaseKeywordValidator {\n-        if ((schemaNode.isLong() || schemaNode.isInt()) && (JsonType.INTEGER.toString().equals(getNodeFieldType()))) {\n+        if ((schemaNode.isLong() || schemaNode.isInt()) && hasType(JsonType.INTEGER.toString())) {\ndiff --git a/src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java b/src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java\nindex 600e37dc..6b017064 100644\n--- a/src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/ExclusiveMinimumValidator.java\n@@ -48 +48 @@ public class ExclusiveMinimumValidator extends BaseKeywordValidator {\n-        if ((schemaNode.isLong() || schemaNode.isInt()) && JsonType.INTEGER.toString().equals(getNodeFieldType())) {\n+        if ((schemaNode.isLong() || schemaNode.isInt()) && hasType(JsonType.INTEGER.toString())) {\ndiff --git a/src/main/java/com/networknt/schema/keyword/MaximumValidator.java b/src/main/java/com/networknt/schema/keyword/MaximumValidator.java\nindex 2d38e2f0..0dd131eb 100644\n--- a/src/main/java/com/networknt/schema/keyword/MaximumValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MaximumValidator.java\n@@ -57 +57 @@ public class MaximumValidator extends BaseKeywordValidator {\n-        if ((schemaNode.isLong() || schemaNode.isInt()) && (JsonType.INTEGER.toString().equals(getNodeFieldType()))) {\n+        if ((schemaNode.isLong() || schemaNode.isInt()) && hasType(JsonType.INTEGER.toString())) {\ndiff --git a/src/main/java/com/networknt/schema/keyword/MinimumValidator.java b/src/main/java/com/networknt/schema/keyword/MinimumValidator.java\nindex 25012b7d..57851140 100644\n--- a/src/main/java/com/networknt/schema/keyword/MinimumValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MinimumValidator.java\n@@ -61 +61 @@ public class MinimumValidator extends BaseKeywordValidator {\n-        if ((schemaNode.isLong() || schemaNode.isInt()) && JsonType.INTEGER.toString().equals(getNodeFieldType())) {\n+        if ((schemaNode.isLong() || schemaNode.isInt()) && hasType(JsonType.INTEGER.toString())) {"
+}

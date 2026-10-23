@@ -1,0 +1,60 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:61: error: interface expected here
+    private static class SimpleJsonSchema implements JsonSchema {
+                                                     ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:41: error: SimpleCollector is not abstract and does not override abstract method collect() in Collector
+    private static class SimpleCollector<E> implements Collector<E> {
+                   ^
+  where E is a type-variable:
+    E extends Object declared in class SimpleCollector
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:51: error: collect() in SimpleCollector cannot implement collect() in Collector
+        public Object collect() {
+                      ^
+  return type Object is not compatible with E#2
+  where E#1,E#2 are type-variables:
+    E#1 extends Object declared in interface Collector
+    E#2 extends Object declared in class SimpleCollector
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:50: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:74: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:79: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:84: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:86: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+            return containingSchema;
+                   ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:132: error: cannot find symbol
+        assertSame("The exited scope must be the one that was pushed", exited, ctx.getDynamicScope().peekPrevious()); // custom helper not present; we'll just compare
+                                                                                                    ^
+  symbol:   method peekPrevious()
+  location: class Scope
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:141: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+        CollectorContext.Scope parent = ctx.enterDynamicScope(schema);
+                                                              ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:248: error: cannot find symbol
+        ctx.getDynamicScope().exitDynamicScope(); // pop to make stack empty
+                             ^
+  symbol:   method exitDynamicScope()
+  location: class Scope
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:261: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+        ctx.enterDynamicScope(child);
+                              ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:276: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+        ctx.enterDynamicScope(leafRoot);
+                              ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:278: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+        ctx.enterDynamicScope(middle);
+                              ^
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java:280: error: incompatible types: SimpleJsonSchema cannot be converted to JsonSchema
+        ctx.enterDynamicScope(topAnchor);
+                              ^
+Note: /repo/experiments/commit-survival/generated/ouedraogo/round1/sources/CollectorContext/GToT/CollectorContextTest.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+15 errors

@@ -1,0 +1,35 @@
+{
+  "index": 217,
+  "sha": "eaf4611ef79402bd03c7685ca39e45a67a2d0f3a",
+  "parent": "81cffd32ece515dff721cd83b846852897724f13",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      54,
+      56
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      71,
+      73
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/TimeFormat.java b/src/main/java/com/networknt/schema/format/TimeFormat.java\nindex cb49da92..42398249 100644\n--- a/src/main/java/com/networknt/schema/format/TimeFormat.java\n+++ b/src/main/java/com/networknt/schema/format/TimeFormat.java\n@@ -52,0 +53,17 @@ public class TimeFormat implements Format {\n+            String parsedValue = value;\n+            int decimalPoint = value.indexOf('.');\n+            if (decimalPoint >= 0) {\n+                int fractionStart = decimalPoint + 1;\n+                int fractionEnd = fractionStart;\n+                while (fractionEnd < value.length()) {\n+                    char digit = value.charAt(fractionEnd);\n+                    if (digit < '0' || digit > '9') break;\n+                    fractionEnd++;\n+                }\n+                if (fractionEnd == fractionStart) return false;\n+                // ISO_LOCAL_TIME parses at most nine digits, but RFC 3339 permits more.\n+                if (fractionEnd - fractionStart > 9) {\n+                    parsedValue = value.substring(0, fractionStart + 9) + value.substring(fractionEnd);\n+                }\n+            }\n+\n@@ -54 +71 @@ public class TimeFormat implements Format {\n-            TemporalAccessor accessor = formatter.parseUnresolved(value, position);\n+            TemporalAccessor accessor = formatter.parseUnresolved(parsedValue, position);\n@@ -56 +73 @@ public class TimeFormat implements Format {\n-            if (null == accessor || position.getIndex() != value.length()) return false;\n+            if (null == accessor || position.getIndex() != parsedValue.length()) return false;"
+}

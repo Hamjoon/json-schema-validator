@@ -1,0 +1,16 @@
+{
+  "index": 193,
+  "sha": "2a28f87e35ed8a77898d4ebffcb4745dc23f5364",
+  "parent": "f8c76599c0bda42a72ff1c905e8d99ab4fcf59db",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/Formats.java": [
+      47
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/Formats.java": [
+      47
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/Formats.java b/src/main/java/com/networknt/schema/format/Formats.java\nindex 7ef566e1..5178238e 100644\n--- a/src/main/java/com/networknt/schema/format/Formats.java\n+++ b/src/main/java/com/networknt/schema/format/Formats.java\n@@ -47 +47 @@ public class Formats {\n-        formats.add(pattern(\"uri-template\", \"^([^\\\\p{Cntrl}\\\"'%<>\\\\^`\\\\{|\\\\}]|%\\\\p{XDigit}{2}|\\\\{[+#./;?&=,!@|]?((\\\\w|%\\\\p{XDigit}{2})(\\\\.?(\\\\w|%\\\\p{XDigit}{2}))*(:[1-9]\\\\d{0,3}|\\\\*)?)(,((\\\\w|%\\\\p{XDigit}{2})(\\\\.?(\\\\w|%\\\\p{XDigit}{2}))*(:[1-9]\\\\d{0,3}|\\\\*)?))*\\\\})*$\", \"format.uri-template\"));\n+        formats.add(pattern(\"uri-template\", \"^([^\\\\p{Cntrl}\\\"%<>\\\\^`\\\\{|\\\\}]|%\\\\p{XDigit}{2}|\\\\{[+#./;?&=,!@|]?((\\\\w|%\\\\p{XDigit}{2})(\\\\.?(\\\\w|%\\\\p{XDigit}{2}))*(:[1-9]\\\\d{0,3}|\\\\*)?)(,((\\\\w|%\\\\p{XDigit}{2})(\\\\.?(\\\\w|%\\\\p{XDigit}{2}))*(:[1-9]\\\\d{0,3}|\\\\*)?))*\\\\})*$\", \"format.uri-template\"));"
+}

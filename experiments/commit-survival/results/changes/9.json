@@ -1,0 +1,16 @@
+{
+  "index": 9,
+  "sha": "f3825f3881d6247e7328c685232e484a9b5f8b5e",
+  "parent": "44b1ec53449f2f59c2b2e48a16dc585d79f8b5da",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/JsonSchemaFactory.java": [
+      470
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/JsonSchemaFactory.java": [
+      470
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/JsonSchemaFactory.java b/src/main/java/com/networknt/schema/JsonSchemaFactory.java\nindex 03d7cf5b..12453f4a 100644\n--- a/src/main/java/com/networknt/schema/JsonSchemaFactory.java\n+++ b/src/main/java/com/networknt/schema/JsonSchemaFactory.java\n@@ -470 +470 @@ public class JsonSchemaFactory {\n-                JsonNode subSchemaNode = document.getRefSchemaNode(schemaLocation.getFragment().toString());\n+                JsonNode subSchemaNode = document.getRefSchemaNode(\"#\" + schemaLocation.getFragment().toString());"
+}

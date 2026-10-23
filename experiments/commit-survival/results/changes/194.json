@@ -1,0 +1,25 @@
+{
+  "index": 194,
+  "sha": "a9c96385d4d19eed227f919b9837d2a0724d8414",
+  "parent": "2a28f87e35ed8a77898d4ebffcb4745dc23f5364",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/utils/RFC5892.java": [
+      102,
+      103,
+      104,
+      108
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/utils/RFC5892.java": [
+      104,
+      105,
+      106,
+      108,
+      109,
+      110,
+      111
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/utils/RFC5892.java b/src/main/java/com/networknt/schema/utils/RFC5892.java\nindex a21931ca..5c44434e 100644\n--- a/src/main/java/com/networknt/schema/utils/RFC5892.java\n+++ b/src/main/java/com/networknt/schema/utils/RFC5892.java\n@@ -102,3 +101,0 @@ public class RFC5892 {\n-        if (value.length() == 1 && value.matches(LABEL_SEPARATOR_REGEX)) {\n-            return false; // single label separator should fail\n-        }\n@@ -106,0 +104,3 @@ public class RFC5892 {\n+        if (labels.length == 0) {\n+            return false; // a value made up only of label separators (e.g. \".\" or \"...\") has no labels\n+        }\n@@ -108 +108,4 @@ public class RFC5892 {\n-            if (label.isEmpty()) continue; // A DNS entry may contain a trailing '.'.\n+            // String.split() drops trailing empty strings, so a trailing label\n+            // separator never produces an empty label here. A leading or interior\n+            // empty label (e.g. \".example\" or \"a..b\") is invalid.\n+            if (label.isEmpty()) return false;"
+}

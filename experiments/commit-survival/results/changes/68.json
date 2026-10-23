@@ -1,0 +1,22 @@
+{
+  "index": 68,
+  "sha": "bc01ec4d1a418fac65e7542fec08af9e1cf3dc13",
+  "parent": "564d8f6f8bda1d568fd140e324e65d31efdaee32",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/UriFormat.java": [
+      16
+    ],
+    "src/main/java/com/networknt/schema/format/UriReferenceFormat.java": [
+      14
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/UriFormat.java": [
+      16
+    ],
+    "src/main/java/com/networknt/schema/format/UriReferenceFormat.java": [
+      14
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/UriFormat.java b/src/main/java/com/networknt/schema/format/UriFormat.java\nindex 81d9034d..1b98c02d 100644\n--- a/src/main/java/com/networknt/schema/format/UriFormat.java\n+++ b/src/main/java/com/networknt/schema/format/UriFormat.java\n@@ -16 +16 @@ public class UriFormat extends AbstractRFC3986Format {\n-                String query = uri.getQuery();\n+                String query = uri.getRawQuery();\ndiff --git a/src/main/java/com/networknt/schema/format/UriReferenceFormat.java b/src/main/java/com/networknt/schema/format/UriReferenceFormat.java\nindex d48650fe..4cb5a203 100644\n--- a/src/main/java/com/networknt/schema/format/UriReferenceFormat.java\n+++ b/src/main/java/com/networknt/schema/format/UriReferenceFormat.java\n@@ -14 +14 @@ public class UriReferenceFormat extends AbstractRFC3986Format {\n-            String query = uri.getQuery();\n+            String query = uri.getRawQuery();"
+}

@@ -1,0 +1,47 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:48: error: cannot find symbol
+    @Mock private WalkListenerRunner mockListenerRunner;
+                  ^
+  symbol:   class WalkListenerRunner
+  location: class PrefixItemsValidatorTest
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:85: error: cannot find symbol
+        JsonNode notArray = mapper.textNode("not-an-array");
+                                  ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:100: error: cannot find symbol
+        JsonNode notArray = mapper.textNode("string");
+                                  ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:115: error: cannot find symbol
+        ValidationMessage vm = ValidationMessage.builder().path("$[0]").message("error0").type("type0").build();
+                                                ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:144: error: cannot find symbol
+        schemaNode0.set("default", mapper.textNode("default0"));
+                                         ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:156: error: cannot find symbol
+        data.add(mapper.numberNode(42));  // index 1 – untouched
+                       ^
+  symbol:   method numberNode(int)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:187: error: cannot find symbol
+        ValidationMessage vm = ValidationMessage.builder().path("$[0]").message("msg").type("type").build();
+                                                ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:220: error: cannot find symbol
+        data.add(mapper.textNode("a"));
+                       ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PrefixItemsValidator/ToT/PrefixItemsValidatorTest.java:221: error: cannot find symbol
+        data.add(mapper.textNode("b"));
+                       ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+9 errors

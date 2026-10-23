@@ -1,0 +1,88 @@
+{
+  "index": 167,
+  "sha": "054f2f66a30513d8556361d16d5187af613f7d22",
+  "parent": "d352d6fd95a879c3e7942c8d1dbc94694e7f93ea",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/ConstValidator.java": [
+      36,
+      38,
+      39,
+      40
+    ],
+    "src/main/java/com/networknt/schema/keyword/EnumValidator.java": [],
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      66
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodeTypes.java": [],
+    "src/main/java/com/networknt/schema/utils/TypeFactory.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/ConstValidator.java": [
+      23,
+      37,
+      38,
+      39,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ],
+    "src/main/java/com/networknt/schema/keyword/EnumValidator.java": [
+      22,
+      28,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139
+    ],
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      66,
+      83,
+      84,
+      85,
+      86,
+      87
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodeTypes.java": [
+      92,
+      93,
+      94,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117
+    ],
+    "src/main/java/com/networknt/schema/utils/TypeFactory.java": [
+      105,
+      106,
+      107,
+      108
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/ConstValidator.java b/src/main/java/com/networknt/schema/keyword/ConstValidator.java\nindex 955e14d3..b2de2a8e 100644\n--- a/src/main/java/com/networknt/schema/keyword/ConstValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/ConstValidator.java\n@@ -22,0 +23 @@ import com.networknt.schema.path.NodePath;\n+import com.networknt.schema.utils.JsonNodeTypes;\n@@ -36 +37,3 @@ public class ConstValidator extends BaseKeywordValidator implements KeywordValid\n-            if (schemaNode.decimalValue().compareTo(node.decimalValue()) != 0) {\n+            boolean schemaIsNonFinite = JsonNodeTypes.isNonFiniteNumber(schemaNode);\n+            boolean nodeIsNonFinite = JsonNodeTypes.isNonFiniteNumber(node);\n+            if (schemaIsNonFinite != nodeIsNonFinite) {\n@@ -38,3 +41,17 @@ public class ConstValidator extends BaseKeywordValidator implements KeywordValid\n-                        .evaluationPath(executionContext.getEvaluationPath()).locale(executionContext.getExecutionConfig().getLocale())\n-                        .arguments(schemaNode.asString(schemaNode.toString()), node.asString())\n-                        .build());\n+                        .evaluationPath(executionContext.getEvaluationPath())\n+                        .locale(executionContext.getExecutionConfig().getLocale())\n+                        .arguments(schemaNode.asString(schemaNode.toString()), node.asString()).build());                \n+            } else if (schemaIsNonFinite || nodeIsNonFinite) {\n+                // Handle the NaN, Infinity and -Infinity cases\n+                // Note that Double.compare(NaN, NaN) == 0 as this is comparing constants and not the numeric operation \n+                if (Double.compare(schemaNode.doubleValue(), node.doubleValue()) != 0) {\n+                    executionContext.addError(error().instanceNode(node).instanceLocation(instanceLocation)\n+                            .evaluationPath(executionContext.getEvaluationPath())\n+                            .locale(executionContext.getExecutionConfig().getLocale())\n+                            .arguments(schemaNode.asString(schemaNode.toString()), node.asString()).build());\n+                }\n+            } else if (schemaNode.decimalValue().compareTo(node.decimalValue()) != 0) {\n+                executionContext.addError(error().instanceNode(node).instanceLocation(instanceLocation)\n+                        .evaluationPath(executionContext.getEvaluationPath())\n+                        .locale(executionContext.getExecutionConfig().getLocale())\n+                        .arguments(schemaNode.asString(schemaNode.toString()), node.asString()).build());\ndiff --git a/src/main/java/com/networknt/schema/keyword/EnumValidator.java b/src/main/java/com/networknt/schema/keyword/EnumValidator.java\nindex ee56528d..0c9bbf3b 100644\n--- a/src/main/java/com/networknt/schema/keyword/EnumValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/EnumValidator.java\n@@ -21,0 +22 @@ import tools.jackson.databind.node.DecimalNode;\n+import tools.jackson.databind.node.DoubleNode;\n@@ -26,0 +28 @@ import com.networknt.schema.path.NodePath;\n+import com.networknt.schema.utils.JsonNodeTypes;\n@@ -131,0 +134,6 @@ public class EnumValidator extends BaseKeywordValidator implements KeywordValida\n+        if (JsonNodeTypes.isNonFiniteNumber(n)) {\n+            if (n.isDouble()) { // If it is already a DoubleNode don't create another one\n+                return n;\n+            }\n+            return DoubleNode.valueOf(n.doubleValue());\n+        }\ndiff --git a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\nindex 275e4703..c3cf801f 100644\n--- a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n@@ -66 +66 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-            if (divisor != 0) {\n+            if (divisor != 0 && Double.isFinite(divisor)) {\n@@ -82,0 +83,5 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n+            // Handle NaN, Infinity and -Infinity\n+            if (JsonNodeTypes.isNonFiniteNumber(node)) {\n+                // Incorrect type as NaN, Infinity and -Infinity are not valid JSON numbers so return null\n+                return null;\n+            }\ndiff --git a/src/main/java/com/networknt/schema/utils/JsonNodeTypes.java b/src/main/java/com/networknt/schema/utils/JsonNodeTypes.java\nindex 51be22b3..ac33e4a2 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodeTypes.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodeTypes.java\n@@ -91,0 +92,3 @@ public class JsonNodeTypes {\n+            if (isNonFiniteNumber(node)) {\n+                return false;\n+            }\n@@ -100,0 +104,14 @@ public class JsonNodeTypes {\n+    /**\n+     * Check if the node is a number and is one of NaN, Infinity or -Infinity\n+     * \n+     * @param node to check\n+     * @return true if it is NaN, Infinity or -Infinity\n+     */\n+    public static boolean isNonFiniteNumber(JsonNode node) {\n+        if (node.isFloatingPointNumber() && !node.isBigDecimal() && !node.isBigInteger()\n+                && !Double.isFinite(node.doubleValue())) {\n+            return true;\n+        }\n+        return false;\n+    }\n+\ndiff --git a/src/main/java/com/networknt/schema/utils/TypeFactory.java b/src/main/java/com/networknt/schema/utils/TypeFactory.java\nindex c4156e1a..b5f44625 100644\n--- a/src/main/java/com/networknt/schema/utils/TypeFactory.java\n+++ b/src/main/java/com/networknt/schema/utils/TypeFactory.java\n@@ -104,0 +105,4 @@ public class TypeFactory {\n+                // Handle NaN, Infinity and -Infinity\n+                if (JsonNodeTypes.isNonFiniteNumber(node)) {\n+                    return JsonType.UNKNOWN;\n+                }"
+}

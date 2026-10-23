@@ -20,7 +20,7 @@ def freeze():
     rows = []
     touches = {}
     for index, sha in enumerate(shas, 1):
-        files = git('diff', '--name-only', sha+'^1', sha).splitlines()
+        files = git('diff', '--no-renames', '--name-only', sha+'^1', sha).splitlines()
         touches[str(index)] = files
         date, subject = git('show', '-s', '--format=%cI%n%s', sha).split('\n', 1)
         rows.append(dict(index=index, sha=sha, date=date, subject=subject,

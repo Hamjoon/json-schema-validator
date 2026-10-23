@@ -1,0 +1,16 @@
+{
+  "index": 94,
+  "sha": "8fc6913e4bcaec8ab0de91181d15310b912fbecd",
+  "parent": "3234d023706d04fe8ad58e616b23f482beb2579d",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      372
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      372
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/JsonSchema.java b/src/main/java/com/networknt/schema/JsonSchema.java\nindex 03459746..61a453b0 100644\n--- a/src/main/java/com/networknt/schema/JsonSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonSchema.java\n@@ -372 +372 @@ public class JsonSchema extends BaseJsonValidator {\n-                if (segment instanceof Number) {\n+                if (segment instanceof Number && parentNode.isArray()) {"
+}

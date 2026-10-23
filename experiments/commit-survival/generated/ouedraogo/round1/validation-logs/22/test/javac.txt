@@ -1,0 +1,16 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/GToT/TypeValidatorTest.java:16: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/GToT/TypeValidatorTest.java:36: error: cannot find symbol
+        when(validationContext.getConfig()).thenReturn(new Config());
+                                                           ^
+  symbol:   class Config
+  location: class TypeValidatorTest
+/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/GToT/TypeValidatorTest.java:162: error: cannot find symbol
+        JsonNode element = MAPPER.textNode("a");
+                                 ^
+  symbol:   method textNode(String)
+  location: variable MAPPER of type ObjectMapper
+3 errors

@@ -1,0 +1,18 @@
+{
+  "index": 180,
+  "sha": "957550991952c078798d1246e13335148b2a0d17",
+  "parent": "36f2fef3bf0376ee945aaa404cbfc92b6eca4eba",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/ExecutionContext.java": [
+      47,
+      48
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/ExecutionContext.java": [
+      47,
+      48
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/ExecutionContext.java b/src/main/java/com/networknt/schema/ExecutionContext.java\nindex 51037797..5b40719f 100644\n--- a/src/main/java/com/networknt/schema/ExecutionContext.java\n+++ b/src/main/java/com/networknt/schema/ExecutionContext.java\n@@ -47,2 +47,2 @@ public class ExecutionContext {\n-    final ArrayDeque<Schema> evaluationSchema = new ArrayDeque<>(64);\n-    final ArrayDeque<Object> evaluationSchemaPath = new ArrayDeque<>(64);\n+    final ArrayDeque<Schema> evaluationSchema = new ArrayDeque<>();\n+    final ArrayDeque<Object> evaluationSchemaPath = new ArrayDeque<>();"
+}

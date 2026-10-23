@@ -1,0 +1,20 @@
+{
+  "index": 192,
+  "sha": "f8c76599c0bda42a72ff1c905e8d99ab4fcf59db",
+  "parent": "680d7b3d93880b9a7a01875b04fd0e5ef0490d27",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/Error.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/Error.java": [
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/Error.java b/src/main/java/com/networknt/schema/Error.java\nindex 3c879728..8c721ecf 100644\n--- a/src/main/java/com/networknt/schema/Error.java\n+++ b/src/main/java/com/networknt/schema/Error.java\n@@ -64,0 +65,7 @@ public class Error {\n+    Error(String keyword, NodePath evaluationPath, SchemaLocation schemaLocation,\n+            NodePath instanceLocation, Object[] arguments, Map<String, Object> details,\n+            String messageKey, Supplier<String> messageSupplier, JsonNode instanceNode, JsonNode schemaNode) {\n+        this(keyword, evaluationPath, schemaLocation, instanceLocation, arguments, details,\n+                messageKey, messageSupplier, instanceNode, schemaNode, false);\n+    }\n+"
+}

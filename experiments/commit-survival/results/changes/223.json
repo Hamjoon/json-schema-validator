@@ -1,0 +1,56 @@
+{
+  "index": 223,
+  "sha": "0a6755dc3e34d009767899e0545c9c0aadbbe635",
+  "parent": "3c99bf44dcd2ef2a52aa477ee366416898ed0beb",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaContext.java": [
+      24,
+      36,
+      128,
+      129,
+      130,
+      131,
+      132
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      787,
+      790,
+      795
+    ],
+    "src/main/java/com/networknt/schema/dialect/Dialect.java": [
+      464
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaContext.java": [
+      35,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      216,
+      217,
+      786,
+      790,
+      793,
+      798,
+      834,
+      835,
+      836
+    ],
+    "src/main/java/com/networknt/schema/dialect/Dialect.java": [
+      28,
+      465,
+      466
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaContext.java b/src/main/java/com/networknt/schema/SchemaContext.java\nindex bd49c7d9..eea1fb8a 100644\n--- a/src/main/java/com/networknt/schema/SchemaContext.java\n+++ b/src/main/java/com/networknt/schema/SchemaContext.java\n@@ -24 +23,0 @@ import com.networknt.schema.dialect.Dialect;\n-import com.networknt.schema.keyword.AnnotationKeyword;\n@@ -36 +35 @@ public class SchemaContext {\n-    private JsonNode documentContainer;\n+    private volatile JsonNode documentContainer;\n@@ -128,5 +126,0 @@ public class SchemaContext {\n-        if (parentSchema != null && parentSchema.getSchemaNode() == this.documentContainer\n-                && !this.dialect.getKeywords().containsKey(keyword)\n-                && !keyword.equals(getSchemaRegistryConfig().getErrorMessageKeyword())) {\n-            return new AnnotationKeyword(keyword).newValidator(schemaLocation, schemaNode, parentSchema, this);\n-        }\n@@ -135,0 +130,10 @@ public class SchemaContext {\n+    /**\n+     * Whether the schema is the document container used to resolve a JSON Pointer.\n+     *\n+     * @param schema the schema being read\n+     * @return true only for the marked document root\n+     */\n+    public boolean isDocumentContainer(Schema schema) {\n+        return schema != null && schema.getSchemaNode() == this.documentContainer;\n+    }\n+\ndiff --git a/src/main/java/com/networknt/schema/SchemaRegistry.java b/src/main/java/com/networknt/schema/SchemaRegistry.java\nindex 0d74b1c1..b3d1a2d4 100644\n--- a/src/main/java/com/networknt/schema/SchemaRegistry.java\n+++ b/src/main/java/com/networknt/schema/SchemaRegistry.java\n@@ -215,0 +216,2 @@ public class SchemaRegistry {\n+    // Container loads and direct schema loads have different unknown-keyword handling.\n+    private final ConcurrentMap<SchemaLocation, Schema> documentCache = new ConcurrentHashMap<>();\n@@ -783,0 +786 @@ public class SchemaRegistry {\n+            ConcurrentMap<SchemaLocation, Schema> cache = validateLoadedSchema ? schemaCache : documentCache;\n@@ -787 +790 @@ public class SchemaRegistry {\n-            Schema cachedUriSchema = schemaCache.get(schemaUri);\n+            Schema cachedUriSchema = cache.get(schemaUri);\n@@ -790 +793 @@ public class SchemaRegistry {\n-                    cachedUriSchema = schemaCache.get(schemaUri);\n+                    cachedUriSchema = cache.get(schemaUri);\n@@ -795 +798 @@ public class SchemaRegistry {\n-                            schemaCache.put(schemaUri, cachedUriSchema);\n+                            cache.put(schemaUri, cachedUriSchema);\n@@ -830,0 +834,3 @@ public class SchemaRegistry {\n+                    if (!validateLoadedSchema) {\n+                        schemaContext.setDocumentContainer(schemaNode);\n+                    }\ndiff --git a/src/main/java/com/networknt/schema/dialect/Dialect.java b/src/main/java/com/networknt/schema/dialect/Dialect.java\nindex 52df3252..9aa2b8dd 100644\n--- a/src/main/java/com/networknt/schema/dialect/Dialect.java\n+++ b/src/main/java/com/networknt/schema/dialect/Dialect.java\n@@ -27,0 +28 @@ import com.networknt.schema.format.Format;\n+import com.networknt.schema.keyword.AnnotationKeyword;\n@@ -464 +465,2 @@ public class Dialect {\n-                kw = this.builder.unknownKeywordFactory != null\n+                kw = schemaContext.isDocumentContainer(parentSchema) ? new AnnotationKeyword(keyword)\n+                        : this.builder.unknownKeywordFactory != null"
+}

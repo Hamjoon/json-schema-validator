@@ -1,0 +1,33 @@
+{
+  "index": 222,
+  "sha": "3c99bf44dcd2ef2a52aa477ee366416898ed0beb",
+  "parent": "4072fcab5daae61e6dbdf2fb326d399716ca2ff6",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaContext.java": [],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaContext.java": [
+      24,
+      36,
+      128,
+      129,
+      130,
+      131,
+      132,
+      136,
+      137,
+      138,
+      139,
+      140
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      836,
+      837,
+      838,
+      839,
+      840
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaContext.java b/src/main/java/com/networknt/schema/SchemaContext.java\nindex 8f5efdaf..bd49c7d9 100644\n--- a/src/main/java/com/networknt/schema/SchemaContext.java\n+++ b/src/main/java/com/networknt/schema/SchemaContext.java\n@@ -23,0 +24 @@ import com.networknt.schema.dialect.Dialect;\n+import com.networknt.schema.keyword.AnnotationKeyword;\n@@ -34,0 +36 @@ public class SchemaContext {\n+    private JsonNode documentContainer;\n@@ -125,0 +128,5 @@ public class SchemaContext {\n+        if (parentSchema != null && parentSchema.getSchemaNode() == this.documentContainer\n+                && !this.dialect.getKeywords().containsKey(keyword)\n+                && !keyword.equals(getSchemaRegistryConfig().getErrorMessageKeyword())) {\n+            return new AnnotationKeyword(keyword).newValidator(schemaLocation, schemaNode, parentSchema, this);\n+        }\n@@ -128,0 +136,5 @@ public class SchemaContext {\n+    /** Marks the container before constructing the document used to resolve a fragment. */\n+    void setDocumentContainer(JsonNode documentContainer) {\n+        this.documentContainer = documentContainer;\n+    }\n+\ndiff --git a/src/main/java/com/networknt/schema/SchemaRegistry.java b/src/main/java/com/networknt/schema/SchemaRegistry.java\nindex a2d41078..0d74b1c1 100644\n--- a/src/main/java/com/networknt/schema/SchemaRegistry.java\n+++ b/src/main/java/com/networknt/schema/SchemaRegistry.java\n@@ -835,0 +836,5 @@ public class SchemaRegistry {\n+                    // Keep document keyword processing for reference resolution, but do not\n+                    // report its unknown fields as unknown keywords of the selected schema.\n+                    if (PathType.JSON_POINTER.equals(schemaUri.getFragment().getPathType())) {\n+                        schemaContext.setDocumentContainer(schemaNode);\n+                    }"
+}

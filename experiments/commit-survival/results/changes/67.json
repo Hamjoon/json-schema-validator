@@ -1,0 +1,22 @@
+{
+  "index": 67,
+  "sha": "564d8f6f8bda1d568fd140e324e65d31efdaee32",
+  "parent": "772832511a9c495ebe6c9ec8908e5505da815e73",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/IriFormat.java": [
+      20
+    ],
+    "src/main/java/com/networknt/schema/format/IriReferenceFormat.java": [
+      17
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/IriFormat.java": [
+      20
+    ],
+    "src/main/java/com/networknt/schema/format/IriReferenceFormat.java": [
+      17
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/IriFormat.java b/src/main/java/com/networknt/schema/format/IriFormat.java\nindex 150741dd..7d74429f 100644\n--- a/src/main/java/com/networknt/schema/format/IriFormat.java\n+++ b/src/main/java/com/networknt/schema/format/IriFormat.java\n@@ -20 +20 @@ public class IriFormat extends AbstractRFC3986Format {\n-            String query = uri.getQuery();\n+            String query = uri.getRawQuery();\ndiff --git a/src/main/java/com/networknt/schema/format/IriReferenceFormat.java b/src/main/java/com/networknt/schema/format/IriReferenceFormat.java\nindex 45f8bd93..aa0a0d0c 100644\n--- a/src/main/java/com/networknt/schema/format/IriReferenceFormat.java\n+++ b/src/main/java/com/networknt/schema/format/IriReferenceFormat.java\n@@ -17 +17 @@ public class IriReferenceFormat extends AbstractRFC3986Format {\n-        String query = uri.getQuery();\n+        String query = uri.getRawQuery();"
+}

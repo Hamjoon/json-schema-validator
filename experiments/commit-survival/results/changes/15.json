@@ -1,0 +1,160 @@
+{
+  "index": 15,
+  "sha": "2795d79d170d433e33629f7d244ee466a98298fd",
+  "parent": "49a44c98dcaf58de930f2b865b5ffab97dcb0423",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AbstractJsonValidator.java": [
+      96
+    ],
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      319,
+      320,
+      321,
+      322,
+      323,
+      324,
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      333,
+      338,
+      363
+    ],
+    "src/main/java/com/networknt/schema/ExecutionConfig.java": [
+      46,
+      129,
+      134,
+      144,
+      162,
+      163,
+      176,
+      178,
+      179,
+      180
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      188,
+      190
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java": [
+      131
+    ],
+    "src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java": [
+      50,
+      69
+    ],
+    "src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java": [
+      41,
+      55,
+      60
+    ],
+    "src/main/java/com/networknt/schema/output/OutputUnit.java": [
+      46,
+      86,
+      90
+    ],
+    "src/main/java/com/networknt/schema/output/OutputUnitData.java": [
+      33,
+      41,
+      73,
+      83,
+      84,
+      91
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AbstractJsonValidator.java": [
+      96
+    ],
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      318,
+      319,
+      320,
+      321,
+      322,
+      323,
+      324,
+      325,
+      326,
+      327,
+      328,
+      329,
+      330,
+      332,
+      333,
+      334,
+      335,
+      336,
+      337,
+      341,
+      342,
+      343,
+      344,
+      348,
+      373
+    ],
+    "src/main/java/com/networknt/schema/ExecutionConfig.java": [
+      46,
+      129,
+      134,
+      144,
+      162,
+      163,
+      176,
+      178,
+      179,
+      180
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      188,
+      190,
+      192
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java": [
+      131,
+      133,
+      134
+    ],
+    "src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java": [
+      50,
+      69
+    ],
+    "src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java": [
+      41,
+      55,
+      60
+    ],
+    "src/main/java/com/networknt/schema/output/OutputUnit.java": [
+      46,
+      86,
+      90
+    ],
+    "src/main/java/com/networknt/schema/output/OutputUnitData.java": [
+      18,
+      34,
+      42,
+      70,
+      75,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      106
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AbstractJsonValidator.java b/src/main/java/com/networknt/schema/AbstractJsonValidator.java\nindex b0552a6f..8dff5eb0 100644\n--- a/src/main/java/com/networknt/schema/AbstractJsonValidator.java\n+++ b/src/main/java/com/networknt/schema/AbstractJsonValidator.java\n@@ -96 +96 @@ public abstract class AbstractJsonValidator implements JsonValidator {\n-                && executionContext.getExecutionConfig().getAnnotationCollectionPredicate().test(keyword);\n+                && executionContext.getExecutionConfig().getAnnotationCollectionFilter().test(keyword);\ndiff --git a/src/main/java/com/networknt/schema/BaseJsonValidator.java b/src/main/java/com/networknt/schema/BaseJsonValidator.java\nindex 8419ea3b..f645a7ee 100644\n--- a/src/main/java/com/networknt/schema/BaseJsonValidator.java\n+++ b/src/main/java/com/networknt/schema/BaseJsonValidator.java\n@@ -317,0 +318,13 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n+    /**\n+     * Determines if the keyword exists adjacent in the evaluation path.\n+     * <p>\n+     * This does not check if the keyword exists in the current meta schema as this\n+     * can be a cross-draft case where the properties keyword is in a Draft 7 schema\n+     * and the unevaluatedProperties keyword is in an outer Draft 2020-12 schema.\n+     * <p>\n+     * The fact that the validator exists in the evaluation path implies that the\n+     * keyword was valid in whatever meta schema for that schema it was created for.\n+     * \n+     * @param keyword the keyword to check\n+     * @return true if found\n+     */\n@@ -319,12 +332,6 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-        boolean hasValidator = validationContext.getMetaSchema().getKeywords()\n-                .get(keyword) != null;\n-        if (hasValidator) {\n-            JsonSchema schema = getEvaluationParentSchema();\n-            while (schema != null) {\n-                for (JsonValidator validator : schema.getValidators()) {\n-                    if (keyword.equals(validator.getKeyword())) {\n-                        hasValidator = true;\n-                        break;\n-                    }\n-                }\n-                if (hasValidator) {\n+        boolean hasValidator = false;\n+        JsonSchema schema = getEvaluationParentSchema();\n+        while (schema != null) {\n+            for (JsonValidator validator : schema.getValidators()) {\n+                if (keyword.equals(validator.getKeyword())) {\n+                    hasValidator = true;\n@@ -333 +339,0 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-                schema = schema.getEvaluationParentSchema();\n@@ -334,0 +341,4 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n+            if (hasValidator) {\n+                break;\n+            }\n+            schema = schema.getEvaluationParentSchema();\n@@ -338 +348 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-    \n+\n@@ -363 +373 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-                && executionContext.getExecutionConfig().getAnnotationCollectionPredicate().test(keyword);\n+                && executionContext.getExecutionConfig().getAnnotationCollectionFilter().test(keyword);\ndiff --git a/src/main/java/com/networknt/schema/ExecutionConfig.java b/src/main/java/com/networknt/schema/ExecutionConfig.java\nindex f1a04569..e7a8aacb 100644\n--- a/src/main/java/com/networknt/schema/ExecutionConfig.java\n+++ b/src/main/java/com/networknt/schema/ExecutionConfig.java\n@@ -46 +46 @@ public class ExecutionConfig {\n-    private Predicate<String> annotationCollectionPredicate = keyword -> false;\n+    private Predicate<String> annotationCollectionFilter = keyword -> false;\n@@ -129 +129 @@ public class ExecutionConfig {\n-    protected boolean isAnnotationCollectionEnabled() {\n+    public boolean isAnnotationCollectionEnabled() {\n@@ -134 +134 @@ public class ExecutionConfig {\n-     * Sets whether to annotation collection is enabled.\n+     * Sets whether the annotation collection is enabled.\n@@ -144 +144 @@ public class ExecutionConfig {\n-    protected void setAnnotationCollectionEnabled(boolean annotationCollectionEnabled) {\n+    public void setAnnotationCollectionEnabled(boolean annotationCollectionEnabled) {\n@@ -162,2 +162,2 @@ public class ExecutionConfig {\n-    public Predicate<String> getAnnotationCollectionPredicate() {\n-        return annotationCollectionPredicate;\n+    public Predicate<String> getAnnotationCollectionFilter() {\n+        return annotationCollectionFilter;\n@@ -176 +176 @@ public class ExecutionConfig {\n-     * @param annotationCollectionPredicate the predicate accepting the keyword\n+     * @param annotationCollectionFilter the predicate accepting the keyword\n@@ -178,3 +178,3 @@ public class ExecutionConfig {\n-    public void setAnnotationCollectionPredicate(Predicate<String> annotationCollectionPredicate) {\n-        this.annotationCollectionPredicate = Objects.requireNonNull(annotationCollectionPredicate,\n-                \"annotationCollectionPredicate must not be null\");\n+    public void setAnnotationCollectionFilter(Predicate<String> annotationCollectionFilter) {\n+        this.annotationCollectionFilter = Objects.requireNonNull(annotationCollectionFilter,\n+                \"annotationCollectionFilter must not be null\");\ndiff --git a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\nindex b75881b8..784ecaa9 100644\n--- a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n@@ -188 +188 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n-                // Report these as unevaluated paths or not matching the unevalutedItems schema\n+                // Report these as unevaluated paths or not matching the unevaluatedItems schema\n@@ -190 +190 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n-                        .map(m -> message().instanceNode(node).instanceLocation(m.getInstanceLocation())\n+                        .map(m -> message().instanceNode(node).instanceLocation(instanceLocation)\n@@ -191,0 +192 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n+                                .arguments(m.getInstanceLocation().getName(-1))\ndiff --git a/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java b/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\nindex 441afa3a..c3259785 100644\n--- a/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\n+++ b/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\n@@ -131 +131 @@ public class UnevaluatedPropertiesValidator extends BaseJsonValidator {\n-                    .map(m -> message().instanceNode(node).instanceLocation(m.getInstanceLocation())\n+                    .map(m -> message().instanceNode(node).instanceLocation(instanceLocation)\n@@ -132,0 +133,2 @@ public class UnevaluatedPropertiesValidator extends BaseJsonValidator {\n+                            .arguments(m.getInstanceLocation().getName(-1))\n+                            .property(m.getInstanceLocation().getName(-1))\ndiff --git a/src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java b/src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java\nindex 51950bae..d69c6201 100644\n--- a/src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java\n+++ b/src/main/java/com/networknt/schema/output/HierarchicalOutputUnitFormatter.java\n@@ -50 +50 @@ public class HierarchicalOutputUnitFormatter {\n-        Map<OutputUnitKey, Map<String, String>> errors = data.getErrors();\n+        Map<OutputUnitKey, Map<String, Object>> errors = data.getErrors();\n@@ -69 +69 @@ public class HierarchicalOutputUnitFormatter {\n-        for (Entry<OutputUnitKey, Map<String, String>> error : errors.entrySet()) {\n+        for (Entry<OutputUnitKey, Map<String, Object>> error : errors.entrySet()) {\ndiff --git a/src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java b/src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java\nindex 00904858..290a1a52 100644\n--- a/src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java\n+++ b/src/main/java/com/networknt/schema/output/ListOutputUnitFormatter.java\n@@ -41 +41 @@ public class ListOutputUnitFormatter {\n-        Map<OutputUnitKey, Map<String, String>> errors = data.getErrors();\n+        Map<OutputUnitKey, Map<String, Object>> errors = data.getErrors();\n@@ -55 +55 @@ public class ListOutputUnitFormatter {\n-            Map<String, String> errorMap = errors.get(key);\n+            Map<String, Object> errorMap = errors.get(key);\n@@ -60 +60 @@ public class ListOutputUnitFormatter {\n-                for (Entry<String, String> errorEntry : errorMap.entrySet()) {\n+                for (Entry<String, Object> errorEntry : errorMap.entrySet()) {\ndiff --git a/src/main/java/com/networknt/schema/output/OutputUnit.java b/src/main/java/com/networknt/schema/output/OutputUnit.java\nindex 7f0dac94..fa63534b 100644\n--- a/src/main/java/com/networknt/schema/output/OutputUnit.java\n+++ b/src/main/java/com/networknt/schema/output/OutputUnit.java\n@@ -46 +46 @@ public class OutputUnit {\n-    private Map<String, String> errors = null;\n+    private Map<String, Object> errors = null;\n@@ -86 +86 @@ public class OutputUnit {\n-    public Map<String, String> getErrors() {\n+    public Map<String, Object> getErrors() {\n@@ -90 +90 @@ public class OutputUnit {\n-    public void setErrors(Map<String, String> errors) {\n+    public void setErrors(Map<String, Object> errors) {\ndiff --git a/src/main/java/com/networknt/schema/output/OutputUnitData.java b/src/main/java/com/networknt/schema/output/OutputUnitData.java\nindex b6ab108c..e52d3a10 100644\n--- a/src/main/java/com/networknt/schema/output/OutputUnitData.java\n+++ b/src/main/java/com/networknt/schema/output/OutputUnitData.java\n@@ -17,0 +18 @@ package com.networknt.schema.output;\n+import java.util.ArrayList;\n@@ -33 +34 @@ public class OutputUnitData {\n-    private final Map<OutputUnitKey, Map<String, String>> errors = new LinkedHashMap<>();\n+    private final Map<OutputUnitKey, Map<String, Object>> errors = new LinkedHashMap<>();\n@@ -41 +42 @@ public class OutputUnitData {\n-    public Map<OutputUnitKey, Map<String, String>> getErrors() {\n+    public Map<OutputUnitKey, Map<String, Object>> getErrors() {\n@@ -68,0 +70 @@ public class OutputUnitData {\n+    @SuppressWarnings(\"unchecked\")\n@@ -73 +75 @@ public class OutputUnitData {\n-        Map<OutputUnitKey, Map<String, String>> errors = data.errors;\n+        Map<OutputUnitKey, Map<String, Object>> errors = data.errors;\n@@ -83,2 +85,15 @@ public class OutputUnitData {\n-            Map<String, String> errorMap = errors.computeIfAbsent(key, k -> new LinkedHashMap<>());\n-            errorMap.put(assertion.getType(), formatMessage(assertion.getMessage()));\n+            Map<String, Object> errorMap = errors.computeIfAbsent(key, k -> new LinkedHashMap<>());\n+            Object value = errorMap.get(assertion.getType());\n+            if (value == null) {\n+                errorMap.put(assertion.getType(), formatMessage(assertion.getMessage()));\n+            } else {\n+                // Existing error, make it into a list\n+                if (value instanceof List) {\n+                    ((List<String>) value).add(formatMessage(assertion.getMessage()));\n+                } else {\n+                    List<String> values = new ArrayList<>();\n+                    values.add(value.toString());\n+                    values.add(formatMessage(assertion.getMessage()));\n+                    errorMap.put(assertion.getType(), values);\n+                }\n+            }\n@@ -91 +106 @@ public class OutputUnitData {\n-                if (executionContext.getExecutionConfig().getAnnotationCollectionPredicate()\n+                if (executionContext.getExecutionConfig().getAnnotationCollectionFilter()"
+}

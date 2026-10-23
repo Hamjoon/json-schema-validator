@@ -1,0 +1,32 @@
+{
+  "index": 20,
+  "sha": "51fd82b420c3abde014f180ea109155de0d36480",
+  "parent": "61bf64a6c9c8bd3577ff6cfdcad8baa5fcddf2b4",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      109,
+      110,
+      111,
+      113
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      123
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AbsoluteIri.java b/src/main/java/com/networknt/schema/AbsoluteIri.java\nindex 687455b0..d8f793e6 100644\n--- a/src/main/java/com/networknt/schema/AbsoluteIri.java\n+++ b/src/main/java/com/networknt/schema/AbsoluteIri.java\n@@ -109,3 +109,13 @@ public class AbsoluteIri {\n-                while (iri.startsWith(\"../\")) {\n-                    base = parent(base, scheme);\n-                    iri = iri.substring(3);\n+\n+                String[] iriParts = iri.split(\"/\");\n+                for (int x = 0; x < iriParts.length; x++) {\n+                    if (\"..\".equals(iriParts[x])) {\n+                        base = parent(base, scheme);\n+                    } else if (\".\".equals(iriParts[x])) {\n+                        // skip\n+                    } else {\n+                        base = base + \"/\" + iriParts[x];\n+                    }\n+                }\n+                if (iri.endsWith(\"/\")) {\n+                    base = base + \"/\";\n@@ -113 +123 @@ public class AbsoluteIri {\n-                return base + \"/\" + iri;\n+                return base;"
+}

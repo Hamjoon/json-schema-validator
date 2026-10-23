@@ -1,0 +1,109 @@
+{
+  "index": 173,
+  "sha": "4edf20362beef597128572186bfcb4aada6faa52",
+  "parent": "7407dddb9f3b1e1e066ec4a81fe44cc40a8e47b0",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java": [
+      39
+    ],
+    "src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java": [],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java": [
+      33,
+      43
+    ],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java": [
+      25,
+      26,
+      44
+    ],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java": [],
+    "src/main/java/com/networknt/schema/regex/RegularExpression.java": [
+      14,
+      17
+    ],
+    "src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java": [
+      22,
+      38,
+      39,
+      40,
+      41,
+      42,
+      45,
+      46,
+      47
+    ],
+    "src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java": [
+      18,
+      49,
+      50,
+      51,
+      52,
+      53
+    ],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java": [
+      31,
+      32,
+      33,
+      34,
+      37,
+      47
+    ],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java": [
+      25,
+      26,
+      31,
+      45,
+      46,
+      47,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78
+    ],
+    "src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java": [
+      18,
+      19,
+      20,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77
+    ],
+    "src/main/java/com/networknt/schema/regex/RegularExpression.java": [
+      14,
+      15,
+      18
+    ],
+    "src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java": [
+      18,
+      19,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java b/src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java\nindex 333273e3..a14a9cd6 100644\n--- a/src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java\n+++ b/src/main/java/com/networknt/schema/regex/AllowRegularExpressionFactory.java\n@@ -21,0 +22 @@ import com.networknt.schema.Error;\n+import com.networknt.schema.SchemaContext;\n@@ -36,0 +38,5 @@ public class AllowRegularExpressionFactory implements RegularExpressionFactory {\n+        return getRegularExpression(regex, null);\n+    }\n+\n+    @Override\n+    public RegularExpression getRegularExpression(String regex, SchemaContext schemaContext) {\n@@ -39 +45,3 @@ public class AllowRegularExpressionFactory implements RegularExpressionFactory {\n-            return this.delegate.getRegularExpression(regex);\n+            return schemaContext != null\n+                    ? this.delegate.getRegularExpression(regex, schemaContext)\n+                    : this.delegate.getRegularExpression(regex);\ndiff --git a/src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java b/src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java\nindex 72c5fecd..0158599b 100644\n--- a/src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java\n+++ b/src/main/java/com/networknt/schema/regex/ECMAScriptRegularExpressionFactory.java\n@@ -17,0 +18 @@ package com.networknt.schema.regex;\n+import com.networknt.schema.SchemaContext;\n@@ -47,0 +49,5 @@ public class ECMAScriptRegularExpressionFactory implements RegularExpressionFact\n+\n+    @Override\n+    public RegularExpression getRegularExpression(String regex, SchemaContext schemaContext) {\n+        return DELEGATE.getRegularExpression(regex, schemaContext);\n+    }\ndiff --git a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java\nindex 0ab33cd8..6cbd67a2 100644\n--- a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java\n+++ b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpression.java\n@@ -30,0 +31,4 @@ class GraalJSRegularExpression implements RegularExpression {\n+        this(regex, context, true);\n+    }\n+\n+    GraalJSRegularExpression(String regex, GraalJSRegularExpressionContext context, boolean unicode) {\n@@ -33 +37 @@ class GraalJSRegularExpression implements RegularExpression {\n-            this.function = context.getRegExpBuilder().execute(regex);\n+            this.function = context.getRegExpBuilder(unicode).execute(regex);\n@@ -43 +47 @@ class GraalJSRegularExpression implements RegularExpression {\n-}\n\\ No newline at end of file\n+}\ndiff --git a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java\nindex 14c63a8a..574bf00c 100644\n--- a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java\n+++ b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionContext.java\n@@ -25,2 +25,2 @@ public class GraalJSRegularExpressionContext {\n-    private static final String SOURCE = \"pattern => {\\n\"\n-            + \"    const regex = new RegExp(pattern, 'u');\\n\"\n+    private static final String SOURCE = \"flags => pattern => {\\n\"\n+            + \"    const regex = new RegExp(pattern, flags);\\n\"\n@@ -30,0 +31 @@ public class GraalJSRegularExpressionContext {\n+    private final Value nonUnicodeRegExpBuilder;\n@@ -44 +45,3 @@ public class GraalJSRegularExpressionContext {\n-            this.regExpBuilder = this.context.eval(\"js\", SOURCE);\n+            Value builder = this.context.eval(\"js\", SOURCE);\n+            this.nonUnicodeRegExpBuilder = builder.execute(\"\");\n+            this.regExpBuilder = builder.execute(\"u\");\n@@ -65,0 +69,10 @@ public class GraalJSRegularExpressionContext {\n+\n+    /**\n+     * Gets the RegExp builder.\n+     *\n+     * @param unicode whether the unicode flag should be used\n+     * @return the regexp builder\n+     */\n+    public Value getRegExpBuilder(boolean unicode) {\n+        return unicode ? regExpBuilder : nonUnicodeRegExpBuilder;\n+    }\ndiff --git a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java\nindex 113da020..c53b0e8b 100644\n--- a/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java\n+++ b/src/main/java/com/networknt/schema/regex/GraalJSRegularExpressionFactory.java\n@@ -17,0 +18,3 @@ package com.networknt.schema.regex;\n+import com.networknt.schema.SchemaContext;\n+import com.networknt.schema.SpecificationVersion;\n+\n@@ -64,0 +68,10 @@ public class GraalJSRegularExpressionFactory implements RegularExpressionFactory\n+\n+    @Override\n+    public RegularExpression getRegularExpression(String regex, SchemaContext schemaContext) {\n+        SpecificationVersion specificationVersion = schemaContext != null\n+                ? schemaContext.getDialect().getSpecificationVersion()\n+                : null;\n+        boolean unicode = specificationVersion == null\n+                || specificationVersion.getOrder() >= SpecificationVersion.DRAFT_2019_09.getOrder();\n+        return new GraalJSRegularExpression(regex, this.context, unicode);\n+    }\ndiff --git a/src/main/java/com/networknt/schema/regex/RegularExpression.java b/src/main/java/com/networknt/schema/regex/RegularExpression.java\nindex e3cb6950..830ecb7a 100644\n--- a/src/main/java/com/networknt/schema/regex/RegularExpression.java\n+++ b/src/main/java/com/networknt/schema/regex/RegularExpression.java\n@@ -14 +14,2 @@ public interface RegularExpression {\n-        return schemaContext.getSchemaRegistryConfig().getRegularExpressionFactory().getRegularExpression(regex);\n+        return schemaContext.getSchemaRegistryConfig().getRegularExpressionFactory().getRegularExpression(regex,\n+                schemaContext);\n@@ -17 +18 @@ public interface RegularExpression {\n-}\n\\ No newline at end of file\n+}\ndiff --git a/src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java b/src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java\nindex 5aca068b..1c9f9dc7 100644\n--- a/src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java\n+++ b/src/main/java/com/networknt/schema/regex/RegularExpressionFactory.java\n@@ -17,0 +18,2 @@ package com.networknt.schema.regex;\n+import com.networknt.schema.SchemaContext;\n+\n@@ -28,0 +31,11 @@ public interface RegularExpressionFactory {\n+\n+    /**\n+     * Gets a {@link RegularExpression} in the context of the schema being evaluated.\n+     *\n+     * @param regex the regular expression text value\n+     * @param schemaContext the schema context\n+     * @return the regular expression\n+     */\n+    default RegularExpression getRegularExpression(String regex, SchemaContext schemaContext) {\n+        return getRegularExpression(regex);\n+    }"
+}
