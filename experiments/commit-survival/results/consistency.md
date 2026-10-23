@@ -11,3 +11,5 @@
   "build_fail_indices": []
 }
 ```
+
+Coverage: identical executable line sets across all three groups at 181 indices. Required indices: 181. Missing measurements: 0 (enumerated in coverage-consistency.json).
