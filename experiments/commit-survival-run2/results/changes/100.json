@@ -1,0 +1,24 @@
+{
+  "index": 100,
+  "sha": "b160c113eca5c9d6a0f7fed95b4f1b0ca568b65e",
+  "parent": "a9e8a49efcb83f68ebdfed5b2c5cd949916e67ba",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/EnumValidator.java": [
+      61
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/EnumValidator.java": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      69
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/EnumValidator.java b/src/main/java/com/networknt/schema/EnumValidator.java\nindex 3c2cab47..db87130c 100644\n--- a/src/main/java/com/networknt/schema/EnumValidator.java\n+++ b/src/main/java/com/networknt/schema/EnumValidator.java\n@@ -39,0 +40,8 @@ public class EnumValidator extends BaseJsonValidator implements JsonValidator {\n+    static String asText(JsonNode node) {\n+        if (node.isObject() || node.isArray() || node.isTextual()) {\n+            // toString for isTextual is so that there are quotes\n+            return node.toString();\n+        }\n+        return node.asText();\n+    }\n+    \n@@ -61 +69 @@ public class EnumValidator extends BaseJsonValidator implements JsonValidator {\n-                sb.append(n.asText());\n+                sb.append(asText(n));"
+}

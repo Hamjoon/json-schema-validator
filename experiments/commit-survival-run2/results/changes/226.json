@@ -1,0 +1,28 @@
+{
+  "index": 226,
+  "sha": "23ef88ad8b79a3f09a32bb0a40a9899094e69af1",
+  "parent": "1c6762d848fc3e016dc5db6700446aa5a9d2abf2",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      154,
+      155,
+      187,
+      188,
+      195
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      154,
+      155,
+      156,
+      157,
+      189,
+      190,
+      191,
+      192,
+      199
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\nindex dfae2f5e..76f551d9 100644\n--- a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n@@ -154,2 +154,4 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-     * for integral and BigDecimal nodes. Double and Float nodes are converted with\n-     * {@link BigDecimal#valueOf(double)} using their {@code doubleValue()}.\n+     * for integral and BigDecimal nodes. Finite Double and Float nodes are converted\n+     * with {@link BigDecimal#valueOf(double)} using their {@code doubleValue()}.\n+     * Non-finite floating-point nodes return null, so this constraint is ignored\n+     * for those inputs.\n@@ -187,2 +189,4 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-     * for integral and BigDecimal nodes. Double and Float nodes are converted with\n-     * {@link BigDecimal#valueOf(double)} using their {@code doubleValue()}.\n+     * for integral and BigDecimal nodes. Finite Double and Float nodes are converted\n+     * with {@link BigDecimal#valueOf(double)} using their {@code doubleValue()}.\n+     * Non-finite floating-point nodes return null, so this constraint is ignored\n+     * for those inputs.\n@@ -195 +199 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-     * @return the dividend or null if the type is incorrect\n+     * @return the dividend or null if the type is incorrect or the floating-point value is non-finite"
+}

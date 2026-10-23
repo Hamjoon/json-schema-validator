@@ -1,0 +1,88 @@
+{
+  "index": 41,
+  "sha": "6f4445591e5a1f410a9494863a4132f52c6e507a",
+  "parent": "0f983b05ed7478c55db1dc0d820f60f0becaf787",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      109,
+      140
+    ],
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      117
+    ],
+    "src/main/java/com/networknt/schema/DiscriminatorContext.java": [],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      124,
+      125,
+      143
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      109,
+      110,
+      111,
+      142,
+      143
+    ],
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": [
+      117
+    ],
+    "src/main/java/com/networknt/schema/DiscriminatorContext.java": [
+      13,
+      14,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      46,
+      47,
+      48,
+      49
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      125,
+      126,
+      127,
+      128,
+      129,
+      132,
+      133,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      157,
+      158
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AnyOfValidator.java b/src/main/java/com/networknt/schema/AnyOfValidator.java\nindex 7df65010..931c4e33 100644\n--- a/src/main/java/com/networknt/schema/AnyOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AnyOfValidator.java\n@@ -109 +109,3 @@ public class AnyOfValidator extends BaseJsonValidator {\n-                        if (executionContext.getCurrentDiscriminatorContext().isDiscriminatorMatchFound()) {\n+                        DiscriminatorContext currentDiscriminatorContext = executionContext.getCurrentDiscriminatorContext();\n+                        if (currentDiscriminatorContext.isDiscriminatorMatchFound()\n+                                || currentDiscriminatorContext.isDiscriminatorIgnore()) {\n@@ -140 +142,2 @@ public class AnyOfValidator extends BaseJsonValidator {\n-                    && executionContext.getCurrentDiscriminatorContext().isActive()) {\n+                    && executionContext.getCurrentDiscriminatorContext().isActive()\n+                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorIgnore()) {\ndiff --git a/src/main/java/com/networknt/schema/BaseJsonValidator.java b/src/main/java/com/networknt/schema/BaseJsonValidator.java\nindex 75c2a08b..eebcd9c7 100644\n--- a/src/main/java/com/networknt/schema/BaseJsonValidator.java\n+++ b/src/main/java/com/networknt/schema/BaseJsonValidator.java\n@@ -117 +117 @@ public abstract class BaseJsonValidator extends ValidationMessageHandler impleme\n-            currentDiscriminatorContext.markMatch();\n+            currentDiscriminatorContext.markIgnore();\ndiff --git a/src/main/java/com/networknt/schema/DiscriminatorContext.java b/src/main/java/com/networknt/schema/DiscriminatorContext.java\nindex 5ffeac39..1ab2ddd7 100644\n--- a/src/main/java/com/networknt/schema/DiscriminatorContext.java\n+++ b/src/main/java/com/networknt/schema/DiscriminatorContext.java\n@@ -12,0 +13,2 @@ public class DiscriminatorContext {\n+    private boolean discriminatorIgnore = false;\n+\n@@ -28,0 +31,11 @@ public class DiscriminatorContext {\n+    /**\n+     * Indicate that discriminator processing should be ignored.\n+     * <p>\n+     * This is used when the discriminator property value is missing from the data.\n+     * <p>\n+     * See issue #436 for background.\n+     */\n+    public void markIgnore() {\n+        this.discriminatorIgnore = true;\n+    }\n+\n@@ -32,0 +46,4 @@ public class DiscriminatorContext {\n+    public boolean isDiscriminatorIgnore() {\n+        return this.discriminatorIgnore;\n+    }\n+\ndiff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex 3a5b91a1..3ba564a4 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -113,8 +113,11 @@ public class OneOfValidator extends BaseJsonValidator {\n-                        String discriminatorPropertyValue = node.get(discriminator.getPropertyName()).asText();\n-                        discriminatorPropertyValue = discriminator.getMapping().getOrDefault(discriminatorPropertyValue,\n-                                discriminatorPropertyValue);\n-                        JsonNode refNode = schema.getSchemaNode().get(\"$ref\");\n-                        if (refNode != null) {\n-                            String ref = refNode.asText();\n-                            if (ref.equals(discriminatorPropertyValue) || ref.endsWith(\"/\" + discriminatorPropertyValue)) {\n-                                executionContext.getCurrentDiscriminatorContext().markMatch();\n+                        JsonNode discriminatorPropertyNode = node.get(discriminator.getPropertyName());\n+                        if (discriminatorPropertyNode != null) {\n+                            String discriminatorPropertyValue = discriminatorPropertyNode.asText();\n+                            discriminatorPropertyValue = discriminator.getMapping().getOrDefault(discriminatorPropertyValue,\n+                                    discriminatorPropertyValue);\n+                            JsonNode refNode = schema.getSchemaNode().get(\"$ref\");\n+                            if (refNode != null) {\n+                                String ref = refNode.asText();\n+                                if (ref.equals(discriminatorPropertyValue) || ref.endsWith(\"/\" + discriminatorPropertyValue)) {\n+                                    executionContext.getCurrentDiscriminatorContext().markMatch();\n+                                }\n@@ -121,0 +125,5 @@ public class OneOfValidator extends BaseJsonValidator {\n+                        } else {\n+                            // See issue 436 where the condition was relaxed to not cause an assertion\n+                            // due to missing discriminator property value\n+                            // Also see BaseJsonValidator#checkDiscriminatorMatch \n+                            executionContext.getCurrentDiscriminatorContext().markIgnore();\n@@ -124,2 +132,2 @@ public class OneOfValidator extends BaseJsonValidator {\n-                    boolean discriminatorMatchFound = executionContext.getCurrentDiscriminatorContext().isDiscriminatorMatchFound();\n-                    if (discriminatorMatchFound && childErrors == null) {\n+                    DiscriminatorContext currentDiscriminatorContext = executionContext.getCurrentDiscriminatorContext();\n+                    if (currentDiscriminatorContext.isDiscriminatorMatchFound() && childErrors == null) {\n@@ -129,0 +138,6 @@ public class OneOfValidator extends BaseJsonValidator {\n+                    } else if (currentDiscriminatorContext.isDiscriminatorIgnore()) {\n+                        // This is the normal handling when discriminators aren't enabled\n+                        if (childErrors == null) {\n+                            childErrors = new SetView<>();\n+                        }\n+                        childErrors.union(schemaErrors);\n@@ -143 +157,2 @@ public class OneOfValidator extends BaseJsonValidator {\n-                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorMatchFound()) {\n+                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorMatchFound()\n+                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorIgnore()) {"
+}

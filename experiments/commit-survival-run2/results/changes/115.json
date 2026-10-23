@@ -1,0 +1,18 @@
+{
+  "index": 115,
+  "sha": "578a91f1b50d17340f13f3d7dc6b754e93b451c6",
+  "parent": "2fb347ec65b2c950017de7fa79be165b0995ae91",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/Version4.java": [
+      29
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/Version4.java": [
+      29,
+      30,
+      31
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/Version4.java b/src/main/java/com/networknt/schema/Version4.java\nindex 26406263..84ad7138 100644\n--- a/src/main/java/com/networknt/schema/Version4.java\n+++ b/src/main/java/com/networknt/schema/Version4.java\n@@ -29 +29,3 @@ public class Version4 implements JsonSchemaVersion {\n-                            new AnnotationKeyword(\"exampleSetFlag\")\n+                            new AnnotationKeyword(\"exampleSetFlag\"),\n+                            new NonValidationKeyword(\"exclusiveMinimum\"), // exclusiveMinimum boolean handled by minimum validator\n+                            new NonValidationKeyword(\"exclusiveMaximum\")  // exclusiveMaximum boolean handled by maximum validator"
+}

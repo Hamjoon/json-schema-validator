@@ -1,0 +1,24 @@
+{
+  "index": 196,
+  "sha": "81efb27647c14f42fad0712a10f9b730ddcf0f68",
+  "parent": "8716b5b6359031589bb2db99815cd0b1cefe51f0",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java": [
+      119,
+      134,
+      157
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java": [
+      119,
+      134,
+      157,
+      220,
+      221,
+      222,
+      223
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java b/src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java\nindex 0e01e7d4..a2811a7a 100644\n--- a/src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/DiscriminatorValidator.java\n@@ -119 +119 @@ public class DiscriminatorValidator extends BaseKeywordValidator {\n-                throw new SchemaException(\"Schema at \" + this.schemaLocation\n+                throw new SchemaException(\"Schema at \" + formatSchemaLocation()\n@@ -134 +134 @@ public class DiscriminatorValidator extends BaseKeywordValidator {\n-                throw new SchemaException(\"Schema at \" + this.schemaLocation\n+                throw new SchemaException(\"Schema at \" + formatSchemaLocation()\n@@ -157 +157 @@ public class DiscriminatorValidator extends BaseKeywordValidator {\n-                            \"Schema at \" + this.schemaLocation + \" is mapping that has already been set for \"\n+                            \"Schema at \" + formatSchemaLocation() + \" is mapping that has already been set for \"\n@@ -219,0 +220,4 @@ public class DiscriminatorValidator extends BaseKeywordValidator {\n+\n+    private String formatSchemaLocation() {\n+        return this.schemaLocation.toString(this.schemaContext.getSchemaRegistryConfig().getPathType());\n+    }"
+}

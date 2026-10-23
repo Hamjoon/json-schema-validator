@@ -1,0 +1,39 @@
+{
+  "index": 191,
+  "sha": "680d7b3d93880b9a7a01875b04fd0e5ef0490d27",
+  "parent": "18539a8265f79a9ceda45be6e42b36eba5f377e5",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/Error.java": [
+      45,
+      66,
+      387
+    ],
+    "src/main/java/com/networknt/schema/MessageSourceError.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/Error.java": [
+      45,
+      63,
+      67,
+      68,
+      80,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      264,
+      401,
+      402
+    ],
+    "src/main/java/com/networknt/schema/MessageSourceError.java": [
+      67
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/Error.java b/src/main/java/com/networknt/schema/Error.java\nindex 7322d3b9..3c879728 100644\n--- a/src/main/java/com/networknt/schema/Error.java\n+++ b/src/main/java/com/networknt/schema/Error.java\n@@ -45 +45 @@ import java.util.function.Supplier;\n-@JsonIgnoreProperties({ \"messageSupplier\", \"schemaNode\", \"instanceNode\" })\n+@JsonIgnoreProperties({ \"messageSupplier\", \"schemaNode\", \"instanceNode\", \"customMessage\" })\n@@ -62,0 +63 @@ public class Error {\n+    private final boolean customMessage;\n@@ -66 +67,2 @@ public class Error {\n-            String messageKey, Supplier<String> messageSupplier, JsonNode instanceNode, JsonNode schemaNode) {\n+            String messageKey, Supplier<String> messageSupplier, JsonNode instanceNode, JsonNode schemaNode,\n+            boolean customMessage) {\n@@ -77,0 +80 @@ public class Error {\n+        this.customMessage = customMessage;\n@@ -174,0 +178,10 @@ public class Error {\n+    /**\n+     * Returns whether the error message was supplied by the schema through the\n+     * configured error message keyword.\n+     *\n+     * @return true if the schema supplied the error message\n+     */\n+    public boolean isCustomMessage() {\n+        return customMessage;\n+    }\n+\n@@ -250,0 +264 @@ public class Error {\n+        protected boolean customMessage;\n@@ -387 +401,2 @@ public class Error {\n-                    arguments, details, messageKey, messageSupplier, this.instanceNode, this.schemaNode);\n+                    arguments, details, messageKey, messageSupplier, this.instanceNode, this.schemaNode,\n+                    this.customMessage);\ndiff --git a/src/main/java/com/networknt/schema/MessageSourceError.java b/src/main/java/com/networknt/schema/MessageSourceError.java\nindex eb8ca652..fc996739 100644\n--- a/src/main/java/com/networknt/schema/MessageSourceError.java\n+++ b/src/main/java/com/networknt/schema/MessageSourceError.java\n@@ -66,0 +67 @@ public class MessageSourceError {\n+                    this.customMessage = true;"
+}

@@ -1,0 +1,47 @@
+{
+  "index": 143,
+  "sha": "5c85cd5648f1fe35f143c11cbd743d262aed08bf",
+  "parent": "e481431d00a6ba4e65396852c49548973578dce1",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      60,
+      61,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      60,
+      61,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      79,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/TimeFormat.java b/src/main/java/com/networknt/schema/format/TimeFormat.java\nindex 7ded636e..17327ddc 100644\n--- a/src/main/java/com/networknt/schema/format/TimeFormat.java\n+++ b/src/main/java/com/networknt/schema/format/TimeFormat.java\n@@ -60,2 +60,2 @@ public class TimeFormat implements Format {\n-            long hr = accessor.getLong(HOUR_OF_DAY) - offset / 60;\n-            long min = accessor.getLong(MINUTE_OF_HOUR) - offset % 60;\n+            long hr = accessor.getLong(HOUR_OF_DAY);\n+            long min = accessor.getLong(MINUTE_OF_HOUR);\n@@ -63,0 +64,8 @@ public class TimeFormat implements Format {\n+            boolean isStandardTimeRange = (sec <= 59 && min <= 59 && hr <= 23);\n+            if (isStandardTimeRange) {\n+                return true;\n+            }\n+            // Leap second check normalize to UTC to check if 23:59:60Z\n+            hr = hr - offset / 60;\n+            min = min - offset % 60;\n+\n@@ -71,6 +79 @@ public class TimeFormat implements Format {\n-\n-            boolean isStandardTimeRange = (sec <= 59 && min <= 59 && hr <= 23);\n-            boolean isSpecialCaseEndOfDay = (sec == 60 && min == 59 && hr == 23);\n-\n-            return isStandardTimeRange\n-                    || isSpecialCaseEndOfDay;\n+            return isSpecialCaseLeapSecond(sec, min, hr);\n@@ -82,0 +86,14 @@ public class TimeFormat implements Format {\n+    /**\n+     * Determines if it is a valid leap second.\n+     *\n+     * See https://datatracker.ietf.org/doc/html/rfc3339#appendix-D\n+     *\n+     * @param sec second\n+     * @param min minute\n+     * @param hr  hour\n+     * @return true if it is a valid leap second\n+     */\n+    private boolean isSpecialCaseLeapSecond(long sec, long min, long hr) {\n+        return (sec == 60 && min == 59 && hr == 23);\n+    }\n+"
+}

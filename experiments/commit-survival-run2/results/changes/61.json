@@ -1,0 +1,57 @@
+{
+  "index": 61,
+  "sha": "bce01561e08616cd786df51a1eea7c0e06cf5f7e",
+  "parent": "bc61ef333401615bb6086cecbf02e6b0c787dfce",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      233
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      18,
+      19,
+      20,
+      21,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      18,
+      19,
+      20,
+      236,
+      237,
+      238,
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245,
+      246,
+      247,
+      248,
+      249,
+      250
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      60
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaLocation.java b/src/main/java/com/networknt/schema/SchemaLocation.java\nindex 1ded8240..7fa564be 100644\n--- a/src/main/java/com/networknt/schema/SchemaLocation.java\n+++ b/src/main/java/com/networknt/schema/SchemaLocation.java\n@@ -17,0 +18,3 @@ package com.networknt.schema;\n+import java.io.UnsupportedEncodingException;\n+import java.net.URLDecoder;\n+import java.nio.charset.StandardCharsets;\n@@ -233 +236,15 @@ public class SchemaLocation {\n-                    fragment = fragment.append(fragmentPart.toString());\n+                    String fragmentPartString = fragmentPart.toString();\n+                    if (PathType.JSON_POINTER.equals(fragment.getPathType())) {\n+                        if (fragmentPartString.contains(\"~\")) {\n+                            fragmentPartString = fragmentPartString.replace(\"~1\", \"/\");\n+                            fragmentPartString = fragmentPartString.replace(\"~0\", \"~\");\n+                        }\n+                        if (fragmentPartString.contains(\"%\")) {\n+                            try {\n+                                fragmentPartString = URLDecoder.decode(fragmentPartString, StandardCharsets.UTF_8.toString());\n+                            } catch (UnsupportedEncodingException e) {\n+                                // Do nothing\n+                            }\n+                        }\n+                    }\n+                    fragment = fragment.append(fragmentPartString);\ndiff --git a/src/main/java/com/networknt/schema/utils/JsonNodes.java b/src/main/java/com/networknt/schema/utils/JsonNodes.java\nindex 56539595..5cbf7cc1 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodes.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodes.java\n@@ -18,4 +17,0 @@ package com.networknt.schema.utils;\n-import java.io.UnsupportedEncodingException;\n-import java.net.URLDecoder;\n-import java.nio.charset.StandardCharsets;\n-\n@@ -64,15 +60 @@ public class JsonNodes {\n-            // In the case of string this represents an escaped json pointer and thus does not reflect the property directly\n-            String unescaped = propertyOrIndex.toString();\n-            if (unescaped.contains(\"~\")) {\n-                unescaped = unescaped.replace(\"~1\", \"/\");\n-                unescaped = unescaped.replace(\"~0\", \"~\");\n-            }\n-            if (unescaped.contains(\"%\")) {\n-                try {\n-                    unescaped = URLDecoder.decode(unescaped, StandardCharsets.UTF_8.toString());\n-                } catch (UnsupportedEncodingException e) {\n-                    // Do nothing\n-                }\n-            }\n-            \n-            value = node.get(unescaped);\n+            value = node.get(propertyOrIndex.toString());"
+}

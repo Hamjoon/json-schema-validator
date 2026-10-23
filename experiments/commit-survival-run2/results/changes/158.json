@@ -1,0 +1,70 @@
+{
+  "index": 158,
+  "sha": "ad0f41bd2c1114a4ca87810a269a3336f639ffcd",
+  "parent": "54d1b71954f8dd2ff50bafa956c220278f6a243f",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      221,
+      222,
+      223
+    ],
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      50,
+      69
+    ],
+    "src/main/java/com/networknt/schema/keyword/PropertiesValidator.java": [
+      66
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/MissingSchemaKeywordException.java": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ],
+    "src/main/java/com/networknt/schema/SchemaRegistry.java": [
+      549,
+      550,
+      551,
+      552
+    ],
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      50,
+      69
+    ],
+    "src/main/java/com/networknt/schema/keyword/PropertiesValidator.java": [
+      60,
+      61,
+      62,
+      63,
+      70
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/MissingSchemaKeywordException.java b/src/main/java/com/networknt/schema/MissingSchemaKeywordException.java\nnew file mode 100644\nindex 00000000..08076086\n--- /dev/null\n+++ b/src/main/java/com/networknt/schema/MissingSchemaKeywordException.java\n@@ -0,0 +1,29 @@\n+/*\n+ * Copyright (c) 2025 the original author or authors.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ *      http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n+package com.networknt.schema;\n+\n+/**\n+ * Thrown when the $schema keyword is expected as no default dialect id was\n+ * specified.\n+ */\n+public class MissingSchemaKeywordException extends SchemaException {\n+    private static final long serialVersionUID = 1L;\n+\n+    public MissingSchemaKeywordException(String message) {\n+        super(message);\n+    }\n+}\ndiff --git a/src/main/java/com/networknt/schema/SchemaRegistry.java b/src/main/java/com/networknt/schema/SchemaRegistry.java\nindex 8095d417..25c58839 100644\n--- a/src/main/java/com/networknt/schema/SchemaRegistry.java\n+++ b/src/main/java/com/networknt/schema/SchemaRegistry.java\n@@ -221,3 +220,0 @@ public class SchemaRegistry {\n-        if (defaultDialectId == null || defaultDialectId.trim().isEmpty()) {\n-            throw new IllegalArgumentException(\"defaultDialectId must not be null or empty\");\n-        }\n@@ -551,0 +549,4 @@ public class SchemaRegistry {\n+        if (iri == null) {\n+            throw new MissingSchemaKeywordException(\n+                    \"The $schema keyword that indicates the schema dialect must be specified.\");\n+        }\ndiff --git a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\nindex a2326601..edf72be0 100644\n--- a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n@@ -50 +50 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-                            .arguments(this.divisor)\n+                            .arguments(this.divisor.toString()) // String is used as the MessageFormat NumberFormat considers 3 fractional digits by default\n@@ -69 +69 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-                return schemaNode.isBigDecimal() ? schemaNode.decimalValue() : BigDecimal.valueOf(divisor);\n+                return schemaNode.isBigDecimal() ? schemaNode.decimalValue().stripTrailingZeros() : BigDecimal.valueOf(divisor).stripTrailingZeros();\ndiff --git a/src/main/java/com/networknt/schema/keyword/PropertiesValidator.java b/src/main/java/com/networknt/schema/keyword/PropertiesValidator.java\nindex 603ce880..c31439d7 100644\n--- a/src/main/java/com/networknt/schema/keyword/PropertiesValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/PropertiesValidator.java\n@@ -59,0 +60,4 @@ public class PropertiesValidator extends BaseKeywordValidator {\n+        if (!node.isObject()) {\n+            // ignore if not object\n+            return;\n+        }\n@@ -66 +70 @@ public class PropertiesValidator extends BaseKeywordValidator {\n-        boolean collectAnnotations =  hasUnevaluatedPropertiesInEvaluationPath(executionContext) || collectAnnotations(executionContext);\n+        boolean collectAnnotations = hasUnevaluatedPropertiesInEvaluationPath(executionContext) || collectAnnotations(executionContext);"
+}

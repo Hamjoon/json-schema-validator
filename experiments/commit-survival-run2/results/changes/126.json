@@ -1,0 +1,18 @@
+{
+  "index": 126,
+  "sha": "da3865cb4b4155e4321c48998018634c32ce859d",
+  "parent": "6c379356799b61c20c5fefb154b22125b30b7baa",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/TypeFactory.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/TypeFactory.java": [
+      78,
+      79,
+      80,
+      81,
+      82
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/TypeFactory.java b/src/main/java/com/networknt/schema/TypeFactory.java\nindex b97d36a9..cb986053 100644\n--- a/src/main/java/com/networknt/schema/TypeFactory.java\n+++ b/src/main/java/com/networknt/schema/TypeFactory.java\n@@ -77,0 +78,5 @@ public class TypeFactory {\n+        if (node == null) {\n+            // This returns JsonType.UNKNOWN to be consistent with the behavior when\n+            // JsonNodeType.MISSING\n+            return JsonType.UNKNOWN;\n+        }"
+}

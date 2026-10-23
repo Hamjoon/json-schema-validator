@@ -1,0 +1,47 @@
+{
+  "index": 141,
+  "sha": "a8bda4c9f43f17f657513083c0ae6f9690e51b9b",
+  "parent": "d7cb0135a06f5b60d8250efdf6fb42c1fc84622b",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/RequiredValidator.java": [],
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/RequiredValidator.java": [
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97
+    ],
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      513,
+      514,
+      515,
+      516,
+      555,
+      556,
+      557,
+      558
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/RequiredValidator.java b/src/main/java/com/networknt/schema/RequiredValidator.java\nindex b0bf63b6..7084b6b9 100644\n--- a/src/main/java/com/networknt/schema/RequiredValidator.java\n+++ b/src/main/java/com/networknt/schema/RequiredValidator.java\n@@ -57,0 +58,13 @@ public class RequiredValidator extends BaseJsonValidator implements JsonValidato\n+                Boolean readOnly = this.validationContext.getConfig().getReadOnly();\n+                Boolean writeOnly = this.validationContext.getConfig().getWriteOnly();\n+                if (Boolean.TRUE.equals(readOnly)) {\n+                    JsonNode readOnlyNode = getFieldKeyword(fieldName, \"readOnly\");\n+                    if (readOnlyNode != null && readOnlyNode.booleanValue()) {\n+                        continue;\n+                    }\n+                } else if(Boolean.TRUE.equals(writeOnly)) {\n+                    JsonNode writeOnlyNode = getFieldKeyword(fieldName, \"writeOnly\");\n+                    if (writeOnlyNode != null && writeOnlyNode.booleanValue()) {\n+                        continue;\n+                    }\n+                }\n@@ -74,0 +88,10 @@ public class RequiredValidator extends BaseJsonValidator implements JsonValidato\n+    protected JsonNode getFieldKeyword(String fieldName, String keyword) {\n+        JsonNode propertiesNode = this.parentSchema.getSchemaNode().get(\"properties\");\n+        if (propertiesNode != null) {\n+            JsonNode fieldNode = propertiesNode.get(fieldName);\n+            if (fieldNode != null) {\n+                return fieldNode.get(keyword);\n+            }\n+        }\n+        return null;\n+    }\ndiff --git a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\nindex beb25d7d..a08f7abe 100644\n--- a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n+++ b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n@@ -512,0 +513,4 @@ public class SchemaValidatorsConfig {\n+    Boolean getReadOnly() {\n+        return this.readOnly;\n+    }\n+\n@@ -550,0 +555,4 @@ public class SchemaValidatorsConfig {\n+    Boolean getWriteOnly() {\n+        return this.writeOnly;\n+    }\n+"
+}

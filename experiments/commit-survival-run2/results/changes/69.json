@@ -1,0 +1,68 @@
+{
+  "index": 69,
+  "sha": "11c0df2da6f6a9a6407d8b1320f3191f31ba4be4",
+  "parent": "bc01ec4d1a418fac65e7542fec08af9e1cf3dc13",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/RegexFormat.java": [
+      16,
+      17,
+      18,
+      27,
+      30,
+      32,
+      33
+    ],
+    "src/main/java/com/networknt/schema/regex/JDKRegularExpression.java": [],
+    "src/main/java/com/networknt/schema/regex/JoniRegularExpression.java": [
+      24
+    ],
+    "src/main/java/com/networknt/schema/regex/RegularExpression.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/RegexFormat.java": [
+      18,
+      19,
+      26,
+      29,
+      31
+    ],
+    "src/main/java/com/networknt/schema/regex/JDKRegularExpression.java": [
+      5,
+      6,
+      7
+    ],
+    "src/main/java/com/networknt/schema/regex/JoniRegularExpression.java": [
+      4,
+      10,
+      12,
+      13,
+      14,
+      17,
+      18,
+      21,
+      22,
+      23,
+      24,
+      25,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48
+    ],
+    "src/main/java/com/networknt/schema/regex/RegularExpression.java": [
+      5,
+      6,
+      7
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/RegexFormat.java b/src/main/java/com/networknt/schema/format/RegexFormat.java\nindex c6f778b9..191e6364 100644\n--- a/src/main/java/com/networknt/schema/format/RegexFormat.java\n+++ b/src/main/java/com/networknt/schema/format/RegexFormat.java\n@@ -16,3 +15,0 @@ package com.networknt.schema.format;\n-import java.util.regex.Pattern;\n-import java.util.regex.PatternSyntaxException;\n-\n@@ -20,0 +18,2 @@ import com.networknt.schema.Format;\n+import com.networknt.schema.ValidationContext;\n+import com.networknt.schema.regex.RegularExpression;\n@@ -27 +26 @@ public class RegexFormat implements Format {\n-    public boolean matches(ExecutionContext executionContext, String value) {\n+    public boolean matches(ExecutionContext executionContext, ValidationContext validationContext, String value) {\n@@ -30 +29 @@ public class RegexFormat implements Format {\n-            Pattern.compile(value);\n+            RegularExpression.compile(value, validationContext);\n@@ -32,2 +31 @@ public class RegexFormat implements Format {\n-\n-        } catch (PatternSyntaxException e) {\n+        } catch (RuntimeException e) {\ndiff --git a/src/main/java/com/networknt/schema/regex/JDKRegularExpression.java b/src/main/java/com/networknt/schema/regex/JDKRegularExpression.java\nindex 6be0c7eb..408117f8 100644\n--- a/src/main/java/com/networknt/schema/regex/JDKRegularExpression.java\n+++ b/src/main/java/com/networknt/schema/regex/JDKRegularExpression.java\n@@ -4,0 +5,3 @@ import java.util.regex.Pattern;\n+/**\n+ * JDK {@link RegularExpression}. \n+ */\ndiff --git a/src/main/java/com/networknt/schema/regex/JoniRegularExpression.java b/src/main/java/com/networknt/schema/regex/JoniRegularExpression.java\nindex bad42510..5e205e4d 100644\n--- a/src/main/java/com/networknt/schema/regex/JoniRegularExpression.java\n+++ b/src/main/java/com/networknt/schema/regex/JoniRegularExpression.java\n@@ -3,0 +4 @@ import java.nio.charset.StandardCharsets;\n+import java.util.regex.Pattern;\n@@ -8,0 +10 @@ import org.joni.Syntax;\n+import org.joni.exception.SyntaxException;\n@@ -9,0 +12,3 @@ import org.joni.Syntax;\n+/**\n+ * ECMAScript {@link RegularExpression}.\n+ */\n@@ -11,0 +17,2 @@ class JoniRegularExpression implements RegularExpression {\n+    private final Pattern INVALID_ESCAPE_PATTERN = Pattern.compile(\n+            \".*\\\\\\\\([aeg-moqyzACE-OQ-RT-VX-Z1-9]|c$|[pP]([^{]|$)|u([^{0-9]|$)|x([0-9a-fA-F][^0-9a-fA-F]|[^0-9a-fA-F][0-9a-fA-F]|[^0-9a-fA-F][^0-9a-fA-F]|.?$)).*\");\n@@ -13,0 +21,5 @@ class JoniRegularExpression implements RegularExpression {\n+        this(regex, Syntax.ECMAScript);\n+    }\n+\n+    JoniRegularExpression(String regex, Syntax syntax) {\n+        validate(regex);\n@@ -24 +36,13 @@ class JoniRegularExpression implements RegularExpression {\n-        this.pattern = new Regex(bytes, 0, bytes.length, Option.SINGLELINE, UTF8Encoding.INSTANCE, Syntax.ECMAScript);\n+        this.pattern = new Regex(bytes, 0, bytes.length, Option.SINGLELINE, UTF8Encoding.INSTANCE, syntax);\n+    }\n+\n+    protected void validate(String regex) {\n+        // Joni is not strict with escapes\n+        if (INVALID_ESCAPE_PATTERN.matcher(regex).matches()) {\n+            /*\n+             * One option considered was a custom Encoding implementation that rejects\n+             * certain code points but it is unable to distinguish \\a vs \\cG for instance as\n+             * both translate to BEL\n+             */\n+            throw new SyntaxException(\"Invalid escape\");\n+        }\ndiff --git a/src/main/java/com/networknt/schema/regex/RegularExpression.java b/src/main/java/com/networknt/schema/regex/RegularExpression.java\nindex 64c1ba2c..83f4d22e 100644\n--- a/src/main/java/com/networknt/schema/regex/RegularExpression.java\n+++ b/src/main/java/com/networknt/schema/regex/RegularExpression.java\n@@ -4,0 +5,3 @@ import com.networknt.schema.ValidationContext;\n+/**\n+ * Regular expression.\n+ */"
+}

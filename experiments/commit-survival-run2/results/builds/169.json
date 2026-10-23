@@ -1,0 +1,38 @@
+{
+  "index": 169,
+  "sha": "2686725fea25b3dbb63fa9388c949dd63af5efbd",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/169",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.123,
+      "log": "results/builds/logs/169-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/169",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 5.765,
+      "log": "results/builds/logs/169-2.txt"
+    }
+  ],
+  "pom_sha256": "799d855ff4ffb97602eb6628f385f6cd086d96c299e9dadfaf1d9a47c6beac7c",
+  "classpath": "work/classpaths/799d855ff4ffb97602eb6628f385f6cd086d96c299e9dadfaf1d9a47c6beac7c.txt",
+  "classpath_attempts": [],
+  "seconds": 68.534
+}

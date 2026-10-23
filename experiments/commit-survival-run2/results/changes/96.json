@@ -1,0 +1,33 @@
+{
+  "index": 96,
+  "sha": "60d034ede40e12c42833f90ea54b211ca7ea7342",
+  "parent": "4a2258ccebafbe732b2d98ddf85ddbc3f962b4ac",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      47,
+      48
+    ],
+    "src/main/java/com/networknt/schema/ValidationContext.java": [
+      110,
+      111
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodeUtil.java": [
+      134,
+      135,
+      136,
+      137
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      47
+    ],
+    "src/main/java/com/networknt/schema/ValidationContext.java": [
+      110
+    ],
+    "src/main/java/com/networknt/schema/utils/JsonNodeUtil.java": [
+      134
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\nindex 49419f27..1794ce6b 100644\n--- a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n@@ -47,2 +47 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n-        isMinV202012 = MinV202012.getVersions().contains(SpecVersionDetector\n-                .detectOptionalVersion(validationContext.getMetaSchema().getIri()).orElse(DEFAULT_VERSION));\n+        isMinV202012 = MinV202012.getVersions().contains(validationContext.activeDialect().orElse(DEFAULT_VERSION));\ndiff --git a/src/main/java/com/networknt/schema/ValidationContext.java b/src/main/java/com/networknt/schema/ValidationContext.java\nindex f4d6e12f..d35b29b9 100644\n--- a/src/main/java/com/networknt/schema/ValidationContext.java\n+++ b/src/main/java/com/networknt/schema/ValidationContext.java\n@@ -110,2 +110 @@ public class ValidationContext {\n-        String metaSchema = getMetaSchema().getIri();\n-        return SpecVersionDetector.detectOptionalVersion(metaSchema);\n+        return Optional.of(this.metaSchema.getSpecification());\ndiff --git a/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java b/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\nindex 07c3b915..d480ee7c 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodeUtil.java\n@@ -134,4 +134 @@ public class JsonNodeUtil {\n-        String metaSchema = validationContext.getMetaSchema().getIri();\n-        return SpecVersionDetector.detectOptionalVersion(metaSchema)\n-            .orElse(VersionFlag.V4)\n-            .getVersionFlagValue();\n+        return validationContext.activeDialect().orElse(VersionFlag.V4).getVersionFlagValue();"
+}

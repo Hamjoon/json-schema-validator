@@ -1,0 +1,81 @@
+class,method,signature,line
+com.networknt.schema.JsonSchema,from,"from(ValidationContext, String, URI, JsonNode, JsonSchema, boolean)",65
+com.networknt.schema.JsonSchema,createChildSchema,"createChildSchema(String, JsonNode)",126
+com.networknt.schema.JsonSchema,getValidationContext,getValidationContext(),130
+com.networknt.schema.JsonSchema,getCurrentUri,getCurrentUri(),187
+com.networknt.schema.JsonSchema,getRefSchemaNode,getRefSchemaNode(String),197
+com.networknt.schema.JsonSchema,findLexicalRoot,findLexicalRoot(),228
+com.networknt.schema.JsonSchema,findAncestor,findAncestor(),237
+com.networknt.schema.JsonSchema,validate,"validate(ExecutionContext, JsonNode, JsonNode, String)",378
+com.networknt.schema.JsonSchema,validate,validate(JsonNode),451
+com.networknt.schema.JsonSchema,validateAndCollect,"validateAndCollect(ExecutionContext, JsonNode)",455
+com.networknt.schema.JsonSchema,validateAndCollect,validateAndCollect(JsonNode),489
+com.networknt.schema.JsonSchema,walk,"walk(ExecutionContext, JsonNode, boolean)",505
+com.networknt.schema.JsonSchema,walk,"walk(JsonNode, boolean)",509
+com.networknt.schema.JsonSchema,walkAtNode,"walkAtNode(ExecutionContext, JsonNode, JsonNode, String, boolean)",513
+com.networknt.schema.JsonSchema,walk,"walk(ExecutionContext, JsonNode, JsonNode, String, boolean)",536
+com.networknt.schema.JsonSchema,toString,toString(),588
+com.networknt.schema.JsonSchema,hasRequiredValidator,hasRequiredValidator(),593
+com.networknt.schema.JsonSchema,getRequiredValidator,getRequiredValidator(),597
+com.networknt.schema.JsonSchema,hasTypeValidator,hasTypeValidator(),601
+com.networknt.schema.JsonSchema,getTypeValidator,getTypeValidator(),605
+com.networknt.schema.JsonSchema,initializeValidators,initializeValidators(),625
+com.networknt.schema.JsonSchema,isDynamicAnchor,isDynamicAnchor(),634
+com.networknt.schema.JsonSchema,createExecutionContext,createExecutionContext(),643
+com.networknt.schema.SchemaValidatorsConfig,disableUnevaluatedAnalysis,disableUnevaluatedAnalysis(),153
+com.networknt.schema.SchemaValidatorsConfig,disableUnevaluatedItems,disableUnevaluatedItems(),159
+com.networknt.schema.SchemaValidatorsConfig,disableUnevaluatedProperties,disableUnevaluatedProperties(),164
+com.networknt.schema.SchemaValidatorsConfig,enableUnevaluatedAnalysis,enableUnevaluatedAnalysis(),169
+com.networknt.schema.SchemaValidatorsConfig,enableUnevaluatedItems,enableUnevaluatedItems(),175
+com.networknt.schema.SchemaValidatorsConfig,enableUnevaluatedProperties,enableUnevaluatedProperties(),180
+com.networknt.schema.SchemaValidatorsConfig,isUnevaluatedItemsAnalysisDisabled,isUnevaluatedItemsAnalysisDisabled(),185
+com.networknt.schema.SchemaValidatorsConfig,isUnevaluatedItemsAnalysisEnabled,isUnevaluatedItemsAnalysisEnabled(),189
+com.networknt.schema.SchemaValidatorsConfig,isUnevaluatedPropertiesAnalysisDisabled,isUnevaluatedPropertiesAnalysisDisabled(),193
+com.networknt.schema.SchemaValidatorsConfig,isUnevaluatedPropertiesAnalysisEnabled,isUnevaluatedPropertiesAnalysisEnabled(),197
+com.networknt.schema.SchemaValidatorsConfig,isTypeLoose,isTypeLoose(),207
+com.networknt.schema.SchemaValidatorsConfig,setTypeLoose,setTypeLoose(boolean),211
+com.networknt.schema.SchemaValidatorsConfig,setFailFast,setFailFast(boolean),224
+com.networknt.schema.SchemaValidatorsConfig,isFailFast,isFailFast(),228
+com.networknt.schema.SchemaValidatorsConfig,setApplyDefaultsStrategy,setApplyDefaultsStrategy(ApplyDefaultsStrategy),232
+com.networknt.schema.SchemaValidatorsConfig,getApplyDefaultsStrategy,getApplyDefaultsStrategy(),236
+com.networknt.schema.SchemaValidatorsConfig,getUriTranslator,getUriTranslator(),240
+com.networknt.schema.SchemaValidatorsConfig,addUriTranslator,addUriTranslator(URITranslator),245
+com.networknt.schema.SchemaValidatorsConfig,isHandleNullableField,isHandleNullableField(),270
+com.networknt.schema.SchemaValidatorsConfig,setHandleNullableField,setHandleNullableField(boolean),274
+com.networknt.schema.SchemaValidatorsConfig,isEcma262Validator,isEcma262Validator(),278
+com.networknt.schema.SchemaValidatorsConfig,setEcma262Validator,setEcma262Validator(boolean),282
+com.networknt.schema.SchemaValidatorsConfig,isJavaSemantics,isJavaSemantics(),286
+com.networknt.schema.SchemaValidatorsConfig,setJavaSemantics,setJavaSemantics(boolean),290
+com.networknt.schema.SchemaValidatorsConfig,isCustomMessageSupported,isCustomMessageSupported(),294
+com.networknt.schema.SchemaValidatorsConfig,setCustomMessageSupported,setCustomMessageSupported(boolean),298
+com.networknt.schema.SchemaValidatorsConfig,addKeywordWalkListener,addKeywordWalkListener(JsonSchemaWalkListener),302
+com.networknt.schema.SchemaValidatorsConfig,addKeywordWalkListener,"addKeywordWalkListener(String, JsonSchemaWalkListener)",310
+com.networknt.schema.SchemaValidatorsConfig,addKeywordWalkListeners,addKeywordWalkListeners(List<JsonSchemaWalkListener>),318
+com.networknt.schema.SchemaValidatorsConfig,addKeywordWalkListeners,"addKeywordWalkListeners(String, List<JsonSchemaWalkListener>)",326
+com.networknt.schema.SchemaValidatorsConfig,addPropertyWalkListeners,addPropertyWalkListeners(List<JsonSchemaWalkListener>),334
+com.networknt.schema.SchemaValidatorsConfig,addPropertyWalkListener,addPropertyWalkListener(JsonSchemaWalkListener),338
+com.networknt.schema.SchemaValidatorsConfig,addItemWalkListener,addItemWalkListener(JsonSchemaWalkListener),342
+com.networknt.schema.SchemaValidatorsConfig,addItemWalkListeners,addItemWalkListeners(List<JsonSchemaWalkListener>),346
+com.networknt.schema.SchemaValidatorsConfig,getPropertyWalkListeners,getPropertyWalkListeners(),350
+com.networknt.schema.SchemaValidatorsConfig,getKeywordWalkListenersMap,getKeywordWalkListenersMap(),354
+com.networknt.schema.SchemaValidatorsConfig,getArrayItemWalkListeners,getArrayItemWalkListeners(),358
+com.networknt.schema.SchemaValidatorsConfig,getExecutionContextSupplier,getExecutionContextSupplier(),365
+com.networknt.schema.SchemaValidatorsConfig,setExecutionContextSupplier,setExecutionContextSupplier(Supplier<ExecutionContext>),369
+com.networknt.schema.SchemaValidatorsConfig,isLosslessNarrowing,isLosslessNarrowing(),373
+com.networknt.schema.SchemaValidatorsConfig,setLosslessNarrowing,setLosslessNarrowing(boolean),377
+com.networknt.schema.SchemaValidatorsConfig,isOpenAPI3StyleDiscriminators,isOpenAPI3StyleDiscriminators(),387
+com.networknt.schema.SchemaValidatorsConfig,setOpenAPI3StyleDiscriminators,setOpenAPI3StyleDiscriminators(boolean),424
+com.networknt.schema.SchemaValidatorsConfig,setLoadCollectors,setLoadCollectors(boolean),428
+com.networknt.schema.SchemaValidatorsConfig,doLoadCollectors,doLoadCollectors(),432
+com.networknt.schema.SchemaValidatorsConfig,isReadOnly,isReadOnly(),436
+com.networknt.schema.SchemaValidatorsConfig,setReadOnly,setReadOnly(boolean),440
+com.networknt.schema.SchemaValidatorsConfig,isWriteOnly,isWriteOnly(),444
+com.networknt.schema.SchemaValidatorsConfig,setWriteOnly,setWriteOnly(boolean),448
+com.networknt.schema.SchemaValidatorsConfig,setPathType,setPathType(PathType),482
+com.networknt.schema.SchemaValidatorsConfig,getPathType,getPathType(),491
+com.networknt.schema.SchemaValidatorsConfig,isStrict,isStrict(String),506
+com.networknt.schema.SchemaValidatorsConfig,setStrict,"setStrict(String, boolean)",518
+com.networknt.schema.SchemaValidatorsConfig,getLocale,getLocale(),527
+com.networknt.schema.SchemaValidatorsConfig,setLocale,setLocale(Locale),536
+com.networknt.schema.SchemaValidatorsConfig,getResourceBundle,getResourceBundle(),549
+com.networknt.schema.SchemaValidatorsConfig,setResourceBundle,setResourceBundle(ResourceBundle),569

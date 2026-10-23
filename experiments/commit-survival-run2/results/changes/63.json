@@ -1,0 +1,43 @@
+{
+  "index": 63,
+  "sha": "9777fd313a4b9cf2c188dc6e8bd6e9222555e55e",
+  "parent": "0fc43f04105974910ae63e971e4568c4f4f54fd0",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45
+    ],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AllOfValidator.java b/src/main/java/com/networknt/schema/AllOfValidator.java\nindex dc2091c1..b4519824 100644\n--- a/src/main/java/com/networknt/schema/AllOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AllOfValidator.java\n@@ -37,0 +38,8 @@ public class AllOfValidator extends BaseJsonValidator {\n+        if (!schemaNode.isArray()) {\n+            JsonType nodeType = TypeFactory.getValueNodeType(schemaNode, this.validationContext.getConfig());\n+            throw new JsonSchemaException(message().instanceNode(schemaNode)\n+                    .instanceLocation(schemaLocation.getFragment())\n+                    .messageKey(\"type\")\n+                    .arguments(nodeType.toString(), \"array\")\n+                    .build());\n+        }\ndiff --git a/src/main/java/com/networknt/schema/AnyOfValidator.java b/src/main/java/com/networknt/schema/AnyOfValidator.java\nindex 931c4e33..5dac253a 100644\n--- a/src/main/java/com/networknt/schema/AnyOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AnyOfValidator.java\n@@ -39,0 +40,8 @@ public class AnyOfValidator extends BaseJsonValidator {\n+        if (!schemaNode.isArray()) {\n+            JsonType nodeType = TypeFactory.getValueNodeType(schemaNode, this.validationContext.getConfig());\n+            throw new JsonSchemaException(message().instanceNode(schemaNode)\n+                    .instanceLocation(schemaLocation.getFragment())\n+                    .messageKey(\"type\")\n+                    .arguments(nodeType.toString(), \"array\")\n+                    .build());\n+        }\ndiff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex 3ba564a4..1a49d986 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -38,0 +39,8 @@ public class OneOfValidator extends BaseJsonValidator {\n+        if (!schemaNode.isArray()) {\n+            JsonType nodeType = TypeFactory.getValueNodeType(schemaNode, this.validationContext.getConfig());\n+            throw new JsonSchemaException(message().instanceNode(schemaNode)\n+                    .instanceLocation(schemaLocation.getFragment())\n+                    .messageKey(\"type\")\n+                    .arguments(nodeType.toString(), \"array\")\n+                    .build());\n+        }"
+}

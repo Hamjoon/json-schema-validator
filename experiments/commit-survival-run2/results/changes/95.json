@@ -1,0 +1,36 @@
+{
+  "index": 95,
+  "sha": "4a2258ccebafbe732b2d98ddf85ddbc3f962b4ac",
+  "parent": "8fc6913e4bcaec8ab0de91181d15310b912fbecd",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/ValidationMessageHandler.java": [
+      5,
+      29,
+      39,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      56,
+      146,
+      147,
+      148,
+      149,
+      150,
+      151,
+      152
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/ValidationMessageHandler.java": [
+      28
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/ValidationMessageHandler.java b/src/main/java/com/networknt/schema/ValidationMessageHandler.java\nindex 727683c8..7fd2688b 100644\n--- a/src/main/java/com/networknt/schema/ValidationMessageHandler.java\n+++ b/src/main/java/com/networknt/schema/ValidationMessageHandler.java\n@@ -5 +4,0 @@ import com.networknt.schema.i18n.MessageSource;\n-import com.networknt.schema.utils.StringUtils;\n@@ -29 +28 @@ public abstract class ValidationMessageHandler {\n-        ErrorMessageType currentErrorMessageType = errorMessageType;\n+        this.errorMessageType = errorMessageType;\n@@ -39 +37,0 @@ public abstract class ValidationMessageHandler {\n-\n@@ -45,10 +42,0 @@ public abstract class ValidationMessageHandler {\n-            String errorCodeKey = getErrorCodeKey(keyword.getValue());\n-            if (errorCodeKey != null && this.parentSchema != null) {\n-                JsonNode errorCodeNode = this.parentSchema.getSchemaNode().get(errorCodeKey);\n-                if (errorCodeNode != null && errorCodeNode.isTextual()) {\n-                    String errorCodeText = errorCodeNode.asText();\n-                    if (StringUtils.isNotBlank(errorCodeText)) {\n-                        currentErrorMessageType = CustomErrorMessageType.of(errorCodeText);\n-                    }\n-                }\n-            }\n@@ -56 +43,0 @@ public abstract class ValidationMessageHandler {\n-        this.errorMessageType = currentErrorMessageType;\n@@ -146,7 +132,0 @@ public abstract class ValidationMessageHandler {\n-\n-    protected String getErrorCodeKey(String keyword) {\n-        if (keyword != null) {\n-            return keyword + \"ErrorCode\";\n-        }\n-        return null;\n-    }"
+}

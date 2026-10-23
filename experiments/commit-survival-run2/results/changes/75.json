@@ -1,0 +1,40 @@
+{
+  "index": 75,
+  "sha": "0ceb03e5ee1b4ad388a031a7dfd0c02fb5e5a044",
+  "parent": "3daa5bcc02b26087d8c6599673614804fa7d8a70",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      174,
+      175,
+      176,
+      177,
+      179,
+      180,
+      185,
+      190,
+      195,
+      196,
+      201,
+      206,
+      211,
+      219
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java": [
+      174,
+      179,
+      184,
+      189,
+      194,
+      199,
+      204,
+      206,
+      209,
+      214,
+      216,
+      219
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\nindex fbc2247b..7284e544 100644\n--- a/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n+++ b/src/main/java/com/networknt/schema/SchemaValidatorsConfig.java\n@@ -174,4 +174 @@ public class SchemaValidatorsConfig {\n-    // These are costly in terms of performance so we provide a way to disable them.\n-    private boolean disableUnevaluatedItems = false;\n-    private boolean disableUnevaluatedProperties = false;\n-    \n+    @Deprecated\n@@ -179,2 +175,0 @@ public class SchemaValidatorsConfig {\n-        disableUnevaluatedItems();\n-        disableUnevaluatedProperties();\n@@ -183,0 +179 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -185 +180,0 @@ public class SchemaValidatorsConfig {\n-        this.disableUnevaluatedItems = true;\n@@ -188,0 +184 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -190 +185,0 @@ public class SchemaValidatorsConfig {\n-        this.disableUnevaluatedProperties = true;\n@@ -193,0 +189 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -195,2 +190,0 @@ public class SchemaValidatorsConfig {\n-        enableUnevaluatedItems();\n-        enableUnevaluatedProperties();\n@@ -199,0 +194 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -201 +195,0 @@ public class SchemaValidatorsConfig {\n-        this.disableUnevaluatedItems = false;\n@@ -204,0 +199 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -206 +200,0 @@ public class SchemaValidatorsConfig {\n-        this.disableUnevaluatedProperties = false;\n@@ -209,0 +204 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -211 +206 @@ public class SchemaValidatorsConfig {\n-        return this.disableUnevaluatedItems;\n+        return false;\n@@ -213,0 +209 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -217,0 +214 @@ public class SchemaValidatorsConfig {\n+    @Deprecated\n@@ -219 +216 @@ public class SchemaValidatorsConfig {\n-        return this.disableUnevaluatedProperties;\n+        return false;\n@@ -221,0 +219 @@ public class SchemaValidatorsConfig {\n+    @Deprecated"
+}

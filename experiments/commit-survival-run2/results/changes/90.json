@@ -1,0 +1,16 @@
+{
+  "index": 90,
+  "sha": "92bef229a0925f66d86a54694072f243586541f6",
+  "parent": "46da4db03c362d472521132f8bd225bc41ef7b41",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      70
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/utils/JsonNodes.java": [
+      70
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/utils/JsonNodes.java b/src/main/java/com/networknt/schema/utils/JsonNodes.java\nindex f1f8947c..3bfd9aa6 100644\n--- a/src/main/java/com/networknt/schema/utils/JsonNodes.java\n+++ b/src/main/java/com/networknt/schema/utils/JsonNodes.java\n@@ -70 +70 @@ public class JsonNodes {\n-        if (propertyOrIndex instanceof Number) {\n+        if (propertyOrIndex instanceof Number && node.isArray()) {"
+}

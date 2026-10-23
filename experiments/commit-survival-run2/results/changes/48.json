@@ -1,0 +1,49 @@
+{
+  "index": 48,
+  "sha": "48ca3c22995e32797e9defdb8b77869f0d15caf3",
+  "parent": "62ed35a0ced34b0c4e03dcce8943e1920c64d330",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/IfValidator.java": [
+      105,
+      106,
+      107,
+      109,
+      110,
+      111,
+      112,
+      113,
+      115,
+      116,
+      118
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/IfValidator.java": [
+      105,
+      106,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/IfValidator.java b/src/main/java/com/networknt/schema/IfValidator.java\nindex c3c340ad..efb49ed0 100644\n--- a/src/main/java/com/networknt/schema/IfValidator.java\n+++ b/src/main/java/com/networknt/schema/IfValidator.java\n@@ -105,3 +105,2 @@ public class IfValidator extends BaseJsonValidator {\n-        if (shouldValidateSchema) {\n-            return validate(executionContext, node, rootNode, instanceLocation);\n-        }\n+        boolean checkCondition = node != null && shouldValidateSchema;\n+        boolean ifConditionPassed = false;\n@@ -109,5 +108,8 @@ public class IfValidator extends BaseJsonValidator {\n-        if (null != this.ifSchema) {\n-            this.ifSchema.walk(executionContext, node, rootNode, instanceLocation, false);\n-        }\n-        if (null != this.thenSchema) {\n-            this.thenSchema.walk(executionContext, node, rootNode, instanceLocation, false);\n+        // Save flag as nested schema evaluation shouldn't trigger fail fast\n+        boolean failFast = executionContext.isFailFast();\n+        try {\n+            executionContext.setFailFast(false);\n+            ifConditionPassed = this.ifSchema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema).isEmpty();\n+        } finally {\n+            // Restore flag\n+            executionContext.setFailFast(failFast);\n@@ -115,2 +117,14 @@ public class IfValidator extends BaseJsonValidator {\n-        if (null != this.elseSchema) {\n-            this.elseSchema.walk(executionContext, node, rootNode, instanceLocation, false);\n+        if (!checkCondition) {\n+            if (this.thenSchema != null) {\n+                this.thenSchema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n+            }\n+            if (this.elseSchema != null) {\n+                this.elseSchema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n+            }\n+        } else {\n+            if (this.thenSchema != null && ifConditionPassed) {\n+                return this.thenSchema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n+            }\n+            else if (this.elseSchema != null && !ifConditionPassed) {\n+                return this.elseSchema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n+            }\n@@ -118 +131,0 @@ public class IfValidator extends BaseJsonValidator {\n-"
+}

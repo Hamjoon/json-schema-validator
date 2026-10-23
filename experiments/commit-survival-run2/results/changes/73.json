@@ -1,0 +1,16 @@
+{
+  "index": 73,
+  "sha": "b063972f634293c05275d647cfe8c9cb5634d46d",
+  "parent": "028710ef5cf4d6665bca2fb09cf85fdcfe87b5b4",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/ConstValidator.java": [
+      48
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/ConstValidator.java": [
+      48
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/ConstValidator.java b/src/main/java/com/networknt/schema/ConstValidator.java\nindex 4d5e92d9..bcabec56 100644\n--- a/src/main/java/com/networknt/schema/ConstValidator.java\n+++ b/src/main/java/com/networknt/schema/ConstValidator.java\n@@ -48 +48 @@ public class ConstValidator extends BaseJsonValidator implements JsonValidator {\n-                    .locale(executionContext.getExecutionConfig().getLocale()).arguments(schemaNode.asText()).build());\n+                    .locale(executionContext.getExecutionConfig().getLocale()).arguments(schemaNode.asText(), node.asText()).build());"
+}

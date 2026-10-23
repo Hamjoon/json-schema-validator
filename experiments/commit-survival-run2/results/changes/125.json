@@ -1,0 +1,37 @@
+{
+  "index": 125,
+  "sha": "6c379356799b61c20c5fefb154b22125b30b7baa",
+  "parent": "77c91a23087b569ea7bab2841c9202e05217b480",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      88
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AbsoluteIri.java": [
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      109
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AbsoluteIri.java b/src/main/java/com/networknt/schema/AbsoluteIri.java\nindex 3c4075c0..1ade7436 100644\n--- a/src/main/java/com/networknt/schema/AbsoluteIri.java\n+++ b/src/main/java/com/networknt/schema/AbsoluteIri.java\n@@ -78,0 +79,21 @@ public class AbsoluteIri {\n+    /**\n+     * Determines if the iri is absolute or relative.\n+     *\n+     * @param iri to determine\n+     * @return true if absolute\n+     */\n+    private static boolean isAbsoluteIri(String iri) {\n+        int length = iri.length();\n+        for (int x = 0; x < length; x++) {\n+            char ch = iri.charAt(x);\n+            if (ch == ':') {\n+                // if the first segment is relative with a colon it must be a dot path segment\n+                // ie. ./foo:bar\n+                return true;\n+            } else if (ch == '/' || ch == '?' || ch == '#') {\n+                return false;\n+            }\n+        }\n+        return false;\n+    }\n+\n@@ -88 +109 @@ public class AbsoluteIri {\n-        if (iri.contains(\":\")) {\n+        if (isAbsoluteIri(iri)) {"
+}

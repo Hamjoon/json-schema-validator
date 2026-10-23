@@ -1,0 +1,26 @@
+{
+  "index": 29,
+  "sha": "c768bc196a84fce6e3cef9d7ef5d9ba5184739c2",
+  "parent": "5069ba4dd0449e2bc876c016dbcb62255b21b996",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      560
+    ],
+    "src/main/java/com/networknt/schema/result/JsonNodeResults.java": [
+      47
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      597,
+      598,
+      599,
+      600,
+      601
+    ],
+    "src/main/java/com/networknt/schema/result/JsonNodeResults.java": [
+      47
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/JsonSchema.java b/src/main/java/com/networknt/schema/JsonSchema.java\nindex 44b51397..1171366e 100644\n--- a/src/main/java/com/networknt/schema/JsonSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonSchema.java\n@@ -560 +559,0 @@ public class JsonSchema extends BaseJsonValidator {\n-                    executionContext.getResults().setResult(instanceLocation, v.getSchemaLocation(), v.getEvaluationPath(), false);\n@@ -597,0 +597,5 @@ public class JsonSchema extends BaseJsonValidator {\n+        if (errors != null && !errors.isEmpty()) {\n+            // Failed with assertion set result and drop all annotations from this schema\n+            // and all subschemas\n+            executionContext.getResults().setResult(instanceLocation, getSchemaLocation(), getEvaluationPath(), false);\n+        }\ndiff --git a/src/main/java/com/networknt/schema/result/JsonNodeResults.java b/src/main/java/com/networknt/schema/result/JsonNodeResults.java\nindex 07a41944..78b51f3b 100644\n--- a/src/main/java/com/networknt/schema/result/JsonNodeResults.java\n+++ b/src/main/java/com/networknt/schema/result/JsonNodeResults.java\n@@ -47 +47 @@ public class JsonNodeResults {\n-                if (evaluationPath.startsWith(result.getEvaluationPath().getParent())) {\n+                if (evaluationPath.startsWith(result.getEvaluationPath())) {"
+}

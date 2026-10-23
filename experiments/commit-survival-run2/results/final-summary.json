@@ -1,0 +1,64 @@
+{
+  "status": "stopped-scope-fewer-than-three-classes",
+  "started": "2026-10-23T17:18:39.565253+00:00",
+  "finished": "2026-10-23T17:20:28.529766+00:00",
+  "wall_seconds": 108.965,
+  "phase_seconds": {
+    "step1_setup_scope_dataset_and_verification": 108.965
+  },
+  "selected_classes": [
+    {
+      "class": "com.networknt.schema.JsonSchema",
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "m": 23,
+      "has_test": "no",
+      "d": 0,
+      "c": 26
+    },
+    {
+      "class": "com.networknt.schema.SchemaValidatorsConfig",
+      "file": "src/main/java/com/networknt/schema/SchemaValidatorsConfig.java",
+      "m": 57,
+      "has_test": "no",
+      "d": 0,
+      "c": 17
+    }
+  ],
+  "focal_methods": 80,
+  "developer_denominator": 185,
+  "llm_denominators": {
+    "ktester": null,
+    "ouedraogo": null
+  },
+  "model_call_counts": {
+    "ktester": 0,
+    "ouedraogo": 0
+  },
+  "generation_rounds": [],
+  "phase_a": "not run",
+  "phase_b": "not run",
+  "worker_counts": {
+    "phase_a": 0,
+    "phase_b": 0
+  },
+  "oom_events": [],
+  "quarantine_events": [],
+  "stop_source": "Run 1 docs/cc-instructions-source.md, Retries and stop conditions; inherited by run 2",
+  "stop_instruction": "If Step 1.2 (build at t) fails twice, or Step 2 selects fewer than 3 classes, or both LLM groups end with zero methods: stop after writing the handover and `results/STATUS.md`.",
+  "reuse_source_commit": "c4c624a7ce2675c7c91d4c03917d25394c4bdf10",
+  "copied_files_verified": 1602,
+  "frozen_files_verified": 788,
+  "developer_method_kinds": {
+    "plain": 168,
+    "test-factory": 7,
+    "parameterized": 10
+  },
+  "author_code_unchanged": true,
+  "cache_trees_duplicated": false,
+  "deviations": [],
+  "execution_notes": [
+    "Initial local provenance-label update used the KTester working directory and failed before writing; corrected in the fork. No build, test, dataset, or model request failed."
+  ],
+  "remaining_steps": "Steps 2\u20137 are not run because the inherited mandatory stop is met. No survival or coverage results fabricated.",
+  "pushed": false
+}

@@ -1,0 +1,48 @@
+{
+  "index": 225,
+  "sha": "1c6762d848fc3e016dc5db6700446aa5a9d2abf2",
+  "parent": "47d2fe638f39227b6e6cbee2b5c3461da8f161d8",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      42,
+      45,
+      136
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java": [
+      34,
+      35,
+      44,
+      45,
+      48,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      158,
+      159,
+      161,
+      162,
+      163,
+      164
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\nindex 542e617c..dfae2f5e 100644\n--- a/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/MultipleOfValidator.java\n@@ -33,0 +34,2 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n+    private static final int MAX_PLAIN_DIVISOR_LENGTH = 32;\n+\n@@ -42 +44,2 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-        this.divisor = getDivisor(schemaNode);\n+        BigDecimal divisor = getDivisor(schemaNode);\n+        this.divisor = divisor == null || divisor.signum() == 0 ? null : divisor;\n@@ -45 +48 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-        this.divisorMessage = this.divisor == null ? null : this.divisor.toString();\n+        this.divisorMessage = formatDivisorMessage(this.divisor);\n@@ -74,0 +78,20 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n+    private static String formatDivisorMessage(BigDecimal value) {\n+        if (value == null) {\n+            return null;\n+        }\n+        long precision = value.precision();\n+        long scale = value.scale();\n+        long length = scale <= 0 ? precision - scale : Math.max(precision + 1, scale + 2);\n+        if (value.signum() < 0) {\n+            length++;\n+        }\n+        if (length <= MAX_PLAIN_DIVISOR_LENGTH) {\n+            return value.toPlainString();\n+        }\n+        String text = value.toString();\n+        if (length > text.length()) {\n+            return text;\n+        }\n+        return text.indexOf('E') < 0 ? text : value.toPlainString();\n+    }\n+\n@@ -134,0 +158,2 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n+     * A null or zero return value causes this constraint to be ignored, including\n+     * when this method is overridden.\n@@ -136 +161,4 @@ public class MultipleOfValidator extends BaseKeywordValidator implements Keyword\n-     * Error messages preserve the string representation of the returned value.\n+     * Error messages use the returned value's plain notation when it fits within\n+     * 32 characters or is no longer than its {@link BigDecimal#toString()}\n+     * representation. Otherwise, that representation is used.\n+     * This also applies to values returned by overrides."
+}

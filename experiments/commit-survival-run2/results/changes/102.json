@@ -1,0 +1,16 @@
+{
+  "index": 102,
+  "sha": "ab233783af60b036e3f5466401ad14cd5b6df41f",
+  "parent": "12807f33a19a7981452b8eabf9e1bcdae30df5c6",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/PatternValidator.java": [
+      65
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/PatternValidator.java": [
+      65
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/PatternValidator.java b/src/main/java/com/networknt/schema/PatternValidator.java\nindex 5605b8fe..9163ab74 100644\n--- a/src/main/java/com/networknt/schema/PatternValidator.java\n+++ b/src/main/java/com/networknt/schema/PatternValidator.java\n@@ -65 +65 @@ public class PatternValidator extends BaseJsonValidator {\n-        } catch (JsonSchemaException e) {\n+        } catch (JsonSchemaException | FailFastAssertionException e) {"
+}

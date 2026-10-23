@@ -1,0 +1,89 @@
+{
+  "index": 97,
+  "sha": "c8bfc836e8a17b2c3596b0cedb64862d1e06d731",
+  "parent": "60d034ede40e12c42833f90ea54b211ca7ea7342",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/JsonMetaSchema.java": [
+      442,
+      443,
+      444,
+      445,
+      446
+    ],
+    "src/main/java/com/networknt/schema/JsonNodePath.java": [
+      218
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      68,
+      70,
+      72,
+      115
+    ],
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      145,
+      148,
+      149,
+      152,
+      154,
+      155,
+      171,
+      173,
+      175,
+      176,
+      181,
+      182
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/JsonMetaSchema.java": [
+      442,
+      443
+    ],
+    "src/main/java/com/networknt/schema/JsonNodePath.java": [
+      31,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      68,
+      70,
+      71,
+      73,
+      116
+    ],
+    "src/main/java/com/networknt/schema/SchemaLocation.java": [
+      145,
+      147,
+      148,
+      150,
+      151,
+      154,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      178,
+      180,
+      181,
+      182,
+      184,
+      185,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/JsonMetaSchema.java b/src/main/java/com/networknt/schema/JsonMetaSchema.java\nindex 069309ca..38e56168 100644\n--- a/src/main/java/com/networknt/schema/JsonMetaSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonMetaSchema.java\n@@ -442,5 +442,2 @@ public class JsonMetaSchema {\n-        JsonNode idNode = node.get(field);\n-        if (idNode == null || !idNode.isTextual()) {\n-            return null;\n-        }\n-        return idNode.textValue();\n+        JsonNode fieldNode = node.get(field);\n+        return fieldNode == null ? null : fieldNode.textValue();\ndiff --git a/src/main/java/com/networknt/schema/JsonNodePath.java b/src/main/java/com/networknt/schema/JsonNodePath.java\nindex 3307a89a..19a0bca8 100644\n--- a/src/main/java/com/networknt/schema/JsonNodePath.java\n+++ b/src/main/java/com/networknt/schema/JsonNodePath.java\n@@ -30,0 +31 @@ public class JsonNodePath implements Comparable<JsonNodePath> {\n+    private int hash = 0; // computed lazily\n@@ -218 +219,6 @@ public class JsonNodePath implements Comparable<JsonNodePath> {\n-        return Objects.hash(parent, pathSegment, pathSegmentIndex, type);\n+        int h = hash;\n+        if (h == 0) {\n+            h = Objects.hash(parent, pathSegment, pathSegmentIndex, type);\n+            hash = h;\n+        }\n+        return h;\ndiff --git a/src/main/java/com/networknt/schema/JsonSchema.java b/src/main/java/com/networknt/schema/JsonSchema.java\nindex 61a453b0..9cd2071c 100644\n--- a/src/main/java/com/networknt/schema/JsonSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonSchema.java\n@@ -68 +68 @@ public class JsonSchema extends BaseJsonValidator {\n-    \n+\n@@ -70 +70,2 @@ public class JsonSchema extends BaseJsonValidator {\n-        return this.schemaLocation.getFragment() == null || this.schemaLocation.getFragment().getNameCount() == 0;\n+        JsonNodePath fragment = this.schemaLocation.getFragment();\n+        return fragment == null || (fragment.getParent() == null && fragment.getNameCount() == 0);\n@@ -72 +73 @@ public class JsonSchema extends BaseJsonValidator {\n-    \n+\n@@ -115 +116 @@ public class JsonSchema extends BaseJsonValidator {\n-            SchemaLocation result = id.contains(\"#\") ? schemaLocation.resolve(id) : this.schemaLocation;\n+            SchemaLocation result = id.indexOf('#') != -1 ? schemaLocation.resolve(id) : this.schemaLocation;\ndiff --git a/src/main/java/com/networknt/schema/SchemaLocation.java b/src/main/java/com/networknt/schema/SchemaLocation.java\nindex d1b5f33b..2257e36e 100644\n--- a/src/main/java/com/networknt/schema/SchemaLocation.java\n+++ b/src/main/java/com/networknt/schema/SchemaLocation.java\n@@ -145 +145 @@ public class SchemaLocation {\n-        String[] parts = absoluteIriReferenceOrFragment.split(\"#\");\n+        int index = absoluteIriReferenceOrFragment.indexOf('#');\n@@ -146,0 +147,2 @@ public class SchemaLocation {\n+        String part0 = index == -1 ? absoluteIriReferenceOrFragment\n+                : absoluteIriReferenceOrFragment.substring(0, index);\n@@ -148,2 +150,2 @@ public class SchemaLocation {\n-            if (!parts[0].isEmpty()) {\n-                absoluteIri = absoluteIri.resolve(parts[0]);\n+            if (!part0.isEmpty()) {\n+                absoluteIri = absoluteIri.resolve(part0);\n@@ -152 +154 @@ public class SchemaLocation {\n-            absoluteIri = AbsoluteIri.of(parts[0]);\n+            absoluteIri = AbsoluteIri.of(part0);\n@@ -154,2 +156,7 @@ public class SchemaLocation {\n-        if (parts.length > 1 && !parts[1].isEmpty()) {\n-            fragment = Fragment.of(parts[1]);\n+        if (index != -1) {\n+            if (absoluteIriReferenceOrFragment.length() > index + 1) {\n+                String part1 = absoluteIriReferenceOrFragment.substring(index + 1);\n+                if (!part1.isEmpty()) {\n+                    fragment = Fragment.of(part1);\n+                }\n+            }\n@@ -171 +178 @@ public class SchemaLocation {\n-        String[] parts = absoluteIriReferenceOrFragment.split(\"#\");\n+        int index = absoluteIriReferenceOrFragment.indexOf('#');\n@@ -173 +180,3 @@ public class SchemaLocation {\n-        String resolved = parts[0];\n+        String part0 = index == -1 ? absoluteIriReferenceOrFragment\n+                : absoluteIriReferenceOrFragment.substring(0, index);\n+        String resolved = part0;\n@@ -175,2 +184,2 @@ public class SchemaLocation {\n-            if (!parts[0].isEmpty()) {\n-                resolved = absoluteIri.resolve(parts[0]).toString();\n+            if (!part0.isEmpty()) {\n+                resolved = absoluteIri.resolve(part0).toString();\n@@ -181,2 +190,8 @@ public class SchemaLocation {\n-        if (parts.length > 1 && !parts[1].isEmpty()) {\n-            resolved = resolved + \"#\" + parts[1];\n+        String part1 = \"\";\n+        if (index != -1) {\n+            if (absoluteIriReferenceOrFragment.length() > index + 1) {\n+                part1 = absoluteIriReferenceOrFragment.substring(index + 1);\n+            }\n+        }\n+        if (!part1.isEmpty()) {\n+            resolved = resolved + \"#\" + part1;"
+}

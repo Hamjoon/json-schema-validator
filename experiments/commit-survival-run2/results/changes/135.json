@@ -1,0 +1,47 @@
+{
+  "index": 135,
+  "sha": "ffe4ca0e5b6c8cedf78b418106e900998dfdbbd3",
+  "parent": "2cd2baa5595e46920d5152c083c82bff0b4ac44a",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [
+      115
+    ],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      165,
+      171
+    ],
+    "src/main/java/com/networknt/schema/NotValidator.java": [
+      71,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      233,
+      237
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/AllOfValidator.java": [
+      115
+    ],
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": [
+      165,
+      171
+    ],
+    "src/main/java/com/networknt/schema/NotValidator.java": [
+      71,
+      75
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      233,
+      237
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/AllOfValidator.java b/src/main/java/com/networknt/schema/AllOfValidator.java\nindex 967dc440..c456f18f 100644\n--- a/src/main/java/com/networknt/schema/AllOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AllOfValidator.java\n@@ -115 +115 @@ public class AllOfValidator extends BaseJsonValidator {\n-        if (shouldValidateSchema) {\n+        if (shouldValidateSchema && node != null) {\ndiff --git a/src/main/java/com/networknt/schema/AnyOfValidator.java b/src/main/java/com/networknt/schema/AnyOfValidator.java\nindex 02440f12..8dd18d4e 100644\n--- a/src/main/java/com/networknt/schema/AnyOfValidator.java\n+++ b/src/main/java/com/networknt/schema/AnyOfValidator.java\n@@ -165 +165 @@ public class AnyOfValidator extends BaseJsonValidator {\n-        if (shouldValidateSchema) {\n+        if (shouldValidateSchema && node != null) {\n@@ -171 +171 @@ public class AnyOfValidator extends BaseJsonValidator {\n-        return new LinkedHashSet<>();\n+        return Collections.emptySet();\ndiff --git a/src/main/java/com/networknt/schema/NotValidator.java b/src/main/java/com/networknt/schema/NotValidator.java\nindex e943a511..c63ae34a 100644\n--- a/src/main/java/com/networknt/schema/NotValidator.java\n+++ b/src/main/java/com/networknt/schema/NotValidator.java\n@@ -71 +71 @@ public class NotValidator extends BaseJsonValidator {\n-        if (shouldValidateSchema) {\n+        if (shouldValidateSchema && node != null) {\n@@ -75,8 +75 @@ public class NotValidator extends BaseJsonValidator {\n-        Set<ValidationMessage> errors = this.schema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n-        if (errors.isEmpty()) {\n-            return Collections.singleton(message().instanceNode(node).instanceLocation(instanceLocation)\n-                    .locale(executionContext.getExecutionConfig().getLocale())\n-                    .failFast(executionContext.isFailFast()).arguments(this.schema.toString())\n-                    .build());\n-        }\n-        return Collections.emptySet();\n+        return this.schema.walk(executionContext, node, rootNode, instanceLocation, false);\ndiff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex 1807305b..caca8435 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -233 +233 @@ public class OneOfValidator extends BaseJsonValidator {\n-        if (shouldValidateSchema) {\n+        if (shouldValidateSchema && node != null) {\n@@ -237 +237 @@ public class OneOfValidator extends BaseJsonValidator {\n-                schema.walk(executionContext, node, rootNode, instanceLocation, shouldValidateSchema);\n+                schema.walk(executionContext, node, rootNode, instanceLocation, false);"
+}

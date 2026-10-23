@@ -1,0 +1,112 @@
+{
+  "index": 32,
+  "sha": "2879ca3957086455a7b53cfdf486149f52cbaa8b",
+  "parent": "7cda40e52898a592c34d8445290ddccb51aa1642",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/ConstValidator.java": [
+      44
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      84
+    ],
+    "src/main/java/com/networknt/schema/MaxItemsValidator.java": [
+      49,
+      55
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      86,
+      110
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      179,
+      180,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java": [
+      122,
+      123,
+      134,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144
+    ],
+    "src/main/java/com/networknt/schema/ValidatorTypeCode.java": [
+      47,
+      49,
+      66,
+      71,
+      114
+    ],
+    "src/main/java/com/networknt/schema/i18n/Locales.java": [
+      33,
+      34,
+      35
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/ConstValidator.java": [
+      44
+    ],
+    "src/main/java/com/networknt/schema/JsonSchema.java": [
+      84
+    ],
+    "src/main/java/com/networknt/schema/MaxItemsValidator.java": [
+      49,
+      55
+    ],
+    "src/main/java/com/networknt/schema/OneOfValidator.java": [
+      58,
+      60,
+      87,
+      88,
+      89,
+      90,
+      92,
+      95,
+      105,
+      116,
+      119
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java": [
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188
+    ],
+    "src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java": [
+      122,
+      123,
+      126
+    ],
+    "src/main/java/com/networknt/schema/ValidatorTypeCode.java": [
+      47,
+      49
+    ],
+    "src/main/java/com/networknt/schema/i18n/Locales.java": [
+      33,
+      34,
+      35
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/ConstValidator.java b/src/main/java/com/networknt/schema/ConstValidator.java\nindex 96385dc1..a06f16cf 100644\n--- a/src/main/java/com/networknt/schema/ConstValidator.java\n+++ b/src/main/java/com/networknt/schema/ConstValidator.java\n@@ -44 +44 @@ public class ConstValidator extends BaseJsonValidator implements JsonValidator {\n-                        .failFast(executionContext.isFailFast()).arguments(schemaNode.asText())\n+                        .failFast(executionContext.isFailFast()).arguments(schemaNode.asText(), node.asText())\ndiff --git a/src/main/java/com/networknt/schema/JsonSchema.java b/src/main/java/com/networknt/schema/JsonSchema.java\nindex 8a93146e..17496003 100644\n--- a/src/main/java/com/networknt/schema/JsonSchema.java\n+++ b/src/main/java/com/networknt/schema/JsonSchema.java\n@@ -84 +84 @@ public class JsonSchema extends BaseJsonValidator {\n-                            .arguments(schemaLocation.toString(), id)\n+                            .arguments(id, validationContext.getMetaSchema().getIdKeyword(), idSchemaLocation)\ndiff --git a/src/main/java/com/networknt/schema/MaxItemsValidator.java b/src/main/java/com/networknt/schema/MaxItemsValidator.java\nindex 51e4be62..b8ee0411 100644\n--- a/src/main/java/com/networknt/schema/MaxItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/MaxItemsValidator.java\n@@ -49 +49 @@ public class MaxItemsValidator extends BaseJsonValidator implements JsonValidato\n-                        .failFast(executionContext.isFailFast()).arguments(max).build());\n+                        .failFast(executionContext.isFailFast()).arguments(max, node.size()).build());\n@@ -55 +55 @@ public class MaxItemsValidator extends BaseJsonValidator implements JsonValidato\n-                        .failFast(executionContext.isFailFast()).arguments(max).build());\n+                        .failFast(executionContext.isFailFast()).arguments(max, 1).build());\ndiff --git a/src/main/java/com/networknt/schema/OneOfValidator.java b/src/main/java/com/networknt/schema/OneOfValidator.java\nindex 21a26d79..fe20b014 100644\n--- a/src/main/java/com/networknt/schema/OneOfValidator.java\n+++ b/src/main/java/com/networknt/schema/OneOfValidator.java\n@@ -57,0 +58 @@ public class OneOfValidator extends BaseJsonValidator {\n+        int index = 0;\n@@ -58,0 +60 @@ public class OneOfValidator extends BaseJsonValidator {\n+        List<String> indexes = null;\n@@ -84,0 +87,4 @@ public class OneOfValidator extends BaseJsonValidator {\n+                    if (indexes == null) {\n+                        indexes = new ArrayList<>();\n+                    }\n+                    indexes.add(Integer.toString(index));\n@@ -86 +92 @@ public class OneOfValidator extends BaseJsonValidator {\n-\n+                \n@@ -88,0 +95 @@ public class OneOfValidator extends BaseJsonValidator {\n+                    // note that the short circuit means that only 2 valid schemas are reported even if could be more\n@@ -97,0 +105 @@ public class OneOfValidator extends BaseJsonValidator {\n+                index++;\n@@ -107,0 +116 @@ public class OneOfValidator extends BaseJsonValidator {\n+                    .messageKey(numberOfValidSchema > 1 ? \"oneOf.indexes\" : \"oneOf\")\n@@ -110 +119 @@ public class OneOfValidator extends BaseJsonValidator {\n-                    .arguments(Integer.toString(numberOfValidSchema)).build();\n+                    .arguments(Integer.toString(numberOfValidSchema), numberOfValidSchema > 1 ? String.join(\", \", indexes) : \"\").build();\ndiff --git a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\nindex 94a63bc4..2b2586a8 100644\n--- a/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/UnevaluatedItemsValidator.java\n@@ -179,2 +179,10 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n-                        messages.addAll(\n-                                this.schema.validate(executionContext, node.get(x), node, instanceLocation.append(x)));\n+                        if (this.schemaNode.isBoolean() && this.schemaNode.booleanValue() == false) {\n+                            // All fails as \"unevaluatedItems: false\"\n+                            messages.add(message().instanceNode(node).instanceLocation(instanceLocation).arguments(x)\n+                                    .locale(executionContext.getExecutionConfig().getLocale())\n+                                    .failFast(executionContext.isFailFast()).build());\n+                        } else {\n+                            // Schema errors will be reported as is\n+                            messages.addAll(this.schema.validate(executionContext, node.get(x), node,\n+                                    instanceLocation.append(x)));\n+                        }\n@@ -187,8 +194,0 @@ public class UnevaluatedItemsValidator extends BaseJsonValidator {\n-            } else {\n-                // Report these as unevaluated paths or not matching the unevaluatedItems schema\n-                messages = messages.stream()\n-                        .map(m -> message().instanceNode(node).instanceLocation(instanceLocation)\n-                                .locale(executionContext.getExecutionConfig().getLocale())\n-                                .arguments(m.getInstanceLocation().getName(-1))\n-                                .failFast(executionContext.isFailFast()).build())\n-                        .collect(Collectors.toCollection(LinkedHashSet::new));\ndiff --git a/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java b/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\nindex 34d5830f..61b6cede 100644\n--- a/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\n+++ b/src/main/java/com/networknt/schema/UnevaluatedPropertiesValidator.java\n@@ -122,2 +122,2 @@ public class UnevaluatedPropertiesValidator extends BaseJsonValidator {\n-                        messages.add(message().instanceNode(node).instanceLocation(instanceLocation.append(fieldName))\n-                                .locale(executionContext.getExecutionConfig().getLocale())\n+                        messages.add(message().instanceNode(node).instanceLocation(instanceLocation).property(fieldName)\n+                                .arguments(fieldName).locale(executionContext.getExecutionConfig().getLocale())\n@@ -125,0 +126 @@ public class UnevaluatedPropertiesValidator extends BaseJsonValidator {\n+                        // Schema errors will be reported as is\n@@ -134,11 +134,0 @@ public class UnevaluatedPropertiesValidator extends BaseJsonValidator {\n-        if (!messages.isEmpty()) {\n-            // Report these as unevaluated paths or not matching the unevaluatedProperties\n-            // schema\n-            messages = messages.stream()\n-                    .map(m -> message().instanceNode(node).instanceLocation(instanceLocation)\n-                            .locale(executionContext.getExecutionConfig().getLocale())\n-                            .arguments(m.getInstanceLocation().getName(-1))\n-                            .property(m.getInstanceLocation().getName(-1))\n-                            .failFast(executionContext.isFailFast()).build())\n-                    .collect(Collectors.toCollection(LinkedHashSet::new));\n-        }\ndiff --git a/src/main/java/com/networknt/schema/ValidatorTypeCode.java b/src/main/java/com/networknt/schema/ValidatorTypeCode.java\nindex 6ea177a0..baf5ec0f 100644\n--- a/src/main/java/com/networknt/schema/ValidatorTypeCode.java\n+++ b/src/main/java/com/networknt/schema/ValidatorTypeCode.java\n@@ -47 +47 @@ enum VersionCode {\n-    \tthis.versions = EnumSet.noneOf(VersionFlag.class);\n+        this.versions = EnumSet.noneOf(VersionFlag.class);\n@@ -49 +49 @@ enum VersionCode {\n-        \tthis.versions.add(flag);\n+            this.versions.add(flag);\n@@ -66 +65,0 @@ public enum ValidatorTypeCode implements Keyword, ErrorMessageType {\n-    CROSS_EDITS(\"crossEdits\", \"1004\", null, VersionCode.AllVersions),\n@@ -71 +69,0 @@ public enum ValidatorTypeCode implements Keyword, ErrorMessageType {\n-    EDITS(\"edits\", \"1005\", null, VersionCode.AllVersions),\n@@ -114 +111,0 @@ public enum ValidatorTypeCode implements Keyword, ErrorMessageType {\n-    UUID(\"uuid\", \"1035\", null, VersionCode.AllVersions),\ndiff --git a/src/main/java/com/networknt/schema/i18n/Locales.java b/src/main/java/com/networknt/schema/i18n/Locales.java\nindex 85c2cb88..0c923103 100644\n--- a/src/main/java/com/networknt/schema/i18n/Locales.java\n+++ b/src/main/java/com/networknt/schema/i18n/Locales.java\n@@ -33,3 +33,3 @@ public class Locales {\n-    public static final String[] SUPPORTED_LANGUAGE_TAGS = new String[] { \"ar-EG\", \"cs-CZ\", \"da-DK\", \"de\", \"fa-IR\",\n-            \"fi-FI\", \"fr-CA\", \"fr\", \"he-IL\", \"hr-HR\", \"hu-HU\", \"it\", \"ja-JP\", \"ko-KR\", \"nb-NO\", \"nl-NL\", \"pl-PL\",\n-            \"pt-BR\", \"ro-RO\", \"ru-RU\", \"sk-SK\", \"sv-SE\", \"th-TH\", \"tr-TR\", \"uk-UA\", \"vi-VN\", \"zh-CN\", \"zh-TW\" };\n+    public static final String[] SUPPORTED_LANGUAGE_TAGS = new String[] { \"ar\", \"cs\", \"da\", \"de\", \"fa\", \"fi\", \"fr\",\n+            \"iw\", \"he\", \"hr\", \"hu\", \"it\", \"ja\", \"ko\", \"nb\", \"nl\", \"pl\", \"pt\", \"ro\", \"ru\", \"sk\", \"sv\", \"th\", \"tr\", \"uk\",\n+            \"vi\", \"zh-CN\", \"zh-TW\" };"
+}

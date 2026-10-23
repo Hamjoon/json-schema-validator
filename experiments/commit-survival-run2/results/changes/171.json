@@ -1,0 +1,22 @@
+{
+  "index": 171,
+  "sha": "07b694bff52b30e654f4c1549925723ecf3eadcc",
+  "parent": "9df7d32267ae1e3469cb2f8b99a93a97b1bbbc64",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/dialect/Dialect.java": [
+      417,
+      418,
+      419,
+      420
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/dialect/Dialect.java": [
+      417,
+      418,
+      419,
+      420
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/dialect/Dialect.java b/src/main/java/com/networknt/schema/dialect/Dialect.java\nindex 6af636e9..52df3252 100644\n--- a/src/main/java/com/networknt/schema/dialect/Dialect.java\n+++ b/src/main/java/com/networknt/schema/dialect/Dialect.java\n@@ -417,4 +417,4 @@ public class Dialect {\n-    private static String readText(JsonNode node, String field) {\n-        JsonNode fieldNode = node.get(field);\n-        return fieldNode == null ? null : fieldNode.asString();\n-    }\n+    private static String readText(JsonNode node, String field) {\n+        JsonNode fieldNode = node.get(field);\n+        return fieldNode == null ? null : fieldNode.stringValue(null);\n+    }"
+}

@@ -1,0 +1,55 @@
+{
+  "index": 210,
+  "sha": "83905ab3d056218103c72d5b6a3eab8a8ecf5591",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/210",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 4.409,
+      "log": "results/builds/logs/210-1.txt"
+    }
+  ],
+  "pom_sha256": "3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60",
+  "classpath": "work/classpaths/3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/210",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.801,
+      "log": "results/builds/logs/classpath-3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/210",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 1.483,
+      "log": "results/builds/logs/classpath-3a06ea022997aeeba65775e43b979bc6fc4e58ace0756c1de66ce99e782b6e60-2.txt"
+    }
+  ],
+  "seconds": 71.38
+}

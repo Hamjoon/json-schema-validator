@@ -1,0 +1,27 @@
+{
+  "index": 216,
+  "sha": "81cffd32ece515dff721cd83b846852897724f13",
+  "parent": "b3e5a0938ae27504002216487fc161081a6350c2",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      53,
+      54
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/TimeFormat.java b/src/main/java/com/networknt/schema/format/TimeFormat.java\nindex 7b539b9e..cb49da92 100644\n--- a/src/main/java/com/networknt/schema/format/TimeFormat.java\n+++ b/src/main/java/com/networknt/schema/format/TimeFormat.java\n@@ -53,2 +53,11 @@ public class TimeFormat implements Format {\n-            TemporalAccessor accessor = formatter.parseUnresolved(value, new ParsePosition(0));\n-            if (null == accessor) return false;\n+            ParsePosition position = new ParsePosition(0);\n+            TemporalAccessor accessor = formatter.parseUnresolved(value, position);\n+            // parseUnresolved stops at the end of the pattern, so trailing text must be rejected here\n+            if (null == accessor || position.getIndex() != value.length()) return false;\n+\n+            char last = value.charAt(value.length() - 1);\n+            if (last != 'Z' && last != 'z') {\n+                // A numeric offset is exactly +HH:MM or -HH:MM. Java 8 also accepts +HH:MM:SS.\n+                char sign = value.charAt(value.length() - 6);\n+                if (sign != '+' && sign != '-') return false;\n+            }"
+}

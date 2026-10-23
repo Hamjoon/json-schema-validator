@@ -1,0 +1,68 @@
+{
+  "index": 159,
+  "sha": "c485230dd1d656784bdf11213b9cb3e94dd529b5",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/159",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.23,
+      "log": "results/builds/logs/159-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/159",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 4.324,
+      "log": "results/builds/logs/159-2.txt"
+    }
+  ],
+  "pom_sha256": "6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85",
+  "classpath": "work/classpaths/6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/159",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 0.971,
+      "log": "results/builds/logs/classpath-6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/159",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 1.368,
+      "log": "results/builds/logs/classpath-6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85-2.txt"
+    }
+  ],
+  "seconds": 130.064
+}

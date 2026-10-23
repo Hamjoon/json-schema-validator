@@ -1,0 +1,90 @@
+{
+  "index": 228,
+  "sha": "d0005e694695af9078289aea0fc2e6daf462a948",
+  "parent": "9c757382e0f820153165364748cc099a25c375c8",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/DateFormat.java": [
+      28,
+      30
+    ],
+    "src/main/java/com/networknt/schema/format/DateTimeFormat.java": [
+      63,
+      65,
+      69,
+      73
+    ],
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      24,
+      40,
+      88,
+      89,
+      90,
+      105,
+      135,
+      136,
+      137,
+      138,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      146,
+      153,
+      154,
+      155,
+      156,
+      157,
+      158,
+      159,
+      160,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/DateFormat.java": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      35,
+      37
+    ],
+    "src/main/java/com/networknt/schema/format/DateTimeFormat.java": [
+      63,
+      65,
+      69,
+      73
+    ],
+    "src/main/java/com/networknt/schema/format/TimeFormat.java": [
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      114,
+      144,
+      145
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/DateFormat.java b/src/main/java/com/networknt/schema/format/DateFormat.java\nindex 5bc633dc..dba714d7 100644\n--- a/src/main/java/com/networknt/schema/format/DateFormat.java\n+++ b/src/main/java/com/networknt/schema/format/DateFormat.java\n@@ -24,0 +25,7 @@ public class DateFormat implements Format {\n+        return parse(value) != null;\n+    }\n+\n+    /**\n+     * @return the full-date, or null if the value is not a valid full-date\n+     */\n+    static LocalDate parse(String value) {\n@@ -28 +35 @@ public class DateFormat implements Format {\n-            return 0 <= year && year <= 9999;\n+            return 0 <= year && year <= 9999 ? date : null;\n@@ -30 +37 @@ public class DateFormat implements Format {\n-            return false;\n+            return null;\ndiff --git a/src/main/java/com/networknt/schema/format/DateTimeFormat.java b/src/main/java/com/networknt/schema/format/DateTimeFormat.java\nindex d45be0b0..6a09fdcf 100644\n--- a/src/main/java/com/networknt/schema/format/DateTimeFormat.java\n+++ b/src/main/java/com/networknt/schema/format/DateTimeFormat.java\n@@ -63 +63 @@ public class DateTimeFormat implements Format {\n-            String date = value.substring(0, DATE_LENGTH);\n+            LocalDate date = DateFormat.parse(value.substring(0, DATE_LENGTH));\n@@ -65 +65 @@ public class DateTimeFormat implements Format {\n-            if (time == null || !DateFormat.isValid(date)) {\n+            if (time == null || date == null) {\n@@ -69 +69 @@ public class DateTimeFormat implements Format {\n-            return time.second != 60 || isLastDayOfJuneOrDecemberInUtc(LocalDate.parse(date), time);\n+            return time.second != 60 || isLastDayOfJuneOrDecemberInUtc(date, time);\n@@ -73 +73 @@ public class DateTimeFormat implements Format {\n-            LocalDate utc = date.atTime(time.hour, time.minute).minusMinutes(time.offsetMinutes).toLocalDate();\n+            LocalDate utc = date.plusDays(Math.floorDiv(time.minutesInUtc(), 24 * 60));\ndiff --git a/src/main/java/com/networknt/schema/format/TimeFormat.java b/src/main/java/com/networknt/schema/format/TimeFormat.java\nindex c63d5ffe..4f3906d0 100644\n--- a/src/main/java/com/networknt/schema/format/TimeFormat.java\n+++ b/src/main/java/com/networknt/schema/format/TimeFormat.java\n@@ -24 +23,0 @@ import com.networknt.schema.ExecutionContext;\n-import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;\n@@ -40 +39,6 @@ public class TimeFormat implements Format {\n-            .append(ISO_LOCAL_TIME)\n+            .appendValue(HOUR_OF_DAY, 2)\n+            .appendLiteral(':')\n+            .appendValue(MINUTE_OF_HOUR, 2)\n+            .appendLiteral(':')\n+            .appendValue(SECOND_OF_MINUTE, 2)\n+            .appendFraction(NANO_OF_SECOND, 0, 9, true)\n@@ -76,0 +81,8 @@ public class TimeFormat implements Format {\n+\n+        /**\n+         * Minutes from the start of the written date to this time in UTC. The result\n+         * can fall outside the written date when the offset crosses midnight.\n+         */\n+        int minutesInUtc() {\n+            return hour * 60 + minute - offsetMinutes;\n+        }\n@@ -88,3 +99,0 @@ public class TimeFormat implements Format {\n-            // partial-time is HH:MM:SS. ISO_LOCAL_TIME alone would also take HH:MM\n-            if (value.length() < 8 || value.charAt(2) != ':' || value.charAt(5) != ':') return null;\n-\n@@ -105 +114 @@ public class TimeFormat implements Format {\n-                // ISO_LOCAL_TIME parses at most nine digits, but RFC 3339 permits more.\n+                // The formatter parses at most nine digits, but RFC 3339 permits more.\n@@ -135,12 +144,2 @@ public class TimeFormat implements Format {\n-            // Leap second check normalize to UTC to check if 23:59:60Z\n-            hr = hr - offset / 60;\n-            min = min - offset % 60;\n-\n-            if (min < 0) {\n-                --hr;\n-                min += 60;\n-            }\n-            if (hr < 0) {\n-                hr += 24;\n-            }\n-            return isSpecialCaseLeapSecond(sec, min, hr) ? time : null;\n+            // The remaining second is 60; it must be at 23:59 in UTC.\n+            return Math.floorMod(time.minutesInUtc(), 24 * 60) == 23 * 60 + 59 ? time : null;\n@@ -153,14 +151,0 @@ public class TimeFormat implements Format {\n-    /**\n-     * Determines if it is a valid leap second.\n-     *\n-     * See https://datatracker.ietf.org/doc/html/rfc3339#appendix-D\n-     *\n-     * @param sec second\n-     * @param min minute\n-     * @param hr  hour\n-     * @return true if it is a valid leap second\n-     */\n-    private static boolean isSpecialCaseLeapSecond(long sec, long min, long hr) {\n-        return (sec == 60 && min == 59 && hr == 23);\n-    }\n-"
+}

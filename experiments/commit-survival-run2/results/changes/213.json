@@ -1,0 +1,16 @@
+{
+  "index": 213,
+  "sha": "45c1fc65c113b51bd9ec693bc9b7193e0739f56c",
+  "parent": "55153152bdabb41ff55d77f3edc6a6c11a6e3d90",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java": [
+      52
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java": [
+      52
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java b/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\nindex cd45aa46..9e0d4a6f 100644\n--- a/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\n+++ b/src/main/java/com/networknt/schema/keyword/UniqueItemsValidator.java\n@@ -52 +52 @@ public class UniqueItemsValidator extends BaseKeywordValidator implements Keywor\n-        if (unique) {\n+        if (unique && node.isArray()) {"
+}

@@ -1,0 +1,74 @@
+{
+  "index": 186,
+  "sha": "73eb8f2a0553c7c5ba4269940dbf311e1b82e90d",
+  "parent": "d97a3680b2863874241c4a569fe9e4bfad4d7935",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/EmailFormat.java": [
+      38,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ],
+    "src/main/java/com/networknt/schema/format/IdnEmailFormat.java": [],
+    "src/main/java/com/networknt/schema/utils/Strings.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/EmailFormat.java": [
+      21,
+      39
+    ],
+    "src/main/java/com/networknt/schema/format/IdnEmailFormat.java": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      21,
+      39,
+      40,
+      41
+    ],
+    "src/main/java/com/networknt/schema/utils/Strings.java": [
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/EmailFormat.java b/src/main/java/com/networknt/schema/format/EmailFormat.java\nindex 331fdd43..80eb3185 100644\n--- a/src/main/java/com/networknt/schema/format/EmailFormat.java\n+++ b/src/main/java/com/networknt/schema/format/EmailFormat.java\n@@ -20,0 +21 @@ import com.networknt.schema.ExecutionContext;\n+import com.networknt.schema.utils.Strings;\n@@ -38 +39 @@ public class EmailFormat implements Format {\n-        if (containsNonAsciiWhitespace(value)) {\n+        if (Strings.containsNonAsciiWhitespace(value)) {\n@@ -43,15 +43,0 @@ public class EmailFormat implements Format {\n-\n-    /**\n-     * Whether {@code value} contains a non-ASCII whitespace character such as\n-     * {@code U+00A0} NON-BREAKING SPACE. The underlying validator only excludes\n-     * ASCII whitespace, so such characters would otherwise be accepted in an\n-     * email address. Note that {@link Character#isWhitespace(char)} deliberately\n-     * excludes {@code U+00A0}, hence the additional\n-     * {@link Character#isSpaceChar(char)} check.\n-     */\n-    private static boolean containsNonAsciiWhitespace(String value) {\n-        if (value == null) {\n-            return false;\n-        }\n-        return value.codePoints().anyMatch(ch -> ch > 0x7F && (Character.isWhitespace(ch) || Character.isSpaceChar(ch)));\n-    }\ndiff --git a/src/main/java/com/networknt/schema/format/IdnEmailFormat.java b/src/main/java/com/networknt/schema/format/IdnEmailFormat.java\nindex 88007108..61d3fb57 100644\n--- a/src/main/java/com/networknt/schema/format/IdnEmailFormat.java\n+++ b/src/main/java/com/networknt/schema/format/IdnEmailFormat.java\n@@ -0,0 +1,16 @@\n+/*\n+ * Copyright (c) 2016 Network New Technologies Inc.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ *      http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n@@ -4,0 +21 @@ import com.networknt.schema.ExecutionContext;\n+import com.networknt.schema.utils.Strings;\n@@ -21,0 +39,3 @@ public class IdnEmailFormat implements Format {\n+        if (Strings.containsNonAsciiWhitespace(value)) {\n+            return false;\n+        }\ndiff --git a/src/main/java/com/networknt/schema/utils/Strings.java b/src/main/java/com/networknt/schema/utils/Strings.java\nindex d16f7202..af198d08 100644\n--- a/src/main/java/com/networknt/schema/utils/Strings.java\n+++ b/src/main/java/com/networknt/schema/utils/Strings.java\n@@ -171,0 +172,16 @@ public final class Strings {\n+\n+    /**\n+     * Whether the given string contains a non-ASCII whitespace character such as\n+     * {@code U+00A0} NON-BREAKING SPACE. Note that {@link Character#isWhitespace(int)}\n+     * deliberately excludes {@code U+00A0}, hence the additional\n+     * {@link Character#isSpaceChar(int)} check.\n+     *\n+     * @param string the string to test, may be null\n+     * @return true if the string contains a non-ASCII whitespace character\n+     */\n+    public static boolean containsNonAsciiWhitespace(String string) {\n+        if (string == null) {\n+            return false;\n+        }\n+        return string.codePoints().anyMatch(ch -> ch > 0x7F && (Character.isWhitespace(ch) || Character.isSpaceChar(ch)));\n+    }"
+}

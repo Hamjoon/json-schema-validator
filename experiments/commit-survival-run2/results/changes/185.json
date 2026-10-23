@@ -1,0 +1,31 @@
+{
+  "index": 185,
+  "sha": "d97a3680b2863874241c4a569fe9e4bfad4d7935",
+  "parent": "12b85e4f1a07c18a2efc0ae661bb2bf609f7fec1",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/format/EmailFormat.java": []
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/format/EmailFormat.java": [
+      38,
+      39,
+      40,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/format/EmailFormat.java b/src/main/java/com/networknt/schema/format/EmailFormat.java\nindex 86cbb510..331fdd43 100644\n--- a/src/main/java/com/networknt/schema/format/EmailFormat.java\n+++ b/src/main/java/com/networknt/schema/format/EmailFormat.java\n@@ -37,0 +38,3 @@ public class EmailFormat implements Format {\n+        if (containsNonAsciiWhitespace(value)) {\n+            return false;\n+        }\n@@ -39,0 +43,15 @@ public class EmailFormat implements Format {\n+\n+    /**\n+     * Whether {@code value} contains a non-ASCII whitespace character such as\n+     * {@code U+00A0} NON-BREAKING SPACE. The underlying validator only excludes\n+     * ASCII whitespace, so such characters would otherwise be accepted in an\n+     * email address. Note that {@link Character#isWhitespace(char)} deliberately\n+     * excludes {@code U+00A0}, hence the additional\n+     * {@link Character#isSpaceChar(char)} check.\n+     */\n+    private static boolean containsNonAsciiWhitespace(String value) {\n+        if (value == null) {\n+            return false;\n+        }\n+        return value.codePoints().anyMatch(ch -> ch > 0x7F && (Character.isWhitespace(ch) || Character.isSpaceChar(ch)));\n+    }"
+}

@@ -1,0 +1,35 @@
+{
+  "index": 183,
+  "sha": "8bf1423c72af3f21ddd45cd08485c032511c9b39",
+  "parent": "1ef129e241f6180c29a39e5683ae20b2d9b895ee",
+  "pre_image": {
+    "src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java": [
+      42
+    ]
+  },
+  "post_image": {
+    "src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java": [
+      38,
+      39,
+      40,
+      45,
+      54,
+      55,
+      56,
+      57,
+      59,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92
+    ]
+  },
+  "diff": "diff --git a/src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java b/src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java\nindex 1c283a44..2c1b88ee 100644\n--- a/src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java\n+++ b/src/main/java/com/networknt/schema/resource/ClasspathResourceLoader.java\n@@ -37,0 +38,3 @@ public class ClasspathResourceLoader implements ResourceLoader {\n+    /** Whether to fall back to this library's own class loader when the default source misses. */\n+    private final boolean fallbackToOwnClassLoader;\n+\n@@ -42 +45 @@ public class ClasspathResourceLoader implements ResourceLoader {\n-        this(ClasspathResourceLoader::getClassLoader);\n+        this(ClasspathResourceLoader::getClassLoader, true);\n@@ -50,0 +54,4 @@ public class ClasspathResourceLoader implements ResourceLoader {\n+        this(classLoaderSource, false);\n+    }\n+\n+    private ClasspathResourceLoader(Supplier<ClassLoader> classLoaderSource, boolean fallbackToOwnClassLoader) {\n@@ -51,0 +59 @@ public class ClasspathResourceLoader implements ResourceLoader {\n+        this.fallbackToOwnClassLoader = fallbackToOwnClassLoader;\n@@ -73,0 +82,11 @@ public class ClasspathResourceLoader implements ResourceLoader {\n+                if (result == null && this.fallbackToOwnClassLoader) {\n+                    // In OSGi the thread-context class loader is often non-null but cannot see this\n+                    // library's bundled resources; retry with the library's own class loader.\n+                    ClassLoader ownClassLoader = ResourceLoader.class.getClassLoader();\n+                    if (ownClassLoader != null && ownClassLoader != classLoader) {\n+                        result = ownClassLoader.getResourceAsStream(resource);\n+                        if (result == null) {\n+                            result = ownClassLoader.getResourceAsStream(resource.substring(1));\n+                        }\n+                    }\n+                }"
+}
