@@ -16,7 +16,8 @@
     "Initial JDK/Spoon matching used declaration line numbers; annotation positions differed (22 matches versus 29). Matching was corrected to normalized signatures, then exact indexed signatures were retained for KTester prompt lookup. No author code changed.",
     "Frozen test resources and suite fixtures are retained in addition to Java sources. Class launches use work/runtime with copied t fixtures because PrefixItemsValidatorTest uses a relative filesystem path; production classes/dependencies still come from each evaluated commit.",
     "Pre-evaluation rename audit corrected path-touch counts to include old and new rename paths and coverage hunks to retain rename detection. Scope membership, focal methods and denominators were unchanged. Scope coverage continues to use anchor source paths, matching the copied fixed-scope design.",
-    "KTester round1-retry completed generation for all 29 targets but its original repair pipeline caught a Spoon NullPointerException at target 8 and returned normally. No author patch or manual repair was applied. All final available test_classes files were screened, including files not reached by repair."
+    "KTester round1-retry completed generation for all 29 targets but its original repair pipeline caught a Spoon NullPointerException at target 8 and returned normally. No author patch or manual repair was applied. All final available test_classes files were screened, including files not reached by repair.",
+    "Scope survey and dataset preparation were not separately timed; their wall durations remain null in the final timing summary. Overall elapsed time and measured build, baseline, index, generation, screening, control and evaluation phases are retained."
   ],
   "author_code_modified": false
 }

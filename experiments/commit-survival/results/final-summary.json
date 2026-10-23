@@ -1,0 +1,481 @@
+{
+  "status": "completed",
+  "finished": "2026-10-23T16:24:31.455526+00:00",
+  "wall_seconds": 8432.66,
+  "phase_seconds": {
+    "build-check": 2116.423,
+    "developer-baseline": 84.09,
+    "phase-a": 713.033,
+    "phase-b": 499.982,
+    "anchor_build": 14.864,
+    "ktester_index": 4.547,
+    "scope_and_dataset_preparation": null,
+    "final_anchor_control": 15.370000000000001,
+    "ktester-round1-retry": 6078.768,
+    "ktester-round1": 0.174,
+    "ouedraogo-round1": 611.017,
+    "ktester-round1-retry-screening": 23.778,
+    "ouedraogo-round1-screening": 9.321
+  },
+  "timing_note": "Timed subprocess phases exclude Docker startup. Scope and dataset preparation were not separately timed and overlapped build checks; null is not zero.",
+  "phases": {
+    "build-check": {
+      "workers": 4,
+      "seconds": 2116.423,
+      "ok": 229,
+      "failed": []
+    },
+    "developer-baseline": {
+      "runs": [
+        {
+          "index": 1,
+          "attempts": [
+            {
+              "command": [
+                "mvn",
+                "-q",
+                "-o",
+                "test"
+              ],
+              "cwd": "/repo",
+              "exit_code": 1,
+              "timeout": false,
+              "seconds": 1.519,
+              "log": "results/baseline-run1.txt"
+            },
+            {
+              "command": [
+                "mvn",
+                "-q",
+                "test"
+              ],
+              "cwd": "/repo",
+              "exit_code": 0,
+              "timeout": false,
+              "seconds": 7.716,
+              "log": "results/baseline-run1-retry.txt"
+            }
+          ],
+          "totals": {
+            "tests": 7466,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 329,
+            "passed": 7137
+          }
+        },
+        {
+          "index": 2,
+          "attempts": [
+            {
+              "command": [
+                "mvn",
+                "-q",
+                "-o",
+                "test"
+              ],
+              "cwd": "/repo",
+              "exit_code": 0,
+              "timeout": false,
+              "seconds": 7.056,
+              "log": "results/baseline-run2.txt"
+            }
+          ],
+          "totals": {
+            "tests": 7466,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 329,
+            "passed": 7137
+          }
+        },
+        {
+          "index": 3,
+          "attempts": [
+            {
+              "command": [
+                "mvn",
+                "-q",
+                "-o",
+                "test"
+              ],
+              "cwd": "/repo",
+              "exit_code": 0,
+              "timeout": false,
+              "seconds": 6.778,
+              "log": "results/baseline-run3.txt"
+            }
+          ],
+          "totals": {
+            "tests": 7466,
+            "failures": 0,
+            "errors": 0,
+            "skipped": 329,
+            "passed": 7137
+          }
+        }
+      ],
+      "seconds": 84.09
+    },
+    "phase-a": {
+      "seconds": 713.033,
+      "workers": 4,
+      "resume_workers": null,
+      "skipped_build_fail": [],
+      "jobs": 687,
+      "failed": [],
+      "oom_quarantine": []
+    },
+    "phase-b": {
+      "seconds": 499.982,
+      "workers": 4,
+      "resume_workers": null,
+      "skipped_build_fail": [],
+      "jobs": 543,
+      "failed": [],
+      "oom_quarantine": []
+    }
+  },
+  "model_rounds": {
+    "ktester-round1-retry": {
+      "round": 1,
+      "status": "completed",
+      "error_type": null,
+      "seconds": 6078.768,
+      "model_calls": 182,
+      "model": "openai/gpt-oss-120b",
+      "temperature": 0.5,
+      "fix_tries": 5,
+      "workers": 8,
+      "prompts_unmodified": true,
+      "provider_pinned": false,
+      "pipeline_status": "generation-completed-repair-incomplete",
+      "repair_stopped_at_target": 8,
+      "repair_targets": 29,
+      "repair_error": "java.lang.NullPointerException: sourceMethod is null in Spoon CtMethod.prettyprint; caught and logged by author post_process.py"
+    },
+    "ktester-round1": {
+      "round": 1,
+      "status": "failed",
+      "error_type": "ValueError",
+      "seconds": 0.174,
+      "model_calls": 0,
+      "model": "openai/gpt-oss-120b",
+      "temperature": 0.5,
+      "fix_tries": 5,
+      "workers": 8,
+      "prompts_unmodified": true,
+      "provider_pinned": false
+    },
+    "ouedraogo-round1": {
+      "round": 1,
+      "seconds": 611.017,
+      "prompts": 25,
+      "model_calls": 25,
+      "extracted": 25,
+      "model": "openai/gpt-oss-120b",
+      "temperature": 0.7,
+      "max_tokens": 16384,
+      "workers": 2,
+      "provider_pinned": false
+    }
+  },
+  "denominators": {
+    "dev": 10,
+    "ktester": 32,
+    "ouedraogo": 23
+  },
+  "deviations": [
+    "Tag 1.1.0 was absent locally and fetched from networknt. No upstream remote was configured; pinned origin/master was retained.",
+    "Independent scope enumeration and generation preparation overlapped the range build checks.",
+    "Metadata adapter initially erased generic types; exact index signatures restored before any successful model generation.",
+    "Initial Ou\u00e9draogo launch lacked requests; dependency installed under ignored work/python, no API calls were made by that failed launch.",
+    "KTester credential from existing settings appeared in tool output during inspection; it is not copied to experiment artifacts. Calls use the owner-provided environment key.",
+    "KTester final selected test_classes files, rather than the potentially different last repair copied into the project test tree, are used for the validation funnel. Both are archived.",
+    "Scope and baseline checkpoints were committed while independent range-build measurements were still running; final build-check commit follows completion.",
+    "Initial JDK/Spoon matching used declaration line numbers; annotation positions differed (22 matches versus 29). Matching was corrected to normalized signatures, then exact indexed signatures were retained for KTester prompt lookup. No author code changed.",
+    "Frozen test resources and suite fixtures are retained in addition to Java sources. Class launches use work/runtime with copied t fixtures because PrefixItemsValidatorTest uses a relative filesystem path; production classes/dependencies still come from each evaluated commit.",
+    "Pre-evaluation rename audit corrected path-touch counts to include old and new rename paths and coverage hunks to retain rename detection. Scope membership, focal methods and denominators were unchanged. Scope coverage continues to use anchor source paths, matching the copied fixed-scope design.",
+    "KTester round1-retry completed generation for all 29 targets but its original repair pipeline caught a Spoon NullPointerException at target 8 and returned normally. No author patch or manual repair was applied. All final available test_classes files were screened, including files not reached by repair.",
+    "Scope survey and dataset preparation were not separately timed; their wall durations remain null in the final timing summary. Overall elapsed time and measured build, baseline, index, generation, screening, control and evaluation phases are retained."
+  ],
+  "survival_consistency": {
+    "nonincreasing": true,
+    "index_zero_equals_denominators": true,
+    "raw_records": 687,
+    "expected_raw_records": 687,
+    "raw_count_matches": true,
+    "missing_records": [],
+    "build_fail_indices": []
+  },
+  "coverage_consistency": {
+    "coverage_indices": 181,
+    "production_changes": 128,
+    "identical_executable_line_sets": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      53,
+      54,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90,
+      91,
+      92,
+      93,
+      94,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      104,
+      105,
+      106,
+      107,
+      108,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      123,
+      124,
+      125,
+      126,
+      134,
+      135,
+      139,
+      140,
+      141,
+      142,
+      143,
+      144,
+      145,
+      148,
+      149,
+      150,
+      151,
+      152,
+      153,
+      154,
+      155,
+      157,
+      158,
+      159,
+      161,
+      162,
+      163,
+      166,
+      167,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      208,
+      209,
+      212,
+      213,
+      214,
+      215,
+      216,
+      217,
+      218,
+      219,
+      220,
+      221,
+      222,
+      223,
+      224,
+      225,
+      226,
+      227,
+      228,
+      229
+    ],
+    "missing": [],
+    "zero_executable_change_commits": 9,
+    "unavailable_commits": 0,
+    "totals": {
+      "all": {
+        "executable": 11800,
+        "dev": 1312,
+        "ktester": 1175,
+        "ouedraogo": 0,
+        "methods_lost_in_listed_commits": {
+          "dev": 10,
+          "ktester": 32,
+          "ouedraogo": 23
+        }
+      },
+      "scope": {
+        "executable": 264,
+        "dev": 94,
+        "ktester": 81,
+        "ouedraogo": 0,
+        "methods_lost_in_listed_commits": {
+          "dev": 9,
+          "ktester": 32,
+          "ouedraogo": 23
+        }
+      },
+      "other": {
+        "executable": 11536,
+        "dev": 1218,
+        "ktester": 1094,
+        "ouedraogo": 0,
+        "methods_lost_in_listed_commits": {
+          "dev": 10,
+          "ktester": 32,
+          "ouedraogo": 23
+        }
+      }
+    },
+    "baseline": {
+      "src/main/java/com/networknt/schema/CollectorContext.java": {
+        "executable": 82,
+        "dev": 50,
+        "ktester": 55,
+        "ouedraogo": 0
+      },
+      "src/main/java/com/networknt/schema/PrefixItemsValidator.java": {
+        "executable": 54,
+        "dev": 5,
+        "ktester": 0,
+        "ouedraogo": 0
+      },
+      "src/main/java/com/networknt/schema/PropertiesValidator.java": {
+        "executable": 78,
+        "dev": 65,
+        "ktester": 51,
+        "ouedraogo": 0
+      },
+      "src/main/java/com/networknt/schema/SpecVersionDetector.java": {
+        "executable": 27,
+        "dev": 26,
+        "ktester": 24,
+        "ouedraogo": 27
+      },
+      "src/main/java/com/networknt/schema/TypeValidator.java": {
+        "executable": 23,
+        "dev": 19,
+        "ktester": 19,
+        "ouedraogo": 0
+      }
+    }
+  },
+  "final_verification": {
+    "survival_records": 687,
+    "coverage_records": 543,
+    "frozen_denominators_unchanged": true,
+    "source_fingerprints_match": true,
+    "coverage_selections_match_alive_entering": true,
+    "phase_a_flaky_pass_records": 1,
+    "instrumented_state_differences": [],
+    "first_failure_kinds": {
+      "compile-fail": 64,
+      "error": 1
+    }
+  }
+}
