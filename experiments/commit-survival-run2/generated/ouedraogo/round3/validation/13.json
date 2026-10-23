@@ -1,0 +1,193 @@
+{
+  "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round3/13/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.72,
+    "log": "generated/ouedraogo/round3/validation-logs/13/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testCombineCurrentUriWithIds_AppendsIdAndHandlesFragmentWithoutBase",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testCombineCurrentUriWithIds_AppendsIdAndHandlesFragmentWithoutBase",
+      "body_hash": "4671c14e8e17b224276db894250ed10c0b5d09436b498e17c76a3fe7af167c0b",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testIsUriFragmentWithNoContext",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testIsUriFragmentWithNoContext",
+      "body_hash": "6da98f150eed5da8a1367dcca110d53b7c588e76cc5d900c2aa4a0d52364b17f",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testUriRefersToSubschema",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testUriRefersToSubschema",
+      "body_hash": "7fc1ec3fd856094dea549d6d93a5456d7d6730dcffb3787b679a2a9e13eee789",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetRefSchemaNode_JsonPointerResolution",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetRefSchemaNode_JsonPointerResolution",
+      "body_hash": "9cc71e8e4bfa8fb18e7b4a197561abb7fe9019989515c8cf4c61543b7041bee3",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testRecursiveAnchorSetsDynamicAnchorFlag",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testRecursiveAnchorSetsDynamicAnchorFlag",
+      "body_hash": "5f672701074022d2a5025b4af99e30bdc76c4f26265433045588796d1f4c88da",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testInitializeValidatorsCallsPreloadOnce",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testInitializeValidatorsCallsPreloadOnce",
+      "body_hash": "137abce3c9546e8a61c402b6278301b478a39f33e85725c3346a991727277e1b",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testFindAncestorReturnsRootSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testFindAncestorReturnsRootSchema",
+      "body_hash": "528bb262f35cc652f790d388ce2913072f29be93eba5eee0570ebf2765ba4b96",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testFindLexicalRootStopsAtIdKeyword",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testFindLexicalRootStopsAtIdKeyword",
+      "body_hash": "ed3429810b6d6df9c2f799c380a43e95808b73d4f5f47711569214003c1750f7",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testCreateExecutionContextUsesSupplierWhenProvided",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testCreateExecutionContextUsesSupplierWhenProvided",
+      "body_hash": "49e6617eba0808e44e6f277775e0b1043c36272312d935a92527950a76c379f1",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testSetValidatorStateInitialisesValidatorState",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testSetValidatorStateInitialisesValidatorState",
+      "body_hash": "d7d595c24b640ae7c7446f392a269c71330621f855270b2f0c58031eb20a3884",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testToStringProducesReadableOutput",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testToStringProducesReadableOutput",
+      "body_hash": "1f1a77076b5e64853cfae69c9ea800b74d2600f8451a157694ab482a1a4d349c",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testWalkRespectsWalkEnabledFlag",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testWalkRespectsWalkEnabledFlag",
+      "body_hash": "de340935d891d26d5a4b7fc319e29b0c6fd668866d0abfbec647b93ff43c95a9",
+      "round": "round3",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol\n    private URIFactory mockUriFactory; // internal helper used by ValidationContext\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol\n    private Config mockConfig; // Config is an inner class of ValidationContext \u2013 we mock it\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String\n                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));\n                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n6 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.57,
+    "log": "generated/ouedraogo/round3/validation-logs/13/inventory.tsv"
+  }
+}

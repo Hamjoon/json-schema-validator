@@ -1,0 +1,26 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:70: error: cannot find symbol
+    @Mock private URIFactory uriFactoryMock;
+                  ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:72: error: cannot find symbol
+    @Mock private Config configMock;
+                  ^
+  symbol:   class Config
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:47: error: validate(ExecutionContext,JsonNode,JsonNode,String) in TestValidator cannot implement validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator
+        protected Set<ValidationMessage> validate(ExecutionContext executionContext,
+                                         ^
+  attempting to assign weaker access privileges; was public
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:88: error: cannot find symbol
+        when(validationContextMock.getDiscriminatorContext()).thenReturn(discriminatorContextMock);
+                                  ^
+  symbol:   method getDiscriminatorContext()
+  location: variable validationContextMock of type ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:206: error: cannot find symbol
+        expected.add(new ValidationMessage.Builder().message("dummy").build());
+                                                    ^
+  symbol:   method message(String)
+  location: class Builder
+5 errors

@@ -1,0 +1,76 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:112: error: cannot find symbol
+    @Mock private ValidationContext.Config mockConfig;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:113: error: cannot find symbol
+    @Mock private ValidationContext.URIFactory mockURIFactory;
+                                   ^
+  symbol:   class URIFactory
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:73: error: interface expected here
+    private static class SimpleDiscriminatorContext implements ValidationContext.DiscriminatorContext {
+                                                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:78: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:83: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:88: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:93: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:99: error: method does not override or implement a method from a supertype
+        @Override public void reset() {}
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:100: error: method does not override or implement a method from a supertype
+        @Override public void setCurrentDiscriminator(ObjectNode discriminator) {}
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:101: error: method does not override or implement a method from a supertype
+        @Override public ObjectNode getCurrentDiscriminator() { return null; }
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:102: error: method does not override or implement a method from a supertype
+        @Override public String getCurrentDiscriminatorPath() { return null; }
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:142: error: reference to getSchema is ambiguous
+        when(mockJsonSchemaFactory.getSchema(any(URI.class), any())).thenReturn(mock(JsonSchema.class));
+                                  ^
+  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:177: error: reference to getSchema is ambiguous
+        verify(mockJsonSchemaFactory).getSchema(eq(URI.create(SCHEMA_ID)), any());
+                                     ^
+  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:227: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, null, schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:239: error: no suitable method found for thenReturn(Iterator<Entry<String,TextNode>>)
+        when(mapping.fields()).thenReturn(
+                              ^
+    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>) is not applicable
+      (argument mismatch; Iterator<Entry<String,TextNode>> cannot be converted to Iterator<Entry<String,JsonNode>>)
+    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>,Iterator<Entry<String,JsonNode>>...) is not applicable
+      (argument mismatch; Iterator<Entry<String,TextNode>> cannot be converted to Iterator<Entry<String,JsonNode>>)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:245: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "pet", schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:258: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "cat", schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:276: error: no suitable method found for thenReturn(Iterator<Entry<String,TextNode>>)
+        when(childMapping.fields()).thenReturn(
+                                   ^
+    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>) is not applicable
+      (argument mismatch; Iterator<Entry<String,TextNode>> cannot be converted to Iterator<Entry<String,JsonNode>>)
+    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>,Iterator<Entry<String,JsonNode>>...) is not applicable
+      (argument mismatch; Iterator<Entry<String,TextNode>> cannot be converted to Iterator<Entry<String,JsonNode>>)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:285: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.registerAndMergeDiscriminator(ctx, rootDiscriminator, childSchema, "/child");
+                                                        ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+19 errors

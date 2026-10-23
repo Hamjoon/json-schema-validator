@@ -1,0 +1,115 @@
+{
+  "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round2/23/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.671,
+    "log": "generated/ouedraogo/round2/validation-logs/23/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_ExactlyOneValidSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_ExactlyOneValidSchema",
+      "body_hash": "32f05f879954e6c2dbb4a58cd9aabc24987db103dd22e9713c8913e47c248ab5",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_NoValidSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_NoValidSchema",
+      "body_hash": "dd4ce1035a788b6442ec46f8063dd55be9f3ee1ac460b5602f5b5cfa02466fcf",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_MultipleValidSchemas_FailFast",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_MultipleValidSchemas_FailFast",
+      "body_hash": "fa2955991bf818286ac2153a380789bd11c11ddf4a9f1b9a85c01a9bcd05f9ec",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testWalk_ShouldValidate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testWalk_ShouldValidate",
+      "body_hash": "734ddb6c867e036a078f3ded5ed8ef38a414a7efc0026beb6be914a1a2da8b4f",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testWalk_ShouldNotValidate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testWalk_ShouldNotValidate",
+      "body_hash": "cf817512ec11f96c34977745b37e9930266dbe33893ae75c56827c46dc5042e5",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testPreloadJsonSchema_DelegatesToChildren",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testPreloadJsonSchema_DelegatesToChildren",
+      "body_hash": "bbacd903f03c8ce2999a06e6737d5d3e54610c5f86d33b23a4f64ac29c9a8f55",
+      "round": "round2",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/OneOfValidator/ToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.518,
+    "log": "generated/ouedraogo/round2/validation-logs/23/inventory.tsv"
+  }
+}

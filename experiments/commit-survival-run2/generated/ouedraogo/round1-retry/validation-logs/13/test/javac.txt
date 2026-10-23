@@ -1,0 +1,25 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:63: error: cannot find symbol
+    private URIFactory uriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:147: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, "#/defs"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:152: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com"), "#/defs"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:157: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com"), "http://example.com/other"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:167: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.uriRefersToSubschema(uri, "#"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:173: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(uri, "#"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/ToT/JsonSchemaTest.java:179: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(uri, "/properties/name"));
+                              ^
+7 errors

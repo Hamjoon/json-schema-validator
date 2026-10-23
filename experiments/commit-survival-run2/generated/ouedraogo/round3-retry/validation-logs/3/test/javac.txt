@@ -1,0 +1,24 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:44: error: cannot find symbol
+    @Mock private ValidationContext.Config config;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:36: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:211: error: discriminatorContext has private access in AnyOfValidator
+        validator.discriminatorContext.setDiscriminatorMatchFound(true);
+                 ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:211: error: cannot find symbol
+        validator.discriminatorContext.setDiscriminatorMatchFound(true);
+                                      ^
+  symbol:   method setDiscriminatorMatchFound(boolean)
+  location: variable discriminatorContext of type DiscriminatorContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:223: error: cannot find symbol
+        verify(collectorContext, never()).leaveDiscriminatorContextImmediately(anyString());
+                                         ^
+  symbol:   method leaveDiscriminatorContextImmediately(String)
+  location: class CollectorContext
+5 errors

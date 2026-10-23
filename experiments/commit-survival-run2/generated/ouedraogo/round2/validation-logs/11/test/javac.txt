@@ -1,0 +1,54 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:52: error: cannot find symbol
+    private URIFactory uriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:166: error: 'void' type not allowed here
+        when(mockTypeValidator.preloadJsonSchema()).thenReturn(null);
+                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:237: error: no suitable method found for of(String,ErrorMessageType,MessageFormat,String)
+        ValidationMessage errorMessage = ValidationMessage.of("type", CustomErrorMessageType.of("type.error"),
+                                                          ^
+    method ValidationMessage.of(String,ErrorMessageType,MessageFormat,String,String,String...) is not applicable
+      (actual and formal argument lists differ in length)
+    method ValidationMessage.of(String,ErrorMessageType,MessageFormat,String,String,Map<String,Object>) is not applicable
+      (actual and formal argument lists differ in length)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:250: error: incompatible types: int cannot be converted to String
+        JsonNode instance = JsonNodeFactory.instance.textNode(123); // not a string
+                                                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:263: error: cannot find symbol
+        JsonSchemaWalker walker = mock(JsonSchemaWalker.class);
+        ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:263: error: cannot find symbol
+        JsonSchemaWalker walker = mock(JsonSchemaWalker.class);
+                                       ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:268: error: cannot find symbol
+        JsonValidator validator = mock(JsonValidator.class, withSettings().extraInterfaces(JsonSchemaWalker.class));
+                                                                                           ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:271: error: cannot find symbol
+        when(((JsonSchemaWalker) validator).walk(any(), any(), any(), anyString(), anyBoolean()))
+               ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:275: error: cannot find symbol
+        KeywordWalkListenerRunner kwRunner = mock(KeywordWalkListenerRunner.class);
+        ^
+  symbol:   class KeywordWalkListenerRunner
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:275: error: cannot find symbol
+        KeywordWalkListenerRunner kwRunner = mock(KeywordWalkListenerRunner.class);
+                                                  ^
+  symbol:   class KeywordWalkListenerRunner
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/JsonSchema/FSL/JsonSchemaTest.java:291: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>
+        Set<ValidationMessage> messages = schema.walk(ec, data, true);
+                                                     ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+11 errors

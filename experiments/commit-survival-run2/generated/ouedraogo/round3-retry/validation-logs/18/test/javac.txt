@@ -1,0 +1,88 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:53: error: cannot find symbol
+    private URIFactory mockUriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:56: error: cannot find symbol
+    private URIFetcher mockUriFetcher;
+            ^
+  symbol:   class URIFetcher
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:82: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .jsonMetaSchemas
+                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:116: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+                .defaultMetaSchemaURI(factoryWithDefaults.defaultMetaSchemaURI)
+                                                         ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:117: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(factoryWithDefaults.jsonMetaSchemas.values().iterator().next())
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:127: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+                .defaultMetaSchemaURI(factoryWithDefaults.defaultMetaSchemaURI)
+                                                         ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:128: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(factoryWithDefaults.jsonMetaSchemas.values().iterator().next())
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:138: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(factoryWithDefaults.jsonMetaSchemas.values().iterator().next())
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:159: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(factoryWithDefaults.jsonMetaSchemas.values().iterator().next())
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:175: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+                f.defaultMetaSchemaURI);
+                 ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:225: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(f.isYaml(new URI("file:/schema.yaml")));
+                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:226: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(f.isYaml(new URI("file:/schema.yml")));
+                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:227: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(f.isYaml(new URI("file:/schema.json")));
+                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:228: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(f.isYaml(new URI("file:/nosuffix")));
+                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:240: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        assertFalse(f.idMatchesSourceUri(meta, schemaWithoutId, new URI("http://example.com/schema")));
+                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:251: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        assertTrue(f.idMatchesSourceUri(meta, schema, new URI("http://example.com/my/schema")));
+                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:252: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        assertFalse(f.idMatchesSourceUri(meta, schema, new URI("http://example.com/other/schema")));
+                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:267: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factoryWithDefaults.defaultMetaSchemaURI,
+                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:277: error: cannot find symbol
+        assertEquals("array", schema.getValidationContext().getRootSchemaNode().get("type").asText());
+                                                           ^
+  symbol:   method getRootSchemaNode()
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:331: error: cannot find symbol
+        when(mockUriFetcher.fetch(any(URI.class))).thenThrow(new IOException("fetch failed"));
+                                                                 ^
+  symbol:   class IOException
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:376: error: cannot find symbol
+        assertTrue(f.getUriFactory() instanceof URISchemeFactory);
+                                                ^
+  symbol:   class URISchemeFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:387: error: cannot find symbol
+        URITranslator translator = f.getUriTranslator();
+        ^
+  symbol:   class URITranslator
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:419: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(f.defaultMetaSchemaURI, result.getUri());
+                      ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:431: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(f.isYaml(uri));
+                     ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+24 errors

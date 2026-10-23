@@ -1,0 +1,100 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:39: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:45: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+                "https://json-schema.org/draft-04/schema#", factory.defaultMetaSchemaURI);
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:54: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:65: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:65: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:66: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(original.jsonMetaSchemas.keySet(), copy.jsonMetaSchemas.keySet());
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:66: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(original.jsonMetaSchemas.keySet(), copy.jsonMetaSchemas.keySet());
+                                                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:67: error: uriFactory has private access in JsonSchemaFactory
+        assertNotSame(original.uriFactory, copy.uriFactory);
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:67: error: uriFactory has private access in JsonSchemaFactory
+        assertNotSame(original.uriFactory, copy.uriFactory);
+                                               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:116: error: incompatible types: JsonNode cannot be converted to ExecutionContext
+        assertTrue(jsonSchema.validate(valid, new SchemaValidatorsConfig()).isEmpty());
+                                       ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:137: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:144: error: incompatible types: JsonNode cannot be converted to ExecutionContext
+        assertTrue(schema.validate(node, new SchemaValidatorsConfig()).isEmpty());
+                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:158: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:180: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        JsonMetaSchema meta = factory.jsonMetaSchemas.get(JsonSchemaFactory.normalizeMetaSchemaUri(factory.defaultMetaSchemaURI));
+                                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:180: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        JsonMetaSchema meta = factory.jsonMetaSchemas.get(JsonSchemaFactory.normalizeMetaSchemaUri(factory.defaultMetaSchemaURI));
+                                                                                                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:181: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        assertTrue(factory.idMatchesSourceUri(meta, matching, URI.create("http://example.com/schema.json")));
+                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:182: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        assertFalse(factory.idMatchesSourceUri(meta, nonMatching, URI.create("http://example.com/schema.json")));
+                           ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:188: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(URI.create("file:///tmp/schema.yaml")));
+                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:189: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(URI.create("file:///tmp/schema.yml")));
+                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:190: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(URI.create("file:///tmp/schema.json")));
+                           ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:191: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(URI.create("file:///tmp/schema"))); // no extension → assume JSON
+                           ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:199: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:220: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, ctx.getMetaSchema().getUri());
+                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:228: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory
+        JsonMetaSchema meta = factory.findMetaSchemaForSchema(node);
+                                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:238: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory
+        factory.findMetaSchemaForSchema(node);
+               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:244: error: fromId(String) has private access in JsonSchemaFactory
+        JsonMetaSchema meta = factory.fromId("http://json-schema.org/draft-04/schema#");
+                                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:253: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:270: error: cannot find symbol
+        URITranslator translator = factory.getUriTranslator();
+        ^
+  symbol:   class URITranslator
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:288: error: incompatible types: JsonNode cannot be converted to ExecutionContext
+        assertTrue(schema.validate(node, null).isEmpty());
+                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:295: error: jsonMetaSchemas has private access in JsonSchemaFactory
+                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas
+                                                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:324: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory
+            return factory.findMetaSchemaForSchema(node);
+                          ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+31 errors

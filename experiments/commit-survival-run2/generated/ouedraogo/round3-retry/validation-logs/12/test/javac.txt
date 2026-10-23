@@ -1,0 +1,32 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:71: error: cannot find symbol
+        ValidationContext vc = factoryV7.getValidationContext();
+                                        ^
+  symbol:   method getValidationContext()
+  location: variable factoryV7 of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:197: error: cannot find symbol
+        assertFalse("Missing required property should cause validation failure", result.isValid());
+                                                                                       ^
+  symbol:   method isValid()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:217: error: cannot find symbol
+        assertTrue("Array of integers should be valid", result.isValid());
+                                                              ^
+  symbol:   method isValid()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:225: error: cannot find symbol
+        ValidationResult result = schema.walkAtNode(factoryV7.createExecutionContext(), data, data, "$", true);
+                                                             ^
+  symbol:   method createExecutionContext()
+  location: variable factoryV7 of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:227: error: cannot find symbol
+        assertFalse(result.isValid());
+                          ^
+  symbol:   method isValid()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:344: error: cannot find symbol
+        ValidationContext vc = new ValidationContext(factoryV7.getMetaSchema(), cfg);
+                                                              ^
+  symbol:   method getMetaSchema()
+  location: variable factoryV7 of type JsonSchemaFactory
+6 errors

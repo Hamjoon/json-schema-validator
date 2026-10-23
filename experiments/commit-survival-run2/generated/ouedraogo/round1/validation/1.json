@@ -1,0 +1,115 @@
+{
+  "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round1/1/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.77,
+    "log": "generated/ouedraogo/round1/validation-logs/1/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidate_AllValidSubschemas_NoDiscriminator_ReturnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidate_AllValidSubschemas_NoDiscriminator_ReturnsEmptySet",
+      "body_hash": "d25424588f20364ac0eea52ea8a4e5ccec0b95862414006de0637c720d31e933",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidate_TypeMismatch_AddsTypeError",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidate_TypeMismatch_AddsTypeError",
+      "body_hash": "383a5463daa216bb15af010123af9592624beaa11b35f28be43819c102e66834",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidate_FiltersRequiredErrorsWhenValidSubschemaExists",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidate_FiltersRequiredErrorsWhenValidSubschemaExists",
+      "body_hash": "e6f92d434cfb41ec01dc0219fadd59bac1d937a085e569aa10fe0876031afcff",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalk_ValidateWhenShouldValidateIsTrue",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalk_ValidateWhenShouldValidateIsTrue",
+      "body_hash": "82d608cf990c9a64267944ba8debb5f73e52e130f0b1e94672b267b04712de6c",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalk_NoValidateCallsSubschemaWalk",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalk_NoValidateCallsSubschemaWalk",
+      "body_hash": "8550553b54b872be48a9ce7585d4e3282d2736fc4d11609703d06aa40ddc2d31",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testPreloadJsonSchema_DelegatesToBaseClass",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testPreloadJsonSchema_DelegatesToBaseClass",
+      "body_hash": "f758dc5548930e738aba63743c4c34bfbf28b203e85a2d40bc48ea667bd9a992",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.685,
+    "log": "generated/ouedraogo/round1/validation-logs/1/inventory.tsv"
+  }
+}

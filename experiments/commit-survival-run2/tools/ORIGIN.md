@@ -72,3 +72,7 @@ Runtime fixture isolation: class launches use an ignored work/runtime directory 
 AccessorAudit.java and select_scope_run2.py implement the revised source-syntax filter and ranking. generate_ktester.py isolates run2-round1 and prohibits extra rounds. Generation/aggregation read run 1 Python dependencies in place; runner cache and JaCoCo paths reuse run 1. Downstream adaptations are recorded in subsequent commits.
 
 The run 2 runner attempts whole-suite Dev compilation, then uses shared compiled classes or falls back to class-isolated compilation for failure attribution. generate_ouedraogo.py supports separate retry directories; validate_round.py records per-prompt dedup/kept counts and the Dev ratio. describe_round.py records compiler categories and author log evidence. continue_run2.py is host orchestration only; all builds/tests/model calls remain containerized. audit_run2.py and close_run2.py verify/report the new run without overwriting run 1.
+
+Compiler-category reports additionally match unresolved type names to the frozen production inventory and retain generated package/import declarations. This separates known production types that were not resolved from unknown/external names without changing prompts or generated source.
+
+Final reporting explicitly explains any empty retained group: survival is unavailable, while zero coverage describes an empty suite and cannot establish comparative effectiveness.

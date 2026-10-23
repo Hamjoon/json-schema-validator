@@ -1,0 +1,141 @@
+{
+  "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round1/21/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.769,
+    "log": "generated/ouedraogo/round1/validation-logs/21/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "constructorCreatesAllChildSchemas",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|constructorCreatesAllChildSchemas",
+      "body_hash": "440395388e5556a296acd743f7063dc4d91570b301be0ac76ab6c8b002550050",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validateExactlyOneValidSchemaReturnsNoErrors",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validateExactlyOneValidSchemaReturnsNoErrors",
+      "body_hash": "87a96a3322480a7d2b66723a7e2f165690c72ba38ea2bd72e31489809af8f29f",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validateZeroValidSchemasReturnsOneOfErrorAndChildErrors",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validateZeroValidSchemasReturnsOneOfErrorAndChildErrors",
+      "body_hash": "9b2a832af676dc60d996610087493c2bcb6d3ef7e0ffee972cfd001e080f1487",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validateMultipleValidSchemasTriggersOneOfError",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validateMultipleValidSchemasTriggersOneOfError",
+      "body_hash": "ecab1f736bbe69ec9d811249e6aef0e2b868ca8080e080b0b121202035b1375e",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validateFailFastThrowsExceptionWhenNumberOfValidSchemasIsNotOne",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validateFailFastThrowsExceptionWhenNumberOfValidSchemasIsNotOne",
+      "body_hash": "d4af6877bc103741a9a54256af14d629b73864e4e2b1141087b101dd2dfe57f0",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "walkWhenShouldValidateSchemaTrueDelegatesToValidate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|walkWhenShouldValidateSchemaTrueDelegatesToValidate",
+      "body_hash": "bbaa7abca6868071dc934e075474959bbd500c833486f6627ade1e48b4517555",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "walkWhenShouldValidateSchemaFalseWalksChildrenOnly",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|walkWhenShouldValidateSchemaFalseWalksChildrenOnly",
+      "body_hash": "3f13bd2260bd214c4ef62076837865b2f6bb03fdeeec996d94d98d632fda2922",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "preloadJsonSchemaInitialisesAllChildSchemas",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|preloadJsonSchemaInitialisesAllChildSchemas",
+      "body_hash": "d717c576736108b424fd593a37184a50cf373040ddea2a1048f5b6f5211a5396",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.418,
+    "log": "generated/ouedraogo/round1/validation-logs/21/inventory.tsv"
+  }
+}

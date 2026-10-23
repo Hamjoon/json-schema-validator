@@ -1,0 +1,36 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:24: error: cannot find symbol
+    @Mock private Scope mockScope;                // used for every dynamic scope
+                  ^
+  symbol:   class Scope
+  location: class OneOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:25: error: cannot find symbol
+    @Mock private Scope mockParentScope;          // scope created for each child schema
+                  ^
+  symbol:   class Scope
+  location: class OneOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:16: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:91: error: cannot find symbol
+        ValidationMessage childError = ValidationMessage.builder()
+                                                        ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:119: error: cannot find symbol
+        ValidationMessage err1 = ValidationMessage.builder().code("e1").path("$").message("err1").build();
+                                                  ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:120: error: cannot find symbol
+        ValidationMessage err2 = ValidationMessage.builder().code("e2").path("$").message("err2").build();
+                                                  ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/OneOfValidator/CoT/OneOfValidatorTest.java:202: error: cannot find symbol
+                ValidationMessage.builder().code("x").path("$").message("walked").build());
+                                 ^
+  symbol:   method builder()
+  location: class ValidationMessage
+7 errors

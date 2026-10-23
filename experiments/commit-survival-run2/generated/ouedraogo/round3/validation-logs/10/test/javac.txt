@@ -1,0 +1,24 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/CoT/JsonSchemaTest.java:35: error: cannot find symbol
+    private URIFactory uriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/CoT/JsonSchemaTest.java:25: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/CoT/JsonSchemaTest.java:84: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+        return new JsonSchema(validationContext, "#", baseUri, schemaNode, null, false);
+               ^
+  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,String,URI,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/CoT/JsonSchemaTest.java:132: error: getValidators() has private access in JsonSchema
+        schema.getValidators();
+              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/CoT/JsonSchemaTest.java:205: error: getValidators() has private access in JsonSchema
+        schema.getValidators();
+              ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+5 errors

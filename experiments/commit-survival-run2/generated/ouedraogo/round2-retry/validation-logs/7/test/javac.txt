@@ -1,0 +1,60 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:76: error: cannot find symbol
+    @Mock private ValidationContext.Config mockConfig;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:81: error: cannot find symbol
+    @Mock private URIFactory mockURIFactory;
+                  ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:40: error: interface expected here
+    private static class SimplePathType implements PathType {
+                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:32: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:41: error: method does not override or implement a method from a supertype
+        @Override public String getRoot() { return "/"; }
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:42: error: method does not override or implement a method from a supertype
+        @Override public String append(String current, String token) { return current + "/" + token; }
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:43: error: method does not override or implement a method from a supertype
+        @Override public String append(String current, int index) { return current + "[" + index + "]"; }
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:145: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;
+        Set<ValidationMessage> expected = Collections.singleton(new ValidationMessage("test", "msg"));
+                                                                ^
+  required: no arguments
+  found:    String,String
+  reason: actual and formal argument lists differ in length
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:289: error: cannot find symbol
+        DiscriminatorContext context = new DiscriminatorContext();
+        ^
+  symbol:   class DiscriminatorContext
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:289: error: cannot find symbol
+        DiscriminatorContext context = new DiscriminatorContext();
+                                           ^
+  symbol:   class DiscriminatorContext
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:310: error: cannot find symbol
+        DiscriminatorContext context = new DiscriminatorContext();
+        ^
+  symbol:   class DiscriminatorContext
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:310: error: cannot find symbol
+        DiscriminatorContext context = new DiscriminatorContext();
+                                           ^
+  symbol:   class DiscriminatorContext
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:359: error: noExplicitDiscriminatorKeyOverride(JsonNode,JsonSchema) has private access in BaseJsonValidator
+        boolean result = BaseJsonValidator.noExplicitDiscriminatorKeyOverride(mapping, parentSchema);
+                                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:374: error: noExplicitDiscriminatorKeyOverride(JsonNode,JsonSchema) has private access in BaseJsonValidator
+        boolean result = BaseJsonValidator.noExplicitDiscriminatorKeyOverride(mapping, parentSchema);
+                                          ^
+14 errors

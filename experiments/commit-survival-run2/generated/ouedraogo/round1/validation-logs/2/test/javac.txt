@@ -1,0 +1,21 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:37: error: cannot find symbol
+    @Mock private ValidationContext.Config config;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:188: error: discriminatorContext has private access in AnyOfValidator
+        ValidationContext.DiscriminatorContext dContext = validator.discriminatorContext;
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:189: error: cannot find symbol
+        dContext.setDiscriminatorMatchFound(true); // use reflection‑free setter (for test)
+                ^
+  symbol:   method setDiscriminatorMatchFound(boolean)
+  location: variable dContext of type DiscriminatorContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:278: error: schemas has private access in AnyOfValidator
+        verify(spyValidator, times(1)).preloadJsonSchemas(Mockito.eq(spyValidator.schemas));
+                                                                                 ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:291: error: package ValidationMessageImpl does not exist
+        return new ValidationMessageImpl.Builder()
+                                        ^
+5 errors

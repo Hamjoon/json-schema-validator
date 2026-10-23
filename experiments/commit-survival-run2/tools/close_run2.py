@@ -31,6 +31,9 @@ def main():
                  artifact_audit=read('run2-artifact-audit.json'),pushed=False)
     write_json(RESULTS/'final-summary.json',summary)
     caveats='\n'.join('- '+k+': '+v['repair_error']+'; stopped at target '+str(v.get('repair_stopped_at_target'))+'.' for k,v in models.items() if v.get('repair_error'))
+    empty_groups=[g for g,n in denom.items() if not n]
+    if empty_groups:
+        caveats+='\n\nNo methods survived generation screening for '+', '.join(empty_groups)+'. Their survival percentages are n/a; no survival curve can be estimated. Coverage from an empty retained suite is zero and does not establish comparative test effectiveness. See every original/retry funnel and compiler diagnostic report.'
     (RESULTS/'STATUS.md').write_text('# Run 2 status\n\n'+summary['status']+'.\n\n'+f"Denominators: Dev {denom['dev']}, KTester {denom['ktester']}, Ouédraogo {denom['ouedraogo']}. Final survivors: {final}. All 229 commit indices and 181 required coverage indices processed.\n\n"+caveats+'\n\nSee final-summary.json for model calls, phase timings, worker/quarantine records and verification. No author code patched. No push performed.\n')
     handovers='\n\n'.join(p.read_text() for p in sorted((EXP/'docs').glob('handover-part*.md')) if 'stopped' not in p.name)
     (EXP/'docs/handover-final.md').write_text('# Run 2 final handover\n\n'+handovers+'\n\n## Final recorded state\n\n```json\n'+json.dumps(summary,indent=2)+'\n```\n')

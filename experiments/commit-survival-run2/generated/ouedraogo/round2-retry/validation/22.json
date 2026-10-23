@@ -1,0 +1,167 @@
+{
+  "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round2-retry/22/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.768,
+    "log": "generated/ouedraogo/round2-retry/validation-logs/22/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_ExactlyOneMatches",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_ExactlyOneMatches",
+      "body_hash": "151b8ccbde05d98843a2fb30a0879f7eb59f31ff9d8be974d2d1226db1d86865",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_NoSchemaMatches",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_NoSchemaMatches",
+      "body_hash": "868f050dc3397eace6026f15a662605b90aa2ca7dfc31748cf068a4172bc613b",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_MultipleSchemasMatch",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_MultipleSchemasMatch",
+      "body_hash": "5411be905df6adac7405e2fca74da68c419c38158a73ccd9ffb305c2591740a8",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_FailFastThrowsException",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_FailFastThrowsException",
+      "body_hash": "91cd4d9458c32084c92b3f00fdb9fab05af728e307599d0dd10f526eedbdcee9",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testWalk_ValidateDelegate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testWalk_ValidateDelegate",
+      "body_hash": "54fe98701bff0ab0dd2faa2cbaaef44a4a5f5d09962fb5e130023cbe80b1da90",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testWalk_NoValidationCallsChildWalk",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testWalk_NoValidationCallsChildWalk",
+      "body_hash": "52a186e188eb96e8f6c18fca102dada87d81503c92000fdec1292476cdc770dc",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testPreloadJsonSchema_InitialisesChildren",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testPreloadJsonSchema_InitialisesChildren",
+      "body_hash": "59572384c1aba549d83cc65f9528d60d4d4a289ab9faf9cba94e12f3eaac91c5",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_EmptySchemaArray",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_EmptySchemaArray",
+      "body_hash": "68f4009b9c795fa5d13344aba3898fcc7cb45305ec335d2fdb6415271ddaf7ad",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_MatchIgnoredWhenStateHasNoMatchedNode",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_MatchIgnoredWhenStateHasNoMatchedNode",
+      "body_hash": "715d0e6d8d9a1a8362f6c886e5b41478931e381e78894a32941b7be3d355e984",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "testValidate_UsesWalkWhenStateWalkEnabled",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|testValidate_UsesWalkWhenStateWalkEnabled",
+      "body_hash": "ee56106e0608ceb0bb5fd6471c23523c3fd283a24aaf2d0162f195e3e3b1aa82",
+      "round": "round2-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:38: error: cannot find symbol\n    @Mock private Scope dummyScope;               // used for both enter/exit calls\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:28: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:54: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n        Answer<JsonSchema> answer = new Answer<JsonSchema>() {\n                                        ^\n  symbol:   class Answer\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: cannot find symbol\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n                                               ^\n  symbol: class InvocationOnMock\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:71: error: method does not override or implement a method from a supertype\n            @Override public JsonSchema answer(InvocationOnMock invocation) {\n            ^\n7 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.42,
+    "log": "generated/ouedraogo/round2-retry/validation-logs/22/inventory.tsv"
+  }
+}

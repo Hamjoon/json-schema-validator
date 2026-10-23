@@ -1,0 +1,41 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:85: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, "#/defs"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:90: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com"), "#/defs"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:96: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.uriRefersToSubschema(uri, "#"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:102: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(uri, "#"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:118: error: no suitable method found for thenReturn(URI::resolve)
+        when(validationContext.getURIFactory()).thenReturn(URI::resolve);
+                                               ^
+    method OngoingStubbing.thenReturn(URIFactory) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+    method OngoingStubbing.thenReturn(URIFactory,URIFactory...) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:129: error: no suitable method found for thenReturn(URI::resolve)
+        when(validationContext.getURIFactory()).thenReturn(URI::resolve);
+                                               ^
+    method OngoingStubbing.thenReturn(URIFactory) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+    method OngoingStubbing.thenReturn(URIFactory,URIFactory...) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:206: error: cannot find symbol
+        when(validationContext.activeDialect()).thenReturn(Optional.of(VersionFlag.DRAFT4));
+                                                                       ^
+  symbol:   variable VersionFlag
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:291: error: incompatible types: String cannot be converted to MessageFormat
+        ValidationMessage errMsg = ValidationMessage.of("type", ValidatorTypeCode.TYPE, "type error");
+                                                                                        ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+8 errors

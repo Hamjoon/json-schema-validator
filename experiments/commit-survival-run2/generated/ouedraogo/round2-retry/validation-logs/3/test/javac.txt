@@ -1,0 +1,51 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:53: error: cannot find symbol
+    private ValidationContext.Config config;
+                             ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:104: error: cannot find symbol
+            anyOfArray = anyOfArray.add(nodeFactory.objectNode());
+                                   ^
+  symbol:   method add(ObjectNode)
+  location: variable anyOfArray of type JsonNode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:155: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage err0 = ValidationMessage.of("anyOf", "0", "type", "type error 0");
+                                                               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:156: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage err1 = ValidationMessage.of("anyOf", "1", "type", "type error 1");
+                                                               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:179: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage err0 = ValidationMessage.of("anyOf", "0", "type", "type error 0");
+                                                               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:208: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage typeError = ValidationMessage.of("anyOf", "0", "type", "type mismatch");
+                                                                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:233: error: 'void' type not allowed here
+        when(validationContext.enterDiscriminatorContext(any(), anyString())).thenReturn(null);
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:234: error: 'void' type not allowed here
+        when(validationContext.leaveDiscriminatorContextImmediately(anyString())).thenReturn(null);
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:252: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage subError = ValidationMessage.of("anyOf", "0", "type", "subschema error");
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:261: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator
+        boolean hasRemark = result.stream().anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));
+                                                                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:269: error: 'void' type not allowed here
+        when(validationContext.enterDiscriminatorContext(any(), anyString())).thenReturn(null);
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:270: error: 'void' type not allowed here
+        when(validationContext.leaveDiscriminatorContextImmediately(anyString())).thenReturn(null);
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:287: error: incompatible types: String cannot be converted to ErrorMessageType
+        ValidationMessage subError = ValidationMessage.of("anyOf", "0", "type", "subschema error");
+                                                                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:324: error: incompatible types: String cannot be converted to ErrorMessageType
+        when(schema0.walk(executionContext, dummyNode, dummyRoot, "at", false)).thenReturn(Collections.singleton(ValidationMessage.of("anyOf", "0", "type", "error")));
+                                                                                                                                               ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+14 errors

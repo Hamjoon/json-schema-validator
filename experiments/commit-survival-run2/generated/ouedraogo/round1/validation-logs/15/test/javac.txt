@@ -1,0 +1,107 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:106: error: cannot find symbol
+                .addMetaSchema(JsonSchemaFactory.V4)
+                                                ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:105: error: cannot find symbol
+                .defaultMetaSchemaURI(JsonSchemaFactory.V4.getUri())
+                                                       ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:116: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(JsonSchemaFactory.V4.getUri(), f.defaultMetaSchemaURI);
+                                                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:116: error: cannot find symbol
+        assertEquals(JsonSchemaFactory.V4.getUri(), f.defaultMetaSchemaURI);
+                                      ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:149: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, copyFactory.defaultMetaSchemaURI);
+                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:149: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, copyFactory.defaultMetaSchemaURI);
+                                                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:151: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(factory.jsonMetaSchemas.size(), copyFactory.jsonMetaSchemas.size());
+                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:151: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(factory.jsonMetaSchemas.size(), copyFactory.jsonMetaSchemas.size());
+                                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:175: error: cannot find symbol
+        assertEquals("array", schemaObj.getValidationContext().getCurrentMetaSchema().readType(schemaObj.getSchemaNode()));
+                                                              ^
+  symbol:   method getCurrentMetaSchema()
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:229: error: cannot find symbol
+                .addMetaSchema(JsonSchemaFactory.V4).build()
+                                                ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:228: error: cannot find symbol
+        JsonNode node = JsonSchemaFactory.builder().defaultMetaSchemaURI(JsonSchemaFactory.V4.getUri())
+                                                                                          ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:231: error: cannot find symbol
+        JsonMetaSchema meta = JsonSchemaFactory.V4; // V4 meta‑schema knows how to read "$id"
+                                               ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:247: error: cannot find symbol
+        JsonNode node = factory.jsonMapper().readTree(json);
+                               ^
+  symbol:   method jsonMapper()
+  location: variable factory of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:252: error: cannot find symbol
+            boolean matches = (boolean) m.invoke(factory, JsonSchemaFactory.V4, node, uri);
+                                                                           ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:269: error: cannot find symbol
+                URISchemeFactory.class, URISchemeFetcher.class,
+                ^
+  symbol:   class URISchemeFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:269: error: cannot find symbol
+                URISchemeFactory.class, URISchemeFetcher.class,
+                                        ^
+  symbol:   class URISchemeFetcher
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:270: error: cannot find symbol
+                URNFactory.class, Map.class, Map.class,
+                ^
+  symbol:   class URNFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:271: error: cannot find symbol
+                boolean.class, CompositeURITranslator.class
+                               ^
+  symbol:   class CompositeURITranslator
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:278: error: cannot find symbol
+                new URISchemeFactory(Collections.emptyMap()),
+                    ^
+  symbol:   class URISchemeFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:279: error: cannot find symbol
+                new URISchemeFetcher(Collections.emptyMap()),
+                    ^
+  symbol:   class URISchemeFetcher
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:284: error: cannot find symbol
+                new CompositeURITranslator());
+                    ^
+  symbol:   class CompositeURITranslator
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:277: error: cannot find symbol
+                JsonSchemaFactory.V4.getUri(),
+                                 ^
+  symbol:   variable V4
+  location: class JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:334: error: jsonMapper has private access in JsonSchemaFactory
+        return factory.jsonMapper;
+                      ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+23 errors

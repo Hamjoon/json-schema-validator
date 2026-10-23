@@ -1,0 +1,102 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:97: error: validate(ExecutionContext,JsonNode,JsonNode,String) in DummyValidator cannot implement validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator
+        protected Set<ValidationMessage> validate(ExecutionContext executionContext,
+                                         ^
+  attempting to assign weaker access privileges; was public
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:181: error: cannot find symbol
+        URIFactory uriFactory = mock(URIFactory.class);
+        ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:181: error: cannot find symbol
+        URIFactory uriFactory = mock(URIFactory.class);
+                                     ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:188: error: reference to getSchema is ambiguous
+        when(schemaFactory.getSchema(any(URI.class), any())).thenReturn(subSchema);
+                          ^
+  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:206: error: cannot find symbol
+        when(validationContext.getURIFactory()).thenReturn(mock(URIFactory.class));
+                                                                ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:208: error: cannot find symbol
+        URIFactory badFactory = validationContext.getURIFactory();
+        ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:360: error: interface expected here
+        class SimpleCtx implements ValidationContext.DiscriminatorContext {
+                                                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:362: error: method does not override or implement a method from a supertype
+            @Override public void markMatch() { matched = true; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:363: error: method does not override or implement a method from a supertype
+            @Override public boolean isDiscriminatorMatchFound() { return matched; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:364: error: method does not override or implement a method from a supertype
+            @Override public void registerDiscriminator(String path, ObjectNode disc) {}
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:365: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(JsonSchema schema) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:366: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(String path) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:385: error: interface expected here
+        class SimpleCtx implements ValidationContext.DiscriminatorContext {
+                                                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:387: error: method does not override or implement a method from a supertype
+            @Override public void markMatch() { matched = true; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:388: error: method does not override or implement a method from a supertype
+            @Override public boolean isDiscriminatorMatchFound() { return matched; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:389: error: method does not override or implement a method from a supertype
+            @Override public void registerDiscriminator(String path, ObjectNode disc) {}
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:390: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(JsonSchema schema) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:391: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(String path) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:416: error: interface expected here
+        class SimpleCtx implements ValidationContext.DiscriminatorContext {
+                                                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:418: error: method does not override or implement a method from a supertype
+            @Override public void markMatch() { matched = true; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:419: error: method does not override or implement a method from a supertype
+            @Override public boolean isDiscriminatorMatchFound() { return matched; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:420: error: method does not override or implement a method from a supertype
+            @Override public void registerDiscriminator(String path, ObjectNode disc) {}
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:421: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(JsonSchema schema) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:422: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(String path) { return null; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:458: error: interface expected here
+        class SimpleCtx implements ValidationContext.DiscriminatorContext {
+                                                    ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:459: error: method does not override or implement a method from a supertype
+            @Override public void markMatch() {}
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:460: error: method does not override or implement a method from a supertype
+            @Override public boolean isDiscriminatorMatchFound() { return false; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:461: error: method does not override or implement a method from a supertype
+            @Override public void registerDiscriminator(String path, ObjectNode disc) {}
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:462: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(JsonSchema s) { return rootDisc; }
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:463: error: method does not override or implement a method from a supertype
+            @Override public ObjectNode getDiscriminatorForPath(String path) { return rootDisc; }
+            ^
+30 errors

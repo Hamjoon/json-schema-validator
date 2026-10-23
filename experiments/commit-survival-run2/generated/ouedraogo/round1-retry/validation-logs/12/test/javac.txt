@@ -1,0 +1,45 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:96: error: cannot find symbol
+    @Mock WalkListenerRunner listenerRunner; // placeholder – not exercised in our tests
+          ^
+  symbol:   class WalkListenerRunner
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:271: error: cannot find symbol
+        schemaNode.set("type", MAPPER.createObjectNode().put("type", "string"));
+                  ^
+  symbol:   method set(String,ObjectNode)
+  location: variable schemaNode of type JsonNode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:272: error: cannot find symbol
+        schemaNode.set("minimum", MAPPER.createObjectNode().put("minimum", 5));
+                  ^
+  symbol:   method set(String,ObjectNode)
+  location: variable schemaNode of type JsonNode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:275: error: cannot find symbol
+        ValidationMessage error = ValidationMessage.of("type", ValidationMessage.Type.ERROR, "type error");
+                                                                                ^
+  symbol:   variable Type
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:425: error: walkAtNodeInternal(ExecutionContext,JsonNode,JsonNode,String,boolean) has private access in JsonSchema
+        doReturn(expectedResult).when(schema).walkAtNodeInternal(any(), eq(data), eq(data), eq("$"), anyBoolean());
+                                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:429: error: walkAtNodeInternal(ExecutionContext,JsonNode,JsonNode,String,boolean) has private access in JsonSchema
+        verify(schema).walkAtNodeInternal(eq(executionContext), eq(data), eq(data), eq("$"), eq(true));
+                      ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:443: error: cannot find symbol
+        JsonSchemaWalker mockWalker = mock(JsonSchemaWalker.class);
+        ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:443: error: cannot find symbol
+        JsonSchemaWalker mockWalker = mock(JsonSchemaWalker.class);
+                                           ^
+  symbol:   class JsonSchemaWalker
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java:444: error: cannot find symbol
+        ValidationMessage walkError = ValidationMessage.of("walk", ValidationMessage.Type.ERROR, "walk error");
+                                                                                    ^
+  symbol:   variable Type
+  location: class ValidationMessage
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/JsonSchema/GToT/JsonSchemaTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+9 errors

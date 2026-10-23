@@ -1,0 +1,28 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:60: error: cannot find symbol
+    private URIFactory mockUriFactory; // internal helper used by ValidationContext
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:66: error: cannot find symbol
+    private Config mockConfig; // Config is an inner class of ValidationContext – we mock it
+            ^
+  symbol:   class Config
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:47: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:82: error: 'void' type not allowed here
+        when(mockValidator.preloadJsonSchema()).thenReturn(null);
+                                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:85: error: incompatible types: URI cannot be converted to String
+                inv -> new URI((URI) inv.getArgument(0), (String) inv.getArgument(1)));
+                               ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ToT/JsonSchemaTest.java:341: error: cannot find symbol
+        assertTrue(result.getMessages().isEmpty());
+                         ^
+  symbol:   method getMessages()
+  location: variable result of type ValidationResult
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+6 errors

@@ -1,0 +1,52 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:132: error: cannot find symbol
+    private WalkListenerRunner walkListenerRunnerMock;
+            ^
+  symbol:   class WalkListenerRunner
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:162: error: no suitable method found for thenReturn(URI::new)
+        when(validationContextMock.getURIFactory()).thenReturn(URI::new);
+                                                   ^
+    method OngoingStubbing.thenReturn(URIFactory) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+    method OngoingStubbing.thenReturn(URIFactory,URIFactory...) is not applicable
+      (argument mismatch; URIFactory is not a functional interface
+          multiple non-overriding abstract methods found in interface URIFactory)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:168: error: no suitable constructor found for Scope(no arguments)
+        when(collectorContextMock.enterDynamicScope(any())).thenReturn(new CollectorContext.Scope());
+                                                                       ^
+    constructor Scope.Scope(boolean,boolean,JsonSchema) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor Scope.Scope(boolean,boolean,boolean,JsonSchema) is not applicable
+      (actual and formal argument lists differ in length)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:169: error: no suitable constructor found for Scope(no arguments)
+        when(collectorContextMock.exitDynamicScope()).thenReturn(new CollectorContext.Scope());
+                                                                 ^
+    constructor Scope.Scope(boolean,boolean,JsonSchema) is not applicable
+      (actual and formal argument lists differ in length)
+    constructor Scope.Scope(boolean,boolean,boolean,JsonSchema) is not applicable
+      (actual and formal argument lists differ in length)
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:285: error: cannot find symbol
+        assertTrue(result.getErrors().isEmpty());
+                         ^
+  symbol:   method getErrors()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:295: error: cannot find symbol
+        assertTrue(result.getErrors().isEmpty());
+                         ^
+  symbol:   method getErrors()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:304: error: cannot find symbol
+        assertTrue(result.getErrors().isEmpty());
+                         ^
+  symbol:   method getErrors()
+  location: variable result of type ValidationResult
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java:452: error: cannot find symbol
+        assertTrue(result.getErrors().isEmpty());
+                         ^
+  symbol:   method getErrors()
+  location: variable result of type ValidationResult
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/GToT/JsonSchemaTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+8 errors

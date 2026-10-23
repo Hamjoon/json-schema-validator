@@ -1,3 +1,3 @@
 # Run 2 status
 
-ktester-round1-diagnostics: completed. See driver-events.json and per-stage logs. Scope: 5 classes / 64 focal methods; Dev: 185 methods.
+ouedraogo-round3-retry-diagnostics: completed. See driver-events.json and per-stage logs. Scope: 5 classes / 64 focal methods; Dev: 185 methods.

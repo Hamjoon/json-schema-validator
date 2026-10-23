@@ -1,0 +1,36 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:98: error: cannot find symbol
+    private URIFactory mockUriFactory;                    // custom factory for URI tests
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:100: error: cannot find symbol
+    private URIFetcher mockUriFetcher;                    // custom fetcher for URI tests
+            ^
+  symbol:   class URIFetcher
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:131: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+                DRAFT_07_URI, factory.defaultMetaSchemaURI);
+                                     ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:172: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, rebuilt.defaultMetaSchemaURI);
+                            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:172: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, rebuilt.defaultMetaSchemaURI);
+                                                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:177: error: cannot find symbol
+        URIFactory uf = factory.getUriFactory();
+        ^
+  symbol:   class URIFactory
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:183: error: cannot find symbol
+        URITranslator tr = factory.getUriTranslator();
+        ^
+  symbol:   class URITranslator
+  location: class JsonSchemaFactoryTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:353: error: doCreate(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchemaFactory
+                .doCreate(eq(ctx), eq("/myPath"), any(URI.class), eq(node), eq(parent), eq(false));
+                ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round3-retry/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+8 errors

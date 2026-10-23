@@ -1,0 +1,180 @@
+{
+  "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo/round1-retry/22/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.671,
+    "log": "generated/ouedraogo/round1-retry/validation-logs/22/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "constructor_shouldCreateSameNumberOfSchemasAsArrayElements",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|constructor_shouldCreateSameNumberOfSchemasAsArrayElements",
+      "body_hash": "05f48384a0633eb2456f478d256008e7549855b667e1f5007bb3a05727eff08f",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_whenExactlyOneSchemaMatches_returnsEmptyErrorSet",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_whenExactlyOneSchemaMatches_returnsEmptyErrorSet",
+      "body_hash": "2d4ba40cf4e4150b356824756f6ca669f800892350bf909d711cb9ec985aa371",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_whenNoSchemaMatches_returnsOneOfErrorAndChildErrors",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_whenNoSchemaMatches_returnsOneOfErrorAndChildErrors",
+      "body_hash": "26cc9d09d9b46a1623ec59134090932d130bec72d3cfda56f8a34ecf4c44323c",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_whenMultipleSchemasMatch_returnsOneOfError",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_whenMultipleSchemasMatch_returnsOneOfError",
+      "body_hash": "04fbca1b8b5aa56584a3894b9829fdb3c58cc966fc16d839a7185d534c518b27",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_whenFailFastEnabled_throwsJsonSchemaException",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_whenFailFastEnabled_throwsJsonSchemaException",
+      "body_hash": "af81af74683c341ee9d42308a5c8e1290d21bda1e8fbd0e5604500302f4b4c3a",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_whenWalkEnabled_callsSchemaWalk",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_whenWalkEnabled_callsSchemaWalk",
+      "body_hash": "21ee9e7c29719c069a2ca75a4068f015e5f43c85d25447b3d2d76185ed66e18b",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "walk_whenShouldValidateTrue_delegatesToValidate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|walk_whenShouldValidateTrue_delegatesToValidate",
+      "body_hash": "c9589b0f353d7d6e00decf8ed4d666de158e36da5f39f8bcf1919e0de1ae75b1",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "walk_whenShouldValidateFalse_callsEachSchemaWalk",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|walk_whenShouldValidateFalse_callsEachSchemaWalk",
+      "body_hash": "1ccb6dc780c4568c5cbb3ce83a5d52db3ba3439b7e60a597c43e0a0b94a52bfb",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "preloadJsonSchema_callsInitializeValidatorsOnAllSchemas",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|preloadJsonSchema_callsInitializeValidatorsOnAllSchemas",
+      "body_hash": "208059deacaa28bc2a7faa27c80ced9f63a65d2fdf861ad08d7763d2b8872475",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "validate_withEmptyOneOfArray_returnsOneOfError",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|validate_withEmptyOneOfArray_returnsOneOfError",
+      "body_hash": "a1a7966242d40f2bcdb5e21568f29312a66591942a2b8690de2700d9642cef39",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "class": "com.networknt.schema.OneOfValidatorTest",
+      "method": "preloadJsonSchema_whenSchemaThrowsException_propagatesIt",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java|com.networknt.schema.OneOfValidatorTest|preloadJsonSchema_whenSchemaThrowsException_propagatesIt",
+      "body_hash": "26e55b267b92a7e97bb8114c5e61822ac8fccb37cd660d37b66e5f6678c1272a",
+      "round": "round1-retry",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:26: error: cannot find symbol\n    @Mock Scope dynamicScope;\n          ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java:16: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n2 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/OneOfValidator/GToT/OneOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.619,
+    "log": "generated/ouedraogo/round1-retry/validation-logs/22/inventory.tsv"
+  }
+}

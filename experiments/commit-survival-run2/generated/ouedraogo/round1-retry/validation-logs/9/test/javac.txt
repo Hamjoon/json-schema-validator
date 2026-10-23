@@ -1,0 +1,56 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:84: error: cannot find symbol
+    private ValidationContext.Config mockConfig;
+                             ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:87: error: cannot find symbol
+    private URIFactory mockUriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:52: error: interface expected here
+    private static class SimpleDiscriminatorContext implements ValidationContext.DiscriminatorContext {
+                                                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:27: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:33: error: TestValidator is not abstract and does not override abstract method validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator
+    private static class TestValidator extends BaseJsonValidator {
+                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:56: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:61: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:66: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:71: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:238: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, null, anySchema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:248: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "TypeA", schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:261: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "TypeB", schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:274: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "Implicit", schema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:292: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "Implicit", targetSchema);
+                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:317: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.registerAndMergeDiscriminator(ctx, rootDiscriminator, childSchema, "at ");
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1-retry/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:343: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext
+        BaseJsonValidator.registerAndMergeDiscriminator(ctx, rootDiscriminator, childSchema, "at ");
+                                                        ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+16 errors

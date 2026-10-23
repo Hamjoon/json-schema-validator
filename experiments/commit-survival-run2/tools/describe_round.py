@@ -27,12 +27,23 @@ def main():
         print(json.dumps(record),flush=True)
         return
     counts=collections.Counter();records=[]
+    inventory=json.loads((RESULTS/'source-inventory.json').read_text())['main']['classes']
+    types=collections.defaultdict(list)
+    for name in inventory:
+        types[name.rsplit('.',1)[-1].rsplit('$',1)[-1]].append(name.replace('$','.'))
     for p in sorted((base/'validation').glob('*.json')):
         r=json.loads(p.read_text());compile=r.get('compile');parse=r['parse']
         if compile and compile['exit_code']==0:continue
         source=EXP/r['file']
         log=EXP/(compile['log'] if compile else parse['log'])
         diagnostics=log.read_text(errors='replace')
+        source_text=source.read_text()
+        symbols=[]
+        for kind,symbol in re.findall(r'symbol:\s+(class|variable|method)\s+([^\n]+)',diagnostics):
+            symbol=symbol.strip()
+            candidates=sorted(types.get(symbol,[])) if kind in ['class','variable'] else []
+            item=dict(kind=kind,symbol=symbol,known_production_types=candidates)
+            if item not in symbols:symbols.append(item)
         categories=[]
         patterns={'missing-package-or-import':r'package .+ does not exist|import .*\n.*\^',
                   'unresolved-symbol':r'cannot find symbol',
@@ -46,10 +57,13 @@ def main():
                   'syntax':r"';' expected|illegal start|reached end|not a statement|unclosed"}
         for name,pattern in patterns.items():
             if re.search(pattern,diagnostics):categories.append(name)
+        if any(s['known_production_types'] for s in symbols):categories.append('known-production-type-unresolved')
+        if any(s['kind']=='class' and not s['known_production_types'] for s in symbols):categories.append('unknown-or-external-type-unresolved')
         if not categories:categories=['other-compile' if compile else 'parse-failure']
         counts.update(categories)
-        records.append(dict(file=r['file'],technique=source.parent.name,categories=categories,log=str(log.relative_to(EXP)),diagnostics=diagnostics))
-    result=dict(round=args.round,failed_files=len(records),category_file_counts=dict(counts),categories_may_overlap=True,files=records,prompts_changed=False,generated_sources_repaired=False)
+        package=re.search(r'^\s*package\s+([^;]+);',source_text,re.M)
+        records.append(dict(file=r['file'],technique=source.parent.name,categories=categories,unresolved_symbols=symbols,source_package=package.group(1) if package else None,source_imports=re.findall(r'^\s*import\s+([^;]+);',source_text,re.M),log=str(log.relative_to(EXP)),diagnostics=diagnostics))
+    result=dict(round=args.round,failed_files=len(records),category_file_counts=dict(counts),categories_may_overlap=True,symbol_classification_note='Known production type candidates come from the frozen inventory; unresolved simple names often indicate missing imports. Unknown/external means absent from that inventory, not proof that a dependency lacks the type. Raw diagnostics and generated package/import declarations are retained for judging root causes.',files=records,prompts_changed=False,generated_sources_repaired=False)
     write_json(RESULTS/f'ouedraogo-{args.round}-compile-failures.json',result)
     print(json.dumps({k:v for k,v in result.items() if k!='files'}),flush=True)
 

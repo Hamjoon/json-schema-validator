@@ -1,0 +1,43 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:41: error: cannot find symbol
+    private URIFactory uriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:56: error: cannot find symbol
+    private Scope parentScope;
+            ^
+  symbol:   class Scope
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:59: error: cannot find symbol
+    private Scope childScope;
+            ^
+  symbol:   class Scope
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:89: error: cannot find symbol
+        when(parentScope.mergeWith(any(Scope.class))).thenReturn(parentScope);
+                                       ^
+  symbol:   class Scope
+  location: class JsonSchemaTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:104: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, "#fragment"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:105: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com"), "#fragment"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:106: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(null, "http://example.com"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:112: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.uriRefersToSubschema(uriWithFragment, "#"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:113: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(uriWithFragment, "/properties"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:114: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(null, "#"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round3/sources/JsonSchema/ZSL/JsonSchemaTest.java:294: error: getValidators() has private access in JsonSchema
+        schema.getValidators();
+              ^
+11 errors

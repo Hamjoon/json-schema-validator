@@ -1,0 +1,34 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:45: error: cannot find symbol
+    @Mock private ValidationContext.Config config;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:48: error: cannot find symbol
+    @Mock private Scope mockScope;                 // used for dynamic scopes
+                  ^
+  symbol:   class Scope
+  location: class AnyOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:38: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:106: error: cannot find symbol
+        return ValidationMessage.builder()
+                                ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:232: error: discriminatorContext has private access in AnyOfValidator
+        ValidationContext.DiscriminatorContext discCtx = validator.discriminatorContext;
+                                                                  ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:233: error: cannot find symbol
+        discCtx.setDiscriminatorMatchFound(true); // package‑private setter via reflection
+               ^
+  symbol:   method setDiscriminatorMatchFound(boolean)
+  location: variable discCtx of type DiscriminatorContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:241: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator
+                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));
+                                                                     ^
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+7 errors

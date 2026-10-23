@@ -1,0 +1,16 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:74: error: cannot find symbol
+    @Mock private URIFactory mockURIFactory;
+                  ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:94: error: cannot find symbol
+        when(mockValidationContext.getDiscriminatorContext()).thenReturn(mockDiscriminatorContext);
+                                  ^
+  symbol:   method getDiscriminatorContext()
+  location: variable mockValidationContext of type ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:162: error: reference to getSchema is ambiguous
+        when(mockJsonSchemaFactory.getSchema(dummyUri, null)).thenReturn(mockSubSchema);
+                                  ^
+  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match
+3 errors

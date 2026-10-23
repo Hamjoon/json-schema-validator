@@ -1,0 +1,42 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:44: error: cannot find symbol
+    @Mock private ValidationContext.Config config;
+                                   ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:47: error: cannot find symbol
+    @Mock private Scope grandParentScope;
+                  ^
+  symbol:   class Scope
+  location: class AnyOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:48: error: cannot find symbol
+    @Mock private Scope parentScope;
+                  ^
+  symbol:   class Scope
+  location: class AnyOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:49: error: cannot find symbol
+    @Mock private Scope childScope;
+                  ^
+  symbol:   class Scope
+  location: class AnyOfValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:34: error: cannot find symbol
+@RunWith(MockitoJUnitRunner.class)
+         ^
+  symbol: class MockitoJUnitRunner
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:138: error: cannot find symbol
+        ValidationMessage requiredError = ValidationMessage.builder()
+                                                           ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:213: error: cannot find symbol
+        ValidationMessage genericError = ValidationMessage.builder()
+                                                          ^
+  symbol:   method builder()
+  location: class ValidationMessage
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:227: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator
+        boolean hasRemark = result.stream().anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));
+                                                                                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2-retry/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:260: error: schemas has private access in AnyOfValidator
+        verify(spyValidator).preloadJsonSchemas(eq(spyValidator.schemas));
+                                                               ^
+9 errors

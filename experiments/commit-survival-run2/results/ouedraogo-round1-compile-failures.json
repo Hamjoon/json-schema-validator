@@ -1,0 +1,1159 @@
+{
+  "round": "round1",
+  "failed_files": 25,
+  "category_file_counts": {
+    "unresolved-symbol": 24,
+    "inaccessible-member-or-constructor": 12,
+    "known-production-type-unresolved": 19,
+    "unknown-or-external-type-unresolved": 13,
+    "abstract-or-override-contract": 8,
+    "method-or-constructor-signature": 8,
+    "incompatible-types": 4,
+    "missing-package-or-import": 2,
+    "duplicate-declaration": 1
+  },
+  "categories_may_overlap": true,
+  "symbol_classification_note": "Known production type candidates come from the frozen inventory; unresolved simple names often indicate missing imports. Unknown/external means absent from that inventory, not proof that a dependency lacks the type. Raw diagnostics and generated package/import declarations are retained for judging root causes.",
+  "files": [
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "ValidationConfig",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/0/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:33: error: cannot find symbol\n    private ValidationContext.ValidationConfig validationConfig;\n                             ^\n  symbol:   class ValidationConfig\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:42: error: cannot find symbol\n    private Scope dynamicScope;\n            ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:210: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java",
+      "technique": "FSL",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "abstract-or-override-contract",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "java.util.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/1/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:44: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:49: error: cannot find symbol\n    @Mock private Scope dynamicScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:50: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class AnyOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:301: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/FSL/AnyOfValidatorTest.java:311: error: schemas has private access in AnyOfValidator\n        validator.schemas.addAll(subschemas);\n                 ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "WalkListenerRunner",
+          "known_production_types": [
+            "com.networknt.schema.walk.WalkListenerRunner"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "JsonSchemaWalker",
+          "known_production_types": [
+            "com.networknt.schema.walk.JsonSchemaWalker"
+          ]
+        },
+        {
+          "kind": "method",
+          "symbol": "getMessages()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.Collections",
+        "java.util.Set"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/10/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java:130: error: cannot find symbol\n    @Mock private URIFactory uriFactory;\n                  ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java:135: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunnerMock;\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java:136: error: cannot find symbol\n    @Mock private JsonSchemaWalker walkerMock;\n                  ^\n  symbol:   class JsonSchemaWalker\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java:365: error: cannot find symbol\n        assertTrue(result.getMessages().isEmpty());\n                         ^\n  symbol:   method getMessages()\n  location: variable result of type ValidationResult\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/CoT/JsonSchemaTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "technique": "FSL",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "method-or-constructor-signature",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "method",
+          "symbol": "put(String,String)",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.ArgumentMatchers.*",
+        "static org.mockito.Mockito.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.networknt.schema.utils.StringUtils",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/11/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:33: error: cannot find symbol\n    private URIFactory uriFactory;\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:107: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema\n        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, \"#frag\"));\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:108: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.isUriFragmentWithNoContext(new URI(\"http://example.com/\"), \"#frag\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:109: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.isUriFragmentWithNoContext(null, \"http://example.com\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:115: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertTrue(JsonSchema.uriRefersToSubschema(uriWithFragment, \"#\"));\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:116: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertTrue(JsonSchema.uriRefersToSubschema(uriWithFragment, \"\"));\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:117: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.uriRefersToSubschema(uriWithFragment, \"/properties\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:118: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.uriRefersToSubschema(null, \"#\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:129: error: 'void' type not allowed here\n        when(mockValidator.preloadJsonSchema()).thenReturn(null);\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:150: error: getValidators() has private access in JsonSchema\n        schema.getValidators();\n              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:171: error: cannot find symbol\n                .put(\"type\", \"string\");\n                ^\n  symbol:   method put(String,String)\n  location: class JsonNode\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:181: error: getValidators() has private access in JsonSchema\n        JsonValidator typeValidator = schema.getValidators().get(\"#/type\");\n                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:259: error: no suitable method found for of(String,ErrorMessageType,MessageFormat,String)\n        ValidationMessage msg = ValidationMessage.of(\"type\", CustomErrorMessageType.of(\"type.error\"), new java.text.MessageFormat(\"{0} error\"), \"test\");\n                                                 ^\n    method ValidationMessage.of(String,ErrorMessageType,MessageFormat,String,String,String...) is not applicable\n      (actual and formal argument lists differ in length)\n    method ValidationMessage.of(String,ErrorMessageType,MessageFormat,String,String,Map<String,Object>) is not applicable\n      (actual and formal argument lists differ in length)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:275: error: getValidators() has private access in JsonSchema\n        schema.getValidators();\n              ^\n14 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "method-or-constructor-signature",
+        "incompatible-types",
+        "abstract-or-override-contract",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "ResourceBundle",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.LinkedHashSet",
+        "java.util.Set",
+        "java.util.TreeMap",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/12/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:45: error: cannot find symbol\n    private Config config;\n            ^\n  symbol:   class Config\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:48: error: cannot find symbol\n    private URIFactory uriFactory;\n            ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:88: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", base, schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:101: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", null, schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,<null>,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:120: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:136: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:146: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:155: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:163: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#/properties/age\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:183: error: cannot find symbol\n        ResourceBundle dummyBundle = new ResourceBundle() {\n        ^\n  symbol:   class ResourceBundle\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:183: error: cannot find symbol\n        ResourceBundle dummyBundle = new ResourceBundle() {\n                                         ^\n  symbol:   class ResourceBundle\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:184: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:186: error: method does not override or implement a method from a supertype\n            @Override\n            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:192: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n        ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:203: error: incompatible types: String cannot be converted to MessageFormat\n        ValidationMessage dummyMessage = ValidationMessage.of(\"type\", ValidatorTypeCode.TYPE, \"type error\");\n                                                                                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:216: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), schemaNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:232: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), parentNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:246: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        schema = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com\"), rootNode, null, false);\n                 ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:255: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        JsonSchema parent = new JsonSchema(validationContext, \"#\", URI.create(\"http://example.com/parent.json\"),\n                            ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,<null>,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:259: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;\n        JsonSchema child = new JsonSchema(validationContext, \"#/properties/child\", URI.create(\"http://example.com/parent.json\"),\n                           ^\n  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean\n  found:    ValidationContext,String,URI,ObjectNode,JsonSchema,boolean\n  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n20 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "java.lang.reflect.Field",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.Set",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.Mockito",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/13/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:69: error: no suitable method found for getSchema(JsonNode,URI)\n        JsonSchema schema = factory.getSchema(schemaNode, new URI(\"http://example.com/base.json\"));\n                                   ^\n    method JsonSchemaFactory.getSchema(String,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to String)\n    method JsonSchemaFactory.getSchema(InputStream,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to InputStream)\n    method JsonSchemaFactory.getSchema(URI,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\n    method JsonSchemaFactory.getSchema(JsonNode,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; URI cannot be converted to SchemaValidatorsConfig)\n    method JsonSchemaFactory.getSchema(URI,JsonNode) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:81: error: no suitable method found for getSchema(JsonNode,URI)\n        JsonSchema schema = factory.getSchema(schemaNode, new URI(\"http://example.com/base.json\"));\n                                   ^\n    method JsonSchemaFactory.getSchema(String,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to String)\n    method JsonSchemaFactory.getSchema(InputStream,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to InputStream)\n    method JsonSchemaFactory.getSchema(URI,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\n    method JsonSchemaFactory.getSchema(JsonNode,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; URI cannot be converted to SchemaValidatorsConfig)\n    method JsonSchemaFactory.getSchema(URI,JsonNode) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:114: error: cannot find symbol\n        URIFactory uriFactory = Mockito.mock(URIFactory.class);\n        ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:114: error: cannot find symbol\n        URIFactory uriFactory = Mockito.mock(URIFactory.class);\n                                             ^\n  symbol:   class URIFactory\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:173: error: no suitable method found for getSchema(JsonNode,URI)\n        JsonSchema schema = factory.getSchema(schemaNode, URI.create(\"http://example.com/root.json\"));\n                                   ^\n    method JsonSchemaFactory.getSchema(String,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to String)\n    method JsonSchemaFactory.getSchema(InputStream,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to InputStream)\n    method JsonSchemaFactory.getSchema(URI,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\n    method JsonSchemaFactory.getSchema(JsonNode,SchemaValidatorsConfig) is not applicable\n      (argument mismatch; URI cannot be converted to SchemaValidatorsConfig)\n    method JsonSchemaFactory.getSchema(URI,JsonNode) is not applicable\n      (argument mismatch; JsonNode cannot be converted to URI)\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "method-or-constructor-signature",
+        "incompatible-types",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "variable",
+          "symbol": "VersionFlag",
+          "known_production_types": [
+            "com.networknt.schema.SpecVersion.VersionFlag"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/14/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:85: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema\n        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, \"#/defs\"));\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:90: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create(\"http://example.com\"), \"#/defs\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:96: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertTrue(JsonSchema.uriRefersToSubschema(uri, \"#\"));\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:102: error: uriRefersToSubschema(URI,String) has private access in JsonSchema\n        assertFalse(JsonSchema.uriRefersToSubschema(uri, \"#\"));\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:118: error: no suitable method found for thenReturn(URI::resolve)\n        when(validationContext.getURIFactory()).thenReturn(URI::resolve);\n                                               ^\n    method OngoingStubbing.thenReturn(URIFactory) is not applicable\n      (argument mismatch; URIFactory is not a functional interface\n          multiple non-overriding abstract methods found in interface URIFactory)\n    method OngoingStubbing.thenReturn(URIFactory,URIFactory...) is not applicable\n      (argument mismatch; URIFactory is not a functional interface\n          multiple non-overriding abstract methods found in interface URIFactory)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:129: error: no suitable method found for thenReturn(URI::resolve)\n        when(validationContext.getURIFactory()).thenReturn(URI::resolve);\n                                               ^\n    method OngoingStubbing.thenReturn(URIFactory) is not applicable\n      (argument mismatch; URIFactory is not a functional interface\n          multiple non-overriding abstract methods found in interface URIFactory)\n    method OngoingStubbing.thenReturn(URIFactory,URIFactory...) is not applicable\n      (argument mismatch; URIFactory is not a functional interface\n          multiple non-overriding abstract methods found in interface URIFactory)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:206: error: cannot find symbol\n        when(validationContext.activeDialect()).thenReturn(Optional.of(VersionFlag.DRAFT4));\n                                                                       ^\n  symbol:   variable VersionFlag\n  location: class JsonSchemaTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:291: error: incompatible types: String cannot be converted to MessageFormat\n        ValidationMessage errMsg = ValidationMessage.of(\"type\", ValidatorTypeCode.TYPE, \"type error\");\n                                                                                        ^\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n8 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "variable",
+          "symbol": "V4",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "getCurrentMetaSchema()",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "jsonMapper()",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URISchemeFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URISchemeFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URISchemeFetcher",
+          "known_production_types": [
+            "com.networknt.schema.uri.URISchemeFetcher"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URNFactory",
+          "known_production_types": [
+            "com.networknt.schema.urn.URNFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "CompositeURITranslator",
+          "known_production_types": [
+            "com.networknt.schema.uri.URITranslator.CompositeURITranslator"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "org.junit.After",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.io.*",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.*",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/15/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:106: error: cannot find symbol\n                .addMetaSchema(JsonSchemaFactory.V4)\n                                                ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:105: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonSchemaFactory.V4.getUri())\n                                                       ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:116: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(JsonSchemaFactory.V4.getUri(), f.defaultMetaSchemaURI);\n                                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:116: error: cannot find symbol\n        assertEquals(JsonSchemaFactory.V4.getUri(), f.defaultMetaSchemaURI);\n                                      ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:149: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(factory.defaultMetaSchemaURI, copyFactory.defaultMetaSchemaURI);\n                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:149: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(factory.defaultMetaSchemaURI, copyFactory.defaultMetaSchemaURI);\n                                                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:151: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertEquals(factory.jsonMetaSchemas.size(), copyFactory.jsonMetaSchemas.size());\n                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:151: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertEquals(factory.jsonMetaSchemas.size(), copyFactory.jsonMetaSchemas.size());\n                                                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:175: error: cannot find symbol\n        assertEquals(\"array\", schemaObj.getValidationContext().getCurrentMetaSchema().readType(schemaObj.getSchemaNode()));\n                                                              ^\n  symbol:   method getCurrentMetaSchema()\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:229: error: cannot find symbol\n                .addMetaSchema(JsonSchemaFactory.V4).build()\n                                                ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:228: error: cannot find symbol\n        JsonNode node = JsonSchemaFactory.builder().defaultMetaSchemaURI(JsonSchemaFactory.V4.getUri())\n                                                                                          ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:231: error: cannot find symbol\n        JsonMetaSchema meta = JsonSchemaFactory.V4; // V4 meta\u2011schema knows how to read \"$id\"\n                                               ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:247: error: cannot find symbol\n        JsonNode node = factory.jsonMapper().readTree(json);\n                               ^\n  symbol:   method jsonMapper()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:252: error: cannot find symbol\n            boolean matches = (boolean) m.invoke(factory, JsonSchemaFactory.V4, node, uri);\n                                                                           ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:269: error: cannot find symbol\n                URISchemeFactory.class, URISchemeFetcher.class,\n                ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:269: error: cannot find symbol\n                URISchemeFactory.class, URISchemeFetcher.class,\n                                        ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:270: error: cannot find symbol\n                URNFactory.class, Map.class, Map.class,\n                ^\n  symbol:   class URNFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:271: error: cannot find symbol\n                boolean.class, CompositeURITranslator.class\n                               ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:278: error: cannot find symbol\n                new URISchemeFactory(Collections.emptyMap()),\n                    ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:279: error: cannot find symbol\n                new URISchemeFetcher(Collections.emptyMap()),\n                    ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:284: error: cannot find symbol\n                new CompositeURITranslator());\n                    ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:277: error: cannot find symbol\n                JsonSchemaFactory.V4.getUri(),\n                                 ^\n  symbol:   variable V4\n  location: class JsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:334: error: jsonMapper has private access in JsonSchemaFactory\n        return factory.jsonMapper;\n                      ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n23 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "technique": "FSL",
+      "categories": [
+        "inaccessible-member-or-constructor"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.uri.URIFetcher",
+        "com.networknt.schema.urn.URNFactory",
+        "org.junit.Test",
+        "org.junit.Before",
+        "org.junit.Rule",
+        "org.junit.rules.ExpectedException",
+        "org.mockito.InOrder",
+        "org.mockito.Mock",
+        "org.mockito.MockitoAnnotations",
+        "org.slf4j.LoggerFactory",
+        "java.io.ByteArrayInputStream",
+        "java.io.InputStream",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashMap",
+        "java.util.Map",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/16/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:143: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(DRAFT_07_URI_HTTP, factory.defaultMetaSchemaURI);\n                                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:301: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertTrue(factory.jsonMetaSchemas.containsKey(JsonSchemaFactory.normalizeMetaSchemaUri(new Version4().getInstance().getUri())));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:308: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertTrue(factory.jsonMetaSchemas.containsKey(JsonSchemaFactory.normalizeMetaSchemaUri(new Version7().getInstance().getUri())));\n                          ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java",
+      "technique": "GToT",
+      "categories": [
+        "missing-package-or-import",
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "PrepareForTest",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URISchemeFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URISchemeFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URISchemeFetcher",
+          "known_production_types": [
+            "com.networknt.schema.uri.URISchemeFetcher"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URNFactory",
+          "known_production_types": [
+            "com.networknt.schema.urn.URNFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "CompositeURITranslator",
+          "known_production_types": [
+            "com.networknt.schema.uri.URITranslator.CompositeURITranslator"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "PowerMockRunner",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URITranslator",
+          "known_production_types": [
+            "com.networknt.schema.uri.URITranslator"
+          ]
+        },
+        {
+          "kind": "variable",
+          "symbol": "PowerMockito",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFetcher",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFetcher"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "org.junit.*",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "org.powermock.api.mockito.PowerMockito",
+        "org.powermock.core.classloader.annotations.*",
+        "org.powermock.modules.junit4.PowerMockRunner",
+        "java.io.*",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/17/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:28: error: package org.powermock.api.mockito does not exist\nimport org.powermock.api.mockito.PowerMockito;\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:30: error: package org.powermock.modules.junit4 does not exist\nimport org.powermock.modules.junit4.PowerMockRunner;\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:52: error: cannot find symbol\n@PrepareForTest({JsonSchema.class})\n ^\n  symbol: class PrepareForTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:457: error: cannot find symbol\n                                                               URISchemeFactory uriFactory,\n                                                               ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:458: error: cannot find symbol\n                                                               URISchemeFetcher uriFetcher,\n                                                               ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:459: error: cannot find symbol\n                                                               URNFactory urnFactory,\n                                                               ^\n  symbol:   class URNFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:463: error: cannot find symbol\n                                                               CompositeURITranslator uriTranslators) throws Exception {\n                                                               ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:29: error: package org.powermock.core.classloader.annotations does not exist\nimport org.powermock.core.classloader.annotations.*;\n^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:51: error: cannot find symbol\n@RunWith(PowerMockRunner.class)\n         ^\n  symbol: class PowerMockRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:162: error: cannot find symbol\n        URITranslator translator = factory.getUriTranslator();\n        ^\n  symbol:   class URITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:171: error: cannot find symbol\n        PowerMockito.mockStatic(JsonSchema.class);\n        ^\n  symbol:   variable PowerMockito\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:184: error: cannot find symbol\n        PowerMockito.mockStatic(JsonSchema.class);\n        ^\n  symbol:   variable PowerMockito\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:200: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n        ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:200: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n                                         ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:206: error: cannot find symbol\n        URIFetcher mockFetcher = mock(URIFetcher.class);\n        ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:206: error: cannot find symbol\n        URIFetcher mockFetcher = mock(URIFetcher.class);\n                                      ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:222: error: cannot find symbol\n        PowerMockito.mockStatic(JsonSchema.class);\n        ^\n  symbol:   variable PowerMockito\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:243: error: cannot find symbol\n        PowerMockito.verifyStatic(JsonSchema.class, times(1));\n        ^\n  symbol:   variable PowerMockito\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:251: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n        ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:251: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n                                         ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:256: error: cannot find symbol\n        URIFetcher mockFetcher = mock(URIFetcher.class);\n        ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:256: error: cannot find symbol\n        URIFetcher mockFetcher = mock(URIFetcher.class);\n                                      ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:266: error: cannot find symbol\n        PowerMockito.mockStatic(JsonSchema.class);\n        ^\n  symbol:   variable PowerMockito\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:296: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertTrue(factory.isYaml(new URI(\"file://some/schema.yaml\")));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:297: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertTrue(factory.isYaml(new URI(\"file://some/schema.yml\")));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:298: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertFalse(factory.isYaml(new URI(\"file://some/schema.json\")));\n                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:299: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertFalse(factory.isYaml(new URI(\"file://some/schema\"))); // no extension\n                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:342: error: cannot find symbol\n                new CompositeURITranslator());\n                    ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:336: error: cannot find symbol\n                mock(URISchemeFactory.class),\n                     ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:337: error: cannot find symbol\n                mock(URISchemeFetcher.class),\n                     ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:356: error: cannot find symbol\n                new CompositeURITranslator());\n                    ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:350: error: cannot find symbol\n                mock(URISchemeFactory.class),\n                     ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:351: error: cannot find symbol\n                mock(URISchemeFetcher.class),\n                     ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:373: error: cannot find symbol\n                new CompositeURITranslator());\n                    ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:367: error: cannot find symbol\n                mock(URISchemeFactory.class),\n                     ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:368: error: cannot find symbol\n                mock(URISchemeFetcher.class),\n                     ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:390: error: cannot find symbol\n        URIFactory badFactory = mock(URIFactory.class);\n        ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:390: error: cannot find symbol\n        URIFactory badFactory = mock(URIFactory.class);\n                                     ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:396: error: cannot find symbol\n                .uriFetcher(mock(URIFetcher.class), \"bad\")\n                                 ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:409: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n        ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:409: error: cannot find symbol\n        URIFactory mockUriFactory = mock(URIFactory.class);\n                                         ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:412: error: cannot find symbol\n        URIFetcher badFetcher = mock(URIFetcher.class);\n        ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:412: error: cannot find symbol\n        URIFetcher badFetcher = mock(URIFetcher.class);\n                                     ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:466: error: cannot find symbol\n                        String.class, URISchemeFactory.class, URISchemeFetcher.class,\n                                      ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:466: error: cannot find symbol\n                        String.class, URISchemeFactory.class, URISchemeFetcher.class,\n                                                              ^\n  symbol:   class URISchemeFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:467: error: cannot find symbol\n                        URNFactory.class, Map.class, Map.class, boolean.class,\n                        ^\n  symbol:   class URNFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:468: error: cannot find symbol\n                        CompositeURITranslator.class);\n                        ^\n  symbol:   class CompositeURITranslator\n  location: class JsonSchemaFactoryTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n47 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "incompatible-types",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URITranslator",
+          "known_production_types": [
+            "com.networknt.schema.uri.URITranslator"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "org.junit.*",
+        "org.junit.rules.TemporaryFolder",
+        "java.io.*",
+        "java.net.URI",
+        "java.util.*",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/18/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:39: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:45: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n                \"https://json-schema.org/draft-04/schema#\", factory.defaultMetaSchemaURI);\n                                                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:54: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:65: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:65: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);\n                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:66: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertEquals(original.jsonMetaSchemas.keySet(), copy.jsonMetaSchemas.keySet());\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:66: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertEquals(original.jsonMetaSchemas.keySet(), copy.jsonMetaSchemas.keySet());\n                                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:67: error: uriFactory has private access in JsonSchemaFactory\n        assertNotSame(original.uriFactory, copy.uriFactory);\n                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:67: error: uriFactory has private access in JsonSchemaFactory\n        assertNotSame(original.uriFactory, copy.uriFactory);\n                                               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:116: error: incompatible types: JsonNode cannot be converted to ExecutionContext\n        assertTrue(jsonSchema.validate(valid, new SchemaValidatorsConfig()).isEmpty());\n                                       ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:137: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:144: error: incompatible types: JsonNode cannot be converted to ExecutionContext\n        assertTrue(schema.validate(node, new SchemaValidatorsConfig()).isEmpty());\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:158: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:180: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        JsonMetaSchema meta = factory.jsonMetaSchemas.get(JsonSchemaFactory.normalizeMetaSchemaUri(factory.defaultMetaSchemaURI));\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:180: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        JsonMetaSchema meta = factory.jsonMetaSchemas.get(JsonSchemaFactory.normalizeMetaSchemaUri(factory.defaultMetaSchemaURI));\n                                                                                                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:181: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory\n        assertTrue(factory.idMatchesSourceUri(meta, matching, URI.create(\"http://example.com/schema.json\")));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:182: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory\n        assertFalse(factory.idMatchesSourceUri(meta, nonMatching, URI.create(\"http://example.com/schema.json\")));\n                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:188: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertTrue(factory.isYaml(URI.create(\"file:///tmp/schema.yaml\")));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:189: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertTrue(factory.isYaml(URI.create(\"file:///tmp/schema.yml\")));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:190: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertFalse(factory.isYaml(URI.create(\"file:///tmp/schema.json\")));\n                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:191: error: isYaml(URI) has private access in JsonSchemaFactory\n        assertFalse(factory.isYaml(URI.create(\"file:///tmp/schema\"))); // no extension \u2192 assume JSON\n                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:199: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:220: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(factory.defaultMetaSchemaURI, ctx.getMetaSchema().getUri());\n                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:228: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory\n        JsonMetaSchema meta = factory.findMetaSchemaForSchema(node);\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:238: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory\n        factory.findMetaSchemaForSchema(node);\n               ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:244: error: fromId(String) has private access in JsonSchemaFactory\n        JsonMetaSchema meta = factory.fromId(\"http://json-schema.org/draft-04/schema#\");\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:253: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:270: error: cannot find symbol\n        URITranslator translator = factory.getUriTranslator();\n        ^\n  symbol:   class URITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:288: error: incompatible types: JsonNode cannot be converted to ExecutionContext\n        assertTrue(schema.validate(node, null).isEmpty());\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:295: error: jsonMetaSchemas has private access in JsonSchemaFactory\n                .addMetaSchema(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4).jsonMetaSchemas\n                                                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:324: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory\n            return factory.findMetaSchemaForSchema(node);\n                          ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n31 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "abstract-or-override-contract",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFetcher",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFetcher"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URISchemeFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URISchemeFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "URITranslator",
+          "known_production_types": [
+            "com.networknt.schema.uri.URITranslator"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.io.ByteArrayInputStream",
+        "java.io.InputStream",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashMap",
+        "java.util.Map",
+        "java.util.concurrent.atomic.AtomicInteger",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/19/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:253: error: cannot find symbol\n    private static class SimpleURIFactory implements URIFactory {\n                                                     ^\n  symbol:   class URIFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:265: error: cannot find symbol\n    private static class CountingURIFetcher implements URIFetcher {\n                                                       ^\n  symbol:   class URIFetcher\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:87: error: cannot find symbol\n        assertTrue(v4Factory.getUriFactory() instanceof URISchemeFactory);\n                                                        ^\n  symbol:   class URISchemeFactory\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:211: error: cannot find symbol\n        URITranslator translator = f.getUriTranslator();\n        ^\n  symbol:   class URITranslator\n  location: class JsonSchemaFactoryTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:254: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:273: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:290: error: no suitable method found for uriFactory(SimpleURIFactory,String)\n                .uriFactory(new SimpleURIFactory(), \"mock\")\n                ^\n    method Builder.uriFactory(URIFactory,String...) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\n    method Builder.uriFactory(URIFactory,Iterable<String>) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:313: error: no suitable method found for uriFactory(SimpleURIFactory,String)\n                .uriFactory(new SimpleURIFactory(), \"mock\")\n                ^\n    method Builder.uriFactory(URIFactory,String...) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\n    method Builder.uriFactory(URIFactory,Iterable<String>) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java:339: error: no suitable method found for uriFactory(SimpleURIFactory,String)\n                .uriFactory(new SimpleURIFactory(), \"mock\")\n                ^\n    method Builder.uriFactory(URIFactory,String...) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\n    method Builder.uriFactory(URIFactory,Iterable<String>) is not applicable\n      (argument mismatch; SimpleURIFactory cannot be converted to URIFactory)\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/JsonSchemaFactory/ZSL/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n9 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "missing-package-or-import",
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "setDiscriminatorMatchFound(boolean)",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/2/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:37: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:188: error: discriminatorContext has private access in AnyOfValidator\n        ValidationContext.DiscriminatorContext dContext = validator.discriminatorContext;\n                                                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:189: error: cannot find symbol\n        dContext.setDiscriminatorMatchFound(true); // use reflection\u2011free setter (for test)\n                ^\n  symbol:   method setDiscriminatorMatchFound(boolean)\n  location: variable dContext of type DiscriminatorContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:278: error: schemas has private access in AnyOfValidator\n        verify(spyValidator, times(1)).preloadJsonSchemas(Mockito.eq(spyValidator.schemas));\n                                                                                 ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:291: error: package ValidationMessageImpl does not exist\n        return new ValidationMessageImpl.Builder()\n                                        ^\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "MockitoJUnitRunner",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "OngoingStubbing",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "builder()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "java.lang.reflect.Field",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/20/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:39: error: cannot find symbol\n    private Scope dummyScope;               // used for both enter/exit scopes\n            ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:23: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:65: error: no suitable method found for thenReturn(Set<JsonNode>)\n        when(collectorContext.getEvaluatedItems()).thenReturn(evaluatedItems);\n                                                  ^\n    method OngoingStubbing.thenReturn(Collection<String>) is not applicable\n      (argument mismatch; Set<JsonNode> cannot be converted to Collection<String>)\n    method OngoingStubbing.thenReturn(Collection<String>,Collection<String>...) is not applicable\n      (argument mismatch; Set<JsonNode> cannot be converted to Collection<String>)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:83: error: cannot find symbol\n        OngoingStubbing<JsonSchema> stub = when(validationContext.newSchema(anyString(),\n        ^\n  symbol:   class OngoingStubbing\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:128: error: cannot find symbol\n                ValidationMessage.builder().type(\"type1\").path(\"$\").message(\"fail\").build()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:166: error: cannot find symbol\n                ValidationMessage.builder().type(\"a\").path(\"$\").message(\"a error\").build()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:169: error: cannot find symbol\n                ValidationMessage.builder().type(\"b\").path(\"$\").message(\"b error\").build()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:331: error: cannot find symbol\n                        ValidationMessage.builder().type(\"a\").path(\"$\").message(\"a\").build()));\n                                         ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:335: error: cannot find symbol\n                        ValidationMessage.builder().type(\"b\").path(\"$\").message(\"b\").build()));\n                                         ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:426: error: cannot find symbol\n                ValidationMessage.builder().type(\"c\").path(\"$\").message(\"c error\").build()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n10 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "technique": "FSL",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "java.util.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "org.junit.*",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/21/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:45: error: cannot find symbol\n    @Mock private Scope dynamicScope;           // returned by enter/exitDynamicScope()\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses unchecked or unsafe operations.\nNote: Recompile with -Xlint:unchecked for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "MockitoJUnitRunner",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "isMatchedNode()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "java.lang.reflect.Field",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/22/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java:69: error: cannot find symbol\n    private Scope dynamicScope; // used for both parent & grand\u2011parent scopes\n            ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java:47: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java:96: error: cannot find symbol\n        when(validatorState.isMatchedNode()).thenReturn(true);\n                           ^\n  symbol:   method isMatchedNode()\n  location: variable validatorState of type ValidatorState\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "MockitoJUnitRunner",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "builder()",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "isMatchedNode()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "java.lang.reflect.Field",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/23/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:47: error: cannot find symbol\n    private Scope dummyScope;\n            ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:34: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:102: error: cannot find symbol\n        ValidationMessage vm = ValidationMessage.builder()\n                                                ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:133: error: cannot find symbol\n        assertTrue(state.isMatchedNode());\n                        ^\n  symbol:   method isMatchedNode()\n  location: variable state of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:221: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n5 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Scope",
+          "known_production_types": [
+            "com.networknt.schema.CollectorContext.Scope"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "org.junit.*",
+        "org.junit.rules.ExpectedException",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.util.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/24/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:55: error: cannot find symbol\n    @Mock private Scope grandParentScope;\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:56: error: cannot find symbol\n    @Mock private Scope parentScope;\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:57: error: cannot find symbol\n    @Mock private Scope childScope;\n                  ^\n  symbol:   class Scope\n  location: class OneOfValidatorTest\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.InOrder",
+        "org.mockito.Mock",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "java.util.Collections",
+        "java.util.HashSet",
+        "java.util.Set",
+        "static org.junit.Assert.*",
+        "static org.mockito.ArgumentMatchers.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/3/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:49: error: cannot find symbol\n    private ValidationContext.Config config;\n                             ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:106: error: schemas has private access in AnyOfValidator\n        JsonSchema subSchema1 = validator.schemas.get(0);\n                                         ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:107: error: schemas has private access in AnyOfValidator\n        JsonSchema subSchema2 = validator.schemas.get(1);\n                                         ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:142: error: schemas has private access in AnyOfValidator\n        JsonSchema validSchema = validator.schemas.get(0);\n                                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:143: error: schemas has private access in AnyOfValidator\n        JsonSchema requiredErrorSchema = validator.schemas.get(1);\n                                                  ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:197: error: schemas has private access in AnyOfValidator\n        JsonSchema selectedSchema = validator.schemas.get(0);\n                                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:240: error: schemas has private access in AnyOfValidator\n        JsonSchema selectedSchema = validator.schemas.get(0);\n                                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:292: error: schemas has private access in AnyOfValidator\n        for (JsonSchema schema : validator.schemas) {\n                                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:302: error: schemas has private access in AnyOfValidator\n        for (JsonSchema schema : validator.schemas) {\n                                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:315: error: schemas has private access in AnyOfValidator\n        for (int i = 0; i < validator.schemas.size(); i++) {\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:316: error: schemas has private access in AnyOfValidator\n            JsonSchema original = validator.schemas.get(i);\n                                           ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:318: error: schemas has private access in AnyOfValidator\n            validator.schemas.set(i, spySchema);\n                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:323: error: schemas has private access in AnyOfValidator\n        for (JsonSchema schema : validator.schemas) {\n                                          ^\n13 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor",
+        "method-or-constructor-signature",
+        "abstract-or-override-contract",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "MockitoJUnitRunner",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "setDiscriminatorMatchFound(boolean)",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "com.networknt.schema.CollectorContext.Scope",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "java.util.*",
+        "static com.networknt.schema.ValidatorTypeCode.ANY_OF",
+        "static com.networknt.schema.ValidatorTypeCode.REQUIRED",
+        "static org.junit.Assert.*",
+        "static org.mockito.ArgumentMatchers.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/4/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:71: error: cannot find symbol\n    @Mock private ValidationContext.Config config;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:63: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:120: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:123: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n            return new ValidationMessage(ANY_OF, at, message);\n                   ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:293: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n        ValidationMessage requiredMsg = new ValidationMessage(REQUIRED, at, \"missing required\");\n                                        ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:346: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n                return new ValidationMessage(ANY_OF, at, message);\n                       ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:362: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n        ValidationMessage err = new ValidationMessage(ANY_OF, at, \"some error\");\n                                ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:398: error: cannot find symbol\n        discriminatorContext.setDiscriminatorMatchFound(true); // simulate match\n                            ^\n  symbol:   method setDiscriminatorMatchFound(boolean)\n  location: variable discriminatorContext of type DiscriminatorContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:416: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n        ValidationMessage childError = new ValidationMessage(ANY_OF, at, \"child error\");\n                                       ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:438: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:449: error: cannot find symbol\n        discriminatorContext.setDiscriminatorMatchFound(true);\n                            ^\n  symbol:   method setDiscriminatorMatchFound(boolean)\n  location: variable discriminatorContext of type DiscriminatorContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:495: error: constructor ValidationMessage in class ValidationMessage cannot be applied to given types;\n        ValidationMessage err = new ValidationMessage(ANY_OF, at, \"walk error\");\n                                ^\n  required: no arguments\n  found:    ValidatorTypeCode,String,String\n  reason: actual and formal argument lists differ in length\n12 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "abstract-or-override-contract",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "DiscriminatorContext",
+          "known_production_types": [
+            "com.networknt.schema.ValidationContext.DiscriminatorContext"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "org.slf4j.Logger",
+        "java.net.URI",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/5/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:52: error: cannot find symbol\n    @Mock private ValidationContext.Config configMock;\n                                   ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:55: error: cannot find symbol\n    @Mock private URIFactory uriFactoryMock;\n                  ^\n  symbol:   class URIFactory\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:29: error: TestableBaseJsonValidator is not abstract and does not override abstract method validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator\n    private static class TestableBaseJsonValidator extends BaseJsonValidator {\n                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:174: error: no suitable method found for thenReturn(Enumeration<Entry<String,JsonNode>>)\n        when(mappingNodeMock.fields()).thenReturn(\n                                      ^\n    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>) is not applicable\n      (argument mismatch; no instance(s) of type variable(s) T exist so that Enumeration<T> conforms to Iterator<Entry<String,JsonNode>>)\n    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>,Iterator<Entry<String,JsonNode>>...) is not applicable\n      (argument mismatch; no instance(s) of type variable(s) T exist so that Enumeration<T> conforms to Iterator<Entry<String,JsonNode>>)\n  where T is a type-variable:\n    T extends Object declared in method <T>enumeration(Collection<T>)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:196: error: no suitable method found for thenReturn(Enumeration<Entry<Object,Object>>)\n        when(mappingNodeMock.fields()).thenReturn(\n                                      ^\n    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>) is not applicable\n      (argument mismatch; no instance(s) of type variable(s) T exist so that Enumeration<T> conforms to Iterator<Entry<String,JsonNode>>)\n    method OngoingStubbing.thenReturn(Iterator<Entry<String,JsonNode>>,Iterator<Entry<String,JsonNode>>...) is not applicable\n      (argument mismatch; no instance(s) of type variable(s) T exist so that Enumeration<T> conforms to Iterator<Entry<String,JsonNode>>)\n  where T is a type-variable:\n    T extends Object declared in method <T>enumeration(Collection<T>)\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:219: error: cannot find symbol\n        DiscriminatorContext ctx = mock(DiscriminatorContext.class);\n        ^\n  symbol:   class DiscriminatorContext\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:219: error: cannot find symbol\n        DiscriminatorContext ctx = mock(DiscriminatorContext.class);\n                                        ^\n  symbol:   class DiscriminatorContext\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:268: error: cannot find symbol\n        DiscriminatorContext ctx = mock(DiscriminatorContext.class);\n        ^\n  symbol:   class DiscriminatorContext\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:268: error: cannot find symbol\n        DiscriminatorContext ctx = mock(DiscriminatorContext.class);\n                                        ^\n  symbol:   class DiscriminatorContext\n  location: class BaseJsonValidatorTest\n9 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java",
+      "technique": "FSL",
+      "categories": [
+        "unresolved-symbol",
+        "abstract-or-override-contract",
+        "known-production-type-unresolved",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "MessageSource",
+          "known_production_types": []
+        },
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "class",
+          "symbol": "DiscriminatorContext",
+          "known_production_types": [
+            "com.networknt.schema.ValidationContext.DiscriminatorContext"
+          ]
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.*",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.mockito.ArgumentCaptor",
+        "org.slf4j.Logger",
+        "java.net.URI",
+        "java.util.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/6/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:142: error: cannot find symbol\n    private static class StubConfig implements Config {\n                                               ^\n  symbol:   class Config\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:215: error: cannot find symbol\n        @Override public MessageSource getMessageSource() { return null; }\n                         ^\n  symbol:   class MessageSource\n  location: class StubConfig\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:216: error: cannot find symbol\n        @Override public void setMessageSource(MessageSource messageSource) {}\n                                               ^\n  symbol:   class MessageSource\n  location: class StubConfig\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:41: error: interface expected here\n    private static class StubJsonSchema implements JsonSchema {\n                                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:69: error: cannot find symbol\n        @Override public Config getConfig() { return null; }\n                         ^\n  symbol:   class Config\n  location: class StubJsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:70: error: cannot find symbol\n        @Override public void setConfig(Config config) {}\n                                        ^\n  symbol:   class Config\n  location: class StubJsonSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:90: error: interface expected here\n    private static class StubValidationContext implements ValidationContext {\n                                                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:91: error: cannot find symbol\n        private final Config config;\n                      ^\n  symbol:   class Config\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:92: error: cannot find symbol\n        private final URIFactory uriFactory;\n                      ^\n  symbol:   class URIFactory\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:94: error: cannot find symbol\n        private final Map<String, DiscriminatorContext> discriminatorMap = new HashMap<>();\n                                  ^\n  symbol:   class DiscriminatorContext\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:96: error: cannot find symbol\n        StubValidationContext(Config config, URIFactory uriFactory, JsonSchemaFactory schemaFactory) {\n                              ^\n  symbol:   class Config\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:96: error: cannot find symbol\n        StubValidationContext(Config config, URIFactory uriFactory, JsonSchemaFactory schemaFactory) {\n                                             ^\n  symbol:   class URIFactory\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:102: error: cannot find symbol\n        @Override public Config getConfig() { return config; }\n                         ^\n  symbol:   class Config\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:103: error: cannot find symbol\n        @Override public URIFactory getURIFactory() { return uriFactory; }\n                         ^\n  symbol:   class URIFactory\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:107: error: cannot find symbol\n        @Override public DiscriminatorContext getDiscriminatorContext() {\n                         ^\n  symbol:   class DiscriminatorContext\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:225: error: interface expected here\n    private static class SimplePathType implements PathType {\n                                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:236: error: cannot find symbol\n    private static class SimpleURIFactory implements URIFactory {\n                                                     ^\n  symbol:   class URIFactory\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:241: error: interface expected here\n    private static class SimpleJsonSchemaFactory implements JsonSchemaFactory {\n                                                            ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:242: error: cannot find symbol\n        @Override public JsonSchema getSchema(URI uri, Config config) {\n                                                       ^\n  symbol:   class Config\n  location: class SimpleJsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:251: error: cannot find symbol\n        @Override public JsonSchema getSchema(JsonNode schemaNode, Config config) { return null; }\n                                                                   ^\n  symbol:   class Config\n  location: class SimpleJsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:252: error: cannot find symbol\n        @Override public JsonSchema getSchema(String schema, Config config) { return null; }\n                                                             ^\n  symbol:   class Config\n  location: class SimpleJsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:257: error: cannot find symbol\n        @Override public JsonSchema getSchema(URI uri, Config config, ValidationContext context) { return null; }\n                                                       ^\n  symbol:   class Config\n  location: class SimpleJsonSchemaFactory\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:50: error: method does not override or implement a method from a supertype\n        @Override public JsonNode getSchemaNode() { return schemaNode; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:54: error: method does not override or implement a method from a supertype\n        @Override public void initializeValidators() {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:55: error: method does not override or implement a method from a supertype\n        @Override public Set<ValidationMessage> validate(JsonNode node) { return Collections.emptySet(); }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:56: error: method does not override or implement a method from a supertype\n        @Override public Set<ValidationMessage> validate(JsonNode node, String at) { return Collections.emptySet(); }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:57: error: method does not override or implement a method from a supertype\n        @Override public JsonSchema getParentSchema() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:58: error: method does not override or implement a method from a supertype\n        @Override public String getSchemaPath() { return schemaPath; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:59: error: method does not override or implement a method from a supertype\n        @Override public String getMessage() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:60: error: method does not override or implement a method from a supertype\n        @Override public void setMessage(String message) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:61: error: method does not override or implement a method from a supertype\n        @Override public ValidatorTypeCode getValidatorType() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:62: error: method does not override or implement a method from a supertype\n        @Override public void setValidatorType(ValidatorTypeCode validatorType) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:63: error: method does not override or implement a method from a supertype\n        @Override public JsonSchema getSubSchema(String pointer) { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:64: error: method does not override or implement a method from a supertype\n        @Override public JsonSchema getSubSchema(JsonNode node) { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:65: error: method does not override or implement a method from a supertype\n        @Override public ValidationContext getValidationContext() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:66: error: method does not override or implement a method from a supertype\n        @Override public void setValidationContext(ValidationContext validationContext) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:67: error: method does not override or implement a method from a supertype\n        @Override public JsonSchemaFactory getSchemaFactory() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:68: error: method does not override or implement a method from a supertype\n        @Override public void setSchemaFactory(JsonSchemaFactory schemaFactory) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:69: error: method does not override or implement a method from a supertype\n        @Override public Config getConfig() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:70: error: method does not override or implement a method from a supertype\n        @Override public void setConfig(Config config) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:71: error: method does not override or implement a method from a supertype\n        @Override public URI getId() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:72: error: method does not override or implement a method from a supertype\n        @Override public void setId(URI id) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:73: error: method does not override or implement a method from a supertype\n        @Override public boolean isReadOnly() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:74: error: method does not override or implement a method from a supertype\n        @Override public void setReadOnly(boolean readOnly) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:75: error: method does not override or implement a method from a supertype\n        @Override public String getRef() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:76: error: method does not override or implement a method from a supertype\n        @Override public void setRef(String ref) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:77: error: method does not override or implement a method from a supertype\n        @Override public JsonNode getSchemaNodeTree() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:78: error: method does not override or implement a method from a supertype\n        @Override public void setSchemaNodeTree(JsonNode schemaNodeTree) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:79: error: method does not override or implement a method from a supertype\n        @Override public JsonNode getSchemaNodeForPath(String path) { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:80: error: method does not override or implement a method from a supertype\n        @Override public void setSchemaNodeForPath(String path, JsonNode node) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:81: error: method does not override or implement a method from a supertype\n        @Override public Set<String> getEvaluatedProperties() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:82: error: method does not override or implement a method from a supertype\n        @Override public void addEvaluatedProperty(String property) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:83: error: method does not override or implement a method from a supertype\n        @Override public Set<String> getEvaluatedItems() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:84: error: method does not override or implement a method from a supertype\n        @Override public void addEvaluatedItem(String index) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:85: error: method does not override or implement a method from a supertype\n        @Override public boolean isRecursive() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:86: error: method does not override or implement a method from a supertype\n        @Override public void setRecursive(boolean recursive) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:102: error: method does not override or implement a method from a supertype\n        @Override public Config getConfig() { return config; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:103: error: method does not override or implement a method from a supertype\n        @Override public URIFactory getURIFactory() { return uriFactory; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:104: error: method does not override or implement a method from a supertype\n        @Override public JsonSchemaFactory getJsonSchemaFactory() { return schemaFactory; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:107: error: method does not override or implement a method from a supertype\n        @Override public DiscriminatorContext getDiscriminatorContext() {\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:108: error: cannot find symbol\n            return new DiscriminatorContext() {\n                       ^\n  symbol:   class DiscriminatorContext\n  location: class StubValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:112: error: method does not override or implement a method from a supertype\n                @Override public void registerDiscriminator(String path, ObjectNode disc) {\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:115: error: method does not override or implement a method from a supertype\n                @Override public ObjectNode getDiscriminatorForPath(String path) {\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:118: error: method does not override or implement a method from a supertype\n                @Override public void markMatch() { matched.add(\"matched\"); }\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:119: error: method does not override or implement a method from a supertype\n                @Override public boolean isDiscriminatorMatchFound() { return !matched.isEmpty(); }\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:120: error: method does not override or implement a method from a supertype\n                @Override public void clearMatch() { matched.clear(); }\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:125: error: method does not override or implement a method from a supertype\n        @Override public String getCurrentPath() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:126: error: method does not override or implement a method from a supertype\n        @Override public void setCurrentPath(String path) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:127: error: method does not override or implement a method from a supertype\n        @Override public String getSchemaPath() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:128: error: method does not override or implement a method from a supertype\n        @Override public void setSchemaPath(String path) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:129: error: method does not override or implement a method from a supertype\n        @Override public JsonNode getRootNode() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:130: error: method does not override or implement a method from a supertype\n        @Override public void setRootNode(JsonNode node) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:131: error: method does not override or implement a method from a supertype\n        @Override public boolean isFailFast() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:132: error: method does not override or implement a method from a supertype\n        @Override public void setFailFast(boolean failFast) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:133: error: method does not override or implement a method from a supertype\n        @Override public void setSchemaPathStack(Deque<String> stack) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:134: error: method does not override or implement a method from a supertype\n        @Override public Deque<String> getSchemaPathStack() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:135: error: method does not override or implement a method from a supertype\n        @Override public void setCurrentNode(JsonNode node) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:136: error: method does not override or implement a method from a supertype\n        @Override public JsonNode getCurrentNode() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:137: error: method does not override or implement a method from a supertype\n        @Override public void setParentSchema(JsonSchema schema) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:138: error: method does not override or implement a method from a supertype\n        @Override public JsonSchema getParentSchema() { return null; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:153: error: method does not override or implement a method from a supertype\n        @Override public ApplyDefaultsStrategy getApplyDefaultsStrategy() { return applyDefaultsStrategy; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:154: error: method does not override or implement a method from a supertype\n        @Override public PathType getPathType() { return pathType; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:155: error: method does not override or implement a method from a supertype\n        @Override public boolean isFailFast() { return failFast; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:158: error: method does not override or implement a method from a supertype\n        @Override public void setFailFast(boolean failFast) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:159: error: method does not override or implement a method from a supertype\n        @Override public void setApplyDefaultsStrategy(ApplyDefaultsStrategy strategy) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:160: error: method does not override or implement a method from a supertype\n        @Override public void setPathType(PathType pathType) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:161: error: method does not override or implement a method from a supertype\n        @Override public boolean isHandleNullableField() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:162: error: method does not override or implement a method from a supertype\n        @Override public void setHandleNullableField(boolean handleNullableField) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:163: error: method does not override or implement a method from a supertype\n        @Override public boolean isOpenApiMode() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:164: error: method does not override or implement a method from a supertype\n        @Override public void setOpenApiMode(boolean openApiMode) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:165: error: method does not override or implement a method from a supertype\n        @Override public boolean isTypeLoose() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:166: error: method does not override or implement a method from a supertype\n        @Override public void setTypeLoose(boolean typeLoose) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:167: error: method does not override or implement a method from a supertype\n        @Override public boolean isFailOnUnknownProperties() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:168: error: method does not override or implement a method from a supertype\n        @Override public void setFailOnUnknownProperties(boolean failOnUnknownProperties) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:169: error: method does not override or implement a method from a supertype\n        @Override public boolean isTypeLooseWhenNotSpecified() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:170: error: method does not override or implement a method from a supertype\n        @Override public void setTypeLooseWhenNotSpecified(boolean typeLooseWhenNotSpecified) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:171: error: method does not override or implement a method from a supertype\n        @Override public boolean isFailFastOnFirstError() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:172: error: method does not override or implement a method from a supertype\n        @Override public void setFailFastOnFirstError(boolean failFastOnFirstError) {}\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:173: error: method does not override or implement a method from a supertype\n        @Override public boolean isHideIgnoredProperties() { return false; }\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:174: error: method does not override or implement a method from a supertype\n        @Override public void setHideIgnoredProperties(boolean hideIgnoredProperties) {}\n        ^\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n100 errors\nonly showing the first 100 errors, of 193 total; use -Xmaxerrs if you would like to see more\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "known-production-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "URIFactory",
+          "known_production_types": [
+            "com.networknt.schema.uri.URIFactory"
+          ]
+        },
+        {
+          "kind": "method",
+          "symbol": "getDiscriminatorContext()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.*",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "org.slf4j.Logger",
+        "java.net.URI",
+        "java.util.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/7/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:74: error: cannot find symbol\n    @Mock private URIFactory mockURIFactory;\n                  ^\n  symbol:   class URIFactory\n  location: class BaseJsonValidatorTest\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:94: error: cannot find symbol\n        when(mockValidationContext.getDiscriminatorContext()).thenReturn(mockDiscriminatorContext);\n                                  ^\n  symbol:   method getDiscriminatorContext()\n  location: variable mockValidationContext of type ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:162: error: reference to getSchema is ambiguous\n        when(mockJsonSchemaFactory.getSchema(dummyUri, null)).thenReturn(mockSubSchema);\n                                  ^\n  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "incompatible-types",
+        "abstract-or-override-contract",
+        "duplicate-declaration"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "variable",
+          "symbol": "UNKNOWN",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*",
+        "java.lang.reflect.Field",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashSet",
+        "java.util.Iterator",
+        "java.util.Set",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.mockito.ArgumentCaptor",
+        "org.slf4j.Logger"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/8/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:328: error: class TestValidator is already defined in class BaseJsonValidatorTest\n    private static class TestValidator extends BaseJsonValidator {\n                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:56: error: interface expected here\n    private static class SimpleDiscriminatorContext implements ValidationContext.DiscriminatorContext {\n                                                                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:39: error: TestValidator is not abstract and does not override abstract method validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator\n    private static class TestValidator extends BaseJsonValidator {\n                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:60: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:65: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:70: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:75: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:95: error: cannot find symbol\n                ValidatorTypeCode.UNKNOWN, // any enum value works\n                                 ^\n  symbol:   variable UNKNOWN\n  location: class ValidatorTypeCode\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:164: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext\n        TestValidator.checkDiscriminatorMatch(ctx, discriminator, \"pet\", schema);\n                                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:189: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext\n        TestValidator.checkDiscriminatorMatch(ctx, discriminator, \"dog\", schema);\n                                              ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:224: error: incompatible types: SimpleDiscriminatorContext cannot be converted to DiscriminatorContext\n        TestValidator.registerAndMergeDiscriminator(ctx, rootDiscriminator, childSchema, \"/root/child\");\n                                                    ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:243: error: cannot find symbol\n                ValidatorTypeCode.UNKNOWN,\n                                 ^\n  symbol:   variable UNKNOWN\n  location: class ValidatorTypeCode\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:271: error: cannot find symbol\n                ValidatorTypeCode.UNKNOWN,\n                                 ^\n  symbol:   variable UNKNOWN\n  location: class ValidatorTypeCode\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n13 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "unresolved-symbol",
+        "abstract-or-override-contract",
+        "unknown-or-external-type-unresolved"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "class",
+          "symbol": "Config",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "getDiscriminatorContext()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.mockito.*",
+        "org.mockito.junit.MockitoJUnitRunner",
+        "org.slf4j.Logger",
+        "java.net.URI",
+        "java.util.*",
+        "static org.junit.Assert.*",
+        "static org.mockito.Mockito.*"
+      ],
+      "log": "generated/ouedraogo/round1/validation-logs/9/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:63: error: cannot find symbol\n    private ValidationContext.Config mockConfig;\n                             ^\n  symbol:   class Config\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:31: error: TestValidator is not abstract and does not override abstract method validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator\n    private static class TestValidator extends BaseJsonValidator {\n                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:41: error: method does not override or implement a method from a supertype\n        @Override\n        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:81: error: cannot find symbol\n        when(mockContext.getDiscriminatorContext()).thenReturn(mockDiscriminatorContext);\n                        ^\n  symbol:   method getDiscriminatorContext()\n  location: variable mockContext of type ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo/round1/sources/BaseJsonValidator/ZSL/BaseJsonValidatorTest.java:218: error: 'void' type not allowed here\n        when(mockDiscriminatorContext.registerDiscriminator(anyString(), any(ObjectNode.class)))\n                                                           ^\n5 errors\n"
+    }
+  ],
+  "prompts_changed": false,
+  "generated_sources_repaired": false
+}

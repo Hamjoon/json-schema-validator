@@ -1,0 +1,39 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:78: error: cannot find symbol
+    private ValidationContext.Config mockConfig;
+                             ^
+  symbol:   class Config
+  location: class ValidationContext
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:81: error: cannot find symbol
+    private URIFactory mockUriFactory;
+            ^
+  symbol:   class URIFactory
+  location: class BaseJsonValidatorTest
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:51: error: TestValidator is not abstract and does not override abstract method validate(ExecutionContext,JsonNode,JsonNode,String) in JsonValidator
+    private static class TestValidator extends BaseJsonValidator {
+                   ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:119: error: cannot find symbol
+                ValidatorTypeCode.UNKNOWN, mockValidationContext, false);
+                                 ^
+  symbol:   variable UNKNOWN
+  location: class ValidatorTypeCode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:272: error: cannot find symbol
+                ValidatorTypeCode.UNKNOWN, mockValidationContext, true);
+                                 ^
+  symbol:   variable UNKNOWN
+  location: class ValidatorTypeCode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:292: error: reference to getSchema is ambiguous
+        when(mockJsonSchemaFactory.getSchema(eq(fakeUri), any()))
+                                  ^
+  both method getSchema(URI,SchemaValidatorsConfig) in JsonSchemaFactory and method getSchema(URI,JsonNode) in JsonSchemaFactory match
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:297: error: cannot find symbol
+                ValidatorTypeCode.UNKNOWN, mockValidationContext, false);
+                                 ^
+  symbol:   variable UNKNOWN
+  location: class ValidatorTypeCode
+/repo/experiments/commit-survival-run2/generated/ouedraogo/round2/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:315: error: cannot find symbol
+                mockParentSchema, ValidatorTypeCode.UNKNOWN,
+                                                   ^
+  symbol:   variable UNKNOWN
+  location: class ValidatorTypeCode
+8 errors
