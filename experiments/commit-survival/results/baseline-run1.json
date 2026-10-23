@@ -1,0 +1,37 @@
+{
+  "index": 1,
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "test"
+      ],
+      "cwd": "/repo",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.519,
+      "log": "results/baseline-run1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "test"
+      ],
+      "cwd": "/repo",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 7.716,
+      "log": "results/baseline-run1-retry.txt"
+    }
+  ],
+  "totals": {
+    "tests": 7466,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 329,
+    "passed": 7137
+  }
+}

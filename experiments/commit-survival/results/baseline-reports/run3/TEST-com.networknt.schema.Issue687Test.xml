@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.networknt.schema.Issue687Test" time="0.014" tests="37" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="user.region" value="GB"/>
+    <property name="java.class.path" value="/repo/target/test-classes:/repo/target/classes:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar:/root/.m2/repository/org/junit/platform/junit-platform-engine/1.9.2/junit-platform-engine-1.9.2.jar:/root/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/root/.m2/repository/org/junit/platform/junit-platform-commons/1.9.2/junit-platform-commons-1.9.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar:/root/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:"/>
+    <property name="java.vm.vendor" value="Debian"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://tracker.debian.org/openjdk-17"/>
+    <property name="user.timezone" value="Etc/UTC"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-arm64/lib"/>
+    <property name="sun.java.command" value="/repo/target/surefire/surefirebooter-20261023140625236_3.jar /repo/target/surefire 2026-10-23T14-06-25_186-jvmRun1 surefire-20261023140625236_1tmp surefire_0-20261023140625236_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/repo/target/test-classes:/repo/target/classes:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar:/root/.m2/repository/org/junit/platform/junit-platform-engine/1.9.2/junit-platform-engine-1.9.2.jar:/root/.m2/repository/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar:/root/.m2/repository/org/junit/platform/junit-platform-commons/1.9.2/junit-platform-commons-1.9.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar:/root/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/root/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/root"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-08-18"/>
+    <property name="java.home" value="/usr/lib/jvm/java-17-openjdk-arm64"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/repo"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/repo/target/surefire/surefirebooter-20261023140625236_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+    <property name="user.name" value="root"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="7.0.12-linuxkit"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="sun.nio.ch.bugLevel" value=""/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="/root/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugs.debian.org/openjdk-17"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="17.0.20.1"/>
+    <property name="user.dir" value="/repo"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/aarch64-linux-gnu/jni:/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Debian"/>
+    <property name="java.vm.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+    <property name="java.specification.maintenance.version" value="1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="testSpecialCharacters(PathType, String, String)[1] JSON_PATH, &apos;, $[&apos;\&apos;&apos;]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[2] JSON_PATH, \&quot;, $[&apos;&quot;&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[3] JSON_PATH, \n, $[&apos;\n&apos;]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[4] JSON_PATH, \r, $[&apos;\r&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[5] JSON_PATH, \t, $[&apos;\t&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[6] JSON_PATH, \f, $[&apos;\f&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[7] JSON_PATH, \b, $[&apos;\b&apos;]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[8] JSON_POINTER, ~, /~0" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[9] JSON_POINTER, /, /~1" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[10] JSON_POINTER, \n, /\n" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[11] JSON_POINTER, \r, /\r" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[12] JSON_POINTER, \t, /\t" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[13] JSON_POINTER, \f, /\f" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testSpecialCharacters(PathType, String, String)[14] JSON_POINTER, \b, /\b" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testRoot" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testValidationMessage(PathType, String, String, String[])[1] LEGACY, /schema/issue687.json, { &quot;foo&quot;: &quot;a&quot;, &quot;b.ar&quot;: 1, &quot;children&quot;: [ { &quot;childFoo&quot;: &quot;a&quot;, &quot;c/hildBar&quot;: 1 } ] }, [$.b.ar, $.children[0].c/hildBar]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testValidationMessage(PathType, String, String, String[])[2] JSON_PATH, /schema/issue687.json, { &quot;foo&quot;: &quot;a&quot;, &quot;b.ar&quot;: 1, &quot;children&quot;: [ { &quot;childFoo&quot;: &quot;a&quot;, &quot;c/hildBar&quot;: 1 } ] }, [$[&apos;b.ar&apos;], $.children[0][&apos;c/hildBar&apos;]]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testValidationMessage(PathType, String, String, String[])[3] JSON_PATH, /schema/issue687.json, { &quot;foo&quot;: &quot;a&quot;, &quot;b.ar&quot;: 1, &quot;children&quot;: [ { &quot;childFoo&quot;: &quot;a&quot;, &quot;c/hildBar&quot;: 1 } ] }, [$[&apos;b.ar&apos;], $.children[0][&apos;c/hildBar&apos;]]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testValidationMessage(PathType, String, String, String[])[4] JSON_POINTER, /schema/issue687.json, { &quot;foo&quot;: &quot;a&quot;, &quot;b.ar&quot;: 1, &quot;children&quot;: [ { &quot;childFoo&quot;: &quot;a&quot;, &quot;c/hildBar&quot;: 1 } ] }, [/b.ar, /children/0/c~1hildBar]" classname="com.networknt.schema.Issue687Test" time="0.001"/>
+  <testcase name="testDefault" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendIndex(PathType, String, Integer, String)[1] LEGACY, $.foo, 0, $.foo[0]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendIndex(PathType, String, Integer, String)[2] JSON_PATH, $.foo, 0, $.foo[0]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendIndex(PathType, String, Integer, String)[3] JSON_POINTER, /foo, 0, /foo/0" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[1] LEGACY, $.foo, bar, $.foo.bar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[2] LEGACY, $.foo, b.ar, $.foo.b.ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[3] LEGACY, $.foo, b~ar, $.foo.b~ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[4] LEGACY, $.foo, b/ar, $.foo.b/ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[5] JSON_PATH, $.foo, bar, $.foo.bar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[6] JSON_PATH, $.foo, b.ar, $.foo[&apos;b.ar&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[7] JSON_PATH, $.foo, b~ar, $.foo[&apos;b~ar&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[8] JSON_PATH, $.foo, b/ar, $.foo[&apos;b/ar&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[9] JSON_PATH, $, &apos;, $[&apos;\&apos;&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[10] JSON_PATH, $, b&apos;ar, $[&apos;b\&apos;ar&apos;]" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[11] JSON_POINTER, /foo, bar, /foo/bar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[12] JSON_POINTER, /foo, b.ar, /foo/b.ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[13] JSON_POINTER, /foo, b~ar, /foo/b~0ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+  <testcase name="testAppendToken(PathType, String, String, String)[14] JSON_POINTER, /foo, b/ar, /foo/b~1ar" classname="com.networknt.schema.Issue687Test" time="0"/>
+</testsuite>
