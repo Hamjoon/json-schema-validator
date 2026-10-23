@@ -1,0 +1,68 @@
+{
+  "index": 113,
+  "sha": "80a6a4c70cfc9347edda2769d57509e5a65e07ff",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/113",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.531,
+      "log": "results/builds/logs/113-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/113",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 3.06,
+      "log": "results/builds/logs/113-2.txt"
+    }
+  ],
+  "pom_sha256": "5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b",
+  "classpath": "work/classpaths/5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/113",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.575,
+      "log": "results/builds/logs/classpath-5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/113",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 1.623,
+      "log": "results/builds/logs/classpath-5a2561ce0744834b4b7bb76255dc36a2f6b4d335ed6ba8012fdab7ee41634f1b-2.txt"
+    }
+  ],
+  "seconds": 135.956
+}

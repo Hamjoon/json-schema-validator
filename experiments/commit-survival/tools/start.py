@@ -42,6 +42,7 @@ def execute(command, cwd, log, timeout=600):
 def main():
     assert Path('/work/code').is_dir(), 'Run inside the KTester container'
     anchor = dict(tag='1.1.0', sha=git('rev-parse', '1.1.0^{commit}'),
+                  date=git('show','-s','--format=%cI','1.1.0^{commit}'),
                   origin_master=git('rev-parse', 'origin/master'),
                   n=int(git('rev-list', '--count', '--first-parent', '1.1.0..origin/master')),
                   started=datetime.datetime.now(datetime.timezone.utc).isoformat(),

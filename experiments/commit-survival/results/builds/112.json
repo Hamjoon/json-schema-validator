@@ -1,0 +1,68 @@
+{
+  "index": 112,
+  "sha": "ba8ab64e6671664a28d881b74bcbecf4be275f18",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/112",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.527,
+      "log": "results/builds/logs/112-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/112",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 6.55,
+      "log": "results/builds/logs/112-2.txt"
+    }
+  ],
+  "pom_sha256": "bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b",
+  "classpath": "work/classpaths/bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/112",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.671,
+      "log": "results/builds/logs/classpath-bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b-1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/commit-survival/work/classpaths/bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b.txt"
+      ],
+      "cwd": "/repo/experiments/commit-survival/checkouts/112",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 2.051,
+      "log": "results/builds/logs/classpath-bab6f50ba26386d8abfd1a9671bd006eb6512a43126b408e4a280497af5e4d8b-2.txt"
+    }
+  ],
+  "seconds": 134.544
+}
