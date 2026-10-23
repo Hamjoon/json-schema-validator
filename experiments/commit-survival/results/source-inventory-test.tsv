@@ -1,0 +1,550 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+C	com.networknt.schema.AbstractJsonSchemaTest	CLASS	true		/repo/src/test/java/com/networknt/schema/AbstractJsonSchemaTest.java
+M	com.networknt.schema.AbstractJsonSchemaTest	validate		true	validate(String)		27
+M	com.networknt.schema.AbstractJsonSchemaTest	assertValidatorType		true	assertValidatorType(String, ValidatorTypeCode)		32
+M	com.networknt.schema.AbstractJsonSchemaTest	getDataTestFolder		false	getDataTestFolder()		43
+M	com.networknt.schema.AbstractJsonSchemaTest	getJsonSchemaFromDataNode		false	getJsonSchemaFromDataNode(JsonNode)		45
+M	com.networknt.schema.AbstractJsonSchemaTest	getJsonNodeFromPath		false	getJsonNodeFromPath(String)		53
+M	com.networknt.schema.AbstractJsonSchemaTest	getJsonSchema		false	getJsonSchema(JsonNode)		63
+C	com.networknt.schema.AbstractJsonSchemaTestSuite	CLASS	true		/repo/src/test/java/com/networknt/schema/AbstractJsonSchemaTestSuite.java
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	toForwardSlashPath		false	toForwardSlashPath(Path)		52
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	executeTest		false	executeTest(JsonSchema, TestSpec)		56
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	unsupportedMetaSchema		false	unsupportedMetaSchema(TestCase)		122
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	createTests		true	createTests(VersionFlag, String)		136
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	enabled		true	enabled(Path)		143
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	reason		true	reason(Path)		147
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	buildContainers		false	buildContainers(VersionFlag, Path)		151
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	buildContainer		false	buildContainer(VersionFlag, TestSource)		159
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	buildContainer		false	buildContainer(VersionFlag, TestCase)		163
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	buildValidatorFactory		false	buildValidatorFactory(VersionFlag, TestCase)		179
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	buildTest		false	buildTest(JsonSchemaFactory, TestSpec)		194
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	abortAndReset		false	abortAndReset(String)		226
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	executeAndReset		false	executeAndReset(JsonSchema, TestSpec)		234
+M	com.networknt.schema.AbstractJsonSchemaTestSuite	findTestCases		false	findTestCases(String)		242
+C	com.networknt.schema.BaseJsonSchemaValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/BaseJsonSchemaValidatorTest.java
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonNodeFromClasspath		true	getJsonNodeFromClasspath(String)		35
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonNodeFromStringContent		true	getJsonNodeFromStringContent(String)		41
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonNodeFromUrl		true	getJsonNodeFromUrl(String)		45
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromClasspath		true	getJsonSchemaFromClasspath(String)		49
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromClasspath		true	getJsonSchemaFromClasspath(String, SpecVersion.VersionFlag)		53
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromClasspath		true	getJsonSchemaFromClasspath(String, SpecVersion.VersionFlag, SchemaValidatorsConfig)		57
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromStringContent		true	getJsonSchemaFromStringContent(String)		64
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromUrl		true	getJsonSchemaFromUrl(String)		69
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromJsonNode		true	getJsonSchemaFromJsonNode(JsonNode)		74
+M	com.networknt.schema.BaseJsonSchemaValidatorTest	getJsonSchemaFromJsonNodeAutomaticVersion		true	getJsonSchemaFromJsonNodeAutomaticVersion(JsonNode)		80
+C	com.networknt.schema.CollectorContextTest	CLASS	true		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest	setup		true	setup()		40
+M	com.networknt.schema.CollectorContextTest	testCollectorContextWithKeyword	plain	true	testCollectorContextWithKeyword()		45
+M	com.networknt.schema.CollectorContextTest	testCollectorContextWithMultipleThreads	plain	true	testCollectorContextWithMultipleThreads()		58
+M	com.networknt.schema.CollectorContextTest	testCollectorGetAll	plain	true	testCollectorGetAll()		98
+M	com.networknt.schema.CollectorContextTest	getJsonMetaSchema		false	getJsonMetaSchema(String)		109
+M	com.networknt.schema.CollectorContextTest	setupSchema		false	setupSchema()		139
+M	com.networknt.schema.CollectorContextTest	getSchemaString		false	getSchemaString()		150
+M	com.networknt.schema.CollectorContextTest	getSchemaStringMultipleProperties		false	getSchemaStringMultipleProperties()		176
+C	com.networknt.schema.CollectorContextTest$ValidationThread	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$ValidationThread	run		false	run()		220
+M	com.networknt.schema.CollectorContextTest$ValidationThread	getValidationResult		false	getValidationResult()		233
+M	com.networknt.schema.CollectorContextTest$ValidationThread	toString		false	toString()		237
+C	com.networknt.schema.CollectorContextTest$CustomKeyword	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$CustomKeyword	getValue		false	getValue()		249
+M	com.networknt.schema.CollectorContextTest$CustomKeyword	newValidator		false	newValidator(String, JsonNode, JsonSchema, ValidationContext)		254
+C	com.networknt.schema.CollectorContextTest$CustomValidator	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$CustomValidator	validate		false	validate(ExecutionContext, JsonNode, JsonNode, String)		272
+M	com.networknt.schema.CollectorContextTest$CustomValidator	validate		false	validate(ExecutionContext, JsonNode)		283
+M	com.networknt.schema.CollectorContextTest$CustomValidator	walk		false	walk(ExecutionContext, JsonNode, JsonNode, String, boolean)		288
+C	com.networknt.schema.CollectorContextTest$CustomCollector	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$CustomCollector	collect		false	collect()		305
+M	com.networknt.schema.CollectorContextTest$CustomCollector	combine		false	combine(Object)		310
+C	com.networknt.schema.CollectorContextTest$CustomKeyword1	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$CustomKeyword1	getValue		false	getValue()		322
+M	com.networknt.schema.CollectorContextTest$CustomKeyword1	newValidator		false	newValidator(String, JsonNode, JsonSchema, ValidationContext)		327
+C	com.networknt.schema.CollectorContextTest$CustomValidator1	CLASS	false		/repo/src/test/java/com/networknt/schema/CollectorContextTest.java
+M	com.networknt.schema.CollectorContextTest$CustomValidator1	validate		false	validate(ExecutionContext, JsonNode, JsonNode, String)		346
+M	com.networknt.schema.CollectorContextTest$CustomValidator1	validate		false	validate(ExecutionContext, JsonNode)		360
+M	com.networknt.schema.CollectorContextTest$CustomValidator1	walk		false	walk(ExecutionContext, JsonNode, JsonNode, String, boolean)		365
+M	com.networknt.schema.CollectorContextTest	validate		false	validate(String)		372
+M	com.networknt.schema.CollectorContextTest	getDatasourceMap		false	getDatasourceMap()		377
+C	com.networknt.schema.CustomMessageTest	CLASS	true	Custom Messages	/repo/src/test/java/com/networknt/schema/CustomMessageTest.java
+M	com.networknt.schema.CustomMessageTest	draft201909__customMessagesEnabled	test-factory	true	draft201909__customMessagesEnabled()	Draft 2019-09 - Custom Messages Enabled	14
+M	com.networknt.schema.CustomMessageTest	draft201909__customMessagesDisabled	test-factory	true	draft201909__customMessagesDisabled()	Draft 2019-09 - Custom Messages Disabled	20
+C	com.networknt.schema.CustomMetaSchemaTest	CLASS	true		/repo/src/test/java/com/networknt/schema/CustomMetaSchemaTest.java
+C	com.networknt.schema.CustomMetaSchemaTest$EnumNamesKeyword	CLASS	false		/repo/src/test/java/com/networknt/schema/CustomMetaSchemaTest.java
+C	com.networknt.schema.CustomMetaSchemaTest$EnumNamesKeyword$Validator	CLASS	false		/repo/src/test/java/com/networknt/schema/CustomMetaSchemaTest.java
+M	com.networknt.schema.CustomMetaSchemaTest$EnumNamesKeyword$Validator	validate		false	validate(ExecutionContext, JsonNode, JsonNode, String)		62
+M	com.networknt.schema.CustomMetaSchemaTest$EnumNamesKeyword	newValidator		false	newValidator(String, JsonNode, JsonSchema, ValidationContext)		81
+M	com.networknt.schema.CustomMetaSchemaTest$EnumNamesKeyword	readStringList		false	readStringList(JsonNode)		99
+M	com.networknt.schema.CustomMetaSchemaTest	customMetaSchemaWithIgnoredKeyword	plain	true	customMetaSchemaWithIgnoredKeyword()		111
+C	com.networknt.schema.CustomUriTest	CLASS	true		/repo/src/test/java/com/networknt/schema/CustomUriTest.java
+M	com.networknt.schema.CustomUriTest	customUri	plain	true	customUri()		23
+M	com.networknt.schema.CustomUriTest	buildJsonSchemaFactory		false	buildJsonSchemaFactory()		39
+C	com.networknt.schema.CustomUriTest$CustomUriFetcher	CLASS	false		/repo/src/test/java/com/networknt/schema/CustomUriTest.java
+M	com.networknt.schema.CustomUriTest$CustomUriFetcher	fetch		false	fetch(URI)		47
+C	com.networknt.schema.CustomUriTest$CustomUriFactory	CLASS	false		/repo/src/test/java/com/networknt/schema/CustomUriTest.java
+M	com.networknt.schema.CustomUriTest$CustomUriFactory	create		false	create(String)		54
+M	com.networknt.schema.CustomUriTest$CustomUriFactory	create		false	create(URI, String)		59
+C	com.networknt.schema.CyclicDependencyTest	CLASS	true		/repo/src/test/java/com/networknt/schema/CyclicDependencyTest.java
+M	com.networknt.schema.CyclicDependencyTest	whenDependencyBetweenSchemaThenValidationSuccessful	plain	true	whenDependencyBetweenSchemaThenValidationSuccessful()		12
+C	com.networknt.schema.DateTimeDSTTest	CLASS	true		/repo/src/test/java/com/networknt/schema/DateTimeDSTTest.java
+M	com.networknt.schema.DateTimeDSTTest	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		12
+M	com.networknt.schema.DateTimeDSTTest	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		17
+M	com.networknt.schema.DateTimeDSTTest	shouldWorkV7	plain	true	shouldWorkV7()		23
+C	com.networknt.schema.DependentRequiredTest	CLASS	true		/repo/src/test/java/com/networknt/schema/DependentRequiredTest.java
+M	com.networknt.schema.DependentRequiredTest	shouldReturnNoErrorMessagesForObjectWithoutOptionalField	plain	true	shouldReturnNoErrorMessagesForObjectWithoutOptionalField()		35
+M	com.networknt.schema.DependentRequiredTest	shouldReturnErrorMessageForObjectWithoutDependentRequiredField	plain	true	shouldReturnErrorMessageForObjectWithoutDependentRequiredField()		43
+M	com.networknt.schema.DependentRequiredTest	shouldReturnNoErrorMessagesForObjectWithOptionalAndDependentRequiredFieldSet	plain	true	shouldReturnNoErrorMessagesForObjectWithOptionalAndDependentRequiredFieldSet()		53
+M	com.networknt.schema.DependentRequiredTest	whenValidate		false	whenValidate(String)		62
+C	com.networknt.schema.DurationFormatValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/DurationFormatValidatorTest.java
+M	com.networknt.schema.DurationFormatValidatorTest	durationFormatValidatorTest	plain	true	durationFormatValidatorTest()		31
+C	com.networknt.schema.HTTPServiceSupport	CLASS	true		/repo/src/test/java/com/networknt/schema/HTTPServiceSupport.java
+M	com.networknt.schema.HTTPServiceSupport	setUp		true	setUp()		33
+M	com.networknt.schema.HTTPServiceSupport	tearDown		true	tearDown()		72
+M	com.networknt.schema.HTTPServiceSupport	cleanup		true	cleanup()		85
+C	com.networknt.schema.Issue255Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue255Test.java
+M	com.networknt.schema.Issue255Test	getJsonSchemaFromStreamContent		true	getJsonSchemaFromStreamContent(InputStream)		27
+M	com.networknt.schema.Issue255Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		32
+M	com.networknt.schema.Issue255Test	shouldFailWhenRequiredPropertiesDoNotExistInReferencedSubSchema	plain	true	shouldFailWhenRequiredPropertiesDoNotExistInReferencedSubSchema()		38
+C	com.networknt.schema.Issue285Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue285Test.java
+M	com.networknt.schema.Issue285Test	nestedValidation	plain	true	nestedValidation()		63
+M	com.networknt.schema.Issue285Test	nestedTypeValidation	plain	true	nestedTypeValidation()		103
+M	com.networknt.schema.Issue285Test	typeValidation	plain	true	typeValidation()		127
+C	com.networknt.schema.Issue295Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue295Test.java
+M	com.networknt.schema.Issue295Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		12
+M	com.networknt.schema.Issue295Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		17
+M	com.networknt.schema.Issue295Test	shouldWorkV7	plain	true	shouldWorkV7()		23
+C	com.networknt.schema.Issue313Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue313Test.java
+M	com.networknt.schema.Issue313Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		13
+M	com.networknt.schema.Issue313Test	getJsonSchemaFromStreamContentV201909		true	getJsonSchemaFromStreamContentV201909(InputStream)		18
+M	com.networknt.schema.Issue313Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		23
+M	com.networknt.schema.Issue313Test	shouldFailV201909	plain	true	shouldFailV201909()		29
+M	com.networknt.schema.Issue313Test	shouldFailV7	plain	true	shouldFailV7()		42
+C	com.networknt.schema.Issue314Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue314Test.java
+M	com.networknt.schema.Issue314Test	testNormalizeHttpOnly	plain	true	testNormalizeHttpOnly()		18
+C	com.networknt.schema.Issue327Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue327Test.java
+M	com.networknt.schema.Issue327Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		12
+M	com.networknt.schema.Issue327Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		17
+M	com.networknt.schema.Issue327Test	shouldWorkV7	plain	true	shouldWorkV7()		23
+C	com.networknt.schema.Issue342Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue342Test.java
+M	com.networknt.schema.Issue342Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		13
+M	com.networknt.schema.Issue342Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		18
+M	com.networknt.schema.Issue342Test	propertyNameEnumShouldFailV7	plain	true	propertyNameEnumShouldFailV7()		24
+C	com.networknt.schema.Issue347Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue347Test.java
+M	com.networknt.schema.Issue347Test	failure	plain	true	failure()		11
+C	com.networknt.schema.Issue366FailFastTest	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue366FailFastTest.java
+M	com.networknt.schema.Issue366FailFastTest	setup		true	setup()		18
+M	com.networknt.schema.Issue366FailFastTest	setupSchema		false	setupSchema()		25
+M	com.networknt.schema.Issue366FailFastTest	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		43
+M	com.networknt.schema.Issue366FailFastTest	firstOneValid	plain	true	firstOneValid()		49
+M	com.networknt.schema.Issue366FailFastTest	secondOneValid	plain	true	secondOneValid()		62
+M	com.networknt.schema.Issue366FailFastTest	bothValid	plain	true	bothValid()		75
+M	com.networknt.schema.Issue366FailFastTest	neitherValid	plain	true	neitherValid()		89
+M	com.networknt.schema.Issue366FailFastTest	getSchema		false	getSchema()		103
+C	com.networknt.schema.Issue366FailSlowTest	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue366FailSlowTest.java
+M	com.networknt.schema.Issue366FailSlowTest	setup		true	setup()		18
+M	com.networknt.schema.Issue366FailSlowTest	setupSchema		false	setupSchema()		25
+M	com.networknt.schema.Issue366FailSlowTest	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		42
+M	com.networknt.schema.Issue366FailSlowTest	firstOneValid	plain	true	firstOneValid()		48
+M	com.networknt.schema.Issue366FailSlowTest	secondOneValid	plain	true	secondOneValid()		61
+M	com.networknt.schema.Issue366FailSlowTest	bothValid	plain	true	bothValid()		74
+M	com.networknt.schema.Issue366FailSlowTest	neitherValid	plain	true	neitherValid()		88
+M	com.networknt.schema.Issue366FailSlowTest	getSchema		false	getSchema()		102
+C	com.networknt.schema.Issue375Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue375Test.java
+M	com.networknt.schema.Issue375Test	getJsonSchemaFromStreamContent		true	getJsonSchemaFromStreamContent(InputStream)		31
+M	com.networknt.schema.Issue375Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		36
+M	com.networknt.schema.Issue375Test	shouldFailAndShowValidationValuesWithError	plain	true	shouldFailAndShowValidationValuesWithError()		41
+C	com.networknt.schema.Issue383Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue383Test.java
+M	com.networknt.schema.Issue383Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		13
+M	com.networknt.schema.Issue383Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		18
+M	com.networknt.schema.Issue383Test	nestedOneOfsShouldStillMatchV7	plain	true	nestedOneOfsShouldStillMatchV7()		24
+C	com.networknt.schema.Issue396Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue396Test.java
+M	com.networknt.schema.Issue396Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		15
+M	com.networknt.schema.Issue396Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		20
+M	com.networknt.schema.Issue396Test	testComplexPropertyNamesV7	plain	true	testComplexPropertyNamesV7()		26
+C	com.networknt.schema.Issue404Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue404Test.java
+M	com.networknt.schema.Issue404Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		12
+M	com.networknt.schema.Issue404Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		17
+M	com.networknt.schema.Issue404Test	expectObjectNotIntegerV7	plain	true	expectObjectNotIntegerV7()		23
+C	com.networknt.schema.Issue406Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue406Test.java
+M	com.networknt.schema.Issue406Test	testPreloadingNotHappening	plain	true	testPreloadingNotHappening()		15
+M	com.networknt.schema.Issue406Test	testPreloadingHappening	plain	true	testPreloadingHappening()		23
+M	com.networknt.schema.Issue406Test	testPreloadingHappeningForCircularDependency	plain	true	testPreloadingHappeningForCircularDependency()		37
+C	com.networknt.schema.Issue426Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue426Test.java
+M	com.networknt.schema.Issue426Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		15
+M	com.networknt.schema.Issue426Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		20
+M	com.networknt.schema.Issue426Test	shouldWorkV7	plain	true	shouldWorkV7()		25
+C	com.networknt.schema.Issue428Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue428Test.java
+M	com.networknt.schema.Issue428Test	runTestFile		false	runTestFile(String)		21
+M	com.networknt.schema.Issue428Test	testNullableOneOf	plain	true	testNullableOneOf()		87
+C	com.networknt.schema.Issue451Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue451Test.java
+M	com.networknt.schema.Issue451Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		23
+M	com.networknt.schema.Issue451Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		30
+M	com.networknt.schema.Issue451Test	shouldWalkAnyOfProperties	plain	true	shouldWalkAnyOfProperties()		35
+M	com.networknt.schema.Issue451Test	shouldWalkAnyOfPropertiesWithWithPayloadAndValidation	plain	true	shouldWalkAnyOfPropertiesWithWithPayloadAndValidation()		40
+M	com.networknt.schema.Issue451Test	shouldWalkAnyOfPropertiesWithWithPayload	plain	true	shouldWalkAnyOfPropertiesWithWithPayload()		47
+M	com.networknt.schema.Issue451Test	walk		false	walk(JsonNode, boolean)		54
+C	com.networknt.schema.Issue451Test$CountingWalker	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue451Test.java
+M	com.networknt.schema.Issue451Test$CountingWalker	onWalkStart		false	onWalkStart(WalkEvent)		69
+M	com.networknt.schema.Issue451Test$CountingWalker	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		76
+M	com.networknt.schema.Issue451Test$CountingWalker	collector		false	collector(ExecutionContext)		81
+C	com.networknt.schema.Issue456Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue456Test.java
+M	com.networknt.schema.Issue456Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		13
+M	com.networknt.schema.Issue456Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		18
+M	com.networknt.schema.Issue456Test	shouldWorkT2	plain	true	shouldWorkT2()		23
+M	com.networknt.schema.Issue456Test	shouldWorkT3	plain	true	shouldWorkT3()		36
+C	com.networknt.schema.Issue461Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue461Test.java
+M	com.networknt.schema.Issue461Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(URI)		19
+M	com.networknt.schema.Issue461Test	shouldWalkWithValidation	plain	true	shouldWalkWithValidation()		26
+C	com.networknt.schema.Issue461Test$Walker	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue461Test.java
+M	com.networknt.schema.Issue461Test$Walker	onWalkStart		false	onWalkStart(WalkEvent)		38
+M	com.networknt.schema.Issue461Test$Walker	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		43
+C	com.networknt.schema.Issue471Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue471Test.java
+M	com.networknt.schema.Issue471Test	shouldFailV201909_with_enUS	plain	true	shouldFailV201909_with_enUS()		21
+M	com.networknt.schema.Issue471Test	shouldFailV201909_with_zhCN	plain	true	shouldFailV201909_with_zhCN()		30
+M	com.networknt.schema.Issue471Test	shouldFailV201909_with_deDE	plain	true	shouldFailV201909_with_deDE()		39
+M	com.networknt.schema.Issue471Test	shouldFailV201909_with_frFR	plain	true	shouldFailV201909_with_frFR()		48
+M	com.networknt.schema.Issue471Test	shouldFailV201909_with_frIT	plain	true	shouldFailV201909_with_frIT()		57
+M	com.networknt.schema.Issue471Test	validate		false	validate()		66
+M	com.networknt.schema.Issue471Test	convertValidationMessagesToMap		false	convertValidationMessagesToMap(Set<ValidationMessage>)		76
+M	com.networknt.schema.Issue471Test	getJsonSchemaFromStreamContentV201909		false	getJsonSchemaFromStreamContentV201909(InputStream)		80
+M	com.networknt.schema.Issue471Test	getJsonNodeFromStreamContent		false	getJsonNodeFromStreamContent(InputStream)		85
+C	com.networknt.schema.Issue493Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue493Test.java
+M	com.networknt.schema.Issue493Test	getJsonNodeFromJsonData		false	getJsonNodeFromJsonData(String)		23
+M	com.networknt.schema.Issue493Test	testValidJson1	plain	true	testValidJson1()	Test valid with required item only	31
+M	com.networknt.schema.Issue493Test	testValidJson2	plain	true	testValidJson2()	Test valid with optional item	43
+M	com.networknt.schema.Issue493Test	testInvalidJson1	plain	true	testInvalidJson1()	Test invalid with required item but wrong type	55
+M	com.networknt.schema.Issue493Test	testInvalidJson2	plain	true	testInvalidJson2()	Test invalid with optional item but wrong type	75
+C	com.networknt.schema.Issue510Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue510Test.java
+M	com.networknt.schema.Issue510Test	testIssue510	plain	true	testIssue510()		7
+C	com.networknt.schema.Issue518Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue518Test.java
+M	com.networknt.schema.Issue518Test	testPreservingEmptyFragmentSuffix	plain	true	testPreservingEmptyFragmentSuffix()		22
+C	com.networknt.schema.Issue532Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue532Test.java
+M	com.networknt.schema.Issue532Test	failure	plain	true	failure()		8
+C	com.networknt.schema.Issue550Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue550Test.java
+M	com.networknt.schema.Issue550Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(String)		13
+M	com.networknt.schema.Issue550Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(String)		19
+M	com.networknt.schema.Issue550Test	testValidationMessageDoContainSchemaPath	plain	true	testValidationMessageDoContainSchemaPath()		26
+M	com.networknt.schema.Issue550Test	testValidationMessageDoContainSchemaPathForOneOf	plain	true	testValidationMessageDoContainSchemaPathForOneOf()		40
+C	com.networknt.schema.Issue575Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue575Test.java
+M	com.networknt.schema.Issue575Test	init		true	init()		26
+M	com.networknt.schema.Issue575Test	validTimeZoneOffsets		true	validTimeZoneOffsets()		34
+M	com.networknt.schema.Issue575Test	testValidTimeZoneOffsets	parameterized	true	testValidTimeZoneOffsets(String)		79
+M	com.networknt.schema.Issue575Test	invalidTimeRepresentations		true	invalidTimeRepresentations()		86
+M	com.networknt.schema.Issue575Test	testInvalidTimeRepresentations	parameterized	true	testInvalidTimeRepresentations(String)		121
+C	com.networknt.schema.Issue604Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue604Test.java
+M	com.networknt.schema.Issue604Test	failure	plain	true	failure()		9
+C	com.networknt.schema.Issue606Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue606Test.java
+M	com.networknt.schema.Issue606Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		12
+M	com.networknt.schema.Issue606Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		17
+M	com.networknt.schema.Issue606Test	shouldWorkV7	plain	true	shouldWorkV7()		23
+C	com.networknt.schema.Issue619Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue619Test.java
+M	com.networknt.schema.Issue619Test	setup		true	setup()		38
+M	com.networknt.schema.Issue619Test	bundledSchemaLoadsAndValidatesCorrectly_Ref	plain	true	bundledSchemaLoadsAndValidatesCorrectly_Ref()		46
+M	com.networknt.schema.Issue619Test	bundledSchemaLoadsAndValidatesCorrectly_Uri	plain	true	bundledSchemaLoadsAndValidatesCorrectly_Uri()		55
+M	com.networknt.schema.Issue619Test	uriWithEmptyFragment_Ref	plain	true	uriWithEmptyFragment_Ref()		64
+M	com.networknt.schema.Issue619Test	uriWithEmptyFragment_Uri	plain	true	uriWithEmptyFragment_Uri()		73
+M	com.networknt.schema.Issue619Test	uriThatPointsToTwoShouldOnlyValidateTwo_Ref	plain	true	uriThatPointsToTwoShouldOnlyValidateTwo_Ref()		82
+M	com.networknt.schema.Issue619Test	uriThatPointsToOneShouldOnlyValidateOne_Uri	plain	true	uriThatPointsToOneShouldOnlyValidateOne_Uri()		91
+M	com.networknt.schema.Issue619Test	uriThatPointsToNodeThatInTurnReferencesOneShouldOnlyValidateOne_Ref	plain	true	uriThatPointsToNodeThatInTurnReferencesOneShouldOnlyValidateOne_Ref()		100
+M	com.networknt.schema.Issue619Test	uriThatPointsToNodeThatInTurnReferencesOneShouldOnlyValidateOne_Uri	plain	true	uriThatPointsToNodeThatInTurnReferencesOneShouldOnlyValidateOne_Uri()		109
+M	com.networknt.schema.Issue619Test	uriThatPointsToSchemaWithIdThatHasDifferentUri_Ref	plain	true	uriThatPointsToSchemaWithIdThatHasDifferentUri_Ref()		118
+M	com.networknt.schema.Issue619Test	uriThatPointsToSchemaWithIdThatHasDifferentUri_Uri	plain	true	uriThatPointsToSchemaWithIdThatHasDifferentUri_Uri()		128
+M	com.networknt.schema.Issue619Test	uriThatPointsToSchemaThatDoesNotExistShouldFail_Ref	plain	true	uriThatPointsToSchemaThatDoesNotExistShouldFail_Ref()		138
+M	com.networknt.schema.Issue619Test	uriThatPointsToSchemaThatDoesNotExistShouldFail_Uri	plain	true	uriThatPointsToSchemaThatDoesNotExistShouldFail_Uri()		145
+M	com.networknt.schema.Issue619Test	uriThatPointsToNodeThatDoesNotExistShouldFail_Ref	plain	true	uriThatPointsToNodeThatDoesNotExistShouldFail_Ref()		150
+M	com.networknt.schema.Issue619Test	uriThatPointsToNodeThatDoesNotExistShouldFail_Uri	plain	true	uriThatPointsToNodeThatDoesNotExistShouldFail_Uri()		157
+C	com.networknt.schema.Issue650Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue650Test.java
+M	com.networknt.schema.Issue650Test	testBinaryNode	plain	true	testBinaryNode()		32
+C	com.networknt.schema.Issue650Test$Model	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue650Test.java
+M	com.networknt.schema.Issue650Test$Model	getData		false	getData()		70
+M	com.networknt.schema.Issue650Test$Model	setData		false	setData(byte[])		79
+C	com.networknt.schema.Issue662Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue662Test.java
+M	com.networknt.schema.Issue662Test	setup		true	setup()		20
+M	com.networknt.schema.Issue662Test	testNoErrorsForEmptyObject	plain	true	testNoErrorsForEmptyObject()		25
+M	com.networknt.schema.Issue662Test	testNoErrorsForValidObject	plain	true	testNoErrorsForValidObject()		32
+M	com.networknt.schema.Issue662Test	testCorrectErrorForInvalidValue	plain	true	testCorrectErrorForInvalidValue()		39
+M	com.networknt.schema.Issue662Test	resource		false	resource(String)		57
+C	com.networknt.schema.Issue664Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue664Test.java
+M	com.networknt.schema.Issue664Test	getJsonSchemaFromStreamContentV7		true	getJsonSchemaFromStreamContentV7(InputStream)		16
+M	com.networknt.schema.Issue664Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		21
+M	com.networknt.schema.Issue664Test	shouldHaveFullSchemaPaths	plain	true	shouldHaveFullSchemaPaths()		26
+C	com.networknt.schema.Issue665Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue665Test.java
+M	com.networknt.schema.Issue665Test	testUrnUriAsLocalRef	plain	true	testUrnUriAsLocalRef()		15
+M	com.networknt.schema.Issue665Test	testUrnUriAsLocalRef_ExternalURN	plain	true	testUrnUriAsLocalRef_ExternalURN()		25
+C	com.networknt.schema.Issue668Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue668Test.java
+M	com.networknt.schema.Issue668Test	getJsonSchemaFromStreamContent		true	getJsonSchemaFromStreamContent(InputStream)		13
+M	com.networknt.schema.Issue668Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		20
+M	com.networknt.schema.Issue668Test	shouldHandleReferencesToYaml	plain	true	shouldHandleReferencesToYaml()		25
+C	com.networknt.schema.Issue686Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue686Test.java
+M	com.networknt.schema.Issue686Test	testDefaults	plain	true	testDefaults()		16
+M	com.networknt.schema.Issue686Test	testCustomLocale	plain	true	testCustomLocale()		22
+M	com.networknt.schema.Issue686Test	testLocaleDoesNotOverrideCustomResourceBundle	plain	true	testLocaleDoesNotOverrideCustomResourceBundle()		29
+M	com.networknt.schema.Issue686Test	testBundleResetAfterChangingLocale	plain	true	testBundleResetAfterChangingLocale()		37
+M	com.networknt.schema.Issue686Test	testValidationWithDefaultBundleAndLocale	plain	true	testValidationWithDefaultBundleAndLocale()		46
+M	com.networknt.schema.Issue686Test	testValidationWithDefaultBundleAndCustomLocale	plain	true	testValidationWithDefaultBundleAndCustomLocale()		53
+M	com.networknt.schema.Issue686Test	testValidationWithCustomBundle	plain	true	testValidationWithCustomBundle()		60
+M	com.networknt.schema.Issue686Test	testLocaleSwitch	plain	true	testLocaleSwitch()		67
+M	com.networknt.schema.Issue686Test	getSchema		false	getSchema(SchemaValidatorsConfig)		76
+M	com.networknt.schema.Issue686Test	verify		false	verify(SchemaValidatorsConfig, String)		81
+C	com.networknt.schema.Issue687Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue687Test.java
+M	com.networknt.schema.Issue687Test	testRoot	plain	true	testRoot()		18
+M	com.networknt.schema.Issue687Test	testDefault	plain	true	testDefault()		25
+M	com.networknt.schema.Issue687Test	appendTokens		true	appendTokens()		30
+M	com.networknt.schema.Issue687Test	appendIndexes		true	appendIndexes()		49
+M	com.networknt.schema.Issue687Test	validationMessages		true	validationMessages()		57
+M	com.networknt.schema.Issue687Test	testAppendToken	parameterized	true	testAppendToken(PathType, String, String, String)		68
+M	com.networknt.schema.Issue687Test	testAppendIndex	parameterized	true	testAppendIndex(PathType, String, Integer, String)		74
+M	com.networknt.schema.Issue687Test	testValidationMessage	parameterized	true	testValidationMessage(PathType, String, String, String[])		80
+M	com.networknt.schema.Issue687Test	specialCharacterTests		true	specialCharacterTests()		94
+M	com.networknt.schema.Issue687Test	testSpecialCharacters	parameterized	true	testSpecialCharacters(PathType, String, String)		113
+C	com.networknt.schema.Issue724Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue724Test.java
+M	com.networknt.schema.Issue724Test	test	plain	true	test()		23
+C	com.networknt.schema.Issue724Test$StringCollector	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue724Test.java
+M	com.networknt.schema.Issue724Test$StringCollector	onWalkStart		false	onWalkStart(WalkEvent)		65
+M	com.networknt.schema.Issue724Test$StringCollector	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		81
+C	com.networknt.schema.Issue769ContainsTest	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue769ContainsTest.java
+M	com.networknt.schema.Issue769ContainsTest	getDataTestFolder		true	getDataTestFolder()		14
+M	com.networknt.schema.Issue769ContainsTest	shouldReturnMinContainsKeyword	plain	true	shouldReturnMinContainsKeyword()		19
+M	com.networknt.schema.Issue769ContainsTest	shouldReturnContainsKeywordForMinContainsV7	plain	true	shouldReturnContainsKeywordForMinContainsV7()		24
+M	com.networknt.schema.Issue769ContainsTest	shouldReturnMaxContainsKeyword	plain	true	shouldReturnMaxContainsKeyword()		29
+M	com.networknt.schema.Issue769ContainsTest	shouldReturnContainsKeywordForMaxContainsV7	plain	true	shouldReturnContainsKeywordForMaxContainsV7()		34
+C	com.networknt.schema.Issue784Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue784Test.java
+C	com.networknt.schema.Issue784Test$CustomDateTimeFormat	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue784Test.java
+M	com.networknt.schema.Issue784Test$CustomDateTimeFormat	getName		false	getName()		20
+M	com.networknt.schema.Issue784Test$CustomDateTimeFormat	matches		false	matches(ExecutionContext, String)		25
+M	com.networknt.schema.Issue784Test$CustomDateTimeFormat	getErrorMessageDescription		false	getErrorMessageDescription()		30
+M	com.networknt.schema.Issue784Test	allowToOverrideDataTime	plain	true	allowToOverrideDataTime()		36
+M	com.networknt.schema.Issue784Test	useDefaultValidatorIfNotOverriden	plain	true	useDefaultValidatorIfNotOverriden()		47
+M	com.networknt.schema.Issue784Test	validate		false	validate(JsonSchema, String)		59
+M	com.networknt.schema.Issue784Test	createSchema		false	createSchema(boolean)		63
+C	com.networknt.schema.Issue792	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue792.java
+M	com.networknt.schema.Issue792	test	plain	true	test()		12
+C	com.networknt.schema.Issue832Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue832Test.java
+C	com.networknt.schema.Issue832Test$NoMatchFormat	CLASS	false		/repo/src/test/java/com/networknt/schema/Issue832Test.java
+M	com.networknt.schema.Issue832Test$NoMatchFormat	matches		false	matches(String)		21
+M	com.networknt.schema.Issue832Test	buildV7PlusNoFormatSchemaFactory		false	buildV7PlusNoFormatSchemaFactory()		27
+M	com.networknt.schema.Issue832Test	getJsonNodeFromStreamContent		true	getJsonNodeFromStreamContent(InputStream)		40
+M	com.networknt.schema.Issue832Test	testV7WithNonMatchingCustomFormat	plain	true	testV7WithNonMatchingCustomFormat()		45
+C	com.networknt.schema.Issue898Test	CLASS	true		/repo/src/test/java/com/networknt/schema/Issue898Test.java
+M	com.networknt.schema.Issue898Test	testMessagesWithSingleQuotes	plain	true	testMessagesWithSingleQuotes()		18
+C	com.networknt.schema.JsonSchemaFactoryUriCacheTest	CLASS	true		/repo/src/test/java/com/networknt/schema/JsonSchemaFactoryUriCacheTest.java
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest	cacheEnabled	plain	true	cacheEnabled()		25
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest	cacheDisabled	plain	true	cacheDisabled()		30
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest	runCacheTest		false	runCacheTest(boolean)		35
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest	buildJsonSchemaFactory		false	buildJsonSchemaFactory(CustomURIFetcher, boolean)		49
+C	com.networknt.schema.JsonSchemaFactoryUriCacheTest$CustomURIFetcher	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonSchemaFactoryUriCacheTest.java
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest$CustomURIFetcher	addResource		false	addResource(URI, String)		62
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest$CustomURIFetcher	addResource		false	addResource(URI, InputStream)		66
+M	com.networknt.schema.JsonSchemaFactoryUriCacheTest$CustomURIFetcher	fetch		false	fetch(URI)		70
+C	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	CLASS	true	JSON Schema Test Suite Extras	/repo/src/test/java/com/networknt/schema/JsonSchemaTestSuiteExtrasTest.java
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	draft2022012	test-factory	true	draft2022012()	Draft 2020-12	18
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	draft201909	test-factory	true	draft201909()	Draft 2019-09	24
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	draft7	test-factory	true	draft7()	Draft 7	30
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	draft6	test-factory	true	draft6()	Draft 6	36
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	draft4	test-factory	true	draft4()	Draft 4	42
+M	com.networknt.schema.JsonSchemaTestSuiteExtrasTest	enabled		true	enabled(Path)		48
+C	com.networknt.schema.JsonSchemaTestSuiteTest	CLASS	true	JSON Schema Test Suite	/repo/src/test/java/com/networknt/schema/JsonSchemaTestSuiteTest.java
+M	com.networknt.schema.JsonSchemaTestSuiteTest	draft2022012	test-factory	true	draft2022012()	Draft 2020-12	31
+M	com.networknt.schema.JsonSchemaTestSuiteTest	draft201909	test-factory	true	draft201909()	Draft 2019-09	37
+M	com.networknt.schema.JsonSchemaTestSuiteTest	draft7	test-factory	true	draft7()	Draft 7	43
+M	com.networknt.schema.JsonSchemaTestSuiteTest	draft6	test-factory	true	draft6()	Draft 6	49
+M	com.networknt.schema.JsonSchemaTestSuiteTest	draft4	test-factory	true	draft4()	Draft 4	55
+M	com.networknt.schema.JsonSchemaTestSuiteTest	enabled		true	enabled(Path)		61
+M	com.networknt.schema.JsonSchemaTestSuiteTest	reason		true	reason(Path)		66
+M	com.networknt.schema.JsonSchemaTestSuiteTest	disableV202012Tests		false	disableV202012Tests()		71
+M	com.networknt.schema.JsonSchemaTestSuiteTest	disableV201909Tests		false	disableV201909Tests()		80
+M	com.networknt.schema.JsonSchemaTestSuiteTest	disableV7Tests		false	disableV7Tests()		86
+M	com.networknt.schema.JsonSchemaTestSuiteTest	disableV6Tests		false	disableV6Tests()		90
+M	com.networknt.schema.JsonSchemaTestSuiteTest	disableV4Tests		false	disableV4Tests()		94
+C	com.networknt.schema.JsonWalkApplyDefaultsTest	CLASS	true		/repo/src/test/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	testApplyDefaults3	parameterized	true	testApplyDefaults3(boolean)		26
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	testApplyDefaults2	plain	true	testApplyDefaults2()		48
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	testApplyDefaults1	plain	true	testApplyDefaults1()		65
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	testApplyDefaults0	parameterized	true	testApplyDefaults0(String)		83
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	testIllegalArgumentException	plain	true	testIllegalArgumentException()		120
+M	com.networknt.schema.JsonWalkApplyDefaultsTest	createSchema		false	createSchema(ApplyDefaultsStrategy)		129
+C	com.networknt.schema.JsonWalkTest	CLASS	true		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest	setup		true	setup()		31
+M	com.networknt.schema.JsonWalkTest	setupSchema		false	setupSchema()		36
+M	com.networknt.schema.JsonWalkTest	getJsonMetaSchema		false	getJsonMetaSchema()		56
+M	com.networknt.schema.JsonWalkTest	testWalk	plain	true	testWalk()		62
+M	com.networknt.schema.JsonWalkTest	testWalkWithDifferentListeners	plain	true	testWalkWithDifferentListeners()		81
+M	com.networknt.schema.JsonWalkTest	getSchema		false	getSchema()		113
+C	com.networknt.schema.JsonWalkTest$CustomKeyword	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest$CustomKeyword	getValue		false	getValue()		121
+M	com.networknt.schema.JsonWalkTest$CustomKeyword	newValidator		false	newValidator(String, JsonNode, JsonSchema, ValidationContext)		126
+C	com.networknt.schema.JsonWalkTest$CustomKeyword$CustomValidator	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest$CustomKeyword$CustomValidator	validate		false	validate(ExecutionContext, JsonNode, JsonNode, String)		143
+M	com.networknt.schema.JsonWalkTest$CustomKeyword$CustomValidator	validate		false	validate(ExecutionContext, JsonNode)		148
+M	com.networknt.schema.JsonWalkTest$CustomKeyword$CustomValidator	walk		false	walk(ExecutionContext, JsonNode, JsonNode, String, boolean)		153
+C	com.networknt.schema.JsonWalkTest$AllKeywordListener	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest$AllKeywordListener	onWalkStart		false	onWalkStart(WalkEvent)		162
+M	com.networknt.schema.JsonWalkTest$AllKeywordListener	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		179
+C	com.networknt.schema.JsonWalkTest$RefKeywordListener	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest$RefKeywordListener	onWalkStart		false	onWalkStart(WalkEvent)		187
+M	com.networknt.schema.JsonWalkTest$RefKeywordListener	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		200
+C	com.networknt.schema.JsonWalkTest$PropertiesKeywordListener	CLASS	false		/repo/src/test/java/com/networknt/schema/JsonWalkTest.java
+M	com.networknt.schema.JsonWalkTest$PropertiesKeywordListener	onWalkStart		false	onWalkStart(WalkEvent)		208
+M	com.networknt.schema.JsonWalkTest$PropertiesKeywordListener	onWalkEnd		false	onWalkEnd(WalkEvent, Set<ValidationMessage>)		217
+C	com.networknt.schema.MaximumValidatorPerfTest	CLASS	true		/repo/src/test/java/com/networknt/schema/MaximumValidatorPerfTest.java
+M	com.networknt.schema.MaximumValidatorPerfTest	testTime	plain	true	testTime()		32
+M	com.networknt.schema.MaximumValidatorPerfTest	executeTests		true	executeTests(List<Method>, int)		42
+M	com.networknt.schema.MaximumValidatorPerfTest	getTestMethods		true	getTestMethods(String[])		52
+C	com.networknt.schema.MaximumValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/MaximumValidatorTest.java
+M	com.networknt.schema.MaximumValidatorTest	augmentWithQuotes		true	augmentWithQuotes(String[][])		46
+M	com.networknt.schema.MaximumValidatorTest	positiveNumber	plain	true	positiveNumber()		54
+M	com.networknt.schema.MaximumValidatorTest	negativeNumber	plain	true	negativeNumber()		66
+M	com.networknt.schema.MaximumValidatorTest	positiveInteger	plain	true	positiveInteger()		88
+M	com.networknt.schema.MaximumValidatorTest	negativeInteger	plain	true	negativeInteger()		107
+M	com.networknt.schema.MaximumValidatorTest	positiveExclusiveInteger	plain	true	positiveExclusiveInteger()		125
+M	com.networknt.schema.MaximumValidatorTest	negativeExclusiveInteger	plain	true	negativeExclusiveInteger()		144
+M	com.networknt.schema.MaximumValidatorTest	negativeDoubleOverflowTest	plain	true	negativeDoubleOverflowTest()		162
+M	com.networknt.schema.MaximumValidatorTest	doubleValueCoarsing	plain	true	doubleValueCoarsing()		223
+M	com.networknt.schema.MaximumValidatorTest	doubleValueCoarsingExceedRange	plain	true	doubleValueCoarsingExceedRange()		255
+M	com.networknt.schema.MaximumValidatorTest	expectNoMessages		false	expectNoMessages(String[][], String)		286
+M	com.networknt.schema.MaximumValidatorTest	expectNoMessages		false	expectNoMessages(String[][], String, ObjectMapper)		290
+M	com.networknt.schema.MaximumValidatorTest	expectSomeMessages		false	expectSomeMessages(String[][], String)		308
+M	com.networknt.schema.MaximumValidatorTest	expectSomeMessages		false	expectSomeMessages(String[][], String, ObjectMapper, ObjectMapper)		312
+C	com.networknt.schema.MinimumValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/MinimumValidatorTest.java
+M	com.networknt.schema.MinimumValidatorTest	setUp		true	setUp()		46
+M	com.networknt.schema.MinimumValidatorTest	positiveNumber	plain	true	positiveNumber()		57
+M	com.networknt.schema.MinimumValidatorTest	negativeNumber	plain	true	negativeNumber()		67
+M	com.networknt.schema.MinimumValidatorTest	positiveInteger	plain	true	positiveInteger()		86
+M	com.networknt.schema.MinimumValidatorTest	negativeInteger	plain	true	negativeInteger()		98
+M	com.networknt.schema.MinimumValidatorTest	positiveExclusiveInteger	plain	true	positiveExclusiveInteger()		111
+M	com.networknt.schema.MinimumValidatorTest	negativeExclusiveInteger	plain	true	negativeExclusiveInteger()		128
+M	com.networknt.schema.MinimumValidatorTest	negativeDoubleOverflowTest	plain	true	negativeDoubleOverflowTest()		144
+M	com.networknt.schema.MinimumValidatorTest	doubleValueCoarsing	plain	true	doubleValueCoarsing()		214
+M	com.networknt.schema.MinimumValidatorTest	doubleValueCoarsingExceedRange	plain	true	doubleValueCoarsingExceedRange()		244
+M	com.networknt.schema.MinimumValidatorTest	expectSomeMessages		false	expectSomeMessages(String[][], String, ObjectMapper, ObjectMapper)		264
+M	com.networknt.schema.MinimumValidatorTest	expectNoMessages		false	expectNoMessages(String[][], String, ObjectMapper)		278
+M	com.networknt.schema.MinimumValidatorTest	expectNoMessages		false	expectNoMessages(String[][], String, ObjectMapper, ObjectMapper)		282
+C	com.networknt.schema.NotAllowedValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/NotAllowedValidatorTest.java
+M	com.networknt.schema.NotAllowedValidatorTest	getDataTestFolder		true	getDataTestFolder()		12
+M	com.networknt.schema.NotAllowedValidatorTest	testNotAllowedValidatorWorks	plain	true	testNotAllowedValidatorWorks()		21
+C	com.networknt.schema.OpenAPI30JsonSchemaTest	CLASS	true		/repo/src/test/java/com/networknt/schema/OpenAPI30JsonSchemaTest.java
+M	com.networknt.schema.OpenAPI30JsonSchemaTest	runTestFile		false	runTestFile(String)		24
+M	com.networknt.schema.OpenAPI30JsonSchemaTest	testDiscriminatorMapping	plain	true	testDiscriminatorMapping()		87
+C	com.networknt.schema.OverrideValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/OverrideValidatorTest.java
+M	com.networknt.schema.OverrideValidatorTest	overrideDefaultValidator	plain	true	overrideDefaultValidator()		33
+C	com.networknt.schema.OverwritingCustomMessageBugTest	CLASS	true		/repo/src/test/java/com/networknt/schema/OverwritingCustomMessageBugTest.java
+M	com.networknt.schema.OverwritingCustomMessageBugTest	getJsonSchemaFromStreamContentV7		false	getJsonSchemaFromStreamContentV7(InputStream)		14
+M	com.networknt.schema.OverwritingCustomMessageBugTest	getJsonNodeFromStreamContent		false	getJsonNodeFromStreamContent(InputStream)		19
+M	com.networknt.schema.OverwritingCustomMessageBugTest	customMessageIsNotOverwritten	plain	true	customMessageIsNotOverwritten()		24
+M	com.networknt.schema.OverwritingCustomMessageBugTest	validate		false	validate()		35
+M	com.networknt.schema.OverwritingCustomMessageBugTest	transferErrorMsg		false	transferErrorMsg(Set<ValidationMessage>)		45
+C	com.networknt.schema.PathTypeTest	CLASS	true		/repo/src/test/java/com/networknt/schema/PathTypeTest.java
+M	com.networknt.schema.PathTypeTest	rejectNull	plain	true	rejectNull()		10
+M	com.networknt.schema.PathTypeTest	rejectEmptyString	plain	true	rejectEmptyString()		17
+M	com.networknt.schema.PathTypeTest	acceptRoot	plain	true	acceptRoot()		24
+M	com.networknt.schema.PathTypeTest	acceptSimpleIndex	plain	true	acceptSimpleIndex()		29
+M	com.networknt.schema.PathTypeTest	acceptSimpleProperty	plain	true	acceptSimpleProperty()		34
+M	com.networknt.schema.PathTypeTest	acceptEscapedProperty	plain	true	acceptEscapedProperty()		39
+M	com.networknt.schema.PathTypeTest	hasSpecialCharacters	plain	true	hasSpecialCharacters()		44
+C	com.networknt.schema.PatternPropertiesValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/PatternPropertiesValidatorTest.java
+M	com.networknt.schema.PatternPropertiesValidatorTest	testInvalidPatternPropertiesValidator	plain	true	testInvalidPatternPropertiesValidator()		30
+M	com.networknt.schema.PatternPropertiesValidatorTest	testInvalidPatternPropertiesValidatorECMA262	plain	true	testInvalidPatternPropertiesValidatorECMA262()		42
+C	com.networknt.schema.PrefixItemsValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/PrefixItemsValidatorTest.java
+M	com.networknt.schema.PrefixItemsValidatorTest	testEmptyPrefixItemsException	plain	true	testEmptyPrefixItemsException()		20
+C	com.networknt.schema.PropertiesValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/PropertiesValidatorTest.java
+M	com.networknt.schema.PropertiesValidatorTest	testDoesNotThrowWhenApplyingDefaultPropertiesToNonObjects	plain	true	testDoesNotThrowWhenApplyingDefaultPropertiesToNonObjects()		12
+C	com.networknt.schema.ReadOnlyValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/ReadOnlyValidatorTest.java
+M	com.networknt.schema.ReadOnlyValidatorTest	givenConfigWriteFalseWhenReadOnlyTrueThenAllows	plain	true	givenConfigWriteFalseWhenReadOnlyTrueThenAllows()		19
+M	com.networknt.schema.ReadOnlyValidatorTest	givenConfigWriteTrueWhenReadOnlyTrueThenDenies	plain	true	givenConfigWriteTrueWhenReadOnlyTrueThenDenies()		26
+M	com.networknt.schema.ReadOnlyValidatorTest	loadJsonSchema		false	loadJsonSchema(Boolean)		35
+M	com.networknt.schema.ReadOnlyValidatorTest	getJsonSchema		false	getJsonSchema(Boolean)		42
+M	com.networknt.schema.ReadOnlyValidatorTest	createSchemaConfig		false	createSchemaConfig(Boolean)		49
+M	com.networknt.schema.ReadOnlyValidatorTest	getJsonNode		false	getJsonNode()		55
+C	com.networknt.schema.RecursiveReferenceValidatorExceptionTest	CLASS	true		/repo/src/test/java/com/networknt/schema/RecursiveReferenceValidatorExceptionTest.java
+M	com.networknt.schema.RecursiveReferenceValidatorExceptionTest	testInvalidRecursiveReference	plain	true	testInvalidRecursiveReference()		18
+C	com.networknt.schema.SelfRefTest	CLASS	true		/repo/src/test/java/com/networknt/schema/SelfRefTest.java
+M	com.networknt.schema.SelfRefTest	testSelfRef	plain	true	testSelfRef()		26
+C	com.networknt.schema.SpecVersionDetectorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/SpecVersionDetectorTest.java
+M	com.networknt.schema.SpecVersionDetectorTest	detectVersion	parameterized	true	detectVersion(String, SpecVersion.VersionFlag)		20
+M	com.networknt.schema.SpecVersionDetectorTest	detectInvalidSchemaVersion	parameterized	true	detectInvalidSchemaVersion(String, String)		36
+M	com.networknt.schema.SpecVersionDetectorTest	detectOptionalSpecVersion	plain	true	detectOptionalSpecVersion()		48
+C	com.networknt.schema.ThresholdMixinPerfTest	CLASS	true		/repo/src/test/java/com/networknt/schema/ThresholdMixinPerfTest.java
+M	com.networknt.schema.ThresholdMixinPerfTest	baseTimeEstimate		true	baseTimeEstimate()		60
+M	com.networknt.schema.ThresholdMixinPerfTest	currentTimeEstimate	plain	true	currentTimeEstimate()		69
+M	com.networknt.schema.ThresholdMixinPerfTest	allInOneAproachTimeEstimate	plain	true	allInOneAproachTimeEstimate()		93
+M	com.networknt.schema.ThresholdMixinPerfTest	specificCaseForEachThresholdValue	plain	true	specificCaseForEachThresholdValue()		117
+M	com.networknt.schema.ThresholdMixinPerfTest	noMixinsFloatingTimeEstimate	plain	true	noMixinsFloatingTimeEstimate()		132
+M	com.networknt.schema.ThresholdMixinPerfTest	noMixinsIntegralTimeEstimate	plain	true	noMixinsIntegralTimeEstimate()		147
+C	com.networknt.schema.ThresholdMixinPerfTest$AllInOneThreshold	CLASS	false		/repo/src/test/java/com/networknt/schema/ThresholdMixinPerfTest.java
+M	com.networknt.schema.ThresholdMixinPerfTest$AllInOneThreshold	crossesThreshold		false	crossesThreshold(JsonNode)		176
+M	com.networknt.schema.ThresholdMixinPerfTest$AllInOneThreshold	thresholdValue		false	thresholdValue()		201
+M	com.networknt.schema.ThresholdMixinPerfTest	getAvgTimeViaMixin		false	getAvgTimeViaMixin(ThresholdMixin, JsonNode, int)		332
+C	com.networknt.schema.TypeFactoryTest	CLASS	true		/repo/src/test/java/com/networknt/schema/TypeFactoryTest.java
+M	com.networknt.schema.TypeFactoryTest	testIntegralValuesWithJavaSemantics	plain	true	testIntegralValuesWithJavaSemantics()		40
+M	com.networknt.schema.TypeFactoryTest	testIntegralValuesWithoutJavaSemantics	plain	true	testIntegralValuesWithoutJavaSemantics()		55
+M	com.networknt.schema.TypeFactoryTest	testWithLosslessNarrowing	plain	true	testWithLosslessNarrowing()		71
+M	com.networknt.schema.TypeFactoryTest	testWithoutLosslessNarrowing	plain	true	testWithoutLosslessNarrowing()		85
+C	com.networknt.schema.TypeValidatorTest	CLASS	true		/repo/src/test/java/com/networknt/schema/TypeValidatorTest.java
+M	com.networknt.schema.TypeValidatorTest	testNumeicValues	plain	true	testNumeicValues()		39
+M	com.networknt.schema.TypeValidatorTest	testNonNumeicValues	plain	true	testNonNumeicValues()		46
+C	com.networknt.schema.UnevaluatedItemsTest	CLASS	true	Unevaluated Items	/repo/src/test/java/com/networknt/schema/UnevaluatedItemsTest.java
+M	com.networknt.schema.UnevaluatedItemsTest	draft201909	test-factory	true	draft201909()	Draft 2019-09	13
+C	com.networknt.schema.UnevaluatedPropertiesTest	CLASS	true	Unevaluated Properties	/repo/src/test/java/com/networknt/schema/UnevaluatedPropertiesTest.java
+M	com.networknt.schema.UnevaluatedPropertiesTest	draft201909	test-factory	true	draft201909()	Draft 2019-09	14
+C	com.networknt.schema.UnknownMetaSchemaTest	CLASS	true		/repo/src/test/java/com/networknt/schema/UnknownMetaSchemaTest.java
+M	com.networknt.schema.UnknownMetaSchemaTest	testSchema1	plain	true	testSchema1()		19
+M	com.networknt.schema.UnknownMetaSchemaTest	testSchema2	plain	true	testSchema2()		33
+M	com.networknt.schema.UnknownMetaSchemaTest	testSchema3	plain	true	testSchema3()		46
+M	com.networknt.schema.UnknownMetaSchemaTest	testNormalize	plain	true	testNormalize()		60
+C	com.networknt.schema.UriMappingTest	CLASS	true		/repo/src/test/java/com/networknt/schema/UriMappingTest.java
+M	com.networknt.schema.UriMappingTest	testBuilderUriMappingUri	plain	true	testBuilderUriMappingUri()		49
+M	com.networknt.schema.UriMappingTest	testBuilderExampleMappings	plain	true	testBuilderExampleMappings()		72
+M	com.networknt.schema.UriMappingTest	testValidatorConfigUriMappingUri	plain	true	testValidatorConfigUriMappingUri()		108
+M	com.networknt.schema.UriMappingTest	testValidatorConfigExampleMappings	plain	true	testValidatorConfigExampleMappings()		129
+M	com.networknt.schema.UriMappingTest	testMappingsForRef	plain	true	testMappingsForRef()		155
+M	com.networknt.schema.UriMappingTest	getUriMappingsFromUrl		false	getUriMappingsFromUrl(URL)		167
+C	com.networknt.schema.UrnTest	CLASS	true		/repo/src/test/java/com/networknt/schema/UrnTest.java
+M	com.networknt.schema.UrnTest	testURNToURI	plain	true	testURNToURI()		28
+C	com.networknt.schema.V4JsonSchemaTest	CLASS	true		/repo/src/test/java/com/networknt/schema/V4JsonSchemaTest.java
+M	com.networknt.schema.V4JsonSchemaTest	testLoadingWithId	plain	true	testLoadingWithId()		34
+M	com.networknt.schema.V4JsonSchemaTest	testFailFast_AllErrors	plain	true	testFailFast_AllErrors()		46
+M	com.networknt.schema.V4JsonSchemaTest	testFailFast_OneErrors	plain	true	testFailFast_OneErrors()		60
+M	com.networknt.schema.V4JsonSchemaTest	testFailFast_TwoErrors	plain	true	testFailFast_TwoErrors()		74
+M	com.networknt.schema.V4JsonSchemaTest	testFailFast_NoErrors	plain	true	testFailFast_NoErrors()		89
+M	com.networknt.schema.V4JsonSchemaTest	validateFailingFastSchemaFor		false	validateFailingFastSchemaFor(String, String)		100
+M	com.networknt.schema.V4JsonSchemaTest	getJsonNodeFromResource		false	getJsonNodeFromResource(ObjectMapper, String)		114
+C	com.networknt.schema.ValidatorTypeCodeTest	CLASS	true		/repo/src/test/java/com/networknt/schema/ValidatorTypeCodeTest.java
+M	com.networknt.schema.ValidatorTypeCodeTest	testFromValueString	plain	true	testFromValueString()		28
+M	com.networknt.schema.ValidatorTypeCodeTest	testFromValueMissing	plain	true	testFromValueMissing()		33
+M	com.networknt.schema.ValidatorTypeCodeTest	testIfThenElseNotInV4	plain	true	testIfThenElseNotInV4()		38
+M	com.networknt.schema.ValidatorTypeCodeTest	testExclusiveMaximumNotInV4	plain	true	testExclusiveMaximumNotInV4()		44
+C	com.networknt.schema.regex.Issue814Test	CLASS	true		/repo/src/test/java/com/networknt/schema/regex/Issue814Test.java
+M	com.networknt.schema.regex.Issue814Test	jdkTypePattern	plain	true	jdkTypePattern()		9
+M	com.networknt.schema.regex.Issue814Test	jdkOptionsPattern	plain	true	jdkOptionsPattern()		22
+M	com.networknt.schema.regex.Issue814Test	joniTypePattern	plain	true	joniTypePattern()		39
+M	com.networknt.schema.regex.Issue814Test	joniOptionsPattern	plain	true	joniOptionsPattern()		52
+C	com.networknt.schema.suite.TestCase	CLASS	true		/repo/src/test/java/com/networknt/schema/suite/TestCase.java
+M	com.networknt.schema.suite.TestCase	getSpecification		true	getSpecification()		91
+M	com.networknt.schema.suite.TestCase	getDescription		true	getDescription()		98
+M	com.networknt.schema.suite.TestCase	getDisplayName		true	getDisplayName()		102
+M	com.networknt.schema.suite.TestCase	getComment		true	getComment()		109
+M	com.networknt.schema.suite.TestCase	getSchema		true	getSchema()		117
+M	com.networknt.schema.suite.TestCase	isDisabled		true	isDisabled()		124
+M	com.networknt.schema.suite.TestCase	getReason		true	getReason()		131
+M	com.networknt.schema.suite.TestCase	getTests		true	getTests()		138
+M	com.networknt.schema.suite.TestCase	getSource		true	getSource()		142
+M	com.networknt.schema.suite.TestCase	setSource		true	setSource(TestSource)		146
+C	com.networknt.schema.suite.TestSource	CLASS	true		/repo/src/test/java/com/networknt/schema/suite/TestSource.java
+M	com.networknt.schema.suite.TestSource	getPath		true	getPath()		59
+M	com.networknt.schema.suite.TestSource	getReason		true	getReason()		63
+M	com.networknt.schema.suite.TestSource	getTestCases		true	getTestCases()		67
+M	com.networknt.schema.suite.TestSource	isDisabled		true	isDisabled()		71
+M	com.networknt.schema.suite.TestSource	loadFrom		true	loadFrom(Path, boolean, String)		75
+C	com.networknt.schema.suite.TestSpec	CLASS	true		/repo/src/test/java/com/networknt/schema/suite/TestSpec.java
+M	com.networknt.schema.suite.TestSpec	getTestCase		true	getTestCase()		159
+M	com.networknt.schema.suite.TestSpec	setTestCase		true	setTestCase(TestCase)		167
+M	com.networknt.schema.suite.TestSpec	getDescription		true	getDescription()		175
+M	com.networknt.schema.suite.TestSpec	getComment		true	getComment()		182
+M	com.networknt.schema.suite.TestSpec	getConfig		true	getConfig()		190
+M	com.networknt.schema.suite.TestSpec	getData		true	getData()		198
+M	com.networknt.schema.suite.TestSpec	isDisabled		true	isDisabled()		205
+M	com.networknt.schema.suite.TestSpec	getReason		true	getReason()		212
+M	com.networknt.schema.suite.TestSpec	isValid		true	isValid()		220
+M	com.networknt.schema.suite.TestSpec	getStrictness		true	getStrictness()		227
+M	com.networknt.schema.suite.TestSpec	getValidationMessages		true	getValidationMessages()		239
+M	com.networknt.schema.suite.TestSpec	isTypeLoose		false	isTypeLoose()		255
+M	com.networknt.schema.suite.TestSpec	getRegex		true	getRegex()		260
+C	com.networknt.schema.suite.TestSpec$RegexKind	ENUM	false		/repo/src/test/java/com/networknt/schema/suite/TestSpec.java
