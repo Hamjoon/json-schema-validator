@@ -1,0 +1,140 @@
+As a professional software tester who writes Java test methods, consider the following examples:
+//Example Java Class:
+package org.apache.commons.cli;
+
+final class Util {
+
+    static final String[] EMPTY_STRING_ARRAY = {};
+
+    static String stripLeadingAndTrailingQuotes(String str) {
+        final int length = str.length();
+        if (length > 1 && str.startsWith(""") && str.endsWith(""") && str.substring(1, length - 1).indexOf('"') == -1) {
+            str = str.substring(1, length - 1);
+        }
+
+        return str;
+    }
+
+    static String stripLeadingHyphens(final String str) {
+        if (str == null) {
+            return null;
+        }
+        if (str.startsWith("--")) {
+            return str.substring(2);
+        }
+        if (str.startsWith("-")) {
+            return str.substring(1);
+        }
+
+        return str;
+    }
+}
+
+
+//Corresponding JUnit 4 Test Cases:
+package org.apache.commons.cli;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
+
+public class UtilTest {
+    @Test
+    public void testStripLeadingAndTrailingQuotes() {
+        assertEquals("foo", Util.stripLeadingAndTrailingQuotes(""foo""));
+        assertEquals("foo "bar"", Util.stripLeadingAndTrailingQuotes("foo "bar""));
+        assertEquals(""foo" bar", Util.stripLeadingAndTrailingQuotes(""foo" bar"));
+        assertEquals(""foo" and "bar"", Util.stripLeadingAndTrailingQuotes(""foo" and "bar""));
+        assertEquals(""", Util.stripLeadingAndTrailingQuotes("""));
+    }
+
+    @Test
+    public void testStripLeadingHyphens() {
+        assertEquals("f", Util.stripLeadingHyphens("-f"));
+        assertEquals("foo", Util.stripLeadingHyphens("--foo"));
+        assertEquals("-foo", Util.stripLeadingHyphens("---foo"));
+        assertNull(Util.stripLeadingHyphens(null));
+    }
+}
+        
+Now, generate JUnit 4 test cases to comprehensively test all methods in the following class named TypeValidator. Your output file must start with ###Test START## and finish with ###Test END##. Here is the source code:
+/*
+ * Copyright (c) 2016 Network New Technologies Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.networknt.schema.utils.JsonNodeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+public class TypeValidator extends BaseJsonValidator {
+    private static final Logger logger = LoggerFactory.getLogger(TypeValidator.class);
+
+    private JsonType schemaType;
+    private JsonSchema parentSchema;
+    private UnionTypeValidator unionTypeValidator;
+
+    public TypeValidator(String schemaPath, JsonNode schemaNode, JsonSchema parentSchema, ValidationContext validationContext) {
+        super(schemaPath, schemaNode, parentSchema, ValidatorTypeCode.TYPE, validationContext);
+        this.schemaType = TypeFactory.getSchemaNodeType(schemaNode);
+        this.parentSchema = parentSchema;
+        this.validationContext = validationContext;
+        if (this.schemaType == JsonType.UNION) {
+            this.unionTypeValidator = new UnionTypeValidator(schemaPath, schemaNode, parentSchema, validationContext);
+        }
+
+        parseErrorCode(getValidatorType().getErrorCodeKey());
+    }
+
+    public JsonType getSchemaType() {
+        return this.schemaType;
+    }
+
+    public boolean equalsToSchemaType(JsonNode node) {
+        return JsonNodeUtil.equalsToSchemaType(node,this.schemaType, this.parentSchema, this.validationContext);
+    }
+
+    @Override
+    public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, String at) {
+        debug(logger, node, rootNode, at);
+
+        if (this.schemaType == JsonType.UNION) {
+            return this.unionTypeValidator.validate(executionContext, node, rootNode, at);
+        }
+
+        if (!equalsToSchemaType(node)) {
+            JsonType nodeType = TypeFactory.getValueNodeType(node, this.validationContext.getConfig());
+            return Collections.singleton(buildValidationMessage(at, nodeType.toString(), this.schemaType.toString()));
+        }
+
+        // TODO: Is this really necessary?
+        // Hack to catch evaluated properties if additionalProperties is given as "additionalProperties":{"type":"string"}
+        // Hack to catch patternProperties like "^foo":"value"
+        if (this.schemaPath.endsWith("/type")) {
+            if (rootNode.isArray()) {
+                executionContext.getCollectorContext().getEvaluatedItems().add(at);
+            } else if (rootNode.isObject()) {
+                executionContext.getCollectorContext().getEvaluatedProperties().add(at);
+            }
+        }
+        return Collections.emptySet();
+    }
+}
+.

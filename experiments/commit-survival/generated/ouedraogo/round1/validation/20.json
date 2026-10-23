@@ -1,0 +1,180 @@
+{
+  "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ouedraogo/round1/20/test/classes",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.516,
+    "log": "work/validation/ouedraogo/round1/20/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testGetSchemaType_string",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testGetSchemaType_string",
+      "body_hash": "6e76298c779d13858ae8a1e2a9474befa06a0ea30af901d2b544d8d6c897a9b0",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testEqualsToSchemaType_matching",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testEqualsToSchemaType_matching",
+      "body_hash": "1269de6818d3fbe7808e8826e2d9de064180dcc21cc38105bec1b1bd58a2e74f",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testEqualsToSchemaType_notMatching",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testEqualsToSchemaType_notMatching",
+      "body_hash": "fdde3409f0c20a96f12d2e24aff7ed73c7d0b5d202b3b20f13a783921ed45892",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_matchingType_returnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_matchingType_returnsEmptySet",
+      "body_hash": "458daa5723f9b34112b626b9fad5e53f1eb06f1ac04f01e6360c2a1a33c810c1",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_mismatchingType_returnsMessage",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_mismatchingType_returnsMessage",
+      "body_hash": "ea34551793eecd33c631ffd740edfe56792bd5f401930373468b720e6295398f",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_unionType_delegatesToUnionValidator",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_unionType_delegatesToUnionValidator",
+      "body_hash": "3a375789f2cf21e180f4a328e9566fd8edc45ce07f77d6f414c3a84ca8397ca6",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_schemaPathEndsWithType_rootIsArray_recordsEvaluatedItem",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_schemaPathEndsWithType_rootIsArray_recordsEvaluatedItem",
+      "body_hash": "6d7529f191688cfeca7393a8ecb55235af497ee992db601b800b492e2b5b813a",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_schemaPathEndsWithType_rootIsObject_recordsEvaluatedProperty",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_schemaPathEndsWithType_rootIsObject_recordsEvaluatedProperty",
+      "body_hash": "639d8da7d3fe12e13e9a1c3528aeaad6caa3f670a211d2e57527a763fed68785",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_schemaPathNotEndingWithType_noEvaluationRecorded",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_schemaPathNotEndingWithType_noEvaluationRecorded",
+      "body_hash": "0bc9f17c8f2397793518072ff16bf9c9b40f6f75f689503ff50314c05b41bb71",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testEqualsToSchemaType_nullNode_returnsFalse",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testEqualsToSchemaType_nullNode_returnsFalse",
+      "body_hash": "b8300eb49dc0b7526c9f80dc3bc927cd9b20c8437a829ea9923ea0037fbb13af",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "testValidate_schemaWithoutType_doesNotThrow",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|testValidate_schemaWithoutType_doesNotThrow",
+      "body_hash": "0e6a296657839c6f807171b67de82a9f5d618e9a0e9ac6a648b114be9a6c3848",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:43: error: cannot find symbol\n        when(validationContext.getConfig()).thenReturn(new ValidationConfig());\n                                                           ^\n  symbol:   class ValidationConfig\n  location: class TypeValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:99: error: cannot find symbol\n        assertEquals(JsonType.ARRAY.toString(), msg.getArguments().get(0));   // actual type\n                                                                  ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:100: error: cannot find symbol\n        assertEquals(JsonType.OBJECT.toString(), msg.getArguments().get(1)); // expected type\n                                                                   ^\n  symbol:   method get(int)\n  location: class String[]\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java:117: error: cannot find symbol\n                .message(\"union ok\")\n                ^\n  symbol:   method message(String)\n  location: class Builder\n4 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/CoT/TypeValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.366,
+    "log": "work/validation/ouedraogo/round1/20/inventory.tsv"
+  }
+}

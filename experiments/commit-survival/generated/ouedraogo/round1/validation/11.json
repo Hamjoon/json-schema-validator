@@ -1,0 +1,141 @@
+{
+  "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ouedraogo/round1/11/test/classes",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.77,
+    "log": "work/validation/ouedraogo/round1/11/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "constructor_populatesSchemasMap",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|constructor_populatesSchemasMap",
+      "body_hash": "691af4a81543f106f3c4bb6c88a233a42eb845a3dd4c2e62b125a4b11767c360",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "getDefaultNode_returnsDefaultNodeIfPresent",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|getDefaultNode_returnsDefaultNodeIfPresent",
+      "body_hash": "f239518c5a7a5cfb56f6aa9f9cb57f7c6b4afb83e2561fd09b142c16fa75afaf",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "getDefaultNode_returnsNullWhenNoDefault",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|getDefaultNode_returnsNullWhenNoDefault",
+      "body_hash": "0daa7e06090a98c55275d689ff6a7c9275c4cb686235256bc98496940a97eba9",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "validate_propertyPresent_delegatesToChildSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|validate_propertyPresent_delegatesToChildSchema",
+      "body_hash": "0157d259f5e694a7fab779445487bb41ec1621d153dc50ae2ba838ae00e2a981",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "validate_missingRequiredProperty_returnsRequiredError",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|validate_missingRequiredProperty_returnsRequiredError",
+      "body_hash": "d8b37de5da1d3cee2bbb46b8bbc74a13d7ba3fb16102988ae7902520a612435d",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "walk_appliesPropertyDefaults_whenStrategyEnabled",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|walk_appliesPropertyDefaults_whenStrategyEnabled",
+      "body_hash": "e7daf437a095d6fc2632fe080bf1dfd05bf1a855a3ec634bee5e709ec940f070",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "walk_withValidationEnabled_delegatesToChildValidate",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|walk_withValidationEnabled_delegatesToChildValidate",
+      "body_hash": "cbb3550f04448be897f950a75985ecae8a81275a19f19926d3c7a8b3d295ad49",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java",
+      "class": "com.networknt.schema.PropertiesValidatorTest",
+      "method": "preloadJsonSchema_forwardsToBaseClass",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java|com.networknt.schema.PropertiesValidatorTest|preloadJsonSchema_forwardsToBaseClass",
+      "body_hash": "bab8a3ff34b5f7d9e186cebb44cc3327f74ee2d60c99c62d1ed694fede3c57f2",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:33: error: cannot find symbol\n    @Mock private WalkListenerRunner walkListenerRunner;               // used only for \u201cwalk\u201d tests\n                  ^\n  symbol:   class WalkListenerRunner\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:34: error: cannot find symbol\n    @Mock private Config config;                                         // part of ValidationContext\n                  ^\n  symbol:   class Config\n  location: class PropertiesValidatorTest\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java:184: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluated = collectorContext.getEvaluatedProperties();\n                                                                       ^\n3 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/PropertiesValidator/FSL/PropertiesValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.523,
+    "log": "work/validation/ouedraogo/round1/11/inventory.tsv"
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT",
+      "-d",
+      "/repo/experiments/commit-survival/work/validation/ouedraogo/round1/23/test/classes",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.567,
+    "log": "work/validation/ouedraogo/round1/23/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "getSchemaType_ShouldReturnCorrectJsonType",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|getSchemaType_ShouldReturnCorrectJsonType",
+      "body_hash": "59b9ffd97f6f4b7226dd18647ab5fccd1117075588b2536e884dbdae3fa13cad",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "equalsToSchemaType_MatchingNode_ReturnsTrue",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|equalsToSchemaType_MatchingNode_ReturnsTrue",
+      "body_hash": "03f01505582f5e76fc8f4b97a096752f6dc6e1443a05dd38ec7f25a6cda87dab",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "equalsToSchemaType_NonMatchingNode_ReturnsFalse",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|equalsToSchemaType_NonMatchingNode_ReturnsFalse",
+      "body_hash": "936e91b933fbf12f434948f1d76f1e8fe75c364c8d432060a21afd747c3dd6e1",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "validate_NodeMatchesSchema_ReturnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|validate_NodeMatchesSchema_ReturnsEmptySet",
+      "body_hash": "15af9b9e889ba4de320c67424946fc1e81c956fcbbe7784a6c14917da469dd0a",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "validate_NodeDoesNotMatchSchema_ReturnsValidationMessage",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|validate_NodeDoesNotMatchSchema_ReturnsValidationMessage",
+      "body_hash": "6255c74947d7eaadd2b6d5a28788ee4de84f21bf5420228eb6a93e2f427a5e51",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "validate_UnionSchema_DelegatesToUnionTypeValidator",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|validate_UnionSchema_DelegatesToUnionTypeValidator",
+      "body_hash": "bcbbd97dc521e3f9f9e545a5b5ddbc06ccc4398f8d44555aca5bb80c6435c071",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "validate_WhenSchemaPathEndsWithType_AndRootIsArray_AddsEvaluatedItem",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|validate_WhenSchemaPathEndsWithType_AndRootIsArray_AddsEvaluatedItem",
+      "body_hash": "1fd2151ab170c1dc8b6910111821f5d04a8c8693bce706dcd8e9116c034534ae",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "validate_WhenSchemaPathEndsWithType_AndRootIsObject_AddsEvaluatedProperty",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|validate_WhenSchemaPathEndsWithType_AndRootIsObject_AddsEvaluatedProperty",
+      "body_hash": "196ee70a0a03df55e3d5056886c8cb3261cf42836ab6802dff2df1dbcca8d1c2",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java",
+      "class": "com.networknt.schema.TypeValidatorTest",
+      "method": "constructor_NullSchemaNode_ThrowsException",
+      "kind": "plain",
+      "id": "generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java|com.networknt.schema.TypeValidatorTest|constructor_NullSchemaNode_ThrowsException",
+      "body_hash": "8aa97161f77f29c16520885b70245b68c4f7f9f1e57084debf5f76f94b623e62",
+      "round": "round1",
+      "technique": "ToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:42: error: cannot find symbol\n@RunWith(MockitoJUnitRunner.class)\n         ^\n  symbol: class MockitoJUnitRunner\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:152: error: cannot find symbol\n                ValidationMessage.builder()\n                                 ^\n  symbol:   method builder()\n  location: class ValidationMessage\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:192: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedItems = collectorContext.getEvaluatedItems();\n                                                                       ^\n/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java:208: error: incompatible types: Collection<String> cannot be converted to Set<String>\n        Set<String> evaluatedProps = collectorContext.getEvaluatedProperties();\n                                                                            ^\n4 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival/generated/ouedraogo/round1/sources/TypeValidator/ToT/TypeValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.42,
+    "log": "work/validation/ouedraogo/round1/23/inventory.tsv"
+  }
+}
