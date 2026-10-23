@@ -1,0 +1,220 @@
+```java
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
+
+/**
+ * Unit tests for {@link JsonSchema#validateAndCollect(ExecutionContext, JsonNode)}.
+ *
+ * <p>The original test relied on Mockito and on internal details of the
+ * {@code JsonSchema} implementation.  Those dependencies have been removed
+ * to keep the test self‑contained and compilable against the core library.</p>
+ */
+class JsonSchema_validateAndCollect_Test {
+
+    /** Shared mapper for all tests. */
+    private static ObjectMapper mapper;
+
+    /** Objects created for each test. */
+    private ExecutionContext executionContext;
+    private JsonSchema jsonSchema;
+
+    /** Simple validator that returns a predetermined set of messages. */
+    private static class DummyValidator implements JsonValidator {
+
+        private final Set<ValidationMessage> result;
+
+        DummyValidator(Set<ValidationMessage> result) {
+            this.result = result;
+        }
+
+        @Override
+        public Set<ValidationMessage> validate(ExecutionContext ctx, JsonNode node, JsonNode rootNode, String schemaPath) {
+            return result;
+        }
+    }
+
+    /** Minimal {@link WalkListenerRunner} implementation – all methods are no‑ops. */
+    private static class DummyWalkListenerRunner implements WalkListenerRunner {
+
+        @Override
+        public void walk(JsonNode node, JsonSchema schema, ExecutionContext ctx) {
+            // no‑op
+        }
+
+        @Override
+        public void runPostWalkListeners(ExecutionContext ctx, String schemaPath, JsonNode node,
+                                         JsonNode rootNode, String keyword, String keywordPath,
+                                         JsonNode parentNode, JsonSchema schema,
+                                         ValidationContext validationContext,
+                                         JsonSchemaFactory factory,
+                                         Set<ValidationMessage> messages) {
+            // no‑op
+        }
+    }
+
+    @BeforeAll
+    static void setupBeforeAll() {
+        mapper = new ObjectMapper();
+    }
+
+    @BeforeEach
+    void setupBeforeEach() {
+        executionContext = new ExecutionContext();
+        ObjectNode schemaNode = mapper.createObjectNode(); // empty schema
+        jsonSchema = JsonSchemaFactory.getInstance().getSchema(schemaNode);
+        assertNotNull(jsonSchema, "JsonSchema instance should be created");
+    }
+
+    private static Stream<Arguments> requiredValidatorProvider() {
+        return Stream.of(
+                Arguments.of("{\"requiredProp\":\"value\"}", true),
+                Arguments.of("{}", false)
+        );
+    }
+
+    /** Utility to set a private field via reflection. */
+    private static void setField(Object target, String name, Object value) throws Exception {
+        Field f = target.getClass().getDeclaredField(name);
+        f.setAccessible(true);
+        f.set(target, value);
+    }
+
+    /** Helper to create a {@link ValidationMessage} compatible with the current library version. */
+    private static ValidationMessage createMessage(String path, String message) {
+        ValidationMessage vm = new ValidationMessage();
+        // The concrete library provides setters; if they are named differently adjust accordingly.
+        vm.setPath(path);
+        vm.setMessage(message);
+        // type is optional – set a generic value to avoid nulls.
+        vm.setType("custom");
+        return vm;
+    }
+
+    @Test
+    void testValidateAndCollectReturnsResult() throws Exception {
+        JsonNode dataNode = mapper.readTree("{\"foo\":\"bar\"}");
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, dataNode);
+        assertNotNull(result, "validateAndCollect should never return null");
+        // ValidationResult provides getMessages()
+        assertTrue(result.getMessages().isEmpty()
+                || result.getMessages().stream().allMatch(m -> m != null),
+                "All validation messages, if any, should be non‑null");
+    }
+
+    @Test
+    void testValidateAndCollectWithNullNode() {
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.validateAndCollect(executionContext, null),
+                "validateAndCollect should throw NPE when the JSON node is null");
+    }
+
+    @Test
+    void testValidateAndCollect_NullExecutionContextAndNode() {
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.validateAndCollect(null, null));
+    }
+
+    @Test
+    void testValidateAndCollect_NullExecutionContext() {
+        JsonNode dataNode = mapper.createObjectNode().put("foo", "bar");
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.validateAndCollect(null, dataNode));
+    }
+
+    @Test
+    void testValidateAndCollect_NullJsonNode() {
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.validateAndCollect(executionContext, null));
+    }
+
+    @Test
+    void testValidateAndCollect_RequiredValidator_Succeeds() throws Exception {
+        JsonNode node = mapper.createObjectNode().put("requiredProp", "value");
+        setField(jsonSchema, "requiredValidator", new DummyValidator(Collections.emptySet()));
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertTrue(result.isSuccess(), "When the required validator passes the result must be successful");
+        assertTrue(result.getMessages().isEmpty(),
+                "A successful validation should not contain any messages");
+    }
+
+    @Test
+    void testValidateAndCollect_RequiredValidator_Fails() throws Exception {
+        JsonNode node = mapper.createObjectNode();
+        ValidationMessage msg = createMessage("", "required property missing");
+        setField(jsonSchema, "requiredValidator", new DummyValidator(Set.of(msg)));
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertFalse(result.isSuccess(),
+                "When the required validator reports an error the result must be a failure");
+        assertFalse(result.getMessages().isEmpty(),
+                "Failure should contain at least one ValidationMessage");
+    }
+
+    @Test
+    void testValidateAndCollect_TypeValidator_Succeeds() throws Exception {
+        JsonNode node = mapper.readTree("42");
+        setField(jsonSchema, "typeValidator", new DummyValidator(Collections.emptySet()));
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertTrue(result.isSuccess(),
+                "When the type validator passes the result must be successful");
+    }
+
+    @Test
+    void testValidateAndCollect_TypeValidator_Fails() throws Exception {
+        JsonNode node = mapper.createObjectNode().put("a", 1);
+        ValidationMessage msg = createMessage("", "type mismatch");
+        setField(jsonSchema, "typeValidator", new DummyValidator(Set.of(msg)));
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertFalse(result.isSuccess(),
+                "When the type validator reports an error the result must be a failure");
+        assertFalse(result.getMessages().isEmpty(),
+                "Failure should contain at least one ValidationMessage");
+    }
+
+    @Test
+    void testValidateAndCollect_DynamicAnchor_NoException() throws Exception {
+        JsonNode node = mapper.createObjectNode();
+        setField(jsonSchema, "isDynamicAnchor", true);
+        setField(jsonSchema, "requiredValidator", null);
+        setField(jsonSchema, "typeValidator", null);
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertTrue(result.isSuccess(),
+                "Dynamic anchor handling should not cause a failure when no validators fire");
+    }
+
+    @Test
+    void testValidateAndCollect_WalkListenerRunnerIsInvoked() throws Exception {
+        JsonNode node = mapper.readTree("{\"a\":1}");
+        WalkListenerRunner dummyRunner = new DummyWalkListenerRunner();
+        setField(jsonSchema, "keywordWalkListenerRunner", dummyRunner);
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertNotNull(result, "Result must be non‑null even when a WalkListenerRunner is present");
+    }
+
+    @ParameterizedTest
+    @MethodSource("requiredValidatorProvider")
+    void parameterizedRequiredValidatorTest(String json, boolean expectSuccess) throws Exception {
+        JsonNode node = mapper.readTree(json);
+        if (expectSuccess) {
+            setField(jsonSchema, "requiredValidator", new DummyValidator(Collections.emptySet()));
+        } else {
+            ValidationMessage msg = createMessage("", "missing required");
+            setField(jsonSchema, "requiredValidator", new DummyValidator(Set.of(msg)));
+        }
+        ValidationResult result = jsonSchema.validateAndCollect(executionContext, node);
+        assertEquals(expectSuccess, result.isSuccess(),
+                "Parameterized required‑validator test failed for input: " + json);
+    }
+}
+```

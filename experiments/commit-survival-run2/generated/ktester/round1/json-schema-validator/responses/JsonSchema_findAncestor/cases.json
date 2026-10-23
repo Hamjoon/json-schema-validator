@@ -1,0 +1,42 @@
+[
+  {
+    "group": "findAncestor",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because it has no parent",
+        "description": "Root schema: a JsonSchema object whose getParentSchema() returns null. The method should detect that there is no parent and return the current instance (`this`). This covers the branch where the `if` condition evaluates to false."
+      },
+      {
+        "input": [],
+        "expected": "returns the direct parent JsonSchema instance because the parent has no further ancestor",
+        "description": "Single\u2011level child: create a child JsonSchema whose getParentSchema() returns a parent JsonSchema whose getParentSchema() is null. The method should recurse once, obtain the parent, see that the parent has no further parent, and finally return that parent. This tests the true branch of the `if` and verifies that recursion works for one level."
+      },
+      {
+        "input": [],
+        "expected": "returns the top\u2011most ancestor JsonSchema instance in a multi\u2011level chain",
+        "description": "Multi\u2011level chain: build a chain of three schemas (grandParent \u2192 parent \u2192 child) where each schema's getParentSchema() points to the next higher level. Invoking findAncestor() on the leaf child should recurse through parent and grandParent, ultimately returning the grandParent instance. This ensures the recursive call correctly propagates up the hierarchy and that the method always returns the ultimate ancestor regardless of chain length."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor_additional",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance after multiple calls (idempotent)",
+        "description": "Idempotence: invoke findAncestor() twice on a root schema (no parent) and verify that both calls return the identical instance, confirming that the method does not alter internal state."
+      },
+      {
+        "input": [],
+        "expected": "returns the top\u2011most ancestor JsonSchema instance for a ten\u2011level chain",
+        "description": "Deep hierarchy: construct a chain of ten schemas where each schema's getParentSchema() points to the next higher level. Calling findAncestor() on the leaf should recursively traverse all ten levels and return the original root schema, testing recursion depth beyond the simple three\u2011level case."
+      },
+      {
+        "input": [],
+        "expected": "throws StackOverflowError due to a cyclic parent reference",
+        "description": "Cyclic reference: create two JsonSchema objects where schemaA.getParentSchema() returns schemaB and schemaB.getParentSchema() returns schemaA, forming a loop. Invoking findAncestor() on either schema should result in a StackOverflowError, demonstrating that the method does not handle cycles and that such a configuration is unsafe."
+      }
+    ]
+  }
+]

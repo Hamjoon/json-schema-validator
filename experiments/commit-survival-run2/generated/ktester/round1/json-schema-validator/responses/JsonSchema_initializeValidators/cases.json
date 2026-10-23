@@ -1,0 +1,102 @@
+[
+  {
+    "group": "initializeValidators - first call with non\u2011empty validators map",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; preloadJsonSchema() is invoked exactly once on each JsonValidator returned by getValidators() (e.g., two mock validators).",
+        "description": "When the schema has not yet loaded its validators (validatorsLoaded == false) and getValidators() returns a map containing validators, initializeValidators() should set validatorsLoaded to true and call preloadJsonSchema() on every validator."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - first call with empty validators map",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; no call to preloadJsonSchema() because the validators map is empty.",
+        "description": "Ensures that the method correctly handles an empty validators collection: it still flips the loaded flag but does not attempt to iterate over any validators."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - subsequent call when already loaded",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag remains true; preloadJsonSchema() is NOT invoked on any validator (previously loaded validators are not re\u2011preloaded).",
+        "description": "When validatorsLoaded is already true, the method must exit early without touching the validators map, guaranteeing idempotent behaviour."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - validator throws exception during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException thrown from validator.preloadJsonSchema(); validatorsLoaded flag is set to true before the exception propagates.",
+        "description": "When a validator's preloadJsonSchema() method throws a RuntimeException, initializeValidators() should propagate the exception. The flag validatorsLoaded is already true because it is set prior to iterating over validators."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - getValidators returns null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException thrown when attempting to call getValidators().values().",
+        "description": "If the internal getValidators() method returns null (an unexpected state), initializeValidators() will attempt to dereference it and throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - validators map contains null entry",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException thrown when invoking preloadJsonSchema() on a null validator.",
+        "description": "When the validators map includes a null value, the for\u2011each loop will try to call preloadJsonSchema() on null, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - validators map with duplicate validator instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; preloadJsonSchema() is invoked once for each map entry (e.g., twice if the same validator appears twice).",
+        "description": "If the validators map contains the same validator instance under different keys, initializeValidators() should still iterate over all entries and call preloadJsonSchema() for each entry, resulting in multiple calls on the same object."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - getValidators throws unchecked exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException (or any unchecked exception) propagates; validatorsLoaded flag is set to true before the exception is thrown.",
+        "description": "When the internal getValidators() method throws an unchecked exception (e.g., IllegalStateException), initializeValidators() should not catch it. The flag validatorsLoaded is assigned true prior to the call, so after the exception the flag remains true."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - concurrent modification during iteration",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ConcurrentModificationException propagates; validatorsLoaded flag is true when the exception occurs.",
+        "description": "If the validators map is modified concurrently while the for\u2011each loop iterates over getValidators().values(), a ConcurrentModificationException is thrown. The method should let this exception bubble up, with validatorsLoaded already set to true."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - validator throws Error during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Error (e.g., AssertionError) propagates; validatorsLoaded flag is true before the error propagates.",
+        "description": "When a validator's preloadJsonSchema() method throws an Error rather than an Exception, initializeValidators() must not catch it. The flag validatorsLoaded is set to true before invoking preloadJsonSchema(), so the flag stays true after the error."
+      }
+    ]
+  }
+]

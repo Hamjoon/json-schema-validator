@@ -1,0 +1,534 @@
+[
+  {
+    "group": "Validate schema flag true - valid node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "When shouldValidateSchema is true and the supplied JsonNode conforms to the schema (e.g., required properties present and types match), walk should return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - invalid node (type mismatch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":123,\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing type\u2011mismatch ValidationMessage(s) (isSuccess() == false)",
+        "description": "When shouldValidateSchema is true and the node violates the schema (string expected for \"name\" but number provided, integer expected for \"age\" but string provided), walk must collect the corresponding validation errors."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag false - node processed without validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"unexpected\":\"value\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult with no errors regardless of schema mismatches (isSuccess() == true)",
+        "description": "When shouldValidateSchema is false the walk method should bypass schema validation and simply traverse the node, therefore it must return a successful ValidationResult even if the node does not satisfy the schema."
+      }
+    ]
+  },
+  {
+    "group": "Null node input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing a single ValidationMessage indicating that the instance node is null (isSuccess() == false)",
+        "description": "If the supplied JsonNode is null, walk should treat it as an invalid instance and return a ValidationResult with an appropriate error message."
+      }
+    ]
+  },
+  {
+    "group": "Node missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"age\":25}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing a required\u2011property ValidationMessage for \"name\" (isSuccess() == false)",
+        "description": "When the schema defines a required property (e.g., \"name\") and the node does not contain it, walk must report a missing\u2011required\u2011property error."
+      }
+    ]
+  },
+  {
+    "group": "Dynamic anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"$anchor\":\"myAnchor\",\"value\":42}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors if the dynamic anchor is resolved correctly; otherwise contains an error about unresolved anchor",
+        "description": "If the schema contains a dynamic anchor, walk should resolve it during traversal. The test verifies that a valid node referencing a dynamic anchor yields success, while an unresolved anchor would produce an error."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref that cannot be resolved",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"$ref\":\"#/nonexistent\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing a ValidationMessage about an unresolved $ref (isSuccess() == false)",
+        "description": "When the schema contains a $ref that points to a non\u2011existent definition, walk must detect the failure to resolve the reference and report it as an error."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - array items valid",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[{\"id\":1,\"name\":\"Alice\"},{\"id\":2,\"name\":\"Bob\"}]"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema defines a property of type array where each item must be an object with required integer \"id\" and string \"name\". The supplied array conforms to the item schema, so walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - array items invalid",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[{\"id\":\"one\",\"name\":\"Alice\"}, {\"id\":2}]"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing type\u2011mismatch for \"id\" and missing\u2011required\u2011property for \"name\" in the second array element (isSuccess() == false)",
+        "description": "Same array schema as above, but the first element has a non\u2011integer \"id\" and the second element lacks the required \"name\" property. walk must report both errors."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - enum validation success",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"RED\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema defines a string with an enum [\"RED\",\"GREEN\",\"BLUE\"]. The node value matches one of the allowed enum values, so validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - enum validation failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"YELLOW\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing enum\u2011value ValidationMessage (isSuccess() == false)",
+        "description": "The same enum schema as above, but the node value \"YELLOW\" is not listed in the enum, causing a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - pattern property match",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"email\":\"john.doe@example.com\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema uses \"patternProperties\" with the regex \"^email$\" requiring the value to match the email pattern. The supplied email matches, so validation passes."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - pattern property mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"email\":\"not-an-email\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing format\u2011validation ValidationMessage for property \"email\" (isSuccess() == false)",
+        "description": "Same patternProperties schema, but the value does not satisfy the email format, resulting in a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - format validation success (date-time)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"2023-08-15T13:45:30Z\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema defines a string with format \"date-time\". The supplied ISO\u20118601 timestamp is valid, so walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - format validation failure (date-time)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"15/08/2023 13:45\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing format\u2011validation ValidationMessage (isSuccess() == false)",
+        "description": "Same date-time format schema, but the string does not conform to the required RFC3339 format, causing a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - $ref resolves correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"type\":\"car\",\"wheels\":4}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema contains a $ref to \"#/definitions/vehicle\" where the definition requires a string \"type\" and integer \"wheels\". The node matches the referenced definition, so walk resolves the $ref and validates successfully."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - boolean schema true (always valid)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "The schema is the literal boolean true. According to JSON\u2011Schema spec, any instance is valid against a true schema, so walk must return success regardless of the node content."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - boolean schema false (always invalid)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"anything\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing a ValidationMessage indicating instance does not match boolean false schema (isSuccess() == false)",
+        "description": "The schema is the literal boolean false. No instance can satisfy it, so walk must always return a failure."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - additionalProperties false with extra property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"id\":1,\"extra\":\"not allowed\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing additionalProperties ValidationMessage for \"extra\" (isSuccess() == false)",
+        "description": "Schema defines an object with property \"id\" and sets \"additionalProperties\": false. The supplied node contains an unexpected property \"extra\", which must be reported as an error."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - anyOf with one matching subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "42"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema uses \"anyOf\" with two subschemas: one requiring a string, the other requiring an integer. The node is an integer, satisfying the second subschema, so overall validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - anyOf with none matching",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "true"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing anyOf\u2011validation ValidationMessage (isSuccess() == false)",
+        "description": "Same anyOf schema as above, but the node is a boolean, which matches neither subschema, leading to a validation failure."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - recursive schema (self\u2011reference) valid",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"value\":1,\"next\":{\"value\":2,\"next\":null}}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Schema defines a recursive object where \"next\" is either null or another object of the same schema. The supplied linked\u2011list structure conforms, so walk should succeed without infinite recursion."
+      }
+    ]
+  },
+  {
+    "group": "Validate schema flag true - recursive schema (self\u2011reference) invalid",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"value\":\"not an int\",\"next\":{}}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult containing type\u2011mismatch for \"value\" and possibly missing\u2011required\u2011property for \"next.value\" (isSuccess() == false)",
+        "description": "Same recursive schema, but the root \"value\" is a string instead of the required integer and the nested \"next\" object lacks required fields. walk must detect both errors."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref causing UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"$ref\":\"#/definitions/%ZZinvalid\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException wrapping UnsupportedEncodingException (message contains 'Invalid URL encoding')",
+        "description": "The schema contains a $ref with malformed percent\u2011encoding. During walk the code attempts to URL\u2011decode the reference, which throws UnsupportedEncodingException that is wrapped in a RuntimeException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $id URI causing URISyntaxException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"$id\":\"ht!tp://[invalid]\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException wrapping URISyntaxException (message contains 'Illegal character in scheme name')",
+        "description": "The schema defines an $id with an invalid URI. When walk creates the ExecutionContext it tries to resolve the URI, triggering a URISyntaxException that is wrapped in a RuntimeException."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref leading to StackOverflowError",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"$ref\":\"#/definitions/circular\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "StackOverflowError (or ValidationException indicating recursion limit exceeded)",
+        "description": "The schema contains a $ref that ultimately references itself, creating an infinite resolution loop. The walk implementation detects this and throws a StackOverflowError (or a custom ValidationException if recursion depth is limited)."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported schema node type (number) causing IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "123"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException (message contains 'Schema node must be an object or boolean')",
+        "description": "The root schema node is a numeric literal instead of an object or boolean. walk validates the schema structure before processing the instance and throws IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Null schema node leading to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException (message contains 'schemaNode is null')",
+        "description": "A JsonSchema instance is created with a null schemaNode (e.g., via JsonSchema.from(..., null, ...)). When walk is invoked the internal code dereferences the schemaNode, resulting in a NullPointerException."
+      }
+    ]
+  }
+]

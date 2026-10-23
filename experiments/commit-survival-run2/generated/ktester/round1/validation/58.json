@@ -1,0 +1,580 @@
+{
+  "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.673,
+    "log": "generated/ktester/round1/validation-logs/58/test/javac.txt"
+  },
+  "runs": [
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests#walk_additionalPropAllowedFails()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfMatchesInteger()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfNoMatch()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveValid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveInvalid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateTrue()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateFalse()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests#walk_schemaNodeIsNumberThrows()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests#walk_requiredAndType(boolean,boolean,java.lang.String,java.lang.String[])",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refResolvesSuccessfully()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refUnresolvedFails()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/run1"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.17,
+      "log": "generated/ktester/round1/validation-logs/58/test/run1/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests#walk_additionalPropAllowedFails()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfMatchesInteger()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfNoMatch()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveValid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveInvalid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateTrue()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateFalse()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests#walk_schemaNodeIsNumberThrows()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests#walk_requiredAndType(boolean,boolean,java.lang.String,java.lang.String[])",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refResolvesSuccessfully()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refUnresolvedFails()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/run2"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.17,
+      "log": "generated/ktester/round1/validation-logs/58/test/run2/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests#walk_additionalPropAllowedFails()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfMatchesInteger()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfNoMatch()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveValid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveInvalid()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateTrue()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateFalse()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests#walk_schemaNodeIsNumberThrows()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests#walk_requiredAndType(boolean,boolean,java.lang.String,java.lang.String[])",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeSuccess()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeFailure()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refResolvesSuccessfully()",
+        "--select-method",
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refUnresolvedFails()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/58/test/run3"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.073,
+      "log": "generated/ktester/round1/validation-logs/58/test/run3/console.txt"
+    }
+  ],
+  "methods": [
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests",
+      "method": "walk_additionalPropAllowedFails",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests|walk_additionalPropAllowedFails",
+      "body_hash": "2b6b38eb79fa89b46952c2060357bda0020c3d1add54616600e8269e097fdbd3",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$AdditionalPropertiesTests#walk_additionalPropAllowedFails()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests",
+      "method": "walk_anyOfMatchesInteger",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests|walk_anyOfMatchesInteger",
+      "body_hash": "52e784f94c92d29f69b049619bf1632d84122374841eb318b42083f20cc7c20a",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfMatchesInteger()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests",
+      "method": "walk_anyOfNoMatch",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests|walk_anyOfNoMatch",
+      "body_hash": "a95e1923fe14b9440705ee7f43e70c4f5ba4affc79e175984bff1328c81d4d12",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$AnyOfTests#walk_anyOfNoMatch()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests",
+      "method": "walk_recursiveValid",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests|walk_recursiveValid",
+      "body_hash": "ee03a42513c8cb4f62a97eb7d1dcee5dacdbd564e7852dbe46092affdffa7290",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveValid()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests",
+      "method": "walk_recursiveInvalid",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests|walk_recursiveInvalid",
+      "body_hash": "84cd76549687e6ae31eaaa4d3bcc3bb64f3f87b099bbdda5ba6617179a7e5577",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$RecursiveSchemaTests#walk_recursiveInvalid()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests",
+      "method": "walk_nullNodeWhenValidateTrue",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests|walk_nullNodeWhenValidateTrue",
+      "body_hash": "7ca846e28f75518d16d213572434ddd45b6322c163d1a604771ed2407b26b04b",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateTrue()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests",
+      "method": "walk_nullNodeWhenValidateFalse",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests|walk_nullNodeWhenValidateFalse",
+      "body_hash": "4c38a80b4e67c9915f12c1e04a3e0c4797e3a61026879d233a5e5ccb642e416b",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$NullInstanceTests#walk_nullNodeWhenValidateFalse()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests",
+      "method": "walk_schemaNodeIsNumberThrows",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests|walk_schemaNodeIsNumberThrows",
+      "body_hash": "e24e0945a8842be31fe426c76194a5f550571f91704ae511efc61ff188bd41a0",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "fail",
+      "message": "Expected com.networknt.schema.JsonSchemaException to be thrown, but nothing was thrown.",
+      "flaky": false,
+      "initial_state": "fail",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$UnsupportedSchemaNodeTests#walk_schemaNodeIsNumberThrows()"
+      ],
+      "baseline_states": [
+        "fail",
+        "fail",
+        "fail"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests",
+      "method": "walk_requiredAndType",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests|walk_requiredAndType",
+      "body_hash": "9fb7526dc7d329d50efdb8846963ede441c7a70d3f9bbcaaa928eb43f81cb983",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$RequiredAndTypeTests#walk_requiredAndType(boolean,boolean,java.lang.String,java.lang.String[])"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests",
+      "method": "walk_enumSuccess",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$EnumTests|walk_enumSuccess",
+      "body_hash": "a2b25c24189785a7b9ad9d51e9efc367afccc798909eda6c4e59606bb926a664",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumSuccess()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests",
+      "method": "walk_enumFailure",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$EnumTests|walk_enumFailure",
+      "body_hash": "321689fb212fb83c4d56c9b8ade125f64ed1e9aba65ed6caf30eedb018b7d819",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$EnumTests#walk_enumFailure()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests",
+      "method": "walk_emailPatternSuccess",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests|walk_emailPatternSuccess",
+      "body_hash": "411987c611296945d29bbfd9461c284b3ebf4ae8a48bf63335da617ae3564e53",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternSuccess()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests",
+      "method": "walk_emailPatternFailure",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests|walk_emailPatternFailure",
+      "body_hash": "99774f8bfaab826f9dd7a616e11b124e6eb4d98109b93422b743e546a55370b8",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_emailPatternFailure()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests",
+      "method": "walk_dateTimeSuccess",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests|walk_dateTimeSuccess",
+      "body_hash": "d064fc6dc221c3c04ff5561690fc6a72c4246b47a660d6846a4df9abda38ae5d",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeSuccess()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests",
+      "method": "walk_dateTimeFailure",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests|walk_dateTimeFailure",
+      "body_hash": "5d321d6c8dcf91b49856080de7b8dce4cf62265daae9b45f6cf6f9648db14e80",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$PatternAndFormatTests#walk_dateTimeFailure()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$RefTests",
+      "method": "walk_refResolvesSuccessfully",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$RefTests|walk_refResolvesSuccessfully",
+      "body_hash": "f2c1d79d164549745b7d26caae624a6be34fc28ba0baf83bc54acca61b535a71",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refResolvesSuccessfully()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java",
+      "class": "com.networknt.schema.JsonSchema_walk_2_Test$RefTests",
+      "method": "walk_refUnresolvedFails",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java|com.networknt.schema.JsonSchema_walk_2_Test$RefTests|walk_refUnresolvedFails",
+      "body_hash": "da5e3d7596203ded10d3ec8a8106eb58d19c279b79b3a14da27f76f70b4ea35f",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_walk_2_Test$RefTests#walk_refUnresolvedFails()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_walk_2_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.416,
+    "log": "generated/ktester/round1/validation-logs/58/inventory.tsv"
+  }
+}

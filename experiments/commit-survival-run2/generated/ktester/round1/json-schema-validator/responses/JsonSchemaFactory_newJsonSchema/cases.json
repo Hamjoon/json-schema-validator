@@ -1,0 +1,462 @@
+[
+  {
+    "group": "Valid inputs \u2013 typical JSON schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose getSchemaNode() equals the supplied schemaNode and whose getCurrentUri() equals the supplied schemaUri",
+        "description": "Happy\u2011path test: a well\u2011formed JSON schema, a valid HTTP URI and a non\u2011null configuration should result in a successfully created JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "Null configuration \u2013 default behaviour",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/tmp/meta-schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; the internal ValidationContext should contain a default SchemaValidatorsConfig (i.e., config field is not null)",
+        "description": "When the config argument is null the method must still create a JsonSchema using the default configuration."
+      }
+    ]
+  },
+  {
+    "group": "Null schema URI \u2013 internal handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"array\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose current URI is null (or a fallback URI as defined by the implementation)",
+        "description": "The factory should accept a null base URI and still create a schema; this verifies that the method does not throw NPE when schemaUri is null."
+      }
+    ]
+  },
+  {
+    "group": "Null schema node \u2013 error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/empty.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "createValidationContext is expected to require a non\u2011null JsonNode; passing null should result in an NPE."
+      }
+    ]
+  },
+  {
+    "group": "Complex schema with nested subschemas \u2013 branch coverage in doCreate",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/complex.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"address\\\":{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"street\\\":{\\\"type\\\":\\\"string\\\"}}}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema where nested subschema objects are correctly created (e.g., schema.getSchemaNode().path(\"properties\").path(\"address\").has(\"properties\"))",
+        "description": "A schema containing nested objects forces doCreate to traverse multiple branches (object, properties, subschema retrieval). This test ensures those internal branches are exercised."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref \u2013 URI translation branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/main.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$ref\\\":\\\"definitions.json#/def\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a JsonSchema whose internal reference has been resolved via the URITranslator (i.e., the resulting schema is not a raw $ref node)",
+        "description": "When a schema contains a $ref, doCreate will invoke the URI translator and follow a different code path. This test validates that the translation occurs without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Empty schema node \u2013 minimal object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/empty-schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema whose getSchemaNode() is an empty ObjectNode and whose current URI equals the supplied schemaUri",
+        "description": "An empty JSON object is a valid (though trivial) schema. The factory should create a JsonSchema instance without throwing and preserve the supplied URI."
+      }
+    ]
+  },
+  {
+    "group": "Boolean schema \u2013 true literal",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/tmp/boolean-schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"true\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema whose getSchemaNode().isBoolean() is true and current URI equals the supplied file URI",
+        "description": "Draft\u201107 allows a schema to be the literal boolean true. The method must accept such a node and produce a JsonSchema that reflects the boolean schema."
+      }
+    ]
+  },
+  {
+    "group": "Custom configuration \u2013 typeLoose enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/type-loose.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":5}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setTypeLoose(true); } }"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; the underlying ValidationContext contains a config where isTypeLoose() == true",
+        "description": "Verifies that a non\u2011default configuration (typeLoose flag) is correctly stored in the ValidationContext and propagated to the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Both schemaUri and config null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; the schema\u2019s current URI is null (or a fallback) and the internal ValidationContext uses a default SchemaValidatorsConfig",
+        "description": "Ensures the method gracefully handles both a null base URI and a null configuration, falling back to defaults without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Schema URI containing a fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json#/definitions/foo\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$ref\\\":\\\"#/definitions/bar\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema whose getCurrentUri().toString() contains the original fragment '#/definitions/foo'",
+        "description": "Checks that the factory does not strip the fragment part of the supplied URI; the fragment should be retained in the created schema\u2019s current URI."
+      }
+    ]
+  },
+  {
+    "group": "Schema URI with query parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json?version=1\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema whose getCurrentUri().getQuery() equals 'version=1'",
+        "description": "Ensures that URIs containing query strings are preserved unchanged in the created schema."
+      }
+    ]
+  },
+  {
+    "group": "$id and $schema meta\u2011schema handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/meta.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$id\\\":\\\"http://example.com/meta.json\\\",\\\"$schema\\\":\\\"http://json-schema.org/draft-06/schema#\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; the schema node retains both $id and $schema fields and the factory normalizes the meta\u2011schema URI to the internal canonical form",
+        "description": "Verifies that when a schema declares its own $id and $schema (draft\u201106), the factory records them correctly and applies any internal normalization logic."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported keyword \u2013 should still create schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/unknown-key.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\",\\\"unknownKeyword\\\":123}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; validation of the schema itself is not performed here, so the unknown keyword does not cause an exception",
+        "description": "Ensures that the factory does not validate the content of the schema during creation; unknown keywords are tolerated at this stage."
+      }
+    ]
+  },
+  {
+    "group": "Array schema with items subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/array-schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema where getSchemaNode().path(\"items\").path(\"type\").asText() equals 'string'",
+        "description": "Tests that an array schema with an embedded items subschema triggers the appropriate branch in doCreate and the items node is correctly attached."
+      }
+    ]
+  },
+  {
+    "group": "Schema node missing explicit type \u2013 still creates",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/no-type.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"properties\\\":{\\\"age\\\":{\\\"type\\\":\\\"integer\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; the node is accepted even though the top\u2011level 'type' keyword is absent",
+        "description": "Ensures that the factory does not require a top\u2011level 'type' keyword; schemas that rely on implicit object type should still be instantiated."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema node \u2013 numeric literal",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/numeric.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new com.fasterxml.jackson.databind.node.IntNode(42)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The factory expects the root schema node to be an object, array, or boolean. Supplying a numeric literal should cause an IllegalArgumentException during schema creation."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema node \u2013 MissingNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/missing.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "com.fasterxml.jackson.databind.node.MissingNode.getInstance()"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A MissingNode represents the absence of a JSON value. Passing it as the schema root should trigger an IllegalArgumentException because the factory cannot build a JsonSchema from a non\u2011existent node."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported URI scheme \u2013 should raise exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"unknown://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The factory\u2019s internal URITranslator only supports http, https, file and classpath schemes. Supplying an unknown scheme should cause an IllegalArgumentException during URI translation."
+      }
+    ]
+  },
+  {
+    "group": "Null configuration \u2013 internal NPE (if not tolerated)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/null-config.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the implementation of ValidationContext.setConfig does not accept a null argument, passing null should result in a NullPointerException. This test captures that potential failure mode."
+      }
+    ]
+  }
+]

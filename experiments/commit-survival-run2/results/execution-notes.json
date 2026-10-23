@@ -2,6 +2,8 @@
   "deviations": [],
   "clarifications": [
     "Apply verified ranking: AnyOfValidator and OneOfValidator remain eligible; threshold reached at 64. Illustrative 73-method expected result does not follow the rule.",
-    "Addendum removes the original minimum-three-classes stop. Prior stopped state retained in results/stopped-step1 and docs/handover-part1-stopped.md."
+    "Addendum removes the original minimum-three-classes stop. Prior stopped state retained in results/stopped-step1 and docs/handover-part1-stopped.md.",
+    "Dev attempts all frozen Java sources at every measurement. If whole-suite javac fails, per-class compilation preserves the inherited class-specific failure attribution. Successful whole-suite classes are reused across isolated launches; only denominator methods are selected.",
+    "Host continuation driver reloaded twice while only waiting for the already-running KTester round, to incorporate final reporting/commit bookkeeping. No model/test subprocess was interrupted or duplicated. Repeated await entries remain in driver-events.json."
   ]
 }

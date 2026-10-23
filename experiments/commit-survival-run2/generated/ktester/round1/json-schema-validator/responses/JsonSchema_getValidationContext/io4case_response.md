@@ -1,0 +1,54 @@
+{
+    "testCases": [
+        {
+            "group": "testGetValidationContextReturnsProvidedContext",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "the same ValidationContext instance that was supplied to the factory method",
+                    "description": "Create a JsonSchema via the static `from` factory with a non‑null ValidationContext and verify that `getValidationContext()` returns exactly that instance."
+                }
+            ]
+        },
+        {
+            "group": "testGetValidationContextOnChildSchema",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "the same ValidationContext instance as the parent schema",
+                    "description": "Create a parent JsonSchema with a known ValidationContext, then create a child schema using `createChildSchema`. The child’s `getValidationContext()` should return the identical ValidationContext object that the parent holds."
+                }
+            ]
+        },
+        {
+            "group": "testGetValidationContextWhenNullContext",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "null",
+                    "description": "Invoke the `from` factory with a `null` ValidationContext (allowed by the API) and confirm that `getValidationContext()` returns `null` without throwing an exception."
+                }
+            ]
+        },
+        {
+            "group": "testGetValidationContextAfterReusingContextAcrossMultipleSchemas",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "the same ValidationContext instance for all schemas created with it",
+                    "description": "Create several independent JsonSchema objects using the same ValidationContext instance and verify that each schema’s `getValidationContext()` returns that shared instance."
+                }
+            ]
+        },
+        {
+            "group": "testGetValidationContextImmutability",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "the original ValidationContext instance (no new instance is created)",
+                    "description": "After obtaining the ValidationContext from a JsonSchema, modify the returned reference (if mutable) and ensure that subsequent calls to `getValidationContext()` still return the original object reference, confirming that the method does not create a copy."
+                }
+            ]
+        }
+    ]
+}

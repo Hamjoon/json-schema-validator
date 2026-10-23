@@ -1,0 +1,60 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (3):
+  JUnit Jupiter:JsonSchemaFactory_builder_2_Test:builder(JsonSchemaFactory) returns a new Builder pre‑populated with blueprint data
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_2_Test', methodName = 'testBuilderCopiesBlueprintConfiguration', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Blueprint factory must remain functional after the derived builder is mutated ==> Unexpected exception thrown: com.networknt.schema.JsonSchemaException: Unknown MetaSchema: http://example.com/meta
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+       org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:84)
+       org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:75)
+       org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:62)
+       org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3249)
+       [...]
+     Caused by: com.networknt.schema.JsonSchemaException: Unknown MetaSchema: http://example.com/meta
+       com.networknt.schema.JsonSchemaFactory.lambda$fromId$0(JsonSchemaFactory.java:361)
+       java.base/java.util.Optional.orElseThrow(Optional.java:403)
+       com.networknt.schema.JsonSchemaFactory.fromId(JsonSchemaFactory.java:361)
+       java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708)
+       com.networknt.schema.JsonSchemaFactory.findMetaSchemaForSchema(JsonSchemaFactory.java:352)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_2_Test:builder(JsonSchemaFactory) - handling of empty blueprint
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_2_Test', methodName = 'testBuilderWithEmptyBlueprint', methodParameterTypes = '']
+    => java.lang.RuntimeException: java.lang.NoSuchFieldException: translators
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.getPrivateField(JsonSchemaFactory_builder_2_Test.java:185)
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.testBuilderWithEmptyBlueprint(JsonSchemaFactory_builder_2_Test.java:210)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       [...]
+     Caused by: java.lang.NoSuchFieldException: translators
+       java.base/java.lang.Class.getDeclaredField(Class.java:2612)
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.getPrivateField(JsonSchemaFactory_builder_2_Test.java:181)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_2_Test:builder(JsonSchemaFactory) - copies URITranslators
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_2_Test', methodName = 'testBuilderCopiesUriTranslators', methodParameterTypes = '']
+    => java.lang.RuntimeException: java.lang.NoSuchFieldException: translators
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.getPrivateField(JsonSchemaFactory_builder_2_Test.java:185)
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.testBuilderCopiesUriTranslators(JsonSchemaFactory_builder_2_Test.java:293)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       [...]
+     Caused by: java.lang.NoSuchFieldException: translators
+       java.base/java.lang.Class.getDeclaredField(Class.java:2612)
+       com.networknt.schema.JsonSchemaFactory_builder_2_Test.getPrivateField(JsonSchemaFactory_builder_2_Test.java:181)
+       [...]
+
+Test run finished after 634 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        10 tests found           ]
+[         0 tests skipped         ]
+[        10 tests started         ]
+[         0 tests aborted         ]
+[         7 tests successful      ]
+[         3 tests failed          ]
+

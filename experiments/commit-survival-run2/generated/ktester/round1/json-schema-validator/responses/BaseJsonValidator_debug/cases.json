@@ -1,0 +1,347 @@
+[
+  {
+    "group": "debugMethodTests",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger1"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeA"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeA"
+          },
+          {
+            "parameter": "at",
+            "value": "/path/to/element"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeA, jsonRootNodeA, \"/path/to/element\"]",
+        "description": "Standard case where all arguments are non\u2011null; verifies that the debug log contains the exact placeholders and supplied values."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger2"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeB"
+          },
+          {
+            "parameter": "at",
+            "value": "/another/path"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [null, jsonRootNodeB, \"/another/path\"]",
+        "description": "Node argument is null; ensures the method still forwards the null reference to the logger without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger3"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeC"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "at",
+            "value": "/yet/another/path"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeC, null, \"/yet/another/path\"]",
+        "description": "RootNode argument is null; validates that null is correctly passed to the logger."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger4"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeD"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeD"
+          },
+          {
+            "parameter": "at",
+            "value": "\"\" (empty string)"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeD, jsonRootNodeD, \"\"]",
+        "description": "The 'at' path is an empty string; checks that the method does not alter empty values."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger5"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeE"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeE"
+          },
+          {
+            "parameter": "at",
+            "value": "/path/with/special/chars/!@#$%^&*()"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeE, jsonRootNodeE, \"/path/with/special/chars/!@#$%^&*()\"]",
+        "description": "Path contains special characters; ensures the string is passed unchanged to the logger."
+      }
+    ]
+  },
+  {
+    "group": "debugMethodAdditionalTests",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger6"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "at",
+            "value": "/both/null"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [null, null, \"/both/null\"]",
+        "description": "Both node and rootNode are null while 'at' is a normal non\u2011empty string; verifies that null placeholders are passed correctly for multiple null arguments."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger7"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeF"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeF"
+          },
+          {
+            "parameter": "at",
+            "value": "null"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeF, jsonRootNodeF, null]",
+        "description": "The 'at' argument is null; ensures the method forwards a null path without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger8"
+          },
+          {
+            "parameter": "node",
+            "value": "emptyObjectNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "emptyArrayNode"
+          },
+          {
+            "parameter": "at",
+            "value": "/empty/nodes"
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [emptyObjectNode, emptyArrayNode, \"/empty/nodes\"]",
+        "description": "Node is an empty ObjectNode and rootNode is an empty ArrayNode; checks that complex but empty JSON structures are logged correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger9"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeG"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeG"
+          },
+          {
+            "parameter": "at",
+            "value": "   "
+          }
+        ],
+        "expected": "logger.debug should be invoked once with message \"validate( {}, {}, {})\" and arguments [jsonNodeG, jsonRootNodeG, \"   \"]",
+        "description": "The 'at' argument contains only whitespace; validates that whitespace is preserved and not trimmed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "nullLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeH"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeH"
+          },
+          {
+            "parameter": "at",
+            "value": "/null/logger"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Logger reference is null; the static method should throw a NullPointerException when attempting to call logger.debug."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "exceptionThrowingLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeI"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeI"
+          },
+          {
+            "parameter": "at",
+            "value": "/exception/case"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "Logger.debug is stubbed to throw a RuntimeException; verifies that the exception propagates out of the debug method."
+      }
+    ]
+  },
+  {
+    "group": "debugMethodExceptionScenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger10"
+          },
+          {
+            "parameter": "node",
+            "value": "exceptionThrowingNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeJ"
+          },
+          {
+            "parameter": "at",
+            "value": "/exception/node"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "The JsonNode implementation throws a RuntimeException from its toString() method; SLF4J evaluates the argument during formatting, so the exception propagates out of debug()."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger11"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeK"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "exceptionThrowingRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "/exception/root"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "The rootNode's toString() throws a RuntimeException; the formatter invokes toString on each argument, causing the exception to be thrown from debug()."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger12"
+          },
+          {
+            "parameter": "node",
+            "value": "exceptionThrowingNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "exceptionThrowingRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "/both/exception"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "Both node and rootNode throw RuntimeException from toString(); the first exception encountered during argument evaluation is propagated."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "errorThrowingLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeL"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "jsonRootNodeL"
+          },
+          {
+            "parameter": "at",
+            "value": "/error/logger"
+          }
+        ],
+        "expected": "AssertionError",
+        "description": "Logger.debug is stubbed to throw an AssertionError (a subclass of Error); the method does not catch Errors, so the AssertionError propagates unchanged."
+      }
+    ]
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "group": "preloadJsonSchemas - normal operation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List of two mock JsonSchema objects (schemaA, schemaB) where initializeValidators() does nothing"
+          }
+        ],
+        "expected": "initializeValidators() is invoked exactly once on schemaA and exactly once on schemaB; method returns normally without exception",
+        "description": "Verifies that the method iterates over the collection and calls initializeValidators() for each schema."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - empty collection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Empty list []"
+          }
+        ],
+        "expected": "No call to initializeValidators(); method returns normally",
+        "description": "Ensures that an empty collection does not cause any interaction with JsonSchema objects."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - null element in collection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing a single null element [null]"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to invoke initializeValidators() on null",
+        "description": "Checks that a null element inside the collection triggers a NPE, matching the behaviour of a plain for\u2011each loop."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - null collection argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown because the method tries to iterate over a null reference",
+        "description": "Validates that passing null as the collection argument results in a NPE, as the method does not guard against null."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - schema throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List with one mock JsonSchema (faultySchema) whose initializeValidators() throws RuntimeException(\"init error\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"init error\" propagates out of preloadJsonSchemas",
+        "description": "Ensures that if a schema's initializeValidators() throws an unchecked exception, the method does not swallow it and the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - duplicate schema instances",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing the same mock JsonSchema instance 'schemaX' three times"
+          }
+        ],
+        "expected": "initializeValidators() is invoked exactly three times on schemaX; method returns normally without exception",
+        "description": "Ensures that the method does not deduplicate elements and calls initializeValidators() for each occurrence, even when the same object appears multiple times in the collection."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - unmodifiable collection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Collections.unmodifiableList of two mock JsonSchema objects (schemaU1, schemaU2) where initializeValidators() does nothing"
+          }
+        ],
+        "expected": "initializeValidators() is invoked once on schemaU1 and once on schemaU2; method returns normally without exception",
+        "description": "Verifies that the method works with an unmodifiable collection, i.e., it does not attempt to modify the collection while iterating."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - iterator throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Custom Collection whose iterator.next() throws IllegalStateException(\"iterator failure\") after returning the first mock schema"
+          }
+        ],
+        "expected": "IllegalStateException with message \"iterator failure\" propagates out of preloadJsonSchemas",
+        "description": "Confirms that any exception thrown by the iterator during traversal is not caught by the method and propagates to the caller."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - mixed null and valid schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing a mock JsonSchema (schemaM) followed by a null element"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to invoke initializeValidators() on the null element",
+        "description": "Checks that the method stops processing as soon as it encounters a null entry, mirroring the behaviour of a plain for\u2011each loop, even when preceding elements are valid."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - side\u2011effect verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List of two mock JsonSchema objects (schemaS1, schemaS2) whose initializeValidators() increments a shared AtomicInteger counter"
+          }
+        ],
+        "expected": "After method execution the counter value is 2, indicating that initializeValidators() was called once for each schema; method returns normally",
+        "description": "Uses a side\u2011effect (incrementing a counter) to verify that initializeValidators() is indeed invoked for every schema in the collection."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - raw collection with wrong element type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Raw List containing a String element \"not a schema\" (e.g., List rawList = new ArrayList(); rawList.add(\"not a schema\");) passed as Collection<JsonSchema> via unchecked cast"
+          }
+        ],
+        "expected": "ClassCastException is thrown when the for\u2011each loop attempts to cast the String element to JsonSchema",
+        "description": "Verifies that passing a raw collection containing objects that are not instances of JsonSchema results in a ClassCastException during iteration."
+      }
+    ]
+  }
+]

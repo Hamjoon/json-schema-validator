@@ -25,6 +25,7 @@ def main():
             result=run_group(i,g,args.phase,alive[str(i)][g] if alive is not None else None)
             killed=[run for f in result['files'] for run in [f['compile'],*f['runs']] if run.get('exit_code') in [-9,137]]
             if result.get('coverage_report',{}).get('exit_code') in [-9,137]:killed.append(result['coverage_report'])
+            if result.get('whole_frozen_suite_compile',{}).get('exit_code') in [-9,137]:killed.append(result['whole_frozen_suite_compile'])
             print(json.dumps(dict(phase=args.phase,index=i,group=g,seconds=result['seconds'],states=__import__('collections').Counter(m['state'] for m in result['methods']))),flush=True)
             return dict(index=i,group=g,ok=result['status']=='evaluated',killed=bool(killed))
         except Exception:

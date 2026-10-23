@@ -1,0 +1,197 @@
+[
+  {
+    "group": "BaseJsonValidator.getSchemaPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": null
+          }
+        ],
+        "expected": "null",
+        "description": "When the internal `schemaPath` field is never initialized (remains null), `getSchemaPath()` should return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": ""
+          }
+        ],
+        "expected": "\"\"",
+        "description": "When `schemaPath` is set to an empty string, the method should return the empty string unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/name"
+          }
+        ],
+        "expected": "\"/properties/name\"",
+        "description": "Typical use\u2011case: `schemaPath` contains a JSON Pointer to a property. The method must return the exact string."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/items/0/properties/age"
+          }
+        ],
+        "expected": "\"/items/0/properties/age\"",
+        "description": "Complex path with array index and nested properties \u2013 verifies that the method does not alter or truncate the value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/$defs/Person~1address"
+          }
+        ],
+        "expected": "\"/$defs/Person~1address\"",
+        "description": "Path containing escaped characters (`~1` for `/`) to ensure the raw stored value is returned unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": " "
+          }
+        ],
+        "expected": " ",
+        "description": "A single whitespace character should be returned unchanged, confirming that the method does not trim or modify whitespace."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "\t\n"
+          }
+        ],
+        "expected": "\t\n",
+        "description": "Tab and newline characters are preserved exactly, testing that control characters are not altered."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/na\u00efve"
+          }
+        ],
+        "expected": "/properties/na\u00efve",
+        "description": "Unicode characters (e.g., \u2018\u00ef\u2019) inside the path are returned verbatim, verifying UTF\u20118 handling."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/\\name"
+          }
+        ],
+        "expected": "/properties/\\name",
+        "description": "Backslash characters are part of the stored string and should be returned unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/~0name"
+          }
+        ],
+        "expected": "/properties/~0name",
+        "description": "Escaped tilde (`~0`) representing a literal '~' must be returned as\u2011is, testing handling of JSON\u2011Pointer escape sequences."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/~1name"
+          }
+        ],
+        "expected": "/properties/~1name",
+        "description": "Escaped forward\u2011slash (`~1`) representing a literal '/' is returned unchanged, covering another JSON\u2011Pointer escape case."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/"
+          }
+        ],
+        "expected": "/",
+        "description": "Root pointer '/' should be returned exactly, confirming that a minimal non\u2011empty path is handled correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/a"
+          }
+        ],
+        "expected": "/a",
+        "description": "Simple single\u2011character property name verifies basic functionality."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/very/long/path/"
+          }
+        ],
+        "expected": "/very/long/path/",
+        "description": "A relatively long path (multiple segments) should be returned unchanged, testing that length does not affect behavior."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/name?query=param"
+          }
+        ],
+        "expected": "/properties/name?query=param",
+        "description": "Path containing a query\u2011string\u2011like segment is returned verbatim, ensuring that characters beyond standard JSON\u2011Pointer syntax are not stripped."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/name#fragment"
+          }
+        ],
+        "expected": "/properties/name#fragment",
+        "description": "Path with a fragment identifier is returned unchanged, confirming that the method does not interpret or remove such characters."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/name/0/1/2/3/4/5/6/7/8/9"
+          }
+        ],
+        "expected": "/properties/name/0/1/2/3/4/5/6/7/8/9",
+        "description": "Path with many numeric segments tests that the method handles deep hierarchical pointers without modification."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/name~0~1"
+          }
+        ],
+        "expected": "/properties/name~0~1",
+        "description": "Combination of both escape sequences (`~0` and `~1`) in a single token should be preserved exactly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaPath",
+            "value": "/properties/\ud83d\ude00"
+          }
+        ],
+        "expected": "/properties/\ud83d\ude00",
+        "description": "Emoji character inside the path verifies that surrogate pairs are handled correctly."
+      }
+    ]
+  }
+]

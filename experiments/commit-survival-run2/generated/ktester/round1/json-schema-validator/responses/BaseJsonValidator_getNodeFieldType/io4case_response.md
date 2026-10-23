@@ -1,0 +1,64 @@
+{
+    "newTestCases": [
+        {
+            "group": "getNodeFieldType - type field numeric",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "123",
+                    "description": "The parent schema's schema node contains a \"type\" field whose value is a numeric node (123). The method should return the numeric value as its string representation \"123\"."
+                }
+            ]
+        },
+        {
+            "group": "getNodeFieldType - type field boolean",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "true",
+                    "description": "The parent schema's schema node contains a \"type\" field whose value is a boolean node (true). The method should return the boolean value as its string representation \"true\"."
+                }
+            ]
+        },
+        {
+            "group": "getNodeFieldType - type field array",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "",
+                    "description": "The parent schema's schema node contains a \"type\" field whose value is an array node (e.g., [\"string\", \"null\"]). For non‑textual nodes Jackson's asText() returns an empty string, so the method should return \"\"."
+                }
+            ]
+        },
+        {
+            "group": "getNodeFieldType - type field null node",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "null",
+                    "description": "The parent schema's schema node contains a \"type\" field whose value is an explicit JSON null. Jackson's NullNode.asText() yields the string \"null\", which the method should return."
+                }
+            ]
+        },
+        {
+            "group": "getNodeFieldType - type field object",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "",
+                    "description": "The parent schema's schema node contains a \"type\" field whose value is an object node. Since the node is not textual, asText() returns an empty string; the method should therefore return \"\"."
+                }
+            ]
+        },
+        {
+            "group": "getNodeFieldType - schema node null",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "NullPointerException",
+                    "description": "The parent schema's getSchemaNode() returns null. Attempting to call get(\"type\") on a null reference triggers a NullPointerException. This test verifies that the method does not guard against a null schema node."
+                }
+            ]
+        }
+    ]
+}

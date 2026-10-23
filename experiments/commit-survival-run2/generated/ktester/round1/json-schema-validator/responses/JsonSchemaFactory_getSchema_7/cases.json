@@ -1,0 +1,287 @@
+[
+  {
+    "group": "Valid inputs \u2013 both JsonNode and Config provided",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance whose internal schema node equals the supplied JsonNode and whose config equals the supplied config",
+        "description": "When a well\u2011formed JsonNode and a non\u2011null SchemaValidatorsConfig are supplied, getSchema should create a JsonSchema wrapping the node without throwing any exception."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 config is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance whose internal schema node equals the supplied JsonNode and whose config is null (or default config used internally)",
+        "description": "The method should accept a null config and fall back to the factory\u2019s default configuration rather than throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 jsonNode is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating that the schema JsonNode cannot be null",
+        "description": "Passing a null JsonNode is illegal; the method (via newJsonSchema) should raise an exception rather than returning a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 both parameters null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) because the schema JsonNode is required",
+        "description": "Even when config is also null, the missing JsonNode should cause the method to fail fast."
+      }
+    ]
+  },
+  {
+    "group": "Edge case \u2013 empty JSON object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance that represents an empty schema (no validation rules)",
+        "description": "An empty JsonNode should still produce a valid JsonSchema object; this verifies that the method does not treat empty objects as invalid."
+      }
+    ]
+  },
+  {
+    "group": "Edge case \u2013 malformed JSON node (non\u2011object root)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "\"just a string\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance (factory may accept any JsonNode) or IllegalArgumentException if the implementation validates the root type",
+        "description": "Testing how the method behaves when the supplied JsonNode is a primitive value rather than an object; some implementations allow it, others reject it."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 config with custom settings",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"string\", \"minLength\": 5 }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setFailFast(true).setTypeLoose(true)"
+          }
+        ],
+        "expected": "JsonSchema instance whose internal schema node equals the supplied JsonNode and whose config has failFast=true and typeLoose=true",
+        "description": "When a well\u2011formed JsonNode is supplied together with a non\u2011default SchemaValidatorsConfig, the factory should propagate the custom settings into the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 array type schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"array\", \"items\": { \"type\": \"integer\" }, \"minItems\": 2 }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance representing an array schema with the specified constraints",
+        "description": "The method should accept a schema that describes an array and return a JsonSchema that mirrors those constraints."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 boolean schema true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "true"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance whose internal schema node is the boolean true (represents a schema that always validates)",
+        "description": "JSON Schema draft\u20117 permits a boolean value as the whole schema; the factory must handle this case without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 jsonNode is a numeric primitive",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "42"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the root schema node must be an object or boolean",
+        "description": "A numeric root is not a valid JSON Schema; the factory should reject it early with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 schema containing $ref (no resolution)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$ref\": \"#/definitions/name\", \"definitions\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance that stores the supplied JsonNode (including the $ref) without attempting to resolve it at creation time",
+        "description": "The factory should not resolve $ref during getSchema; it merely wraps the node, allowing later validation to handle reference resolution."
+      }
+    ]
+  },
+  {
+    "group": "Valid inputs \u2013 nested definitions and $id",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"http://example.com/schemas/person\", \"type\": \"object\", \"properties\": { \"address\": { \"$ref\": \"address.json\" } }, \"definitions\": { \"address\": { \"type\": \"object\", \"properties\": { \"city\": { \"type\": \"string\" } } } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance whose internal schema node contains the $id, properties, and definitions exactly as supplied",
+        "description": "Ensures that complex schemas with $id, nested definitions and external $ref are accepted and preserved by the factory."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 jsonNode is an empty array",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "[]"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException because a JSON Schema root cannot be an array",
+        "description": "An empty JSON array is not a valid schema root; the factory should reject it with a clear exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 jsonNode is a string primitive",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "\"just a string\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the root schema node must be an object or boolean",
+        "description": "A JSON string literal is not a valid JSON Schema root; the factory should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid input \u2013 jsonNode is a JSON null literal",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the schema JsonNode cannot be a JSON null value",
+        "description": "A JSON null node is not a valid schema root; the method should throw an IllegalArgumentException rather than creating a JsonSchema."
+      }
+    ]
+  }
+]

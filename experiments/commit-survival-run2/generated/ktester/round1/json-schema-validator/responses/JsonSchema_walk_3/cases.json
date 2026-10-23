@@ -1,0 +1,467 @@
+[
+  {
+    "group": "Pre\u2011walk listener returns true \u2013 walker is executed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/myPath\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "validationMessages contains the ValidationMessage(s) returned by the JsonSchemaWalker (e.g., \"msg-from-walker\")",
+        "description": "The pre\u2011walk listeners return true, therefore the JsonSchemaWalker.walk method is invoked. Its returned ValidationMessage set must be added to the final result."
+      }
+    ]
+  },
+  {
+    "group": "Pre\u2011walk listener returns false \u2013 walker is skipped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/myPath\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "validationMessages is empty (no messages added by the walker)",
+        "description": "When the pre\u2011walk listeners return false, the JsonSchemaWalker.walk method must NOT be called. Consequently, the result set stays empty (apart from any post\u2011walk side\u2011effects)."
+      }
+    ]
+  },
+  {
+    "group": "Post\u2011walk listener is always executed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/myPath\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "post\u2011walk listener\u2019s runPostWalkListeners method is invoked exactly once for each validator entry, regardless of the pre\u2011walk result",
+        "description": "The finally block must run after the if\u2011statement, so the post\u2011walk listener is called even when the pre\u2011walk listener returns false."
+      }
+    ]
+  },
+  {
+    "group": "Exception thrown by walker \u2013 post\u2011walk still runs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/myPath\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "post\u2011walk listener is invoked before the RuntimeException propagates; the test should verify the exception is thrown and post\u2011walk was called",
+        "description": "If JsonSchemaWalker.walk throws an exception, the finally block must still execute, invoking the post\u2011walk listener. The exception should bubble up after the finally block."
+      }
+    ]
+  },
+  {
+    "group": "Multiple validators \u2013 each processed independently",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/myPath\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "validationMessages contains the union of messages returned by all walkers whose pre\u2011walk listeners returned true; post\u2011walk listener called for each validator entry",
+        "description": "When the schema has more than one validator entry, the walk method must iterate over the entire map, applying pre\u2011walk, walker (if allowed), and post\u2011walk for each entry."
+      }
+    ]
+  },
+  {
+    "group": "Empty validators map \u2013 returns empty set",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "false"
+          }
+        ],
+        "expected": "returned Set is empty and no pre\u2011walk or post\u2011walk listener methods are invoked",
+        "description": "When the schema contains no validators (getValidators() returns an empty map) the walk method should finish immediately, returning an empty ValidationMessage set and never calling any listener."
+      }
+    ]
+  },
+  {
+    "group": "Mixed pre\u2011walk outcomes \u2013 only true entries contribute messages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/mixed\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "validationMessages contains only the messages from walkers whose pre\u2011walk listener returned true (e.g., \"msg\u2011from\u2011walker\u2011A\"), walkers with pre\u2011walk false contribute nothing; post\u2011walk listener called for each validator entry",
+        "description": "The schema has two validators: A (pre\u2011walk true) and B (pre\u2011walk false). The walk method must invoke the walker for A, skip B, and finally return the union of messages from A only."
+      }
+    ]
+  },
+  {
+    "group": "Pre\u2011walk listener throws RuntimeException \u2013 post\u2011walk still executed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/exception\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "post\u2011walk listener\u2019s runPostWalkListeners is invoked once for the validator entry, then the RuntimeException from the pre\u2011walk listener propagates",
+        "description": "If keywordWalkListenerRunner.runPreWalkListeners throws an exception, the finally block must still execute, calling the post\u2011walk listener before the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "Post\u2011walk listener throws RuntimeException \u2013 exception propagates after call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/post\u2011exception\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "RuntimeException from post\u2011walk listener propagates out of walk method; any ValidationMessage(s) returned by the walker (if pre\u2011walk was true) are still added to the result set before the exception",
+        "description": "When the post\u2011walk listener throws, the exception should not be swallowed; it must be re\u2011thrown after the finally block finishes. Messages collected before the exception must still be present in the returned set (if the method returns before the exception is thrown, the test can verify the exception is thrown)."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext \u2013 listeners receive null without NPE",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/null\u2011ctx\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "walk proceeds; pre\u2011walk and post\u2011walk listeners are invoked with a null executionContext; no NullPointerException is thrown",
+        "description": "The method should not assume executionContext is non\u2011null; it must forward the null value to listeners and walkers, allowing them to handle it."
+      }
+    ]
+  },
+  {
+    "group": "shouldValidateSchema = false \u2013 walker still invoked",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/no\u2011validate\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "false"
+          }
+        ],
+        "expected": "validationMessages contains the messages returned by the walker (e.g., \"msg\u2011from\u2011walker\"), proving that the flag does not prevent walker execution; post\u2011walk listener is still called",
+        "description": "The boolean flag is only passed to the walker; the walk method itself does not branch on it. This test confirms that setting it to false does not skip the walker."
+      }
+    ]
+  },
+  {
+    "group": "keywordWalkListenerRunner is null \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/null\u2011runner\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException is thrown when keywordWalkListenerRunner.runPreWalkListeners is invoked",
+        "description": "The JsonSchema instance has its keywordWalkListenerRunner field set to null. Calling walk should attempt to invoke runPreWalkListeners, resulting in a NullPointerException before any walker execution."
+      }
+    ]
+  },
+  {
+    "group": "jsonWalker is null in validators map \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/null\u2011walker\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException is thrown when jsonWalker.walk is called",
+        "description": "The validators map returned by getValidators() contains a key with a null JsonSchemaWalker value. When pre\u2011walk listeners return true, the method tries to invoke walk on the null walker, causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "validators map is null \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/null\u2011validators\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to iterate over a null validators map",
+        "description": "The JsonSchema instance is stubbed so that getValidators() returns null. The walk method calls getValidators().forEach, which throws a NullPointerException because the map reference is null."
+      }
+    ]
+  },
+  {
+    "group": "jsonWalker returns null \u2013 NullPointerException on addAll",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"/walker\u2011null\u2011return\""
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException is thrown when validationMessages.addAll receives a null collection",
+        "description": "The validator map contains a JsonSchemaWalker whose walk method returns null instead of a Set<ValidationMessage>. After a true pre\u2011walk result, walk attempts validationMessages.addAll(null), which throws a NullPointerException."
+      }
+    ]
+  }
+]

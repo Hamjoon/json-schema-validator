@@ -1,0 +1,89 @@
+package com.networknt.schema;
+
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.Arguments;
+import java.util.stream.Stream;
+
+@ExtendWith(MockitoExtension.class)
+class BaseJsonValidator_equals_Test {
+
+    /**
+     * Supplies all test data extracted from the JSON definition.  Each
+     * {@link Arguments} entry contains: n1, n2, expected boolean, and a short
+     * description.
+     */
+    private static Stream<Arguments> provideEqualsCases() {
+        return Stream.of(// ----- branch‑coverage group -----
+        Arguments.of(1.0, 1.0, true, "Identical numbers – difference is 0, which is less than 1e‑12."), Arguments.of(1.0, 1e-13, true, "Numbers differ by 9.9e‑13 (< 1e‑12)."), Arguments.of(1.0, 1e-12, false, "Numbers differ exactly by 1e‑12; strict ‘<’ fails."), Arguments.of(1.0, 1e-11, false, "Difference (9e‑12) exceeds the tolerance."), Arguments.of(-5.0, -5e-13, true, "Negative numbers with tiny difference (< 1e‑12)."), Arguments.of(-5.0, -5e-11, false, "Negative numbers whose difference exceeds tolerance."), Arguments.of(0.0, 0.0, true, "Both zeros – difference is zero."), Arguments.of(0.0, 1e-13, true, "Zero vs a very small positive number (< 1e‑12)."), Arguments.of(0.0, 1e-12, false, "Zero vs a number exactly at the tolerance boundary."), Arguments.of(Double.NaN, 0.0, false, "First argument is NaN – any arithmetic yields NaN."), Arguments.of(0.0, Double.NaN, false, "Second argument is NaN."), Arguments.of(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, false, "Both arguments are positive infinity – subtraction yields NaN."), Arguments.of(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, false, "Both arguments are negative infinity – same behaviour as positive infinity."), Arguments.of(Double.POSITIVE_INFINITY, 1.0, false, "One argument infinite, the other finite – difference is infinite."), // ----- additional cases group -----
+        Arguments.of(1e-13, -1e-13, true, "Positive and negative numbers with tiny absolute difference (2e-13)."), Arguments.of(1.0, -1.0, false, "Numbers of opposite sign with large absolute difference (2.0)."), Arguments.of(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, false, "Positive infinity versus negative infinity – comparison fails."), Arguments.of(Double.NaN, Double.NaN, false, "Both arguments are NaN – comparison fails."), Arguments.of(0.0, -0.0, true, "Positive zero versus negative zero – difference is 0.0."), Arguments.of(1.7976931348623157e+308, 1.7976931348623157e+308, true, "Two identical maximum double values."), Arguments.of(1.7976931348623157e+308, 8.988465674311579e+307, false, "Maximum double vs half of it – huge difference."), Arguments.of(2.2250738585072014e-308, 5e-324, true, "Two subnormal positive numbers – difference far below tolerance."), Arguments.of(2.2250738585072014e-308, 0.0, true, "Smallest normal positive double versus zero."), Arguments.of(5e-324, 0.0, true, "Smallest positive subnormal double versus zero."));
+    }
+
+    @Test
+    void equals_whenExactlySameNumber_returnsTrue() {
+        assertTrue(BaseJsonValidator.equals(1.23456789, 1.23456789), "Identical numbers should be considered equal");
+    }
+
+    @Test
+    void equals_whenDifferenceWithinTolerance_returnsTrue() {
+        double a = 1.000000000001;
+        // difference = 1e-12 (just below the < comparison)
+        double b = 1.000000000002;
+        assertTrue(BaseJsonValidator.equals(a, b), "Numbers whose absolute difference is less than 1e-12 should be equal");
+    }
+
+    @Test
+    void equals_whenDifferenceExactlyAtTolerance_returnsFalse() {
+        double a = 1.0;
+        // difference = 1e-12 (not less than)
+        double b = 1.0 + 1.0e-12;
+        assertFalse(BaseJsonValidator.equals(a, b), "Numbers whose absolute difference equals the tolerance should not be considered equal");
+    }
+
+    @Test
+    void equals_whenDifferenceBeyondTolerance_returnsFalse() {
+        double a = 12345.6789;
+        // difference larger than tolerance
+        double b = 12345.6789 + 1.0e-11;
+        assertFalse(BaseJsonValidator.equals(a, b), "Numbers whose absolute difference exceeds the tolerance should not be equal");
+    }
+
+    @Test
+    void equals_withNegativeZeroAndPositiveZero_returnsTrue() {
+        assertTrue(BaseJsonValidator.equals(-0.0, 0.0), "Negative zero and positive zero should be considered equal");
+    }
+
+    @Test
+    void equals_withNaNValues_returnsFalse() {
+        assertFalse(BaseJsonValidator.equals(Double.NaN, Double.NaN), "NaN compared to NaN should not be considered equal");
+        assertFalse(BaseJsonValidator.equals(Double.NaN, 0.0), "NaN compared to a regular number should not be considered equal");
+    }
+
+    @Test
+    void equals_withInfinityValues_returnsCorrectResult() {
+        // According to the implementation, Math.abs(inf - inf) yields NaN,
+        // and NaN < tolerance evaluates to false.
+        assertFalse(BaseJsonValidator.equals(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY), "Positive infinity compared to itself should be false (Math.abs gives NaN).");
+        assertFalse(BaseJsonValidator.equals(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY), "Negative infinity compared to itself should be false (Math.abs gives NaN).");
+        assertFalse(BaseJsonValidator.equals(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY), "Positive and negative infinity should not be equal.");
+        assertFalse(BaseJsonValidator.equals(Double.POSITIVE_INFINITY, 1.0e308), "Infinity compared to a finite number should not be equal.");
+    }
+
+    /**
+     * Executes the {@code BaseJsonValidator.equals(double,double)} method for
+     * a large matrix of inputs, asserting the expected boolean result.
+     *
+     * @param n1 first number
+     * @param n2 second number
+     * @param expectedResult expected outcome of the equals method
+     * @param description textual description of the scenario (used only for readability)
+     */
+    @ParameterizedTest(name = "{index} ⇒ {3}")
+    @MethodSource("provideEqualsCases")
+    void equals_parameterised(double n1, double n2, boolean expectedResult, String description) {
+        boolean actual = BaseJsonValidator.equals(n1, n2);
+        assertEquals(expectedResult, actual, () -> "Failed case: " + description + " (n1=" + n1 + ", n2=" + n2 + ")");
+    }
+}

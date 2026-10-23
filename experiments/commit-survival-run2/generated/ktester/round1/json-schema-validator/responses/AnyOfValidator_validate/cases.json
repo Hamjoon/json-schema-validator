@@ -1,0 +1,542 @@
+[
+  {
+    "group": "OpenAPI3StyleDiscriminators disabled - early success (errors empty, no type validator)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/properties/foo\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = false, the schema list contains a single schema without a type validator, walkEnabled is false, schema.validate returns an empty Set. The validator should clear allErrors and return the empty Set immediately."
+      }
+    ]
+  },
+  {
+    "group": "Type validator mismatch (schema type does not match node)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/properties/bar\""
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with type = TYPE and message indicating expected type (e.g., \"integer\")",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = false, the only schema has a TypeValidator for INTEGER. The node is a STRING, so the validator adds a type\u2011mismatch message to allErrors and continues. After the loop there are no valid subschemas, so the method returns the collected type\u2011error."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI3StyleDiscriminators enabled \u2013 discriminator match found with errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/0\""
+          }
+        ],
+        "expected": "Set containing the schema validation errors plus a ValidationMessage with message ending in \"and the discriminator-selected candidate schema didn't pass validation\"",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = true, discriminatorContext.isDiscriminatorMatchFound() = true, schema.validate returns a non\u2011empty Set. The validator adds those errors, appends the DISCRIMINATOR_REMARK, clears no errors and returns the combined Set."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI3StyleDiscriminators enabled \u2013 discriminator match found without errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/1\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = true, discriminatorContext.isDiscriminatorMatchFound() = true, schema.validate returns an empty Set. The validator clears allErrors and returns the empty Set (no remark is added)."
+      }
+    ]
+  },
+  {
+    "group": "After loop \u2013 valid subschema clears required errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = false, two schemas are present: the first fails with a REQUIRED\u2011type error, the second validates successfully (errors empty and state.hasMatchedNode() true). numberOfValidSubSchemas becomes 1 and childNotRequiredErrors is empty, so allErrors is replaced with the empty set and the method returns an empty Set."
+      }
+    ]
+  },
+  {
+    "group": "After loop \u2013 discriminator active but no match found (fallback error)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "Set containing a single ValidationMessage with message \"based on the provided discriminator. No alternative could be chosen based on the discriminator property\"",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = true, discriminatorContext.isActive() = true, but discriminatorContext.isDiscriminatorMatchFound() = false for all subschemas. After the loop, numberOfValidSubSchemas = 0, so the fallback block creates the specific discriminator\u2011no\u2011alternative message and returns it."
+      }
+    ]
+  },
+  {
+    "group": "Walk enabled path \u2013 schema.walk is used",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Config.isOpenAPI3StyleDiscriminators() = false, walkEnabled = true, the schema's walk method returns an empty Set. The validator treats it like the normal success case, increments numberOfValidSubSchemas, clears allErrors and returns the empty Set."
+      }
+    ]
+  },
+  {
+    "group": "Union type validator bypass \u2013 successful validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false, config.isOpenAPI3StyleDiscriminators()=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/union\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The schema in the anyOf list has a TypeValidator whose schemaType is UNION. The method should skip the type\u2011mismatch check, invoke schema.validate (which returns an empty Set), clear allErrors and return the empty Set immediately (discriminators disabled)."
+      }
+    ]
+  },
+  {
+    "group": "Type validator match \u2013 early success",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false, config.isOpenAPI3StyleDiscriminators()=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type INTEGER)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/intSchema\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The only subschema has a TypeValidator for INTEGER and the node is an INTEGER. The type matches, schema.validate returns an empty Set, so the validator clears allErrors and returns the empty Set immediately (discriminators disabled)."
+      }
+    ]
+  },
+  {
+    "group": "Valid subschema but matchedNode stays false \u2013 no valid count",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false, config.isOpenAPI3StyleDiscriminators()=false, state.setMatchedNode never called by schema)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/noMatchFlag\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The subschema validates successfully (returns empty Set) but does NOT set the validatorState.matchedNode flag. The method sees errors.isEmpty() and then `if (!state.hasMatchedNode()) continue;` so the subschema is **not** counted as a valid one. After the loop there are no errors, therefore the method returns an empty Set and finally sets state.matchedNode to true."
+      }
+    ]
+  },
+  {
+    "group": "Valid subschema plus non\u2011required error from another schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=false, config.isOpenAPI3StyleDiscriminators()=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type STRING)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/mixed\""
+          }
+        ],
+        "expected": "Set containing a single ValidationMessage of type TYPE (non\u2011required error)",
+        "description": "Two subschemas are present. The first subschema validates successfully (empty errors, matchedNode set to true) and therefore increments numberOfValidSubSchemas. The second subschema fails with a TYPE\u2011mismatch error (e.g., expects INTEGER). After the loop, `childNotRequiredErrors` is not empty, so the validator does **not** clear the collected errors. The returned Set therefore contains the TYPE error from the failing subschema."
+      }
+    ]
+  },
+  {
+    "group": "Walk enabled with schema.walk returning errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector, validatorState with hasMatchedNode=false, walkEnabled=true, config.isOpenAPI3StyleDiscriminators()=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (type OBJECT)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/walkError\""
+          }
+        ],
+        "expected": "Set containing the ValidationMessage(s) produced by schema.walk",
+        "description": "Because `state.isWalkEnabled()` is true, the validator calls `schema.walk` instead of `schema.validate`. The mocked schema returns a non\u2011empty Set (e.g., a REQUIRED\u2011property error). Since discriminators are disabled, the validator adds these errors to `allErrors` and continues. No subschema validates successfully, so after the loop the method returns the collected walk errors."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext parameter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When executionContext is null the call executionContext.getCollectorContext() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "CollectorContext returned null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (getCollectorContext() returns null)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "executionContext.getCollectorContext() returns null; the subsequent call collectorContext.enterDynamicScope() triggers NPE."
+      }
+    ]
+  },
+  {
+    "group": "ValidatorState missing in CollectorContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (collectorContext returns mockCollector where get(ValidatorState.VALIDATOR_STATE_KEY) returns null)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "CollectorContext provides no ValidatorState; casting to ValidatorState yields null and the first call state.hasMatchedNode() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid collector & state)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The AnyOfValidator instance has its protected field 'validationContext' set to null (via reflection). The first usage validationContext.getConfig() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Config object inside ValidationContext is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid collector & state)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "validationContext is non\u2011null but its getConfig() method returns null. The subsequent call config.isOpenAPI3StyleDiscriminators() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "DiscriminatorContext null while OpenAPI3StyleDiscriminators enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid collector & state)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "validationContext.getConfig().isOpenAPI3StyleDiscriminators() returns true but the validator's discriminatorContext field is null. The call validationContext.enterDiscriminatorContext(this.discriminatorContext, at) throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Schema.validate returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid collector & state, walkEnabled=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/invalidValidate\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A subschema mock is added to AnyOfValidator.schemas where schema.validate(executionContext, node, rootNode, at) returns null. The next line errors.isEmpty() triggers NPE."
+      }
+    ]
+  },
+  {
+    "group": "Schema.walk returns null when walkEnabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid collector & state, walkEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"#/anyOf/invalidWalk\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A subschema mock is added where schema.walk(...) returns null. The validator then calls errors.isEmpty() causing NPE."
+      }
+    ]
+  }
+]

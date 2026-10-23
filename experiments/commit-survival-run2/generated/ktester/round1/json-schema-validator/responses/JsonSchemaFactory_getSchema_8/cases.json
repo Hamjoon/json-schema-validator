@@ -1,0 +1,244 @@
+[
+  {
+    "group": "Valid inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (schema loaded without errors)",
+        "description": "When a well\u2011formed URI and a valid JSON schema node are supplied, getSchema should return a JsonSchema object representing the supplied schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/local-schema.yaml"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance",
+        "description": "Supports different URI schemes (e.g., file) and YAML\u2011compatible JSON nodes; the method should still return a JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "Null URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": null
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\" }"
+          }
+        ],
+        "expected": "NullPointerException or IllegalArgumentException",
+        "description": "If the schemaUri argument is null, the factory should reject the call and throw an exception rather than returning a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/any-schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException or IllegalArgumentException",
+        "description": "When the jsonNode argument is null, getSchema must fail fast with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Both arguments null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": null
+          },
+          {
+            "parameter": "jsonNode",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException or IllegalArgumentException",
+        "description": "Both parameters null \u2013 the method should still throw an exception, confirming defensive null\u2011checking."
+      }
+    ]
+  },
+  {
+    "group": "Invalid URI format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "ht!tp://[invalid]"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\" }"
+          }
+        ],
+        "expected": "URISyntaxException wrapped in IllegalArgumentException",
+        "description": "A malformed URI string should cause the factory to reject the request, typically via an IllegalArgumentException (or a wrapped URISyntaxException)."
+      }
+    ]
+  },
+  {
+    "group": "Empty JSON node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/empty-schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (may represent an empty schema)",
+        "description": "Even an empty JSON object is a valid schema node; the method should still construct a JsonSchema instance without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported URI scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "ftp://example.com/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (unsupported scheme)",
+        "description": "The factory should reject URIs with schemes it does not handle (e.g., ftp) and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Relative URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "schemas/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A relative URI (no scheme) should be rejected because the factory expects an absolute URI that can be used as a schema identifier."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported scheme (data URI)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "data:application/json,{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Data\u2011URI scheme is not supported by JsonSchemaFactory; invoking getSchema with such a URI must throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object JsonNode (array)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "[ { \"type\": \"object\" } ]"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema node must be a JSON object. Supplying a JSON array should cause the factory to reject the input with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object JsonNode (primitive)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "\"string\""
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A primitive JSON value (string, number, boolean, etc.) cannot represent a schema. Passing such a JsonNode must trigger an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.json"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"unknown\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema contains an invalid value for the \"type\" keyword. The factory should validate schema keywords and throw an IllegalArgumentException for unsupported/unknown types."
+      }
+    ]
+  }
+]

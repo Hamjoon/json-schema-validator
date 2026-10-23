@@ -1,0 +1,52 @@
+[
+  {
+    "group": "atRoot() - normal behavior with different PathType implementations",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"$\"",
+        "description": "When the validator is constructed with a PathType whose getRoot() returns the JSONPath root symbol \"$\", atRoot() should return \"$\"."
+      },
+      {
+        "input": [],
+        "expected": "\"\"",
+        "description": "When the validator is constructed with a PathType whose getRoot() returns an empty string (typical for JSON Pointer), atRoot() should return an empty string."
+      },
+      {
+        "input": [],
+        "expected": "\"/\"",
+        "description": "When the validator is constructed with a PathType whose getRoot() returns \"/\" (another possible root for JSON Pointer), atRoot() should return \"/\"."
+      }
+    ]
+  },
+  {
+    "group": "atRoot() - custom PathType returning null",
+    "cases": [
+      {
+        "input": [],
+        "expected": null,
+        "description": "When the validator is constructed with a PathType whose getRoot() returns null, atRoot() should propagate the null value without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "atRoot() - null PathType",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the validator is constructed with a null PathType, atRoot() should throw NullPointerException because it attempts to call getRoot() on a null reference."
+      }
+    ]
+  },
+  {
+    "group": "atRoot() - PathType throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException",
+        "description": "When the PathType implementation's getRoot() method throws IllegalStateException, atRoot() should propagate the exception without handling it."
+      }
+    ]
+  }
+]

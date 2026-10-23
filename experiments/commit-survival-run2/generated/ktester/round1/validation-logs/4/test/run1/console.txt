@@ -1,0 +1,214 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (14):
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPathAppendsTokenWhenCurrentPathIsNonEmpty()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPathAppendsTokenWhenCurrentPathIsNonEmpty', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPathAppendsTokenWhenCurrentPathIsRoot()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPathAppendsTokenWhenCurrentPathIsRoot', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithSlashPathType(String, String, String, String):[1] Appending normal token to a non‑empty path
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithSlashPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithSlashPathType(String, String, String, String):[2] Current path empty – token becomes first segment
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithSlashPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithSlashPathType(String, String, String, String):[3] Empty token – should result in a trailing '/'
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithSlashPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithJsonPointerPathType(String, String, String, String):[1] Normal token appended with '/' separator
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithJsonPointerPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithJsonPointerPathType(String, String, String, String):[2] Empty current path – token becomes first segment
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithJsonPointerPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithJsonPointerPathType(String, String, String, String):[3] Empty token – trailing '/' indicates empty segment
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithJsonPointerPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithJsonPointerPathType(String, String, String, String):[4] Token containing '~' and '/' are escaped per JSON Pointer rules
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithJsonPointerPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_Appends_WithJsonPointerPathType(String, String, String, String):[5] Null current path is treated as empty
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_Appends_WithJsonPointerPathType', methodParameterTypes = 'java.lang.String, java.lang.String, java.lang.String, java.lang.String']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_NullPathType_ThrowsNullPointerException()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_NullPathType_ThrowsNullPointerException', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_NullToken_ThrowsNullPointerException()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_NullToken_ThrowsNullPointerException', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_BothCurrentPathAndTokenNull_ThrowsNullPointerException()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_BothCurrentPathAndTokenNull_ThrowsNullPointerException', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_atPath_Test:atPath_InvalidTokenForJsonPointer_ThrowsIllegalArgumentException()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_atPath_Test', methodName = 'atPath_InvalidTokenForJsonPointer_ThrowsIllegalArgumentException', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.BaseJsonValidator_atPath_Test$SimpleValidationContext.<init>(BaseJsonValidator_atPath_Test.java:48)
+       com.networknt.schema.BaseJsonValidator_atPath_Test.setupBeforeEach(BaseJsonValidator_atPath_Test.java:125)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+
+Test run finished after 175 ms
+[         6 containers found      ]
+[         0 containers skipped    ]
+[         6 containers started    ]
+[         0 containers aborted    ]
+[         6 containers successful ]
+[         0 containers failed     ]
+[        14 tests found           ]
+[         0 tests skipped         ]
+[        14 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[        14 tests failed          ]
+

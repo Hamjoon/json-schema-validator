@@ -1,0 +1,569 @@
+[
+  {
+    "group": "Validator processing without errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode representing valid JSON payload"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "Same as jsonNode (no separate root needed for this test)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage). No merge of evaluated items/properties because all validators return empty set.",
+        "description": "All validators return an empty result set, config disables discriminator handling. The method should iterate over validators, merge the dynamic scope and finally return an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "Validator processing with errors \u2013 PrefixItems/Items/Contains",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Set containing the ValidationMessage produced by the PrefixItemsValidator. MockCollectorContext.evaluatedItems contains the items collected from the validator\u2019s scope.",
+        "description": "A validator of type PrefixItemsValidator returns a non\u2011empty error set. The method must add those errors to the final result and copy the evaluated items from the child scope into the collector context."
+      }
+    ]
+  },
+  {
+    "group": "Validator processing with errors \u2013 Properties/AdditionalProperties/PatternProperties",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Set containing the ValidationMessage produced by the PropertiesValidator. MockCollectorContext.evaluatedProperties contains the properties collected from the validator\u2019s scope.",
+        "description": "A validator of type PropertiesValidator returns a non\u2011empty error set. The method must add those errors to the final result and copy the evaluated properties from the child scope into the collector context."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 feature disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage). The discriminator block is completely skipped.",
+        "description": "When the configuration flag `isOpenAPI3StyleDiscriminators` is false the method must bypass all discriminator logic regardless of the schema content."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 discriminator node missing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode without property \"type\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. `checkDiscriminatorMatch` is called with discriminatorPropertyValue = null.",
+        "description": "The schema contains a discriminator object, the configuration enables it, and a discriminator context exists, but the instance being validated does not contain the discriminator property. The method must still invoke `checkDiscriminatorMatch` with a null value."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 no discriminator context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns null }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"type\" = \"cat\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. Discriminator block is skipped because discriminatorContext is null.",
+        "description": "Even though the schema defines a discriminator and the flag is enabled, the current discriminator context is missing, so the method must not attempt any discriminator matching."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 register new discriminator (no prior registration)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"petType\" = \"dog\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. `discriminatorContext.registerDiscriminator(schemaPath, discriminatorNode)` is invoked once. `checkDiscriminatorMatch` receives the newly registered discriminator.",
+        "description": "The schema contains a discriminator object, the config enables it, a discriminator context exists, but there is no discriminator already registered for this schemaPath. The method must register the current discriminator and then perform the match check."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 use already registered discriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"petType\" = \"bird\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. `discriminatorContext.getDiscriminatorForPath(schemaPath)` returns a non\u2011null ObjectNode, so the method does NOT call registerDiscriminator. `checkDiscriminatorMatch` receives that existing discriminator.",
+        "description": "A discriminator is already registered for the current schemaPath. The method should retrieve it, skip registration, and invoke `checkDiscriminatorMatch` with the retrieved discriminator."
+      }
+    ]
+  },
+  {
+    "group": "Validator processing with mixed results \u2013 error and non\u2011error validators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Set containing the ValidationMessage produced by the ErrorValidator. No evaluated items or properties are added to the collector because the error validator is not of type PrefixItems/Items/Contains/Properties/AdditionalProperties/PatternProperties. The non\u2011error validator\u2019s scope is merged into the parent scope.",
+        "description": "Two validators are present: one (ErrorValidator) returns a non\u2011empty error set, the other (NoOpValidator) returns an empty set. The method must aggregate the error, skip adding evaluated items/properties for the error validator, and still merge the dynamic scope of the successful validator."
+      }
+    ]
+  },
+  {
+    "group": "Validator processing without errors \u2013 merging dynamic scopes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext (initially empty), config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. MockCollectorContext.evaluatedItems contains the items collected from the child scope of the first validator, and evaluatedProperties contains the properties collected from the child scope of the second validator, because both validators returned empty error sets and their scopes were merged into the parent scope.",
+        "description": "All validators return empty error sets. The method must merge each validator\u2019s dynamic scope into the parent scope, resulting in the collector context accumulating evaluated items and properties from all validators."
+      }
+    ]
+  },
+  {
+    "group": "Validator processing with errors \u2013 non\u2011collection validator types",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = false }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Set containing the ValidationMessage produced by the MaxLengthValidator. MockCollectorContext.evaluatedItems and evaluatedProperties remain unchanged because MaxLengthValidator is not one of the validator types that trigger collection of evaluated items or properties.",
+        "description": "A validator that produces an error but is not an instance of PrefixItemsValidator, ItemsValidator, ItemsValidator202012, ContainsValidator, PropertiesValidator, AdditionalPropertiesValidator, or PatternPropertiesValidator. The method must add the error to the result set but must not copy any evaluated items or properties into the collector context."
+      }
+    ]
+  },
+  {
+    "group": "No validators present \u2013 only discriminator handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() = MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"petType\" = \"cat\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. `discriminatorContext.registerDiscriminator` is called (if not already registered) and `checkDiscriminatorMatch` is invoked with the discriminator property value \"cat\". No validator\u2011related processing occurs because the validator map is empty.",
+        "description": "The schema contains a discriminator object, the feature flag is enabled, but the JsonSchema instance has no validators (e.g., an empty schema). The method should skip the validator loop and still execute the discriminator logic."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 schema without discriminator node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() = MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"type\" = \"dog\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Empty Set. Discriminator block is bypassed because `schemaNode.get(\"discriminator\")` returns null.",
+        "description": "Even though the discriminator feature flag is on and a discriminator context exists, the schema itself does not define a discriminator object. The method must skip all discriminator processing."
+      }
+    ]
+  },
+  {
+    "group": "OpenAPI discriminator handling \u2013 discriminator propertyName missing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext = MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() = MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"type\" = \"rabbit\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "Throws NullPointerException (or a descriptive ValidationException) because the discriminator object does not contain the required \"propertyName\" field, leading to a null result when calling `asText()`.",
+        "description": "The discriminator object exists but is malformed (missing the mandatory \"propertyName\" field). The method attempts to read `discriminatorToUse.get(\"propertyName\").asText()` which results in a NPE. The test verifies that such schema mis\u2011configuration is not silently ignored."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode (any valid node)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode (same as jsonNode)"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when setValidatorState or executionContext.getCollectorContext() is invoked)",
+        "description": "The method receives a null ExecutionContext; any attempt to use it should result in an NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null collectorContext in executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { getCollectorContext() returns null }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when collectorContext.enterDynamicScope(this) is called)",
+        "description": "ExecutionContext is present but its collectorContext is null; the method should throw NPE during scope handling."
+      }
+    ]
+  },
+  {
+    "group": "Null validationContext / config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when this.validationContext.getConfig() is accessed)",
+        "description": "The JsonSchema instance has a null validationContext; accessing its config causes NPE before any validator processing."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with discriminator property \"type\" = \"cat\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown at this.schemaNode.get(\"discriminator\"))",
+        "description": "When the schemaNode field of JsonSchema is null, attempting to read the discriminator node results in NPE."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator node not an ObjectNode (ClassCastException)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with property \"type\" = \"cat\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "ClassCastException (thrown when casting a non\u2011ObjectNode discriminator node to ObjectNode)",
+        "description": "The schema contains a \"discriminator\" field whose value is an array or primitive instead of an object; the cast to ObjectNode fails."
+      }
+    ]
+  },
+  {
+    "group": "Null jsonNode during discriminator processing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when jsonNode.get(discriminatorPropertyName) is invoked)",
+        "description": "Even though the discriminator feature is enabled and a discriminator object exists, a null instance node causes NPE while trying to read the discriminator property."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator propertyName node is null (already covered but ensure explicit NPE)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext { collectorContext returns MockCollectorContext, config.isOpenAPI3StyleDiscriminators() = true, validationContext.getCurrentDiscriminatorContext() returns MockDiscriminatorContext }"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "MockJsonNode with any content"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "MockJsonNode"
+          },
+          {
+            "parameter": "at",
+            "value": "\"$\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when discriminatorToUse.get(\"propertyName\") returns null and .asText() is called)",
+        "description": "The discriminator object exists but lacks the mandatory \"propertyName\" field, leading to NPE during property name extraction."
+      }
+    ]
+  }
+]

@@ -1,0 +1,720 @@
+
+You are an experienced Java developer tasked with fixing a piece of code that contains compilation errors. Your task is to resolve these issues after analyzing the code and its compilation feedback.
+
+Use the following steps to guide your analysis and correction process:
+1. Review the provided Java code for any syntactical or logical errors.
+2. Analyze the compilation feedback to understand the specific errors and their locations within the code.
+3. Apply necessary corrections to the code based on the feedback, and output the compelete correct code.
+The Java code you need to fix is provided below:
+```java
+@ExtendWith(MockitoExtension.class)
+class JsonSchemaFactory_getSchema_2_Test {
+    private JsonSchemaFactory factory;
+
+    class ClosableFailingInputStream extends InputStream {
+        private boolean closed = false;
+
+        @Override
+        public int read() throws IOException {
+            throw new IOException("forced error");
+        }
+
+        @Override
+        public void close() throws IOException {
+            closed = true;
+            super.close();
+        }
+
+        public boolean isClosed() {
+            return closed;
+        }
+    }
+
+    /**
+     * InputStream that always throws an {@link IOException} on read and records whether it was closed.
+     */
+    /**
+     * Simple InputStream that always throws an IOException on read.
+     */
+    @BeforeEach
+    void setupBeforeEach() {
+        // Obtain a ready‑to‑use factory for Draft‑07 (the most common version).
+        factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        assertNotNull(factory, "Factory should be created");
+    }
+
+    @Test
+    void getSchema_fromInputStream_returnsJsonSchema() throws Exception {
+        String schemaJson = "{ \"type\": \"string\" }";
+        InputStream schemaStream = new ByteArrayInputStream(schemaJson.getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(schemaStream);
+        assertNotNull(schema, "The returned JsonSchema should not be null");
+        ValidationResult result = schema.validate("hello");
+        assertTrue(result.isValid(), "A valid string should pass validation");
+    }
+
+    @Test
+    void getSchema_fromNullInputStream_throwsException() {
+        InputStream nullStream = null;
+        assertThrows(Exception.class, () -> factory.getSchema(nullStream));
+    }
+
+    @Test
+    @DisplayName("Empty InputStream results in an exception (schema content is empty)")
+    void getSchema_emptyInputStream_throwsException() {
+        InputStream empty = new ByteArrayInputStream(new byte[0]);
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(empty));
+    }
+
+    @Test
+    @DisplayName("Malformed JSON causes a parsing exception wrapped in JsonSchemaException")
+    void getSchema_invalidJson_throwsParsingException() {
+        String malformed = "{ invalid json }";
+        InputStream stream = new ByteArrayInputStream(malformed.getBytes(StandardCharsets.UTF_8));
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(stream));
+        assertNotNull(ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Well‑formed JSON schema without a custom config returns a JsonSchema")
+    void getSchema_validJsonWithoutConfig_returnsSchema() {
+        String json = "{ \"$schema\": \"http://json-schema.org/draft-07/schema#\", \"type\": \"object\" }";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema, "Schema should be created with default configuration");
+    }
+
+    @Test
+    @DisplayName("Valid JSON with a custom SchemaValidatorsConfig (failFast) is honoured")
+    void getSchema_validJsonWithCustomConfig_respectsConfig() {
+        String json = "{ \"type\": \"string\" }";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig().setFailFast(true);
+        JsonSchema schema = factory.getSchema(stream, config);
+        assertNotNull(schema, "Schema should be created with custom configuration");
+        // feed an instance that will cause two validation errors; only the first should be reported
+        String instance = "{ }";
+        ValidationResult result = schema.validate(instance);
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("YAML schema is parsed correctly")
+    void getSchema_validYaml_returnsSchema() {
+        String yaml = "type: object\nproperties:\n  name:\n    type: string";
+        InputStream stream = new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema, "YAML schema should be parsed into a JsonSchema");
+    }
+
+    @Test
+    @DisplayName("IOException while reading the stream is wrapped in a JsonSchemaException")
+    void getSchema_ioExceptionDuringRead_throwsWrappedException() {
+        InputStream faulty = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw new IOException("forced I/O error");
+            }
+
+            @Override
+            public void close() throws IOException {
+                // nothing to close
+            }
+        };
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(faulty));
+        assertTrue(ex.getMessage().contains("forced I/O error"));
+    }
+
+    @Test
+    @DisplayName("The provided InputStream is closed after successful parsing")
+    void getSchema_streamClosedAfterParsing() throws IOException {
+        ByteArrayInputStream stream = new ByteArrayInputStream("{ \"type\": \"null\" }".getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema);
+        // After the factory finishes reading, the stream should be closed.
+        assertEquals(-1, stream.read(), "Stream should be closed (read() returns -1)");
+    }
+
+    @Test
+    @DisplayName("UTF‑8 BOM is ignored and schema is parsed")
+    void getSchema_jsonWithUtf8Bom_isParsed() {
+        byte[] bom = new byte[]{ ((byte) (0xef)), ((byte) (0xbb)), ((byte) (0xbf)) };
+        String json = "{ \"type\": \"object\" }";
+        byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
+        byte[] combined = new byte[bom.length + jsonBytes.length];
+        System.arraycopy(bom, 0, combined, 0, bom.length);
+        System.arraycopy(jsonBytes, 0, combined, bom.length, jsonBytes.length);
+        InputStream stream = new ByteArrayInputStream(combined);
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema, "Schema should be parsed even with a leading UTF‑8 BOM");
+    }
+
+    @Test
+    @DisplayName("Leading and trailing whitespace does not affect parsing")
+    void getSchema_jsonWithWhitespace_isParsed() {
+        String json = "   \n\t{ \"type\": \"string\" }   \n\t";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema);
+    }
+
+    @Test
+    @DisplayName("Unicode characters in schema are handled correctly")
+    void getSchema_jsonWithUnicode_isParsed() {
+        String json = "{ \"title\": \"Привет мир\", \"type\": \"object\" }";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        JsonSchema schema = factory.getSchema(stream);
+        assertNotNull(schema);
+    }
+
+    @Test
+    @DisplayName("JSON containing comments throws an exception (comments not allowed by default)")
+    void getSchema_jsonWithComments_throwsException() {
+        String json = "{ /* comment */ \"type\": \"string\" }";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(stream));
+        assertNotNull(ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("Whitespace‑only InputStream results in an empty‑content exception")
+    void getSchema_whitespaceOnly_throwsException() {
+        String ws = "   \n\t   ";
+        InputStream stream = new ByteArrayInputStream(ws.getBytes(StandardCharsets.UTF_8));
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(stream));
+        assertNotNull(ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("When parsing fails due to IOException, the stream is still closed")
+    void getSchema_streamClosedOnParsingFailure() {
+        class ClosableFailingInputStream extends InputStream {
+            private boolean closed = false;
+
+            @Override
+            public int read() throws IOException {
+                throw new IOException("forced error");
+            }
+
+            @Override
+            public void close() throws IOException {
+                closed = true;
+                super.close();
+            }
+
+            public boolean isClosed() {
+                return closed;
+            }
+        }
+        ClosableFailingInputStream stream = new ClosableFailingInputStream();
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(stream));
+        assertTrue(ex.getMessage().contains("forced error"));
+        assertTrue(stream.isClosed(), "Stream must be closed even when parsing fails");
+    }
+}
+```
+
+Corresponding compilation feedback:
+```
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:1: error: cannot find symbol
+@ExtendWith(MockitoExtension.class)
+ ^
+  symbol: class ExtendWith
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:3: error: cannot find symbol
+    private JsonSchemaFactory factory;
+            ^
+  symbol:   class JsonSchemaFactory
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:121: error: cannot find symbol
+    void getSchema_streamClosedAfterParsing() throws IOException {
+                                                     ^
+  symbol:   class IOException
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:5: error: cannot find symbol
+    class ClosableFailingInputStream extends InputStream {
+                                             ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:9: error: cannot find symbol
+        public int read() throws IOException {
+                                 ^
+  symbol:   class IOException
+  location: class JsonSchemaFactory_getSchema_2_Test.ClosableFailingInputStream
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:14: error: cannot find symbol
+        public void close() throws IOException {
+                                   ^
+  symbol:   class IOException
+  location: class JsonSchemaFactory_getSchema_2_Test.ClosableFailingInputStream
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:1: error: cannot find symbol
+@ExtendWith(MockitoExtension.class)
+            ^
+  symbol: class MockitoExtension
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:30: error: cannot find symbol
+    @BeforeEach
+     ^
+  symbol:   class BeforeEach
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:37: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:47: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:53: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:54: error: cannot find symbol
+    @DisplayName("Empty InputStream results in an exception (schema content is empty)")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:60: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:61: error: cannot find symbol
+    @DisplayName("Malformed JSON causes a parsing exception wrapped in JsonSchemaException")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:69: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:70: error: cannot find symbol
+    @DisplayName("Well‑formed JSON schema without a custom config returns a JsonSchema")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:78: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:79: error: cannot find symbol
+    @DisplayName("Valid JSON with a custom SchemaValidatorsConfig (failFast) is honoured")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:92: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:93: error: cannot find symbol
+    @DisplayName("YAML schema is parsed correctly")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:101: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:102: error: cannot find symbol
+    @DisplayName("IOException while reading the stream is wrapped in a JsonSchemaException")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:119: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:120: error: cannot find symbol
+    @DisplayName("The provided InputStream is closed after successful parsing")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:129: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:130: error: cannot find symbol
+    @DisplayName("UTF‑8 BOM is ignored and schema is parsed")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:143: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:144: error: cannot find symbol
+    @DisplayName("Leading and trailing whitespace does not affect parsing")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:152: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:153: error: cannot find symbol
+    @DisplayName("Unicode characters in schema are handled correctly")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:161: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:162: error: cannot find symbol
+    @DisplayName("JSON containing comments throws an exception (comments not allowed by default)")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:170: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:171: error: cannot find symbol
+    @DisplayName("Whitespace‑only InputStream results in an empty‑content exception")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:179: error: cannot find symbol
+    @Test
+     ^
+  symbol:   class Test
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:180: error: cannot find symbol
+    @DisplayName("When parsing fails due to IOException, the stream is still closed")
+     ^
+  symbol:   class DisplayName
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:8: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:10: error: cannot find symbol
+            throw new IOException("forced error");
+                      ^
+  symbol:   class IOException
+  location: class JsonSchemaFactory_getSchema_2_Test.ClosableFailingInputStream
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:13: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:16: error: cannot find symbol
+            super.close();
+                 ^
+  symbol: method close()
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:33: error: cannot find symbol
+        factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+                                                ^
+  symbol:   variable VersionFlag
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:33: error: cannot find symbol
+        factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+                  ^
+  symbol:   variable JsonSchemaFactory
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:40: error: cannot find symbol
+        InputStream schemaStream = new ByteArrayInputStream(schemaJson.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:40: error: cannot find symbol
+        InputStream schemaStream = new ByteArrayInputStream(schemaJson.getBytes(StandardCharsets.UTF_8));
+                                       ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:40: error: cannot find symbol
+        InputStream schemaStream = new ByteArrayInputStream(schemaJson.getBytes(StandardCharsets.UTF_8));
+                                                                                ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:41: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(schemaStream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:43: error: cannot find symbol
+        ValidationResult result = schema.validate("hello");
+        ^
+  symbol:   class ValidationResult
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:49: error: cannot find symbol
+        InputStream nullStream = null;
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:50: error: cannot find symbol
+        assertThrows(Exception.class, () -> factory.getSchema(nullStream));
+        ^
+  symbol:   method assertThrows(Class<Exception>,()->factor[...]ream))
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:56: error: cannot find symbol
+        InputStream empty = new ByteArrayInputStream(new byte[0]);
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:56: error: cannot find symbol
+        InputStream empty = new ByteArrayInputStream(new byte[0]);
+                                ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:57: error: cannot find symbol
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(empty));
+                       ^
+  symbol:   method assertThrows(Class<Exception>,()->factor[...]mpty))
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:64: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(malformed.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:64: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(malformed.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:64: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(malformed.getBytes(StandardCharsets.UTF_8));
+                                                                         ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:65: error: cannot find symbol
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(stream));
+                       ^
+  symbol:   method assertThrows(Class<Exception>,()->factor[...]ream))
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:66: error: cannot find symbol
+        assertNotNull(ex.getMessage());
+        ^
+  symbol:   method assertNotNull(String)
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:73: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:73: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:73: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:74: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:82: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:82: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:82: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:83: error: cannot find symbol
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig().setFailFast(true);
+        ^
+  symbol:   class SchemaValidatorsConfig
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:83: error: cannot find symbol
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig().setFailFast(true);
+                                            ^
+  symbol:   class SchemaValidatorsConfig
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:84: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream, config);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:88: error: cannot find symbol
+        ValidationResult result = schema.validate(instance);
+        ^
+  symbol:   class ValidationResult
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:96: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:96: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:96: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(yaml.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:97: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:104: error: cannot find symbol
+        InputStream faulty = new InputStream() {
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:104: error: cannot find symbol
+        InputStream faulty = new InputStream() {
+                                 ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:106: error: cannot find symbol
+            public int read() throws IOException {
+                                     ^
+  symbol: class IOException
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:111: error: cannot find symbol
+            public void close() throws IOException {
+                                       ^
+  symbol: class IOException
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:105: error: method does not override or implement a method from a supertype
+            @Override
+            ^
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:107: error: cannot find symbol
+                throw new IOException("forced I/O error");
+                          ^
+  symbol: class IOException
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:110: error: method does not override or implement a method from a supertype
+            @Override
+            ^
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:115: error: cannot find symbol
+        Exception ex = assertThrows(Exception.class, () -> factory.getSchema(faulty));
+                       ^
+  symbol:   method assertThrows(Class<Exception>,()->factor[...]ulty))
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:116: error: cannot find symbol
+        assertTrue(ex.getMessage().contains("forced I/O error"));
+        ^
+  symbol:   method assertTrue(boolean)
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:122: error: cannot find symbol
+        ByteArrayInputStream stream = new ByteArrayInputStream("{ \"type\": \"null\" }".getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:122: error: cannot find symbol
+        ByteArrayInputStream stream = new ByteArrayInputStream("{ \"type\": \"null\" }".getBytes(StandardCharsets.UTF_8));
+                                          ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:122: error: cannot find symbol
+        ByteArrayInputStream stream = new ByteArrayInputStream("{ \"type\": \"null\" }".getBytes(StandardCharsets.UTF_8));
+                                                                                                 ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:123: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:134: error: cannot find symbol
+        byte[] jsonBytes = json.getBytes(StandardCharsets.UTF_8);
+                                         ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:138: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(combined);
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:138: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(combined);
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:139: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:147: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:147: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:147: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:148: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:156: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:156: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:156: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:157: error: cannot find symbol
+        JsonSchema schema = factory.getSchema(stream);
+        ^
+  symbol:   class JsonSchema
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:165: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+        ^
+  symbol:   class InputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:165: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                 ^
+  symbol:   class ByteArrayInputStream
+  location: class JsonSchemaFactory_getSchema_2_Test
+src/test/java/com/networknt/schema/JsonSchemaFactory_getSchema_2_Test.java:165: error: cannot find symbol
+        InputStream stream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+                                                                    ^
+  symbol:   variable StandardCharsets
+  location: class JsonSchemaFactory_getSchema_2_Test
+100 errors
+only showing the first 100 errors, of 117 total; use -Xmaxerrs if you would like to see more
+
+```
+
+And you can use the following related information to assist you in your analysis and correction:
+```
+{'return type': 'com.networknt.schema.JsonSchema', 'dependent classes': 'class `com.networknt.schema.JsonSchemaFactory`:\n\trelated functions:\n\t\tmethod `public JsonSchema getSchema(InputStream)` returns `com.networknt.schema.JsonSchema`, related with `com.networknt.schema.JsonSchemaFactory.getSchema(InputStream)`;\nclass `com.networknt.org.apache.commons.validator.routines.InetAddressValidator`:\n\trelated functions:\n\t\tmethod `public static InetAddressValidator getInstance()` returns `com.networknt.org.apache.commons.validator.routines.InetAddressValidator`, related with `com.networknt.schema.JsonSchemaFactory.getSchema(InputStream)`, api document: \n     * Returns the singleton instance of this validator.\n     *\n     * @return the singleton instance of this validator\n     ;'}
+```
+
+**Note**: If the method-to-test in the @Test function is a private method, you can use **reflection** to call it.
+
+Now you should output the corrected Java code wrapped in a Markdown code block ```java at the beginning and ``` at the end: 
+
+

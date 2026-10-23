@@ -1,0 +1,158 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (10):
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:preloadWithPrePopulatedSchemasList()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'preloadWithPrePopulatedSchemasList', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:exceptionPropagationFromPreloadJsonSchemas()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'exceptionPropagationFromPreloadJsonSchemas', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:multipleConsecutivePreloadCalls()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'multipleConsecutivePreloadCalls', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:preloadClearsExistingSchemas()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'preloadClearsExistingSchemas', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:preloadAddsNullSchema()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'preloadAddsNullSchema', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:preloadWithLargeNumberOfSchemas()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'preloadWithLargeNumberOfSchemas', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:preloadWithNoModifications()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'preloadWithNoModifications', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:nullInternalSchemasList()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'nullInternalSchemasList', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:unmodifiableSchemasList()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'unmodifiableSchemasList', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:AnyOfValidator_preloadJsonSchema_Test:specificUncheckedExceptionPropagation()
+    MethodSource [className = 'com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test', methodName = 'specificUncheckedExceptionPropagation', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test$SimpleJsonSchema.<init>(AnyOfValidator_preloadJsonSchema_Test.java:43)
+       com.networknt.schema.AnyOfValidator_preloadJsonSchema_Test.setupBeforeEach(AnyOfValidator_preloadJsonSchema_Test.java:154)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+
+Test run finished after 216 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        10 tests found           ]
+[         0 tests skipped         ]
+[        10 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[        10 tests failed          ]
+

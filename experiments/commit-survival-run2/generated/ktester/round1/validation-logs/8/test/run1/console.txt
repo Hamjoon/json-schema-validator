@@ -1,0 +1,46 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (2):
+  JUnit Jupiter:BaseJsonValidator_equals_Test:equals_parameterised(double, double, boolean, String):2 ⇒ Numbers differ by 9.9e‑13 (< 1e‑12).
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_equals_Test', methodName = 'equals_parameterised', methodParameterTypes = 'double, double, boolean, java.lang.String']
+    => org.opentest4j.AssertionFailedError: Failed case: Numbers differ by 9.9e‑13 (< 1e‑12). (n1=1.0, n2=1.0E-13) ==> expected: <true> but was: <false>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:188)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1167)
+       com.networknt.schema.BaseJsonValidator_equals_Test.equals_parameterised(BaseJsonValidator_equals_Test.java:88)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+  JUnit Jupiter:BaseJsonValidator_equals_Test:equals_parameterised(double, double, boolean, String):5 ⇒ Negative numbers with tiny difference (< 1e‑12).
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_equals_Test', methodName = 'equals_parameterised', methodParameterTypes = 'double, double, boolean, java.lang.String']
+    => org.opentest4j.AssertionFailedError: Failed case: Negative numbers with tiny difference (< 1e‑12). (n1=-5.0, n2=-5.0E-13) ==> expected: <true> but was: <false>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+       org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+       org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:188)
+       org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1167)
+       com.networknt.schema.BaseJsonValidator_equals_Test.equals_parameterised(BaseJsonValidator_equals_Test.java:88)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+
+Test run finished after 311 ms
+[         5 containers found      ]
+[         0 containers skipped    ]
+[         5 containers started    ]
+[         0 containers aborted    ]
+[         5 containers successful ]
+[         0 containers failed     ]
+[        31 tests found           ]
+[         0 tests skipped         ]
+[        31 tests started         ]
+[         0 tests aborted         ]
+[        29 tests successful      ]
+[         2 tests failed          ]
+

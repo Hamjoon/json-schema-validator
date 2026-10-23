@@ -1,0 +1,152 @@
+[
+  {
+    "group": "Valid version flags - each supported Draft",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          }
+        ],
+        "expected": "JsonSchemaFactory instance with defaultMetaSchemaURI == \"http://json-schema.org/draft-04/schema#\" and contains the V4 meta\u2011schema",
+        "description": "When a supported Draft\u201104 flag is supplied, getInstance should return a non\u2011null factory whose default meta\u2011schema URI matches the V4 meta\u2011schema URI."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          }
+        ],
+        "expected": "JsonSchemaFactory instance with defaultMetaSchemaURI == \"http://json-schema.org/draft-06/schema#\" and contains the V6 meta\u2011schema",
+        "description": "When a supported Draft\u201106 flag is supplied, getInstance should return a factory configured for Draft\u201106."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "JsonSchemaFactory instance with defaultMetaSchemaURI == \"http://json-schema.org/draft-07/schema#\" and contains the V7 meta\u2011schema",
+        "description": "When a supported Draft\u201107 flag is supplied, getInstance should return a factory configured for Draft\u201107."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V2019_09"
+          }
+        ],
+        "expected": "JsonSchemaFactory instance with defaultMetaSchemaURI == \"https://json-schema.org/draft/2019-09/schema#\" and contains the 2019\u201109 meta\u2011schema",
+        "description": "When the 2019\u201109 flag is supplied, getInstance should return a factory configured for the 2019\u201109 draft."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V2020_12"
+          }
+        ],
+        "expected": "JsonSchemaFactory instance with defaultMetaSchemaURI == \"https://json-schema.org/draft/2020-12/schema#\" and contains the 2020\u201112 meta\u2011schema",
+        "description": "When the 2020\u201112 flag is supplied, getInstance should return a factory configured for the 2020\u201112 draft."
+      }
+    ]
+  },
+  {
+    "group": "Invalid version flag - null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) thrown by checkVersion",
+        "description": "Passing a null flag should cause the method to abort with an exception because checkVersion cannot resolve a null version."
+      }
+    ]
+  },
+  {
+    "group": "Invalid version flag - unsupported enum constant",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.UNSUPPORTED"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown by checkVersion indicating unsupported version",
+        "description": "If an enum constant that is not mapped to any JsonSchemaVersion is supplied, checkVersion must reject it and getInstance should propagate the exception."
+      }
+    ]
+  },
+  {
+    "group": "Factory instance uniqueness",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          }
+        ],
+        "expected": "Two distinct JsonSchemaFactory objects are returned on successive calls (different object references)",
+        "description": "Calling getInstance with the same supported flag twice must produce independent factory instances; the method should not cache or reuse a singleton."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V2020_12"
+          }
+        ],
+        "expected": "Two distinct JsonSchemaFactory objects are returned on successive calls (different object references)",
+        "description": "Even for the latest draft, getInstance must create a fresh factory each invocation."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema registration count and key normalization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          }
+        ],
+        "expected": "Factory's internal jsonMetaSchemas map has size 1 and contains the normalized key \"http://json-schema.org/draft-06/schema#\"",
+        "description": "After getInstance(V6) the factory should register only the Draft\u201106 meta\u2011schema; the key must be the normalized URI returned by JsonMetaSchema.getUri()."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V2019_09"
+          }
+        ],
+        "expected": "Factory's internal jsonMetaSchemas map has size 1 and contains the normalized key \"https://json-schema.org/draft/2019-09/schema#\"",
+        "description": "For the 2019\u201109 draft the factory must contain exactly one meta\u2011schema entry with the correct HTTPS URI."
+      }
+    ]
+  },
+  {
+    "group": "Builder defaults are not altered by getInstance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "Returned JsonSchemaFactory has enableUriSchemaCache == true and its uriTranslators collection is empty (default state)",
+        "description": "getInstance should build the factory using the Builder's default configuration; no custom URI translators or cache settings are introduced automatically."
+      }
+    ]
+  }
+]

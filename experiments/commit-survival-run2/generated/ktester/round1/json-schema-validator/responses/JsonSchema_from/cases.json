@@ -1,0 +1,527 @@
+[
+  {
+    "group": "Object Creation - Standard Parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/name\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema with the supplied arguments stored in its fields",
+        "description": "Verify that the static factory method creates a JsonSchema object when all parameters are valid and non\u2011null, and that the suppress flag is false."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Null Parent Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"file:/tmp/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "instance of JsonSchema with parent == null and suppressSubSchemaRetrieval == true",
+        "description": "Ensure that the method correctly handles a null parent schema and sets the suppress flag to true without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Empty Schema Path & Null URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), \"#/root\", URI.create(\"http://example.com\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema where getCurrentUri() returns null and schemaPath is an empty string",
+        "description": "Test that the factory method can be called with an empty schemaPath and a null currentUri, which are legal values for certain draft specifications."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Null ValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/id\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The factory method should reject a null ValidationContext and throw a NullPointerException, because the context is required for validator initialisation."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Null SchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/age\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/person.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A null JsonNode representing the schema definition is illegal; the method should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Relative URI and Schema Path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/components/schemas/Address\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/api/v1/\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema where getCurrentUri() returns URI.create(\"http://example.com/api/v1/\") and schemaPath equals \"#/components/schemas/Address\"",
+        "description": "Verify that a relative base URI is stored unchanged and that the schemaPath is preserved when both are supplied."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Suppress Flag True with Non\u2011Null Parent",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/email\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"file:/opt/schemas/user.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), \"#\", URI.create(\"file:/opt/schemas/root.json\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "instance of JsonSchema with parent != null and suppressSubSchemaRetrieval == true",
+        "description": "Ensure that when a non\u2011null parent schema is provided, the suppress flag can still be set to true and is stored correctly."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Complex SchemaPath with JSON Pointer Escapes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/~1special~0name\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/complex.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema where schemaPath equals \"#/properties/~1special~0name\" (preserving escape sequences)",
+        "description": "Validate that the factory method does not decode or alter JSON\u2011Pointer escape sequences in the schemaPath."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - URI with Query and Fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/definitions/item\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/api?version=2#section\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema where getCurrentUri() returns URI.create(\"http://example.com/api?version=2#section\")",
+        "description": "Check that a URI containing both a query string and a fragment is stored verbatim."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Parent Chain Multiple Levels",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/inner\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/outer.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), \"#/properties/middle\", URI.create(\"http://example.com/middle.json\"), JsonNodeFactory.instance.objectNode(), new JsonSchema(new ValidationContext(), \"#\", URI.create(\"http://example.com/root.json\"), JsonNodeFactory.instance.objectNode(), null, false), false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "instance of JsonSchema where findAncestor() returns the root JsonSchema (the one with schemaPath \"#\")",
+        "description": "Create a child schema whose parent itself has a parent, then verify that the newly created schema correctly links to the whole ancestor chain."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Null SchemaPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "null"
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The factory method should reject a null schemaPath because the JSON\u2011Pointer location is required for proper schema identification."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Invalid SchemaPath Format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"properties/name\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A schemaPath that does not start with a '#' is not a valid JSON\u2011Pointer; the method must throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Non\u2011Object SchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/definitions/list\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schemaNode must be an object node representing a schema definition; passing an array node should cause an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Parent with Different ValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/child\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/child.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), \"#\", URI.create(\"http://example.com/parent.json\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If the parent schema was created with a different ValidationContext than the child, the factory should reject the mismatch and throw an IllegalStateException."
+      }
+    ]
+  },
+  {
+    "group": "Object Creation - Self\u2011Referential Parent",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/properties/self\""
+          },
+          {
+            "parameter": "currentUri",
+            "value": "URI.create(\"http://example.com/self.json\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "JsonSchema.from(new ValidationContext(), \"#\", URI.create(\"http://example.com/self.json\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Providing the same JsonSchema instance as its own parent would create a circular reference; the method should detect this and throw an IllegalArgumentException."
+      }
+    ]
+  }
+]

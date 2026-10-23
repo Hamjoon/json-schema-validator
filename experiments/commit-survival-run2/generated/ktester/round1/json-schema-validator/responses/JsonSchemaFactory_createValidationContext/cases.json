@@ -1,0 +1,272 @@
+[
+  {
+    "group": "Schema node with explicit $schema (known meta\u2011schema)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"\\$schema\": \"http://json-schema.org/draft-07/schema#\", \"type\": \"object\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema has the URI `http://json-schema.org/draft-07/schema#`. The context\u2019s uriFactory and urnFactory are the same instances that belong to the JsonSchemaFactory used in the test.",
+        "description": "When the schema node contains a `$schema` keyword that matches a known meta\u2011schema, `findMetaSchemaForSchema` should resolve that meta\u2011schema and the created ValidationContext must contain it."
+      }
+    ]
+  },
+  {
+    "group": "Schema node without $schema (default meta\u2011schema)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"type\": \"string\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema corresponds to the factory\u2019s default meta\u2011schema (e.g., `http://json-schema.org/draft-07/schema#`). No exception is thrown.",
+        "description": "If the schema node does not specify a `$schema` keyword, the factory should fall back to its default meta\u2011schema when creating the ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Null schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown (or IllegalArgumentException depending on implementation) because the method requires a non\u2011null JsonNode.",
+        "description": "The method should validate its argument and reject a null schema node, ensuring callers cannot create a ValidationContext from a null reference."
+      }
+    ]
+  },
+  {
+    "group": "Schema node with unknown $schema URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"\\$schema\": \"http://example.com/unknown/schema#\", \"type\": \"array\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or a custom SchemaException) is thrown indicating that the meta\u2011schema cannot be found.",
+        "description": "When `$schema` points to an URI that the factory does not recognise, `findMetaSchemaForSchema` should raise an error, and consequently `createValidationContext` should not return a ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Schema node with $schema pointing to a known meta\u2011schema that requires URI translation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"\\$schema\": \"urn:jsonschema:draft-07\", \"type\": \"number\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema URI is the normalized form `http://json-schema.org/draft-07/schema#` (translation performed by the URITranslator).",
+        "description": "The factory may support URN\u2011based meta\u2011schema identifiers; this test verifies that the URITranslator correctly normalises the URN to the standard HTTP URI before constructing the ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword with non\u2011string value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": 123, \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because the value of `$schema` is not a string.",
+        "description": "The `$schema` keyword must be a string. Supplying a numeric value should cause the factory to reject the schema and raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword with surrounding whitespace",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"  http://json-schema.org/draft-07/schema#  \", \"type\": \"null\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema URI is `http://json-schema.org/draft-07/schema#` (whitespace trimmed). The uriFactory and urnFactory are the same instances as in the JsonSchemaFactory under test.",
+        "description": "Even if the `$schema` value contains leading/trailing spaces, the factory should trim it and resolve the known meta\u2011schema correctly."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword without fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-07/schema\", \"type\": \"integer\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema URI is normalized to `http://json-schema.org/draft-07/schema#` (fragment added).",
+        "description": "When the `$schema` URI lacks the trailing `#`, the factory should normalise it to the canonical form that includes the fragment."
+      }
+    ]
+  },
+  {
+    "group": "Factory built with SPECIFIC version flag (draft\u201104) and missing $schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"type\": \"boolean\" }"
+          }
+        ],
+        "expected": "A ValidationContext is returned whose jsonMetaSchema URI is `http://json-schema.org/draft-04/schema#`, i.e., the default meta\u2011schema for a factory created with `SpecVersion.VersionFlag.V4`.",
+        "description": "When the JsonSchemaFactory is constructed via `JsonSchemaFactory.builder().specVersion(SpecVersion.VersionFlag.V4).build()`, a schema without an explicit `$schema` must fall back to the draft\u201104 meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Multiple invocations produce independent ValidationContext objects",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"type\": \"string\" }"
+          }
+        ],
+        "expected": "Two successive calls to `createValidationContext` with the same schema node return two distinct ValidationContext instances (different object identity).",
+        "description": "The method should create a fresh ValidationContext each time; there must be no unintended caching or reuse of mutable state between calls."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword as JSON array (invalid type)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": [\"http://json-schema.org/draft-07/schema#\"], \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because `$schema` is an array instead of a string.",
+        "description": "The factory must validate the type of the `$schema` keyword; an array value is illegal and should cause an exception."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword as boolean true (invalid type)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": true, \"type\": \"number\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because `$schema` is a boolean, not a string.",
+        "description": "Ensures that non\u2011string primitive values for `$schema` are rejected with a clear error."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword empty string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because the `$schema` value is an empty string and cannot be resolved to a meta\u2011schema.",
+        "description": "An empty string for `$schema` provides no URI; the factory should reject it and raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword whitespace\u2011only",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"   \" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because after trimming the `$schema` value becomes empty and cannot be resolved.",
+        "description": "A `$schema` that contains only whitespace should be treated as missing/invalid and cause an exception."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword malformed URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"http://[invalid]\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown due to URISyntaxException when parsing the malformed `$schema` URI.",
+        "description": "The `$schema` value is not a syntactically valid URI; the factory must fail during meta\u2011schema lookup."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword unsupported scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": \"ftp://json-schema.org/draft-07/schema#\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because the scheme `ftp` is not supported for meta\u2011schema identification.",
+        "description": "Only HTTP/HTTPS (and possibly URN) schemes are recognised; an unsupported scheme should trigger an error."
+      }
+    ]
+  },
+  {
+    "group": "$schema keyword explicit null value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{ \"$schema\": null }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because `$schema` is explicitly null, which is not a valid string URI.",
+        "description": "A `$schema` keyword with a JSON null value should be rejected."
+      }
+    ]
+  },
+  {
+    "group": "Schema node not an object (array root)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "[ { \"type\": \"string\" } ]"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaException) is thrown because the root schema node is not a JSON object; meta\u2011schema resolution expects an object node.",
+        "description": "The factory should validate that the provided schema node is an object; passing an array should cause an exception."
+      }
+    ]
+  }
+]

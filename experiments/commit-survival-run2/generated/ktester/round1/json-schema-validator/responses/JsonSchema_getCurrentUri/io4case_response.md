@@ -1,0 +1,69 @@
+{
+    "testCases": [
+        {
+            "group": "JsonSchema.getCurrentUri() - URI resolution behavior",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/sub/schema.json",
+                    "description": "When `JsonSchema.from` is called with a base `currentUri` of `http://example.com/base/` and a relative `schemaPath` of `sub/schema.json`, the getter must return the resolved absolute URI `http://example.com/base/sub/schema.json`."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/absolute/schema.json",
+                    "description": "When `schemaPath` itself is an absolute URI (`http://example.com/absolute/schema.json`), it should replace the base `currentUri` and `getCurrentUri()` must return exactly that absolute URI."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/schema.json#fragment",
+                    "description": "When `schemaPath` contains a fragment (`schema.json#fragment`) and the base `currentUri` is `http://example.com/base/`, the getter must return the resolved URI including the fragment."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/schema.json?query=1",
+                    "description": "When `schemaPath` contains a query component (`schema.json?query=1`) and the base `currentUri` is `http://example.com/base/`, the getter must return the resolved URI with the query string preserved."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/",
+                    "description": "When `schemaPath` is an empty string, the resolver should leave the base `currentUri` unchanged; `getCurrentUri()` must return the original base URI."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchema.getCurrentUri() - reference identity",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "same-instance",
+                    "description": "When a non‑null `URI` object is supplied to `JsonSchema.from`, `getCurrentUri()` must return the *same* object reference (i.e., `==` comparison is true). The test captures the original URI instance, calls the getter, and asserts reference equality."
+                },
+                {
+                    "input": [],
+                    "expected": "same-instance",
+                    "description": "When `schemaPath` resolves to the exact same URI as the base (e.g., base `http://example.com/dir/` and `schemaPath` = `.`), the getter must still return the original base `URI` instance, not a newly created equivalent one."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchema.getCurrentUri() - handling of special characters and encoding",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/space%20in%20name.json",
+                    "description": "When the `schemaPath` contains spaces (`space in name.json`) the resolver must encode them according to RFC 2396. The getter must return a URI where spaces are percent‑encoded (`%20`)."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/%E2%9C%93.json",
+                    "description": "When the `schemaPath` contains a Unicode check‑mark character (`✓.json`), the resolver must percent‑encode it. The getter must return the correctly encoded URI."
+                },
+                {
+                    "input": [],
+                    "expected": "http://example.com/base/%23hash.json",
+                    "description": "When the `schemaPath` starts with a literal hash (`#hash.json`), it should be treated as a fragment, not as part of the path. The getter must return a URI whose fragment is `hash.json` and whose path remains the base path."
+                }
+            ]
+        }
+    ]
+}

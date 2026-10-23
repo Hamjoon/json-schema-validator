@@ -1,0 +1,102 @@
+{
+  "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ktester/round1/36/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.669,
+    "log": "generated/ktester/round1/validation-logs/36/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+      "class": "com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test",
+      "method": "newJsonSchema_WithAllParameters_ShouldReturnJsonSchema",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java|com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test|newJsonSchema_WithAllParameters_ShouldReturnJsonSchema",
+      "body_hash": "fd55a24153e348bd49ba08508d9d9c411e9db749a5c83c9cdb83a42f3dc8c7a4",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java:20: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\nNote: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+      "class": "com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test",
+      "method": "newJsonSchema_WithNullUriAndConfig_ShouldReturnJsonSchema",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java|com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test|newJsonSchema_WithNullUriAndConfig_ShouldReturnJsonSchema",
+      "body_hash": "bbbc96914e1b6bc6b4274dc6e7d39a3179baa3d701186be807b4366dca35ddfe",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java:20: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\nNote: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+      "class": "com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test",
+      "method": "newJsonSchema_ValidSchemas_ShouldCreateCorrectJsonSchema",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java|com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test|newJsonSchema_ValidSchemas_ShouldCreateCorrectJsonSchema",
+      "body_hash": "3fb1e60d50d4ab0f493ab44977052177fdd33d9a3439c7728d78d97e867e8a44",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java:20: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\nNote: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+      "class": "com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test",
+      "method": "newJsonSchema_NullConfigOrUri_ShouldFallBackToDefaults",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java|com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test|newJsonSchema_NullConfigOrUri_ShouldFallBackToDefaults",
+      "body_hash": "3e63bbd04f652237f97d424578d3d63a588dd1de1e41bb56fac8f7d56037d4b3",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java:20: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\nNote: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n1 error\n"
+    },
+    {
+      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java",
+      "class": "com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test",
+      "method": "newJsonSchema_InvalidInputs_ShouldThrowException",
+      "kind": "parameterized",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java|com.networknt.schema.JsonSchemaFactory_newJsonSchema_Test|newJsonSchema_InvalidInputs_ShouldThrowException",
+      "body_hash": "2d7562f949d565d7fdb434a8dde060906b3fa3dc0b96aeead75b160761d262f6",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java:20: error: cannot find symbol\n@ExtendWith(MockitoExtension.class)\n            ^\n  symbol: class MockitoExtension\nNote: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_newJsonSchema_Test.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.42,
+    "log": "generated/ktester/round1/validation-logs/36/inventory.tsv"
+  }
+}

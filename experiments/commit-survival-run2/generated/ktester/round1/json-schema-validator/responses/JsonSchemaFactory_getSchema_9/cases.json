@@ -1,0 +1,401 @@
+[
+  {
+    "group": "Null Config \u2013 default URI translator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance returned; default URI translator used; cache miss path exercised; JSON parser invoked",
+        "description": "When config is null the factory must fall back to its own URI translator. The schema is a regular JSON file, cache is disabled, and id does not match the source URI, so the else\u2011branch of idMatchesSourceUri is taken."
+      }
+    ]
+  },
+  {
+    "group": "Custom Config \u2013 custom URI translator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/custom-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "customConfigWithTranslator"
+          }
+        ],
+        "expected": "JsonSchema instance returned; config.getUriTranslator() combined with factory translator; cache miss path exercised; JSON parser invoked",
+        "description": "When a non\u2011null config is supplied the method must combine the config\u2011provided URI translator with the factory\u2011provided one."
+      }
+    ]
+  },
+  {
+    "group": "Invalid URI \u2013 IllegalArgumentException from URISchemeFactory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "invalid:\\\\uri"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause IllegalArgumentException)",
+        "description": "The uriFactory.create call throws IllegalArgumentException for a malformed URI; the method must log the error and wrap it in JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Cache Hit \u2013 enableUriSchemaCache = true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/cached-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "anyConfig"
+          }
+        ],
+        "expected": "Previously cached JsonSchema instance returned; its ValidationContext config replaced with supplied config",
+        "description": "When caching is enabled and the mapped URI is already present in uriSchemaCache, the method must return the cached JsonSchema and update its ValidationContext with the new config."
+      }
+    ]
+  },
+  {
+    "group": "Cache Miss \u2013 YAML schema detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schema.yaml"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance returned; yamlMapper.readTree used; idMatchesSourceUri evaluated (any result) but not relevant for branch coverage",
+        "description": "When the URI ends with a .yaml/.yml extension, isYaml() returns true, causing the method to parse the InputStream with yamlMapper instead of jsonMapper."
+      }
+    ]
+  },
+  {
+    "group": "Cache Miss \u2013 JSON schema with id matching source URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/matching-id-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance returned; idMatchesSourceUri true; ValidationContext created with jsonMetaSchema and config; doCreate called with suppressSubSchemaRetrieval = true",
+        "description": "When the schema\u2019s $id (or id) exactly matches the source URI, the method follows the true\u2011branch of idMatchesSourceUri, creating a ValidationContext that includes the meta\u2011schema and passes \u2018true\u2019 to suppress sub\u2011schema retrieval."
+      }
+    ]
+  },
+  {
+    "group": "Cache Miss \u2013 JSON schema with id NOT matching source URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/nonmatching-id-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance returned; idMatchesSourceUri false; ValidationContext created via createValidationContext(schemaNode); doCreate called with suppressSubSchemaRetrieval = false",
+        "description": "When the schema\u2019s $id does not match the source URI, the else\u2011branch is taken, a ValidationContext is built from the schema node, config is set afterwards, and doCreate is invoked with \u2018false\u2019."
+      }
+    ]
+  },
+  {
+    "group": "IOException while reading schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/unreachable-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause IOException)",
+        "description": "If uriFetcher.fetch throws or the InputStream cannot be read (e.g., network error), the method must catch IOException, log it and re\u2011throw as JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "InputStream closed in finally block",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/valid-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "InputStream.close() invoked exactly once after successful schema load",
+        "description": "Regardless of success or failure, the finally block must close the InputStream if it was opened."
+      }
+    ]
+  },
+  {
+    "group": "Cache Miss with Caching Enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/new-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithCacheEnabled"
+          }
+        ],
+        "expected": "JsonSchema instance returned; schema is stored in uriSchemaCache because enableUriSchemaCache=true and cache was previously empty for this URI",
+        "description": "When caching is turned on but the requested URI is not yet cached, the method must fetch, parse and then put the newly created JsonSchema into the cache."
+      }
+    ]
+  },
+  {
+    "group": "Cache Hit after Miss with Caching Enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/new-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "secondConfig"
+          }
+        ],
+        "expected": "Previously cached JsonSchema instance returned; its ValidationContext config replaced with secondConfig",
+        "description": "After the first call cached the schema (see previous test), a second call with a different config must hit the cache, return the same JsonSchema object and update its ValidationContext with the new config."
+      }
+    ]
+  },
+  {
+    "group": "URI Translation Alters URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/base/schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithRelativeTranslator"
+          }
+        ],
+        "expected": "JsonSchema instance returned; the URI passed to uriFactory.create is the result of config.getUriTranslator().with(factoryTranslator).translate(originalUri) (e.g., http://example.com/base/translated/schema.json)",
+        "description": "When a config provides its own URITranslator that rewrites the incoming URI (e.g., adds a path segment), the method must use the combined translator, and the mapped URI used for fetching and caching must reflect the translation."
+      }
+    ]
+  },
+  {
+    "group": "Config with Null URI Translator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/null-translator-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithNullTranslator"
+          }
+        ],
+        "expected": "JsonSchema instance returned; factory's default URI translator is used because config.getUriTranslator() is null; no NullPointerException is thrown",
+        "description": "The method calls config.getUriTranslator().with(factoryTranslator). If the config's translator is null, the implementation should fall back to the factory translator without throwing NPE. The test verifies graceful handling."
+      }
+    ]
+  },
+  {
+    "group": "Parsing Error due to Wrong Content Type (YAML in JSON file)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/wrong-type.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause JsonProcessingException) because jsonMapper fails to parse YAML content from a .json file",
+        "description": "The URI ends with .json, so isYaml() returns false and jsonMapper is used. The underlying stream actually contains YAML, causing a parsing failure that must be wrapped in JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaUri handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause IllegalArgumentException or NullPointerException) because uriFactory.create cannot handle a null URI",
+        "description": "Passing a null schemaUri should result in an exception wrapped as JsonSchemaException; the test confirms that the method does not silently succeed."
+      }
+    ]
+  },
+  {
+    "group": "Null InputStream from uriFetcher",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/null-stream-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause NullPointerException) when attempting to read from a null InputStream",
+        "description": "If the URISchemeFetcher returns null instead of a valid InputStream, the subsequent readTree call will throw NPE; the method must wrap it in JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "InputStream close throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/close-failure-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException thrown (cause IOException from InputStream.close())",
+        "description": "The uriFetcher returns a valid InputStream, but its close() method throws an IOException. The finally block attempts to close the stream, the IOException is caught by the outer catch block and wrapped in JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Config URI translator throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/translator-exception-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithFailingTranslator"
+          }
+        ],
+        "expected": "NullPointerException (or RuntimeException) thrown and not wrapped in JsonSchemaException",
+        "description": "The config provides a URITranslator whose with() method (or translate()) throws a NullPointerException/RuntimeException. The method calls config.getUriTranslator().with(factoryTranslator) before any try\u2011catch for this specific exception, so the exception propagates out of getSchema."
+      }
+    ]
+  },
+  {
+    "group": "URIFetcher throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/fetcher-runtime-exception.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "IllegalStateException (or other RuntimeException) thrown and not wrapped in JsonSchemaException",
+        "description": "The URISchemeFetcher.fetch(mappedUri) throws a RuntimeException (e.g., IllegalStateException). Since the method only catches IOException, the RuntimeException propagates unchanged."
+      }
+    ]
+  },
+  {
+    "group": "MetaSchema not found leading to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/no-meta-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException thrown (cause findMetaSchemaForSchema returned null and idMatchesSourceUri dereferences it)",
+        "description": "The schema content is such that findMetaSchemaForSchema returns null. The subsequent call to idMatchesSourceUri(metaSchema, ...) dereferences the null metaSchema, causing a NullPointerException which is not caught by the method."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext creation throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/validation-context-failure.json"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "IllegalStateException thrown (or other RuntimeException) and not wrapped in JsonSchemaException",
+        "description": "When idMatchesSourceUri returns false, the method calls createValidationContext(schemaNode). If this method throws a RuntimeException, the exception propagates out of getSchema because only IOException is caught."
+      }
+    ]
+  }
+]

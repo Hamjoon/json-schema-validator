@@ -1,0 +1,217 @@
+[
+  {
+    "group": "builder(JsonSchemaFactory) - handling of empty blueprint",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via JsonSchemaFactory.builder().build() (all defaults, no meta\u2011schemas, no URI mappings, no custom factories/fetchers, no translators)"
+          }
+        ],
+        "expected": "Returns a Builder whose internal state mirrors the blueprint: \n- addMetaSchemas receives an empty collection, so the builder\u2019s jsonMetaSchemas map is empty.\n- defaultMetaSchemaURI is null (same as blueprint).\n- objectMapper and yamlMapper are the same instances as in the blueprint.\n- addUriMappings receives an empty map, so the builder\u2019s uriMap is empty.\n- No URITranslator is added because blueprint.uriTranslators is empty.\n- No custom URIFactory or URIFetcher entries are added because the blueprint\u2019s factories/fetchers maps are empty.\nVerification can be done by calling builder.build() and asserting that the resulting JsonSchemaFactory has the same defaultMetaSchemaURI, the same ObjectMapper/YAMLMapper instances, and that its URIFactory, URIFetcher and URITranslator contain no entries beyond the built\u2011in defaults.",
+        "description": "Ensures the method correctly copies an empty/default blueprint without throwing and without adding any extra entries."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies defaultMetaSchemaURI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().defaultMetaSchemaURI(\"https://example.com/meta\").build()"
+          }
+        ],
+        "expected": "The factory returned by builder(blueprint).build() has its defaultMetaSchemaURI equal to \"https://example.com/meta\" (identical to the blueprint).",
+        "description": "Verifies that a non\u2011null defaultMetaSchemaURI set on the blueprint is propagated to the new factory."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies custom ObjectMapper and YAMLMapper instances",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().objectMapper(customObjectMapper).yamlMapper(customYamlMapper).build()"
+          }
+        ],
+        "expected": "The resulting factory uses the same ObjectMapper instance (customObjectMapper) and the same YAMLMapper instance (customYamlMapper) as the blueprint.",
+        "description": "Ensures that custom mapper objects are not replaced by defaults when cloning via the builder method."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies added meta\u2011schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().addMetaSchema(meta1).addMetaSchema(meta2).build() where meta1.getUri() = \"urn:meta:1\" and meta2.getUri() = \"urn:meta:2\""
+          }
+        ],
+        "expected": "The new factory contains both meta\u2011schemas with normalized URIs (\"urn:meta:1\" and \"urn:meta:2\") in its jsonMetaSchemas map, matching the blueprint\u2019s collection.",
+        "description": "Checks that all meta\u2011schemas added to the blueprint are duplicated in the cloned factory."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies deprecated URI mappings (uriMap)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().addUriMappings(Map.of(\"http://old.com\", \"http://new.com\")).build()"
+          }
+        ],
+        "expected": "The cloned factory\u2019s internal uriMap contains the entry \"http://old.com\" \u2192 \"http://new.com\" exactly as in the blueprint.",
+        "description": "Even though addUriMappings is deprecated, the builder method must copy the map from the blueprint."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies custom URIFactory mappings",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().uriFactory(customFactory, \"custom\").build()"
+          }
+        ],
+        "expected": "The resulting factory\u2019s URIFactory contains a mapping for scheme \"custom\" that resolves to the same customFactory instance.",
+        "description": "Validates that custom scheme\u2011to\u2011factory associations are transferred to the new factory."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies custom URIFetcher mappings",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().uriFetcher(customFetcher, \"custom\").build()"
+          }
+        ],
+        "expected": "The new factory\u2019s URIFetcher holds a mapping for scheme \"custom\" that points to the same customFetcher instance.",
+        "description": "Ensures that custom scheme\u2011to\u2011fetcher associations are preserved when cloning."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - copies URITranslators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().addUriTranslator(translatorA).addUriTranslator(translatorB).build()"
+          }
+        ],
+        "expected": "The cloned factory\u2019s CompositeURITranslator contains both translatorA and translatorB in the same order.",
+        "description": "Checks that all URITranslator objects added to the blueprint are present in the new factory."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) - does NOT copy urnFactory or enableUriSchemaCache",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built with Builder().addUrnFactory(customUrnFactory).enableUriSchemaCache(false).build()"
+          }
+        ],
+        "expected": "The factory produced by builder(blueprint).build() has urnFactory == null (default) and its internal enableUriSchemaCache flag remains true (the builder\u2019s default).",
+        "description": "The builder method intentionally ignores the blueprint\u2019s urnFactory and enableUriSchemaCache settings; this test confirms that the defaults are used instead of the blueprint\u2019s values."
+      }
+    ]
+  },
+  {
+    "group": "unnamed",
+    "cases": [
+      {
+        "group": "builder(JsonSchemaFactory) - null blueprint",
+        "cases": [
+          {
+            "input": [
+              {
+                "parameter": "blueprint",
+                "value": "null"
+              }
+            ],
+            "expected": "NullPointerException",
+            "description": "Calling builder(null) should throw a NullPointerException because the method dereferences the blueprint to copy its internal state."
+          }
+        ]
+      },
+      {
+        "group": "builder(JsonSchemaFactory) - blueprint with null jsonMetaSchemas map",
+        "cases": [
+          {
+            "input": [
+              {
+                "parameter": "blueprint",
+                "value": "JsonSchemaFactory instance whose internal jsonMetaSchemas field is set to null via reflection"
+              }
+            ],
+            "expected": "NullPointerException",
+            "description": "The method accesses blueprint.jsonMetaSchemas.values(); if the map is null a NullPointerException must be thrown."
+          }
+        ]
+      },
+      {
+        "group": "builder(JsonSchemaFactory) - blueprint with null uriFactory",
+        "cases": [
+          {
+            "input": [
+              {
+                "parameter": "blueprint",
+                "value": "JsonSchemaFactory instance whose internal uriFactory field is set to null via reflection"
+              }
+            ],
+            "expected": "NullPointerException",
+            "description": "When iterating over blueprint.uriFactory.getURIFactories() the method will dereference a null uriFactory, resulting in a NullPointerException."
+          }
+        ]
+      },
+      {
+        "group": "builder(JsonSchemaFactory) - blueprint with null uriFetcher",
+        "cases": [
+          {
+            "input": [
+              {
+                "parameter": "blueprint",
+                "value": "JsonSchemaFactory instance whose internal uriFetcher field is set to null via reflection"
+              }
+            ],
+            "expected": "NullPointerException",
+            "description": "The method calls blueprint.uriFetcher.getURIFetchers(); a null uriFetcher causes a NullPointerException."
+          }
+        ]
+      },
+      {
+        "group": "builder(JsonSchemaFactory) - blueprint with null uriMap",
+        "cases": [
+          {
+            "input": [
+              {
+                "parameter": "blueprint",
+                "value": "JsonSchemaFactory instance whose internal uriMap field is set to null via reflection"
+              }
+            ],
+            "expected": "NullPointerException",
+            "description": "The builder adds the blueprint's uriMap via addUriMappings; passing a null map leads to a NullPointerException."
+          }
+        ]
+      }
+    ]
+  }
+]

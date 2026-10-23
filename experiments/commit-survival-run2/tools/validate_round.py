@@ -56,7 +56,9 @@ def main():
     funnel=dict(group=args.group,round=args.round,files=len(paths),compiled=sum(bool(r['compile']) and r['compile']['exit_code']==0 for r in records),methods=sum(len(r['methods']) for r in records),stable_3_of_3=stable,duplicates=duplicate,kept_this_round=stable-duplicate,total_kept=len(kept),seconds=round(time.monotonic()-start,3),per_prompt={})
     for tech in ['KTester'] if args.group=='ktester' else ['ZSL','FSL','CoT','ToT','GToT']:
         fs=[r for r in records if (Path(r['file']).parent.name==tech or args.group=='ktester')]
-        funnel['per_prompt'][tech]=dict(files=len(fs),compiled=sum(bool(r['compile']) and r['compile']['exit_code']==0 for r in fs),methods=sum(len(r['methods']) for r in fs),stable=sum(m['state']=='pass' for r in fs for m in r['methods']))
+        funnel['per_prompt'][tech]=dict(files=len(fs),compiled=sum(bool(r['compile']) and r['compile']['exit_code']==0 for r in fs),methods=sum(len(r['methods']) for r in fs),stable=sum(m['state']=='pass' for r in fs for m in r['methods']),duplicates=sum(m.get('duplicate',False) for r in fs for m in r['methods']),kept=sum(m['state']=='pass' and not m.get('duplicate',False) for r in fs for m in r['methods']))
+    funnel['developer_denominator']=185
+    funnel['ratio_to_dev']=len(kept)/185
     write_json(base/'funnel.json',funnel)
     (base/'funnel.md').write_text('# Generation funnel\n\n```json\n'+json.dumps(funnel,indent=2)+'\n```\n\nExact whitespace-stripped body hashes are deduplicated within and across rounds. Original source files remain preserved; only kept methods enter the denominator and method selections.\n')
     print(json.dumps(funnel),flush=True)

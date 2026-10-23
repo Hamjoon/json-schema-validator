@@ -1,0 +1,311 @@
+[
+  {
+    "group": "SchemaPath handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with schemaPath = \"#\" (default) and returns the dummy JsonSchema instance",
+        "description": "When the supplied schemaPath argument is null, create() should replace it with \"#\" before delegating to doCreate."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/my/schema/path\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"integer\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with schemaPath = \"/my/schema/path\" (unchanged) and returns the dummy JsonSchema instance",
+        "description": "When schemaPath is non\u2011null, create() must forward the exact value to doCreate."
+      }
+    ]
+  },
+  {
+    "group": "Null parent schema handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/any\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"boolean\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown because parentSchema.getCurrentUri() is accessed",
+        "description": "create() does not guard against a null parentSchema; invoking it with null should result in NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode forwarding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/path\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with schemaNode = null and returns the dummy JsonSchema instance",
+        "description": "The method should forward a null JsonNode unchanged; the test verifies that doCreate receives null."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/valid/path\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"number\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with validationContext = null and returns the dummy JsonSchema instance",
+        "description": "The method should forward a null ValidationContext unchanged; no NullPointerException should be thrown by create() itself."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/valid/path\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"number\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with the same ValidationContext instance that was supplied",
+        "description": "When a non\u2011null ValidationContext is supplied, create() must forward the exact instance to doCreate."
+      }
+    ]
+  },
+  {
+    "group": "Empty schemaPath handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with schemaPath = \"\" (empty string) and returns the dummy JsonSchema instance",
+        "description": "An empty string is a valid schemaPath value; create() must forward it unchanged (it only replaces null)."
+      }
+    ]
+  },
+  {
+    "group": "ParentSchema with null currentUri",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/any\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"boolean\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchemaWithNullUri()"
+          }
+        ],
+        "expected": "doCreate is invoked with currentUri = null and returns the dummy JsonSchema instance",
+        "description": "If the parent schema's getCurrentUri() returns null, create() should still forward the null value to doCreate without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Complex schemaNode forwarding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/complex\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"age\\\":{\\\"type\\\":\\\"integer\\\"}}}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/base\"))"
+          }
+        ],
+        "expected": "doCreate receives the same ObjectNode instance representing the complex schema and returns the dummy JsonSchema",
+        "description": "create() must forward complex (object) JsonNode structures unchanged to doCreate."
+      }
+    ]
+  },
+  {
+    "group": "SchemaPath containing fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"#/definitions/Person\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$ref\\\":\\\"#/definitions/Person\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchema(URI.create(\"http://example.com/schemas/base.json\"))"
+          }
+        ],
+        "expected": "doCreate is invoked with schemaPath = \"#/definitions/Person\" unchanged and returns the dummy JsonSchema instance",
+        "description": "When the supplied schemaPath contains a JSON\u2011Schema fragment, create() must not alter it before delegating to doCreate."
+      }
+    ]
+  },
+  {
+    "group": "ParentSchema getCurrentUri exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "\"/any\""
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchemaThrowing(new NullPointerException(\"parent URI is null\"))"
+          }
+        ],
+        "expected": "NullPointerException is thrown and propagated from parentSchema.getCurrentUri()",
+        "description": "When parentSchema.getCurrentUri() throws a NullPointerException, create() must not catch it; the exception should bubble up to the caller."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "new DummyParentSchemaThrowing(new IllegalStateException(\"unexpected state\"))"
+          }
+        ],
+        "expected": "IllegalStateException is thrown and propagated from parentSchema.getCurrentUri()",
+        "description": "Even when validationContext, schemaPath, and schemaNode are null, the method first evaluates parentSchema.getCurrentUri(); if that call throws an IllegalStateException, create() should propagate it unchanged."
+      }
+    ]
+  }
+]

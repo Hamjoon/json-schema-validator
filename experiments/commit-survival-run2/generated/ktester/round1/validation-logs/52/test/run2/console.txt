@@ -1,0 +1,60 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (3):
+  JUnit Jupiter:JsonSchema_toString_Test:toString_returnsExpectedRepresentation()
+    MethodSource [className = 'com.networknt.schema.JsonSchema_toString_Test', methodName = 'toString_returnsExpectedRepresentation', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchema_toString_Test$SimpleValidationContext.<init>(JsonSchema_toString_Test.java:39)
+       com.networknt.schema.JsonSchema_toString_Test.toString_returnsExpectedRepresentation(JsonSchema_toString_Test.java:128)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:JsonSchema_toString_Test:toString_handlesEmptySchemaNodeString()
+    MethodSource [className = 'com.networknt.schema.JsonSchema_toString_Test', methodName = 'toString_handlesEmptySchemaNodeString', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchema_toString_Test$SimpleValidationContext.<init>(JsonSchema_toString_Test.java:39)
+       com.networknt.schema.JsonSchema_toString_Test.toString_handlesEmptySchemaNodeString(JsonSchema_toString_Test.java:144)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+  JUnit Jupiter:JsonSchema_toString_Test:toString_nullSchemaNode_throwsNullPointerException()
+    MethodSource [className = 'com.networknt.schema.JsonSchema_toString_Test', methodName = 'toString_nullSchemaNode_throwsNullPointerException', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchema_toString_Test$SimpleValidationContext.<init>(JsonSchema_toString_Test.java:39)
+       com.networknt.schema.JsonSchema_toString_Test.toString_nullSchemaNode_throwsNullPointerException(JsonSchema_toString_Test.java:163)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+       [...]
+
+Test run finished after 316 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         3 tests found           ]
+[         0 tests skipped         ]
+[         3 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[         3 tests failed          ]
+

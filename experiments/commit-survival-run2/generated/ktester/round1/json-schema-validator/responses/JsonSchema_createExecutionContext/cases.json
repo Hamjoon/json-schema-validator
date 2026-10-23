@@ -1,0 +1,87 @@
+[
+  {
+    "group": "createExecutionContext \u2013 custom ExecutionContext supplier",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The method returns the ExecutionContext instance supplied by the custom ExecutionContextSupplier (the same instance that the supplier returns).",
+        "description": "Configure a JsonSchema instance whose ValidationContext returns a SchemaValidatorsConfig whose getExecutionContextSupplier() returns a non\u2011null Supplier. The Supplier should return a mock ExecutionContext (e.g., using Mockito). Invoke createExecutionContext() and verify that the returned object is exactly the mock supplied by the Supplier, confirming that the `if (config.getExecutionContextSupplier() != null)` branch is taken."
+      },
+      {
+        "input": [],
+        "expected": "The method returns an ExecutionContext whose internal CollectorContext has unevaluatedItemsAnalysisDisabled = true and unevaluatedPropertiesAnalysisDisabled = false (as configured in the config).",
+        "description": "Configure a JsonSchema instance where the ValidationContext returns a SchemaValidatorsConfig with a null ExecutionContextSupplier, isUnevaluatedItemsAnalysisDisabled() returning true, and isUnevaluatedPropertiesAnalysisDisabled() returning false. Call createExecutionContext() and assert that the returned ExecutionContext contains a CollectorContext constructed with those two flag values. This covers the `else` branch where a default ExecutionContext is created."
+      },
+      {
+        "input": [],
+        "expected": "The method returns an ExecutionContext whose CollectorContext flags are both false when the config disables neither analysis.",
+        "description": "Same as the previous case but both config flags are false. Verify that the CollectorContext inside the returned ExecutionContext reflects false for both flags, ensuring that the constructor arguments are correctly passed."
+      },
+      {
+        "input": [],
+        "expected": "The method returns an ExecutionContext whose CollectorContext flags are both true when the config disables both analyses.",
+        "description": "Configure the config to return true for both isUnevaluatedItemsAnalysisDisabled() and isUnevaluatedPropertiesAnalysisDisabled(). After invoking createExecutionContext(), verify that the CollectorContext inside the ExecutionContext has both flags set to true. This tests the path where the flags are varied."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 default supplier with mixed flags (items disabled, properties enabled)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The method returns an ExecutionContext whose internal CollectorContext has unevaluatedItemsAnalysisDisabled = false and unevaluatedPropertiesAnalysisDisabled = true, matching the configuration supplied via SchemaValidatorsConfig.",
+        "description": "Configure a JsonSchema instance where ValidationContext returns a SchemaValidatorsConfig with a null ExecutionContextSupplier, isUnevaluatedItemsAnalysisDisabled() returning false and isUnevaluatedPropertiesAnalysisDisabled() returning true. Call createExecutionContext() and verify that the CollectorContext inside the returned ExecutionContext reflects those flag values. This covers the previously untested combination of flag values."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 supplier returns null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The method returns null because the custom ExecutionContextSupplier supplied in the config returns null.",
+        "description": "Provide a SchemaValidatorsConfig whose getExecutionContextSupplier() returns a Supplier that itself returns null. Invoke createExecutionContext() and assert that the returned value is null, confirming that the method does not replace a null supplier result with a default ExecutionContext."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 supplier throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The method propagates the RuntimeException thrown by the custom ExecutionContextSupplier.",
+        "description": "Configure a SchemaValidatorsConfig with a non\u2011null ExecutionContextSupplier that throws a RuntimeException when get() is called. Call createExecutionContext() and verify that the same exception bubbles up, ensuring that the method does not swallow supplier exceptions."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 multiple invocations produce distinct instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Two successive calls to createExecutionContext() (with a null supplier) return two different ExecutionContext objects, each containing its own CollectorContext.",
+        "description": "Set up a JsonSchema with a config that has a null ExecutionContextSupplier and known flag values (e.g., both false). Invoke createExecutionContext() twice and assert that the returned ExecutionContext instances are not the same object (using !=) and that each contains a non\u2011null CollectorContext. This validates that a fresh ExecutionContext is created on each call when no supplier is provided."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 validationContext returns null config",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A NullPointerException is thrown because validationContext.getConfig() returns null and the method attempts to dereference it.",
+        "description": "Mock the ValidationContext of a JsonSchema to return null for getConfig(). Invoke createExecutionContext() and verify that a NullPointerException is thrown, confirming the method's behaviour when the configuration is absent."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext \u2013 null validationContext",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is thrown because the JsonSchema's validationContext field is null and the method attempts to call getConfig() on it.",
+        "description": "Create a JsonSchema instance (or a subclass/mock) where the internal validationContext is set to null. Invoke createExecutionContext() and verify that a NullPointerException is thrown, confirming that the method does not guard against a missing ValidationContext."
+      }
+    ]
+  }
+]

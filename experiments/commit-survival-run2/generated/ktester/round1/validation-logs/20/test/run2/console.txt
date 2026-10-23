@@ -1,0 +1,32 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (1):
+  JUnit Jupiter:JsonSchemaFactory_checkVersion_Test:checkVersion_unsupportedFlag_throwsIllegalArgumentException()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_checkVersion_Test', methodName = 'checkVersion_unsupportedFlag_throwsIllegalArgumentException', methodParameterTypes = '']
+    => java.lang.RuntimeException: Failed to create synthetic VersionFlag for testing
+       com.networknt.schema.JsonSchemaFactory_checkVersion_Test.createUnsupportedFlag(JsonSchemaFactory_checkVersion_Test.java:25)
+       com.networknt.schema.JsonSchemaFactory_checkVersion_Test.checkVersion_unsupportedFlag_throwsIllegalArgumentException(JsonSchemaFactory_checkVersion_Test.java:79)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       [...]
+     Caused by: java.lang.NoSuchMethodException: com.networknt.schema.SpecVersion$VersionFlag.<init>(long,java.lang.String)
+       java.base/java.lang.Class.getConstructor0(Class.java:3587)
+       java.base/java.lang.Class.getDeclaredConstructor(Class.java:2756)
+       com.networknt.schema.JsonSchemaFactory_checkVersion_Test.createUnsupportedFlag(JsonSchemaFactory_checkVersion_Test.java:20)
+       [...]
+
+Test run finished after 315 ms
+[         6 containers found      ]
+[         0 containers skipped    ]
+[         6 containers started    ]
+[         0 containers aborted    ]
+[         6 containers successful ]
+[         0 containers failed     ]
+[        17 tests found           ]
+[         0 tests skipped         ]
+[        17 tests started         ]
+[         0 tests aborted         ]
+[        16 tests successful      ]
+[         1 tests failed          ]
+

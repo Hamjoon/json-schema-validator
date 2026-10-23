@@ -1,0 +1,216 @@
+[
+  {
+    "group": "NullInputStream",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling getSchema(null) should throw a NullPointerException because the method delegates to getSchema(InputStream, null) which expects a non\u2011null stream."
+      }
+    ]
+  },
+  {
+    "group": "EmptyInputStream",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(new byte[0])"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the schema content is empty",
+        "description": "An empty InputStream does not contain any JSON/YAML. The factory should detect the lack of content and raise an exception rather than returning a valid JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "InvalidJson",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ invalid json }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in a JsonSchemaException",
+        "description": "When the stream contains malformed JSON, the internal ObjectMapper/YAMLMapper parsing fails and the method should propagate a parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "ValidJsonWithoutConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ \\\"$schema\\\": \\\"http://json-schema.org/draft-07/schema#\\\", \\\"type\\\": \\\"object\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) with default validation configuration",
+        "description": "A well\u2011formed JSON schema should be parsed successfully and a JsonSchema object returned. No custom config is supplied, so default validators are used."
+      }
+    ]
+  },
+  {
+    "group": "ValidJsonWithCustomConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ \\\"type\\\": \\\"string\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setFailFast(true)"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose validation context reflects the custom config (e.g., failFast = true)",
+        "description": "When a non\u2011null SchemaValidatorsConfig is supplied, the factory must use it to build the ValidationContext. The returned JsonSchema should honour the custom settings."
+      }
+    ]
+  },
+  {
+    "group": "ValidYaml",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"type: object\\nproperties:\\n  name:\\n    type: string\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) parsed via YAMLMapper",
+        "description": "The factory should detect that the content is YAML (or rely on YAMLMapper) and successfully create a JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "IOExceptionDuringRead",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new InputStream() { @Override public int read() throws IOException { throw new IOException(\"forced I/O error\"); } }"
+          }
+        ],
+        "expected": "IOException wrapped in a JsonSchemaException",
+        "description": "If the underlying InputStream throws an IOException while being read, the method must propagate the exception (typically wrapped) rather than silently succeed."
+      }
+    ]
+  },
+  {
+    "group": "StreamClosedAfterParsing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ \\\"type\\\": \\\"null\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) and the InputStream is closed after method returns",
+        "description": "The factory should close the provided InputStream after reading the schema. The test verifies that calling schemaStream.read() after getSchema returns -1 (closed)."
+      }
+    ]
+  },
+  {
+    "group": "JsonWithUTF8BOM",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream((new byte[]{(byte)0xEF, (byte)0xBB, (byte)0xBF}) + \"{ \\\"type\\\": \\\"object\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) \u2013 the UTF\u20118 BOM is ignored and the schema is parsed successfully",
+        "description": "InputStream begins with a UTF\u20118 Byte Order Mark before a minimal valid JSON schema. The factory should strip the BOM and return a proper JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "JsonWithLeadingAndTrailingWhitespace",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"   \\n\\t{ \\\"type\\\": \\\"string\\\" }   \\n\\t\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) \u2013 whitespace surrounding the JSON does not affect parsing",
+        "description": "The stream contains only whitespace before and after a valid JSON schema. The parser must ignore surrounding whitespace and produce a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonWithUnicodeCharacters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ \\\"title\\\": \\\"\u041f\u0440\u0438\u0432\u0435\u0442 \u043c\u0438\u0440\\\", \\\"type\\\": \\\"object\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) \u2013 Unicode characters are correctly decoded and stored",
+        "description": "A schema containing non\u2011ASCII characters (Cyrillic) is provided. The factory must read the stream using UTF\u20118 and create a JsonSchema without errors."
+      }
+    ]
+  },
+  {
+    "group": "JsonWithComments",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"{ /* comment */ \\\"type\\\": \\\"string\\\" }\".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchemaException (caused by JsonProcessingException) \u2013 comments are not allowed by default Jackson configuration",
+        "description": "The input JSON contains a block comment. Since the default ObjectMapper used by JsonSchemaFactory does not enable ALLOW_COMMENTS, parsing should fail and the method should wrap the JsonProcessingException."
+      }
+    ]
+  },
+  {
+    "group": "WhitespaceOnly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new ByteArrayInputStream(\"   \\n\\t   \".getBytes(StandardCharsets.UTF_8))"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the schema content is empty or whitespace only",
+        "description": "An InputStream that contains only whitespace characters should be treated as having no usable schema content and result in a clear exception."
+      }
+    ]
+  },
+  {
+    "group": "StreamClosedOnParsingFailure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "new InputStream() {\n    private boolean closed = false;\n    @Override public int read() throws IOException { throw new IOException(\"forced error\"); }\n    @Override public void close() throws IOException { closed = true; }\n    public boolean isClosed() { return closed; }\n}"
+          }
+        ],
+        "expected": "JsonSchemaException wrapping IOException and the stream is closed (isClosed() == true)",
+        "description": "When parsing fails due to an IOException, the factory must still close the provided InputStream. The custom stream tracks closure to verify this behavior."
+      }
+    ]
+  }
+]

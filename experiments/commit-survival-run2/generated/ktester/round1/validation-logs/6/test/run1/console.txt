@@ -1,0 +1,74 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (4):
+  JUnit Jupiter:BaseJsonValidator.checkDiscriminatorMatch tests:whenDiscriminatorPropertyValueIsNull_thenMarkMatchIsCalled()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test', methodName = 'whenDiscriminatorPropertyValueIsNull_thenMarkMatchIsCalled', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test$1.<init>(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.jsonSchema(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.whenDiscriminatorPropertyValueIsNull_thenMarkMatchIsCalled(BaseJsonValidator_checkDiscriminatorMatch_Test.java:113)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+  JUnit Jupiter:BaseJsonValidator.checkDiscriminatorMatch tests:whenMappingIsAbsent_thenImplicitMatchIsAttempted()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test', methodName = 'whenMappingIsAbsent_thenImplicitMatchIsAttempted', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test$1.<init>(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.jsonSchema(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.whenMappingIsAbsent_thenImplicitMatchIsAttempted(BaseJsonValidator_checkDiscriminatorMatch_Test.java:129)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+  JUnit Jupiter:BaseJsonValidator.checkDiscriminatorMatch tests:whenMappingIsPresent_thenExplicitAndPossiblyImplicitMatchAreAttempted()
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test', methodName = 'whenMappingIsPresent_thenExplicitAndPossiblyImplicitMatchAreAttempted', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test$1.<init>(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.jsonSchema(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.whenMappingIsPresent_thenExplicitAndPossiblyImplicitMatchAreAttempted(BaseJsonValidator_checkDiscriminatorMatch_Test.java:149)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+  JUnit Jupiter:BaseJsonValidator.checkDiscriminatorMatch tests:mapping field is present but explicitly null → treated as absent
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test', methodName = 'whenMappingFieldIsExplicitlyNull_thenImplicitCheckIsUsed', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test$1.<init>(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.jsonSchema(BaseJsonValidator_checkDiscriminatorMatch_Test.java:95)
+       com.networknt.schema.BaseJsonValidator_checkDiscriminatorMatch_Test.whenMappingFieldIsExplicitlyNull_thenImplicitCheckIsUsed(BaseJsonValidator_checkDiscriminatorMatch_Test.java:159)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+
+Test run finished after 295 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        10 tests found           ]
+[         0 tests skipped         ]
+[        10 tests started         ]
+[         0 tests aborted         ]
+[         6 tests successful      ]
+[         4 tests failed          ]
+

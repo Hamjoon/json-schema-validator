@@ -1,0 +1,32 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (1):
+  JUnit Jupiter:JsonSchema_isDynamicAnchor_Test:fromSchemaWithDynamicAnchorTrue_isDynamicAnchorReturnsTrue()
+    MethodSource [className = 'com.networknt.schema.JsonSchema_isDynamicAnchor_Test', methodName = 'fromSchemaWithDynamicAnchorTrue_isDynamicAnchorReturnsTrue', methodParameterTypes = '']
+    => org.opentest4j.AssertionFailedError: Schema created from a node containing "$dynamicAnchor": true must report true ==> expected: <true> but was: <false>
+       org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+       org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+       org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+       org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+       org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+       com.networknt.schema.JsonSchema_isDynamicAnchor_Test.fromSchemaWithDynamicAnchorTrue_isDynamicAnchorReturnsTrue(JsonSchema_isDynamicAnchor_Test.java:82)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       [...]
+
+Test run finished after 466 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         5 tests found           ]
+[         0 tests skipped         ]
+[         5 tests started         ]
+[         0 tests aborted         ]
+[         4 tests successful      ]
+[         1 tests failed          ]
+

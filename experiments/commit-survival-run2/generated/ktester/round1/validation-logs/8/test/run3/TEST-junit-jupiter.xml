@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Jupiter" tests="31" skipped="0" failures="2" errors="0" time="0.149" hostname="f0f7720fb372" timestamp="2026-10-23T21:30:58">
+<properties>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/repo/experiments/commit-survival-run2/work/validation/ktester/round1/8/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite"/>
+<property name="java.class.version" value="61.0"/>
+<property name="java.home" value="/usr/lib/jvm/java-17-openjdk-arm64"/>
+<property name="java.io.tmpdir" value="/tmp"/>
+<property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/aarch64-linux-gnu/jni:/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="java.specification.maintenance.version" value="1"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="17"/>
+<property name="java.vendor" value="Debian"/>
+<property name="java.vendor.url" value="https://tracker.debian.org/openjdk-17"/>
+<property name="java.vendor.url.bug" value="https://bugs.debian.org/openjdk-17"/>
+<property name="java.version" value="17.0.20.1"/>
+<property name="java.version.date" value="2026-08-18"/>
+<property name="java.vm.compressedOopsMode" value="32-bit"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="17"/>
+<property name="java.vm.vendor" value="Debian"/>
+<property name="java.vm.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="aarch64"/>
+<property name="os.name" value="Linux"/>
+<property name="os.version" value="7.0.12-linuxkit"/>
+<property name="path.separator" value=":"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-arm64/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+<property name="sun.java.command" value="org.junit.platform.console.ConsoleLauncher --disable-banner --disable-ansi-colors --fail-if-no-tests --details summary --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_whenExactlySameNumber_returnsTrue() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_whenDifferenceWithinTolerance_returnsTrue() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_whenDifferenceExactlyAtTolerance_returnsFalse() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_whenDifferenceBeyondTolerance_returnsFalse() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_withNegativeZeroAndPositiveZero_returnsTrue() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_withNaNValues_returnsFalse() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_withInfinityValues_returnsCorrectResult() --select-method com.networknt.schema.BaseJsonValidator_equals_Test#equals_parameterised(double,double,boolean,java.lang.String) --reports-dir /repo/experiments/commit-survival-run2/work/validation/ktester/round1/8/test/run3"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="user.country" value="US"/>
+<property name="user.dir" value="/repo/experiments/commit-survival/work/runtime"/>
+<property name="user.home" value="/root"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="root"/>
+<property name="user.timezone" value="Etc/UTC"/>
+</properties>
+<testcase name="equals_parameterised(double, double, boolean, String)[9]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#9]
+display-name: 9 ⇒ Zero vs a number exactly at the tolerance boundary.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[8]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#8]
+display-name: 8 ⇒ Zero vs a very small positive number (< 1e‑12).
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[7]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#7]
+display-name: 7 ⇒ Both zeros – difference is zero.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[6]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#6]
+display-name: 6 ⇒ Negative numbers whose difference exceeds tolerance.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[5]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<failure message="Failed case: Negative numbers with tiny difference (&lt; 1e‑12). (n1=-5.0, n2=-5.0E-13) ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Failed case: Negative numbers with tiny difference (< 1e‑12). (n1=-5.0, n2=-5.0E-13) ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:188)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1167)
+	at com.networknt.schema.BaseJsonValidator_equals_Test.equals_parameterised(BaseJsonValidator_equals_Test.java:88)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestTemplateMethod(TimeoutExtension.java:94)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:226)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:204)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:142)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.lambda$execute$2(TestTemplateTestDescriptor.java:110)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:110)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:44)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#5]
+display-name: 5 ⇒ Negative numbers with tiny difference (< 1e‑12).
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[4]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#4]
+display-name: 4 ⇒ Difference (9e‑12) exceeds the tolerance.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[3]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#3]
+display-name: 3 ⇒ Numbers differ exactly by 1e‑12; strict ‘<’ fails.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[2]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.011">
+<failure message="Failed case: Numbers differ by 9.9e‑13 (&lt; 1e‑12). (n1=1.0, n2=1.0E-13) ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Failed case: Numbers differ by 9.9e‑13 (< 1e‑12). (n1=1.0, n2=1.0E-13) ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:188)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1167)
+	at com.networknt.schema.BaseJsonValidator_equals_Test.equals_parameterised(BaseJsonValidator_equals_Test.java:88)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestTemplateMethod(TimeoutExtension.java:94)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:218)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:214)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:139)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:226)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask$DefaultDynamicTestExecutor.execute(NodeTestTask.java:204)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:142)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.lambda$execute$2(TestTemplateTestDescriptor.java:110)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at java.base/java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:276)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:110)
+	at org.junit.jupiter.engine.descriptor.TestTemplateTestDescriptor.execute(TestTemplateTestDescriptor.java:44)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#2]
+display-name: 2 ⇒ Numbers differ by 9.9e‑13 (< 1e‑12).
+]]></system-out>
+</testcase>
+<testcase name="equals_whenDifferenceExactlyAtTolerance_returnsFalse()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_whenDifferenceExactlyAtTolerance_returnsFalse()]
+display-name: equals_whenDifferenceExactlyAtTolerance_returnsFalse()
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[1]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.022">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#1]
+display-name: 1 ⇒ Identical numbers – difference is 0, which is less than 1e‑12.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[10]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#10]
+display-name: 10 ⇒ First argument is NaN – any arithmetic yields NaN.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[11]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#11]
+display-name: 11 ⇒ Second argument is NaN.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[12]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#12]
+display-name: 12 ⇒ Both arguments are positive infinity – subtraction yields NaN.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[13]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#13]
+display-name: 13 ⇒ Both arguments are negative infinity – same behaviour as positive infinity.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[14]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#14]
+display-name: 14 ⇒ One argument infinite, the other finite – difference is infinite.
+]]></system-out>
+</testcase>
+<testcase name="equals_whenExactlySameNumber_returnsTrue()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0.017">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_whenExactlySameNumber_returnsTrue()]
+display-name: equals_whenExactlySameNumber_returnsTrue()
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[15]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#15]
+display-name: 15 ⇒ Positive and negative numbers with tiny absolute difference (2e-13).
+]]></system-out>
+</testcase>
+<testcase name="equals_whenDifferenceWithinTolerance_returnsTrue()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_whenDifferenceWithinTolerance_returnsTrue()]
+display-name: equals_whenDifferenceWithinTolerance_returnsTrue()
+]]></system-out>
+</testcase>
+<testcase name="equals_withInfinityValues_returnsCorrectResult()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_withInfinityValues_returnsCorrectResult()]
+display-name: equals_withInfinityValues_returnsCorrectResult()
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[20]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#20]
+display-name: 20 ⇒ Two identical maximum double values.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[21]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#21]
+display-name: 21 ⇒ Maximum double vs half of it – huge difference.
+]]></system-out>
+</testcase>
+<testcase name="equals_whenDifferenceBeyondTolerance_returnsFalse()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_whenDifferenceBeyondTolerance_returnsFalse()]
+display-name: equals_whenDifferenceBeyondTolerance_returnsFalse()
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[22]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#22]
+display-name: 22 ⇒ Two subnormal positive numbers – difference far below tolerance.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[23]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#23]
+display-name: 23 ⇒ Smallest normal positive double versus zero.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[24]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#24]
+display-name: 24 ⇒ Smallest positive subnormal double versus zero.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[16]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#16]
+display-name: 16 ⇒ Numbers of opposite sign with large absolute difference (2.0).
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[17]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#17]
+display-name: 17 ⇒ Positive infinity versus negative infinity – comparison fails.
+]]></system-out>
+</testcase>
+<testcase name="equals_withNaNValues_returnsFalse()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_withNaNValues_returnsFalse()]
+display-name: equals_withNaNValues_returnsFalse()
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[18]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#18]
+display-name: 18 ⇒ Both arguments are NaN – comparison fails.
+]]></system-out>
+</testcase>
+<testcase name="equals_parameterised(double, double, boolean, String)[19]" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[test-template:equals_parameterised(double, double, boolean, java.lang.String)]/[test-template-invocation:#19]
+display-name: 19 ⇒ Positive zero versus negative zero – difference is 0.0.
+]]></system-out>
+</testcase>
+<testcase name="equals_withNegativeZeroAndPositiveZero_returnsTrue()" classname="com.networknt.schema.BaseJsonValidator_equals_Test" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.BaseJsonValidator_equals_Test]/[method:equals_withNegativeZeroAndPositiveZero_returnsTrue()]
+display-name: equals_withNegativeZeroAndPositiveZero_returnsTrue()
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: JUnit Jupiter
+]]></system-out>
+</testsuite>

@@ -1,0 +1,32 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (1):
+  JUnit Jupiter:JsonSchema.createChildSchema tests:createChildSchema_nullValidationContext()
+    MethodSource [className = 'com.networknt.schema.JsonSchema_createChildSchema_Test', methodName = 'createChildSchema_nullValidationContext', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+       java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+       java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+       java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+       com.networknt.schema.JsonSchema_createChildSchema_Test.instantiateJsonSchema(JsonSchema_createChildSchema_Test.java:118)
+       com.networknt.schema.JsonSchema_createChildSchema_Test.setupBeforeEach(JsonSchema_createChildSchema_Test.java:92)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       [...]
+
+Test run finished after 130 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         1 tests found           ]
+[         0 tests skipped         ]
+[         1 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[         1 tests failed          ]
+

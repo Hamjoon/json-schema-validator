@@ -1,0 +1,116 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (7):
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builderReturnsNonNullBuilder()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builderReturnsNonNullBuilder', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builderReturnsNewInstanceOnEachCall()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builderReturnsNewInstanceOnEachCall', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builderWithBlueprintReturnsBuilder()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builderWithBlueprintReturnsBuilder', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builderBuildReturnsNonNullFactory()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builderBuildReturnsNonNullFactory', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:successiveBuildsProduceDistinctFactories()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'successiveBuildsProduceDistinctFactories', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builtFactoryHasDefaultComponents()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builtFactoryHasDefaultComponents', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+  JUnit Jupiter:JsonSchemaFactory_builder_Test:builderMethodIsThreadSafe()
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactory_builder_Test', methodName = 'builderMethodIsThreadSafe', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: defaultMetaSchemaURI must not be null or empty
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:235)
+       com.networknt.schema.JsonSchemaFactory.<init>(JsonSchemaFactory.java:39)
+       com.networknt.schema.JsonSchemaFactory$Builder.build(JsonSchemaFactory.java:193)
+       com.networknt.schema.JsonSchemaFactory_builder_Test.setUp(JsonSchemaFactory_builder_Test.java:25)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:728)
+       org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+       [...]
+
+Test run finished after 370 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         7 tests found           ]
+[         0 tests skipped         ]
+[         7 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[         7 tests failed          ]
+

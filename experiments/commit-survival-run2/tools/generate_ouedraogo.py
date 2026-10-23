@@ -13,8 +13,9 @@ from select_scope import csvout
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--round',type=int,required=True);args=parser.parse_args()
-    started=time.monotonic();out=EXP/f'generated/ouedraogo/round{args.round}'
+    parser=argparse.ArgumentParser();parser.add_argument('--round',type=int,required=True);parser.add_argument('--attempt',type=int,choices=[1,2],default=1);args=parser.parse_args()
+    label=f'round{args.round}'+('-retry' if args.attempt==2 else '')
+    started=time.monotonic();out=EXP/'generated/ouedraogo'/label
     out.mkdir(parents=True,exist_ok=True)
     sys.path.insert(0,str(SHARED/'work/python'))
     sys.path.insert(0,str(EXP/'tools/ouedraogo'))
@@ -51,7 +52,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         rows=list(pool.map(one,jobs))
     write_json(out/'generation.json',rows)
-    write_json(RESULTS/f'ouedraogo-round{args.round}.json',dict(round=args.round,seconds=round(time.monotonic()-started,3),prompts=len(jobs),model_calls=sum(r['attempts'] for r in rows),extracted=sum(bool(r.get('file')) for r in rows),model='openai/gpt-oss-120b',temperature=0.7,max_tokens=16384,workers=2,provider_pinned=False))
+    write_json(RESULTS/f'ouedraogo-{label}.json',dict(round=args.round,attempt=args.attempt,seconds=round(time.monotonic()-started,3),prompts=len(jobs),model_calls=sum(r['attempts'] for r in rows),extracted=sum(bool(r.get('file')) for r in rows),model='openai/gpt-oss-120b',temperature=0.7,max_tokens=16384,workers=2,provider_pinned=False))
 
 
 if __name__=='__main__':main()

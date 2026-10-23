@@ -1,0 +1,387 @@
+[
+  {
+    "group": "Valid URI - schema loaded from classpath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance representing the parsed schema.",
+        "description": "A well\u2011formed URI that points to an existing JSON schema file on the classpath. The method should load the resource, parse it and return a JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"file:/tmp/example-schema.json\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance representing the parsed schema.",
+        "description": "A file\u2011system URI that points to a readable JSON schema file. The method should resolve the file, read its contents and return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Valid URI - schema loaded from HTTP(S)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"https://raw.githubusercontent.com/networknt/json-schema-validator/master/src/test/resources/schema/draftv4/schema.json\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance representing the parsed remote schema.",
+        "description": "A remote HTTP(S) URI that resolves to a valid JSON schema. The method should use the URITranslator to fetch the content and build the JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException with message containing \"schemaUri must not be null\".",
+        "description": "The method must guard against a null argument and fail fast with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"ftp://example.com/schema.json\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or RuntimeException) indicating that the scheme 'ftp' is not supported.",
+        "description": "The URI uses a scheme that the factory does not know how to translate. The method should detect this and raise an error."
+      }
+    ]
+  },
+  {
+    "group": "URI with fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/complex-schema.json#definitions/address\")"
+          }
+        ],
+        "expected": "Returns a JsonSchema that represents the subschema located at the fragment (e.g., definitions/address).",
+        "description": "When a fragment is present, the factory should resolve the base document first and then locate the subschema identified by the fragment."
+      }
+    ]
+  },
+  {
+    "group": "URI points to non\u2011existent resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/missing-schema.json\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or IOException) indicating that the resource could not be found.",
+        "description": "The URI resolves to a location that does not contain a schema file. The method should attempt to load it and fail with a clear error."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema URI normalization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"http://json-schema.org/draft-04/schema#\")"
+          }
+        ],
+        "expected": "Returns the built\u2011in Draft\u201104 JsonSchema instance (cached) rather than loading from network.",
+        "description": "The factory normalizes known meta\u2011schema URIs and returns the pre\u2011registered schema instead of performing a remote fetch."
+      }
+    ]
+  },
+  {
+    "group": "URI with query parameters (should be ignored)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json?version=1\")"
+          }
+        ],
+        "expected": "Returns a JsonSchema identical to loading the same URI without the query string.",
+        "description": "The implementation should strip query parameters before locating the resource, ensuring deterministic loading."
+      }
+    ]
+  },
+  {
+    "group": "Relative URI (no scheme) \u2013 should be rejected",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"schema.json\")"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException with message containing \"schemaUri must be absolute\"",
+        "description": "A URI without a scheme or authority is supplied. The factory is expected to validate that the URI is absolute and reject relative URIs."
+      }
+    ]
+  },
+  {
+    "group": "Upper\u2011case scheme handling (case\u2011insensitivity)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"HTTP://raw.githubusercontent.com/networknt/json-schema-validator/master/src/test/resources/schema/draftv4/schema.json\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance representing the parsed remote schema",
+        "description": "The scheme part of the URI is upper\u2011case. The implementation should treat it as case\u2011insensitive and handle it like a normal http URI."
+      }
+    ]
+  },
+  {
+    "group": "Percent\u2011encoded characters in path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/%65xample-schema.json\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance identical to loading \"classpath:/schemas/example-schema.json\"",
+        "description": "The path contains percent\u2011encoded characters (\"%65\" = \"e\"). The factory must decode the path before locating the resource."
+      }
+    ]
+  },
+  {
+    "group": "Caching \u2013 same URI returns same JsonSchema instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json\")"
+          }
+        ],
+        "expected": "Second call returns the exact same JsonSchema object (reference equality) as the first call",
+        "description": "When the same absolute URI is requested repeatedly, the factory should reuse the previously built schema rather than parsing it again."
+      }
+    ]
+  },
+  {
+    "group": "YAML schema loading via classpath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.yaml\")"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance representing the parsed YAML schema",
+        "description": "The factory supports YAML (via YAMLMapper). Providing a .yaml resource on the classpath should be parsed correctly."
+      }
+    ]
+  },
+  {
+    "group": "URI with empty fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json#\")"
+          }
+        ],
+        "expected": "Returns the same JsonSchema as loading the URI without the fragment",
+        "description": "An empty fragment should be ignored; the factory should load the whole document."
+      }
+    ]
+  },
+  {
+    "group": "File\u2011scheme URI pointing to a directory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"file:/tmp/\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or IOException) indicating that the target is not a regular file",
+        "description": "A URI that resolves to a directory rather than a file should be rejected because a schema must be a readable file."
+      }
+    ]
+  },
+  {
+    "group": "URI with both query and fragment \u2013 fragment takes precedence after query stripping",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/complex-schema.json?ver=2#definitions/address\")"
+          }
+        ],
+        "expected": "Returns a JsonSchema representing the subschema at \"#/definitions/address\" (query is ignored)",
+        "description": "The implementation must strip the query part, then resolve the fragment to a subschema."
+      }
+    ]
+  },
+  {
+    "group": "Trailing slash in file URI \u2013 should be treated as invalid resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"file:/tmp/example-schema.json/\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or IOException) because the path does not point to a readable file",
+        "description": "A trailing slash after a file name makes the path refer to a non\u2011existent directory; the factory must fail gracefully."
+      }
+    ]
+  },
+  {
+    "group": "Fragment pointing to root ('#/') \u2013 should return the whole schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json#/ \")"
+          }
+        ],
+        "expected": "Returns a JsonSchema identical to loading the base URI without fragment",
+        "description": "A fragment that resolves to the root of the document should result in the full schema being returned."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema content \u2013 JSON parsing error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/invalid-json-schema.json\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or JsonProcessingException) with a message indicating a JSON parsing error.",
+        "description": "The URI points to a classpath resource that exists but contains malformed JSON. The factory should attempt to parse the content and fail with a parsing\u2011related exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema content \u2013 YAML parsing error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/invalid-yaml-schema.yaml\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or JsonProcessingException) with a message indicating a YAML parsing error.",
+        "description": "The URI points to a YAML file on the classpath that is syntactically invalid. The factory uses YAMLMapper to read the file and must surface the parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "Fragment points to non\u2011existent subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"classpath:/schemas/example-schema.json#/definitions/doesNotExist\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException with a message indicating that the fragment '#/definitions/doesNotExist' could not be resolved.",
+        "description": "A valid base schema is loaded, but the fragment refers to a JSON Pointer that does not exist in the document. The factory should detect the missing subschema and raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "HTTP URI returns 404 Not Found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"https://raw.githubusercontent.com/networknt/json-schema-validator/master/src/test/resources/schema/nonexistent-schema.json\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or IOException) indicating an HTTP 404 response \u2013 resource not found.",
+        "description": "The method attempts to fetch a remote schema that does not exist. The HTTP client should surface the 404 status as an exception."
+      }
+    ]
+  },
+  {
+    "group": "File URI with unreadable file (permission denied)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"file:/tmp/unreadable-schema.json\")"
+          }
+        ],
+        "expected": "Throws IOException (or JsonSchemaException) indicating that the file cannot be read due to insufficient permissions.",
+        "description": "The URI points to a regular file that exists but the process lacks read permission. The factory should attempt to open the file and fail with an I/O\u2011related exception."
+      }
+    ]
+  },
+  {
+    "group": "Empty path with scheme (invalid URI for schema loading)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"file:\")"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException with a message containing \"schemaUri must have a non\u2011empty path\".",
+        "description": "A URI that has a valid scheme but no path component is supplied. The factory should validate the URI and reject it as unusable for schema loading."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported URN scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "java.net.URI.create(\"urn:example:schema\")"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or RuntimeException) indicating that the scheme 'urn' is not supported.",
+        "description": "Although the URI is absolute, the scheme 'urn' is not handled by the factory's URITranslator. The method must detect this and raise an appropriate exception."
+      }
+    ]
+  }
+]

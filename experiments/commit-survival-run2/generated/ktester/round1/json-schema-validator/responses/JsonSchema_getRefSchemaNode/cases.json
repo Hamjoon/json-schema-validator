@@ -1,0 +1,262 @@
+[
+  {
+    "group": "JSON Pointer starting with \"#/\" \u2013 normal path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/properties/name"
+          }
+        ],
+        "expected": "Returns the JsonNode located at \"/properties/name\" (non\u2011missing node). The method should not invoke handleNullNode.",
+        "description": "The reference begins with \"#/\". The leading \"#\" is stripped, leaving \"/properties/name\" which starts with \"/\". After URL decoding the pointer the code calls node.at(\"/properties/name\"). The mocked node.at returns a non\u2011missing JsonNode, so the method returns that node directly."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer starting with \"/\" \u2013 missing node triggers fallback",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/definitions/address"
+          }
+        ],
+        "expected": "Returns the fallback JsonNode produced by handleNullNode(ref, schema).",
+        "description": "The reference starts directly with \"/\". After decoding the pointer the code calls node.at(\"/definitions/address\"). The mocked node.at returns a MissingNode, causing the method to call handleNullNode and return its result."
+      }
+    ]
+  },
+  {
+    "group": "Fragment reference starting with \"#\" (non\u2011empty) \u2013 meta\u2011schema resolves",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#foo"
+          }
+        ],
+        "expected": "Returns the JsonNode supplied by metaSchema.getNodeByFragmentRef(ref, originalNode).",
+        "description": "The reference does not start with \"#/\" nor with \"/\" but matches the first part of the else\u2011if (starts with \"#\" and length > 1). The meta\u2011schema is asked for the fragment node and returns a non\u2011null node, which is then returned by the method."
+      }
+    ]
+  },
+  {
+    "group": "Fragment reference starting with \"urn:\" \u2013 meta\u2011schema cannot resolve, fallback used",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "urn:example:schema"
+          }
+        ],
+        "expected": "Returns the fallback JsonNode produced by handleNullNode(ref, schema).",
+        "description": "The reference starts with \"urn:\" and length > 4, satisfying the else\u2011if condition. metaSchema.getNodeByFragmentRef returns null, so the method calls handleNullNode and returns its result."
+      }
+    ]
+  },
+  {
+    "group": "Reference with no special prefix \u2013 returns original schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "simple"
+          }
+        ],
+        "expected": "Returns the original schema node (the node obtained from findAncestor().getSchemaNode()).",
+        "description": "The reference does not match any of the conditional prefixes, so none of the branches are taken and the method returns the original node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer with URL\u2011encoded characters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/encoded%20path"
+          }
+        ],
+        "expected": "Returns the JsonNode located at \"/encoded path\" after URL decoding.",
+        "description": "The reference begins with \"#/\". After stripping the leading \"#\" the pointer is \"/encoded%20path\". URLDecoder.decode converts it to \"/encoded path\". node.at(\"/encoded path\") returns a non\u2011missing node, which is returned directly."
+      }
+    ]
+  },
+  {
+    "group": "Reference equal to \"#\" \u2013 returns original schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#"
+          }
+        ],
+        "expected": "Returns the original schema node obtained from findAncestor().getSchemaNode() because the reference does not satisfy any of the conditional branches (length is not >\u202f1).",
+        "description": "The reference consists of only a hash character. The method should skip the \"#/\" and \"#\" fragment handling blocks and fall through, returning the unchanged original node."
+      }
+    ]
+  },
+  {
+    "group": "Empty string reference \u2013 returns original schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": ""
+          }
+        ],
+        "expected": "Returns the original schema node (the node obtained from findAncestor().getSchemaNode()).",
+        "description": "An empty string does not match any prefix checks, so the method should simply return the original node."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer starting with \"/\" \u2013 normal (non\u2011missing) node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/age"
+          }
+        ],
+        "expected": "Returns the JsonNode located at \"/properties/age\" (non\u2011missing node). The method should not invoke handleNullNode.",
+        "description": "The reference begins directly with \"/\". After URL decoding the pointer, node.at(\"/properties/age\") returns a valid JsonNode, so the method returns it directly."
+      }
+    ]
+  },
+  {
+    "group": "Reference starting with \"urn:\" but exactly 4 characters \u2013 falls back to original node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "urn:"
+          }
+        ],
+        "expected": "Returns the original schema node because the length check (ref.length() > 4) fails, so the branch is not taken.",
+        "description": "Although the string starts with \"urn:\", its length is not greater than 4, therefore the method treats it as a plain reference and returns the original node."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer with \"#/\" prefix that resolves to a missing node \u2013 fallback via handleNullNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/nonexistent"
+          }
+        ],
+        "expected": "Returns the fallback JsonNode produced by handleNullNode(ref, schema) because node.at(\"/nonexistent\") yields a MissingNode.",
+        "description": "The reference starts with \"#/\". After stripping the leading \"#\" the pointer becomes \"/nonexistent\". The call to node.at returns a MissingNode, triggering the fallback logic."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer with URL\u2011encoded slash (%2F) inside the path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/components%2Fschemas%2FUser"
+          }
+        ],
+        "expected": "Returns the JsonNode located at \"/components/schemas/User\" after URL decoding the \"%2F\" sequences.",
+        "description": "The reference begins with \"#/\" and contains URL\u2011encoded forward slashes. After decoding, the pointer becomes \"/components/schemas/User\"; node.at should be invoked with this decoded pointer and its result returned."
+      }
+    ]
+  },
+  {
+    "group": "Null reference argument \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": null
+          }
+        ],
+        "expected": "Throws NullPointerException because the method dereferences the argument with startsWith().",
+        "description": "Passing a null reference should cause the first call to ref.startsWith(...) to throw a NullPointerException, which is the expected behavior for this edge case."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor returns null \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/properties/name"
+          }
+        ],
+        "expected": "Throws NullPointerException because findAncestor() returns null and the subsequent call to schema.getSchemaNode() dereferences a null reference.",
+        "description": "The method starts by calling findAncestor(). If the mocked JsonSchema instance is set up so that findAncestor() returns null, the next line `schema.getSchemaNode()` will cause a NullPointerException before any other logic (prefix checks, URL decoding, etc.) is executed."
+      }
+    ]
+  },
+  {
+    "group": "schema.getSchemaNode returns null \u2013 NullPointerException on node.at",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/missingNode"
+          }
+        ],
+        "expected": "Throws NullPointerException because schema.getSchemaNode() returns null and the method attempts to invoke `node.at(jsonPointer)` on a null JsonNode.",
+        "description": "The reference begins with \"#/\" so the method will strip the leading \"#\" and enter the JSON\u2011Pointer branch. The node variable is obtained from `schema.getSchemaNode()`. If that call is mocked to return null, the subsequent `node.at(jsonPointer)` dereferences a null object, producing a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/directPointer"
+          }
+        ],
+        "expected": "Throws NullPointerException because schema.getSchemaNode() returns null and the method attempts to invoke `node.at(jsonPointer)` on a null JsonNode.",
+        "description": "A reference that starts directly with \"/\" also triggers the JSON\u2011Pointer branch. With `schema.getSchemaNode()` mocked to null, the call to `node.at(jsonPointer)` results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "metaSchema is null \u2013 NullPointerException on fragment resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#fragment"
+          }
+        ],
+        "expected": "Throws NullPointerException because the JsonSchema instance's metaSchema field is null and the method attempts to call `metaSchema.getNodeByFragmentRef(...)`.",
+        "description": "The reference starts with \"#\" and has length > 1, so the method enters the fragment\u2011reference branch. If the `metaSchema` dependency is mocked (or left unset) to be null, the call `this.metaSchema.getNodeByFragmentRef(ref, node)` dereferences a null reference, causing a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "urn:example:schema"
+          }
+        ],
+        "expected": "Throws NullPointerException because the JsonSchema instance's metaSchema field is null and the method attempts to call `metaSchema.getNodeByFragmentRef(...)`.",
+        "description": "The reference starts with \"urn:\" and length > 4, so the same fragment\u2011reference branch is taken. With `metaSchema` null, the method throws a NullPointerException when invoking `getNodeByFragmentRef`."
+      }
+    ]
+  }
+]

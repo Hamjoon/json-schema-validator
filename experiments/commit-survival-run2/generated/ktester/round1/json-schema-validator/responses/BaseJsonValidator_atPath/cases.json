@@ -1,0 +1,204 @@
+[
+  {
+    "group": "Appending paths with slash separator (PathType.SLASH)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/users/123"
+          },
+          {
+            "parameter": "token",
+            "value": "address"
+          }
+        ],
+        "expected": "/users/123/address",
+        "description": "When the current path ends with a slash\u2011separated segment and the token is a normal field name, the slash PathType should concatenate them with a '/' separator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": ""
+          },
+          {
+            "parameter": "token",
+            "value": "root"
+          }
+        ],
+        "expected": "/root",
+        "description": "If the current path is empty, the slash PathType should treat the token as the first segment and prepend a leading '/'."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/items"
+          },
+          {
+            "parameter": "token",
+            "value": ""
+          }
+        ],
+        "expected": "/items/",
+        "description": "When the token is an empty string, the slash PathType should still append a '/' to indicate an empty segment."
+      }
+    ]
+  },
+  {
+    "group": "Appending paths with JSON Pointer separator (PathType.JSON_POINTER)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/data"
+          },
+          {
+            "parameter": "token",
+            "value": "items"
+          }
+        ],
+        "expected": "/data/items",
+        "description": "When using JSON_POINTER, a normal token is appended with a '/' separator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": ""
+          },
+          {
+            "parameter": "token",
+            "value": "root"
+          }
+        ],
+        "expected": "/root",
+        "description": "An empty current path is treated as the root; the token becomes the first segment prefixed with '/'."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/array"
+          },
+          {
+            "parameter": "token",
+            "value": ""
+          }
+        ],
+        "expected": "/array/",
+        "description": "Appending an empty token results in a trailing '/' to indicate an empty segment."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/a~b"
+          },
+          {
+            "parameter": "token",
+            "value": "c/d"
+          }
+        ],
+        "expected": "/a~0b/c~1d",
+        "description": "Tokens containing '~' and '/' are escaped according to JSON Pointer rules (~ \u2192 ~0, / \u2192 ~1) before concatenation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": null
+          },
+          {
+            "parameter": "token",
+            "value": "first"
+          }
+        ],
+        "expected": "/first",
+        "description": "A null current path is interpreted as empty, so the token becomes the first segment with a leading '/'."
+      }
+    ]
+  },
+  {
+    "group": "Null PathType leads to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/test"
+          },
+          {
+            "parameter": "token",
+            "value": "field"
+          },
+          {
+            "parameter": "pathType",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the BaseJsonValidator's internal pathType field is null, invoking atPath should throw a NullPointerException because the method attempts to call append on a null reference."
+      }
+    ]
+  },
+  {
+    "group": "Null token parameter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/users"
+          },
+          {
+            "parameter": "token",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the token argument is null, PathType.append (called inside atPath) is expected to throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Both currentPath and token null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": null
+          },
+          {
+            "parameter": "token",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When both currentPath and token are null, atPath should propagate a NullPointerException from the underlying PathType.append implementation."
+      }
+    ]
+  },
+  {
+    "group": "Invalid token for JSON_POINTER (contains illegal character)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentPath",
+            "value": "/data"
+          },
+          {
+            "parameter": "token",
+            "value": "invalid\u0000char"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A token containing a null character is not permitted in a JSON Pointer segment; PathType.append should detect this and throw an IllegalArgumentException."
+      }
+    ]
+  }
+]

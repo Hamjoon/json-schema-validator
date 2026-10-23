@@ -1,0 +1,87 @@
+[
+  {
+    "group": "Default behavior without required validator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "A newly created JsonSchema instance has its private field `requiredValidator` initialised to null. Calling `getRequiredValidator()` should therefore return null."
+      }
+    ]
+  },
+  {
+    "group": "Required validator set via reflection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "mockValidator",
+            "value": "instance of com.networknt.schema.JsonValidator (e.g., a Mockito mock or a simple stub implementation)"
+          }
+        ],
+        "expected": "same mockValidator instance",
+        "description": "Using reflection we assign a non\u2011null `JsonValidator` instance to the private field `requiredValidator`. After the assignment, `getRequiredValidator()` must return the exact object that was injected."
+      }
+    ]
+  },
+  {
+    "group": "Required validator set by initialise validators",
+    "cases": [
+      {
+        "input": [],
+        "expected": "non\u2011null JsonValidator instance",
+        "description": "When the schema contains a `required` keyword, `initializeValidators()` creates a `RequiredValidator` and stores it in `requiredValidator`. After invoking `initializeValidators()` on a JsonSchema built from such a schema, `getRequiredValidator()` should return a non\u2011null validator."
+      }
+    ]
+  },
+  {
+    "group": "Required validator remains null for schema without required keyword",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Create a JsonSchema from a simple schema that does not contain the `required` keyword (e.g., `{ \"type\": \"object\" }`). After invoking `initializeValidators()` the private field `requiredValidator` should stay `null`. Calling `getRequiredValidator()` must therefore return `null`."
+      }
+    ]
+  },
+  {
+    "group": "Required validator created for schema with empty required array",
+    "cases": [
+      {
+        "input": [],
+        "expected": "instance of com.networknt.schema.RequiredValidator (non\u2011null)",
+        "description": "Build a JsonSchema from a schema that contains an empty `required` array (`{ \"type\": \"object\", \"required\": [] }`). Even though the array is empty, `initializeValidators()` should instantiate a `RequiredValidator` and store it in `requiredValidator`. `getRequiredValidator()` must return a non\u2011null object whose class is `RequiredValidator`."
+      }
+    ]
+  },
+  {
+    "group": "Idempotent getRequiredValidator call",
+    "cases": [
+      {
+        "input": [],
+        "expected": "same instance on successive calls",
+        "description": "After creating a JsonSchema with a `required` keyword and calling `initializeValidators()`, invoke `getRequiredValidator()` twice. Both calls must return the exact same object reference, proving that the getter does not create a new instance on each call."
+      }
+    ]
+  },
+  {
+    "group": "Child schema without its own required keyword does not inherit parent's validator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Create a parent JsonSchema from a schema containing a `required` keyword, then call `initializeValidators()` on the parent. Use `createChildSchema()` to produce a child schema from a node that lacks a `required` keyword. After initializing validators on the child (if any), `child.getRequiredValidator()` must return `null`, confirming that the required validator is not automatically inherited from the parent."
+      }
+    ]
+  },
+  {
+    "group": "Re\u2011initialising validators does not clear required validator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "non\u2011null (still a RequiredValidator instance)",
+        "description": "For a JsonSchema built from a schema with a `required` keyword, call `initializeValidators()` twice in succession. After the second call, `getRequiredValidator()` must still return a non\u2011null `RequiredValidator` (the same or a newly created instance, but never `null`). This verifies that repeated initialisation does not unintentionally reset the field."
+      }
+    ]
+  }
+]

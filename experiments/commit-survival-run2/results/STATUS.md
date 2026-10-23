@@ -1,3 +1,3 @@
 # Run 2 status
 
-Revised Step 1 complete: 5 classes, 64 focal methods, 185 developer methods. Starting one KTester round under the addendum. No minimum class count.
+ktester-round1-diagnostics: completed. See driver-events.json and per-stage logs. Scope: 5 classes / 64 focal methods; Dev: 185 methods.

@@ -1,0 +1,285 @@
+[
+  {
+    "group": "typeValidator present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"string\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Create a JsonSchema from a JSON node that defines a \"type\" keyword. After construction the internal `typeValidator` field should be instantiated, therefore `getTypeValidator()` must return a non\u2011null object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": [\"string\", \"null\"] }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/name"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance handling composite types",
+        "description": "When the schema contains a composite type (array of types), the validator still creates a `TypeValidator`. The test verifies that `getTypeValidator()` returns a non\u2011null instance even for multi\u2011type definitions."
+      }
+    ]
+  },
+  {
+    "group": "typeValidator absent",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"minimum\": 5 }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/age"
+          }
+        ],
+        "expected": "null",
+        "description": "Create a JsonSchema from a JSON node that does **not** contain a \"type\" keyword. The `typeValidator` field should remain `null`, so `getTypeValidator()` must return `null`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{}"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#"
+          }
+        ],
+        "expected": "null",
+        "description": "An empty schema does not define any type. The test confirms that `getTypeValidator()` returns `null` for an empty schema."
+      }
+    ]
+  },
+  {
+    "group": "typeValidator after explicit initialization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "After constructing the schema, invoke `initializeValidators()` (if the implementation requires explicit initialization) and then call `getTypeValidator()`. The method should still return a non\u2011null validator."
+      }
+    ]
+  },
+  {
+    "group": "primitive type validators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"string\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/name"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"string\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"number\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/price"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"number\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/count"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"integer\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"boolean\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/active"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"boolean\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"object\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/data"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"object\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"array\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/list"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"array\" type. `getTypeValidator()` must return a non\u2011null validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"null\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/nullable"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a primitive \"null\" type. `getTypeValidator()` must return a non\u2011null validator."
+      }
+    ]
+  },
+  {
+    "group": "empty type array handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": [] }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/invalid"
+          }
+        ],
+        "expected": "null",
+        "description": "Schema contains an empty array for the \"type\" keyword, which is not a valid type definition. The implementation should leave `typeValidator` unset, so `getTypeValidator()` returns null."
+      }
+    ]
+  },
+  {
+    "group": "repeated validator initialization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"string\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/name"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "After constructing the schema, call `initializeValidators()` twice. The second call must not replace the existing `typeValidator`; `getTypeValidator()` should still return a non\u2011null instance."
+      }
+    ]
+  },
+  {
+    "group": "consistent instance across calls",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/id"
+          }
+        ],
+        "expected": "same instance on successive calls",
+        "description": "Invoke `getTypeValidator()` multiple times on the same `JsonSchema` instance. All calls must return the identical `TypeValidator` object (reference equality)."
+      }
+    ]
+  },
+  {
+    "group": "type validator with additional constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"string\", \"minLength\": 3, \"enum\": [\"abc\", \"def\"] }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/code"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance",
+        "description": "Schema defines a \"type\" together with other validation keywords (minLength, enum). Presence of extra constraints must not prevent creation of the `TypeValidator`."
+      }
+    ]
+  },
+  {
+    "group": "type validator via $ref resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$ref\": \"#/definitions/positiveInteger\" , \"definitions\": { \"positiveInteger\": { \"type\": \"integer\", \"minimum\": 1 } } }"
+          },
+          {
+            "parameter": "schemaPath",
+            "value": "#/properties/count"
+          }
+        ],
+        "expected": "non\u2011null TypeValidator instance after $ref resolution",
+        "description": "Schema uses a `$ref` that resolves to a definition containing a \"type\" keyword. After resolution, `getTypeValidator()` must return a non\u2011null validator."
+      }
+    ]
+  }
+]

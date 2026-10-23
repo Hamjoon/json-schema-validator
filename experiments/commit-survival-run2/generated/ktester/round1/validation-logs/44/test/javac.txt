@@ -1,0 +1,49 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:13: error: cannot find symbol
+@ExtendWith(MockitoExtension.class)
+ ^
+  symbol: class ExtendWith
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:13: error: cannot find symbol
+@ExtendWith(MockitoExtension.class)
+            ^
+  symbol: class MockitoExtension
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:17: error: cannot find symbol
+    @Mock
+     ^
+  symbol:   class Mock
+  location: class JsonSchema_getRefSchemaNode_Test
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:21: error: cannot find symbol
+    @Mock
+     ^
+  symbol:   class Mock
+  location: class JsonSchema_getRefSchemaNode_Test
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:40: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+            super(vc, id, uri, node, null, false);
+            ^
+  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,String,URI,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:44: error: findAncestor() in JsonSchemaWithNullAncestor cannot override findAncestor() in JsonSchema
+        protected JsonSchema findAncestor() {
+                             ^
+  attempting to assign weaker access privileges; was public
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:57: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+            super(vc, id, uri, node, null, false);
+            ^
+  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,String,URI,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:62: error: findAncestor() in JsonSchemaWithCustomAncestor cannot override findAncestor() in JsonSchema
+        protected JsonSchema findAncestor() {
+                             ^
+  attempting to assign weaker access privileges; was public
+/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java:73: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+            super(vc, id, uri, node, null, false);
+            ^
+  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,String,URI,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+Note: /repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_getRefSchemaNode_Test.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+9 errors

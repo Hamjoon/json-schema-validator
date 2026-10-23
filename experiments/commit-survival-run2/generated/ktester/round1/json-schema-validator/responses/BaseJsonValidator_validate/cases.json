@@ -1,0 +1,473 @@
+[
+  {
+    "group": "Null Input Tests",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Both parameters are null \u2013 the method should fail fast and throw a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The JSON node argument is null \u2013 the validator must throw a NullPointerException before any processing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The execution context is null \u2013 the method should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schema Presence Tests",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When the validator's `schemaNode` field is null (no schema defined), the method should return an empty set of validation messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWithValidData"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A valid JSON object that conforms to a simple schema (type: object, no required properties). The validator should return an empty validation message set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingRequired"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='required'",
+        "description": "The JSON object is missing a required property defined in the schema. The validator must report a `required` validation message."
+      }
+    ]
+  },
+  {
+    "group": "Suppress Sub\u2011Schema Retrieval",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validNode"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "`suppressSubSchemaRetrieval` is true, the validator must skip calling `fetchSubSchemaNode` and only validate the current node. With a matching schema the result is an empty set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidNode"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='type'",
+        "description": "`suppressSubSchemaRetrieval` is true but the node type does not match the schema type (e.g., schema expects `object` but node is an `array`). The validator should report a type error without attempting sub\u2011schema validation."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWithMatchingDiscriminator"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The schema contains a `discriminator` object and the instance provides a matching discriminator property value. The static method `checkDiscriminatorMatch` should succeed and no validation messages are produced."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWithMismatchingDiscriminator"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='discriminator'",
+        "description": "The discriminator property value in the instance does not match any of the mapped schemas. The validator must generate a `discriminator` validation message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingDiscriminator"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='required'",
+        "description": "The discriminator property is required by the schema but is absent in the instance. The validator should report a `required` validation message."
+      }
+    ]
+  },
+  {
+    "group": "Apply Defaults Strategy",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextApplyDefaults"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingOptionalWithDefault"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "`applyDefaultsStrategy` is set to `APPLY_DEFAULTS`. The validator should inject default values for missing optional properties and therefore return no validation errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNoDefaults"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingOptionalWithDefault"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "`applyDefaultsStrategy` is `DO_NOT_APPLY_DEFAULTS`. Missing optional properties with defaults do not cause validation errors, so the result is still an empty set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNoDefaults"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingRequired"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='required'",
+        "description": "When defaults are not applied, a missing required property must be reported as a `required` validation error."
+      }
+    ]
+  },
+  {
+    "group": "Path Construction Branches",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "arrayNodeIndex0"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When validating an array element, the internal call to `atPath(currentPath, index)` should correctly build the JSON\u2011Pointer path (e.g., `/items/0`). The test verifies that no exception is thrown and the path is used in any generated messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWithNestedProperty"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When validating a nested object property, the call to `atPath(currentPath, token)` must correctly concatenate the token (e.g., `/address/street`). The test checks that the generated message (if any) contains the expected path."
+      }
+    ]
+  },
+  {
+    "group": "Fetch Sub\u2011Schema Retrieval (Enabled)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithRef"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingRefRequired"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='required' from the referenced sub\u2011schema",
+        "description": "`suppressSubSchemaRetrieval` is false. The validator's `schemaNode` contains a `$ref` that resolves to a sub\u2011schema requiring property `id`. The instance object does not contain `id`. The validator must fetch the sub\u2011schema via `fetchSubSchemaNode`, apply its rules and return a `required` validation message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNoRef"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeValidAgainstCurrentSchema"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "`suppressSubSchemaRetrieval` is false but `fetchSubSchemaNode` returns `null` (no `$ref` present). The current schema only checks that the node is an object, which it is, so validation succeeds with no messages."
+      }
+    ]
+  },
+  {
+    "group": "Enum Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextEnumSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "textNode\"yellow\""
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='enum'",
+        "description": "The validator's `schemaNode` defines an `enum` of [\"red\",\"green\",\"blue\"]. The instance node contains the string \"yellow\", which is not part of the enum. Validation must produce an `enum` error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextEnumSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "textNode\"green\""
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Same enum schema as above, but the instance node contains the allowed value \"green\". Validation should succeed with no messages."
+      }
+    ]
+  },
+  {
+    "group": "Number Constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNumberRange"
+          },
+          {
+            "parameter": "node",
+            "value": "numericNode-1"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='minimum'",
+        "description": "The schema specifies `type: number`, `minimum: 0`, `exclusiveMaximum: 10`. The node value is -1, violating the `minimum` constraint. The validator must report a `minimum` validation message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNumberRange"
+          },
+          {
+            "parameter": "node",
+            "value": "numericNode10"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='exclusiveMaximum'",
+        "description": "Using the same numeric schema, the node value is 10 which equals the `exclusiveMaximum`. Because the maximum is exclusive, validation must fail with an `exclusiveMaximum` message."
+      }
+    ]
+  },
+  {
+    "group": "Boolean Type Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextBooleanSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "textNode\"true\""
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='type'",
+        "description": "Schema expects a boolean (`type: boolean`). The instance node is a JSON string \"true\". The validator must detect the type mismatch and emit a `type` validation message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextBooleanSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "booleanNodetrue"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Same boolean schema, but the instance node is a proper JSON boolean `true`. Validation should succeed with no messages."
+      }
+    ]
+  },
+  {
+    "group": "Null Value Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNullSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "nullNode"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "Schema defines `type: null`. The instance node is a JSON null. The validator must accept it and return an empty set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNullSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "numericNode5"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='type'",
+        "description": "Schema still expects `null`, but the instance node is a number. Validation must fail with a `type` error."
+      }
+    ]
+  },
+  {
+    "group": "Complex Nested Object with Path Verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextNestedRequired"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeMissingDeepRequired"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with messageId='required' and path '/level1/level2/missingProp'",
+        "description": "The schema defines a nested object structure: `level1` \u2192 `level2` \u2192 required property `missingProp`. The instance object lacks `missingProp`. The validator must build the correct JSON\u2011Pointer path using successive `atPath` calls and report the `required` message with the full path `/level1/level2/missingProp`."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Schema Node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The validator's `schemaNode` field is set to a JSON array (e.g., `[\"type\",\"string\"]`) while the validator expects an object node. The `validate` method should detect the wrong schema node type and throw an IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The validator's `schemaNode` field is a scalar value (e.g., a text node \"string\") instead of an object. The method must reject this configuration with an IllegalArgumentException."
+      }
+    ]
+  }
+]

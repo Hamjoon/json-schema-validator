@@ -76,13 +76,16 @@ def selectors(rows,runtime,folder):
     return selected
 
 
-def run_file(index,group,filename,members,part,coverage_file=None,repetitions=1,retry=True):
+def run_file(index,group,filename,members,part,coverage_file=None,repetitions=1,retry=True,precompiled=None):
     folder,cp=classpath(index)
     part.mkdir(parents=True,exist_ok=True)
     classes=part/'classes';classes.mkdir(exist_ok=True)
     source=EXP/filename
     sourcepath=EXP/'dev/src-test-t/java' if group=='dev' else source.parent
-    compile_run=execute(['javac','-J-Xmx512m','-cp',cp,'-sourcepath',str(sourcepath),'-d',str(classes),str(source)],folder,part/'javac.txt',300)
+    if precompiled is not None:
+        classes,compile_run=precompiled
+    else:
+        compile_run=execute(['javac','-J-Xmx512m','-cp',cp,'-sourcepath',str(sourcepath),'-d',str(classes),str(source)],folder,part/'javac.txt',300)
     record=dict(file=filename,compile=compile_run,runs=[],methods=[])
     if compile_run['exit_code']:
         record['methods']=[{**r,'state':'compile-fail','flaky':False,'message':(part/'javac.txt').read_text(errors='replace')[:4000]} for r in members]
@@ -143,10 +146,23 @@ def run_group(index,group,phase='a',selected_ids=None):
     by_file=collections.defaultdict(list)
     for r in rows:by_file[r['file']].append(r)
     files=[]
+    suite_compile=None
+    precompiled=None
+    if group=='dev':
+        # Attempt every frozen Java source, including helpers and classes with no
+        # denominator methods. On failure retain per-class failure attribution.
+        folder,cp=classpath(index)
+        suite_classes=work/'suite-classes';suite_classes.mkdir()
+        sources=sorted((EXP/'dev/src-test-t/java').rglob('*.java'))
+        suite_compile=execute(['javac','-J-Xmx512m','-cp',cp,'-sourcepath',str(EXP/'dev/src-test-t/java'),'-d',str(suite_classes),*[str(p) for p in sources]],folder,work/'suite-javac.txt',300)
+        suite_compile['source_count']=len(sources)
+        suite_compile['diagnostics']=(work/'suite-javac.txt').read_text(errors='replace')
+        if suite_compile['exit_code']==0:precompiled=(suite_classes,suite_compile)
     for number,(filename,members) in enumerate(sorted(by_file.items())):
-        files.append(run_file(index,group,filename,members,work/str(number),execfile if coverage else None,retry=phase in ['a','b']))
+        files.append(run_file(index,group,filename,members,work/str(number),execfile if coverage else None,retry=phase in ['a','b'],precompiled=precompiled))
     commit=json.loads((RESULTS/'anchor.json').read_text()) if index==0 else next(r for r in csv.DictReader((RESULTS/'commits.csv').open()) if int(r['index'])==index)
     result=dict(index=index,sha=commit['sha'],group=group,phase=phase,status='evaluated',input_sha256=fingerprint,runner_sha256=runner_hashes,files=files,methods=[r for f in files for r in f['methods']],requested_ids=[r['id'] for r in rows])
+    if suite_compile is not None:result['whole_frozen_suite_compile']=suite_compile
     if coverage:
         folder,_=classpath(index);xml=RESULTS/f'coverage/{index}-{group}.xml';xml.parent.mkdir(parents=True,exist_ok=True)
         run=execute(['java','-Xmx1g','-jar',str(SHARED/'work/libs/org.jacoco.cli-0.8.12-nodeps.jar'),'report',*([str(execfile)] if execfile.exists() else []),'--classfiles',str(folder/'target/classes'),'--sourcefiles',str(folder/'src/main/java'),'--xml',str(xml)],folder,work/'coverage-report.txt',300)
