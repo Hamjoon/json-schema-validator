@@ -67,8 +67,9 @@ def main():
         common=[r for r in visible if all(r[category+'_'+g+'_covered']!='' for g in GROUPS)]
         n=sum(r[category+'_executable'] for r in common)
         counts={g:sum(r[category+'_'+g+'_covered'] for r in common) for g in GROUPS}
-        totals[category]=dict(executable=n,**counts)
-        lines.append('| Total | Common measured commits | '+str(n)+' | '+' | '.join(pct(counts[g],n) for g in GROUPS)+' | — | — | — |')
+        lost={g:sum(r[g+'_lost'] for r in common) for g in GROUPS}
+        totals[category]=dict(executable=n,**counts,methods_lost_in_listed_commits=lost)
+        lines.append('| Total | Common measured commits | '+str(n)+' | '+' | '.join(pct(counts[g],n) for g in GROUPS)+' | '+' | '.join(str(lost[g]) for g in GROUPS)+' |')
         lines.append('')
     lines.append(f'Production-change commits: {len(rows)}. Commits with zero executable changed lines: {zero}. Commits without an executable-line measurement: {unavailable}.')
     (RESULTS/'table3-changed-line-coverage.md').write_text('\n'.join(lines)+'\n')

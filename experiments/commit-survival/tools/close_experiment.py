@@ -47,6 +47,7 @@ run python "$T/prepare_ktester.py" index
 run python "$T/prepare_ktester.py" dataset
 run python "$T/prepare_runner.py"
 run python "$T/selfcheck.py"
+run python "$T/audit_artifacts.py"
 run python -m pip install --target /repo/experiments/commit-survival/work/python requests==2.32.3 matplotlib==3.10.7
 run python "$T/generate_ktester.py" --round 1
 run python "$T/validate_round.py" --group ktester --round round1
@@ -63,7 +64,7 @@ run python "$T/close_experiment.py"
 
 After each group round, compare its kept denominator to the developer denominator. Run another identical round only if smaller, up to three rounds. Retry a zero-compiled round once after 60 seconds. This run's initial KTester metadata preflight made no calls and its permitted retry is archived as `round1-retry`; validate that label when resuming this run. The final metadata adapter preserves exact index signatures. All setup failures and corrections are retained in `results/execution-notes.json`.
 
-Each generated file is compiled independently and a method must pass three runs. Exact whitespace-stripped body duplicates are excluded from denominators without rewriting archived source. The final anchor control selects every retained method once more. Phase A uses a fixed denominator; a fail/error gets one rerun, while compilation failure affects every denominator method in that file. Phase B selects only methods alive entering an index. Coverage compares post-image added/modified executable lines, split by scope; exposure uses pre-image changed lines at the immediate predecessor. Missing measurements are never converted to zero. The final consistency files list all build failures and missing records.
+Each generated file is compiled independently and a method must pass three runs. Exact whitespace-stripped body duplicates are excluded from denominators without rewriting archived source. The final anchor control selects every retained method once more. Phase A uses a fixed denominator; a fail/error gets one rerun, while compilation failure affects every denominator method in that file. Phase B selects only methods alive entering an index. Coverage compares post-image added/modified executable lines, split by scope; exposure uses pre-image changed lines at the immediate predecessor. Scope membership uses fixed anchor source paths, following the copied design: code moved to another path subsequently appears in the other-files category. Missing measurements are never converted to zero. The final consistency files list all build failures and missing records. `results/artifact-audit.json` verifies frozen inputs, unchanged author code, and copied-tool hashes.
 
 Commit the completed step artifacts locally with the required attribution trailer. Do not push. Existing unrelated KTester changes must remain outside the experiment commits.
 '''
