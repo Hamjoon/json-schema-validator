@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "method_reports": 185,
+  "denominator": 153,
+  "excluded": 32,
+  "failed_alone": [
+    {
+      "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+      "status": "fail",
+      "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+    }
+  ],
+  "per_scope_file": {
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+    "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+    "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+    "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+  },
+  "isolated_selectors_verified": true,
+  "selection_recomputed_from_xml": true
+}

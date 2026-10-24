@@ -5,6 +5,7 @@ import hashlib
 import json
 from start import EXP, RESULTS, write_json
 from run_commit import GROUPS, denominator
+from aggregate_survival import survival_record_path
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
         for i in selected_indices:
             if i and json.loads((RESULTS/f'builds/{i}.json').read_text())['build']!='ok':continue
             for g in GROUPS:
-                record=json.loads((RESULTS/f'{folder}/{i}-{g}.json').read_text())
+                record=json.loads((survival_record_path(i,g) if phase=='a' else RESULTS/f'{folder}/{i}-{g}.json').read_text())
                 expected=rows[g] if phase=='a' else [r for r in rows[g] if r['id'] in entering[str(i)][g]]
                 assert record['status']=='evaluated',(phase,i,g)
                 assert set(record['requested_ids'])=={r['id'] for r in expected},(phase,i,g)
@@ -32,7 +33,7 @@ def main():
                     coverage_count+=1
                     assert record['coverage_report']['exit_code']==0
                     if i:
-                        a=json.loads((RESULTS/f'raw/{i}-{g}.json').read_text())
+                        a=json.loads(survival_record_path(i,g).read_text())
                         states={r['id']:r['state'] for r in a['methods']}
                         mismatches.extend(dict(index=i,group=g,id=r['id'],phase_a=states[r['id']],phase_b=r['state']) for r in record['methods'] if states[r['id']]!=r['state'])
     survival=json.loads((RESULTS/'survival-consistency.json').read_text())
@@ -40,7 +41,7 @@ def main():
     assert survival['nonincreasing'] and survival['index_zero_equals_denominators'] and survival['raw_count_matches']
     assert not survival['missing_records'] and not coverage['missing']
     assert len(coverage['identical_executable_line_sets'])==len(indices)
-    result=dict(survival_records=raw_count,coverage_records=coverage_count,frozen_denominators_unchanged=True,source_fingerprints_match=True,coverage_selections_match_alive_entering=True,phase_a_flaky_pass_records=flaky,instrumented_state_differences=mismatches,first_failure_kinds=dict(collections.Counter(r['kind'] for r in csv.DictReader((RESULTS/'first-failures.csv').open()))))
+    result=dict(survival_records=raw_count,measured_survival_records=survival['measured_raw_records'],derived_survival_records=survival['derived_raw_records'],coverage_records=coverage_count,frozen_denominators_unchanged=True,source_fingerprints_match=True,coverage_selections_match_alive_entering=True,phase_a_flaky_pass_records=flaky,instrumented_state_differences=mismatches,first_failure_kinds=dict(collections.Counter(r['kind'] for r in csv.DictReader((RESULTS/'first-failures.csv').open()))))
     write_json(RESULTS/'final-verification.json',result)
     print(json.dumps(result),flush=True)
 

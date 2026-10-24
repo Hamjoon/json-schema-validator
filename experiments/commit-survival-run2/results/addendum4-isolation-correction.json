@@ -1,0 +1,17 @@
+{
+  "time": "2026-10-24T11:45:36.817944+00:00",
+  "reason": "Four JVM workers shared a container network namespace. HTTPServiceSupport binds localhost:1234, producing cross-method BindException failures. This attempt is invalid for isolated-method selection and is excluded wholesale.",
+  "completed_records": 148,
+  "states": {
+    "pass": 141,
+    "fail": 1,
+    "error": 6
+  },
+  "bind_errors": 6,
+  "resolution": "Four independent Docker containers, one sequential worker per network namespace. Same JUnit runner, selectors, heap caps, timeouts and frozen tests.",
+  "prior_attempt": "results/addendum4-quarantine/shared-network-anchor-attempt",
+  "model_calls": 0,
+  "deliberate_stop": true,
+  "container_exit_code": 137,
+  "oom": false
+}

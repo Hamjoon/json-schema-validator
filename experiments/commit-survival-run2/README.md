@@ -2,7 +2,7 @@
 
 This run compares project-wide frozen developer tests with independently generated KTester and Ouédraogo tests at tag `1.1.0`, across 229 first-parent commits. The developer denominator is all 185 methods stable in run 1. Abstract production classes remain eligible; classes dominated by trivial accessors are excluded.
 
-Denominators: **Dev 185, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22, Ouédraogo (adjusted 2) 41**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0, Ouédraogo (adjusted) 0, Ouédraogo (adjusted 2) 0**.
+Denominators: **Dev 185, Dev (scope) 153, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22, Ouédraogo (adjusted 2) 41**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, Dev (scope) 0, KTester 0, Ouédraogo 0, Ouédraogo (adjusted) 0, Ouédraogo (adjusted 2) 0**.
 
 Scope: `JsonSchema`, `BaseJsonValidator`, `AnyOfValidator`, `OneOfValidator`, `JsonSchemaFactory`; 64 focal methods. [Ranked scope](population/scope.md) and [accessor audit](population/accessor-audit.csv) explain why the executable rule yields 64 methods rather than the illustrative 73-method expectation. The addendum removes the minimum class count. The superseded stopped state is retained under `results/stopped-step1/` and local `docs/handover-part1-stopped.md`.
 
@@ -18,7 +18,7 @@ No methods survived generation screening for ouedraogo. Their survival percentag
 
 Every Dev measurement attempts compilation of the whole frozen Java suite. If that fails, class-isolated compilation attributes failure only to affected classes, preserving run 1's first-failure rule. Successful whole-suite compilation is shared by separate class launches; each class retains its 120-second timeout. All 185 denominator methods are evaluated in Phase A. Phase B runs only methods alive entering each index. Fail/error outcomes receive one rerun; a passing rerun remains alive and is marked flaky. Cumulative survival uses fixed denominators. Compile failures apply to every denominator method in that class. Unavailable measurements are never converted to zero.
 
-Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all five groups.
+Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all six groups.
 
 ## Reproduction
 
@@ -72,7 +72,7 @@ run python "$T/close_adjusted.py"
 
 The dependency renderer now emits type parameters only when present, preserves declaration modifiers (including implicit public/static modifiers of interface member types), and preserves varargs as Type... instead of arrays. All five dependency blocks passed the mandatory pre-call gate; their type order, membership, omitted types, caps, API order, and prompt constraints match addendum 2. Only the requested header and varargs formatting changed. See the [block diff](generated/ouedraogo-adj2/round1/prompts/block-diff.md), [pre-call gate](generated/ouedraogo-adj2/round1/prompts/pre-call-check.json), [import-fix ledger](generated/ouedraogo-adj2/round1/import-fixes.json), [funnel](generated/ouedraogo-adj2/round1/funnel.md), and [part 9 handover](docs/handover-part9.md).
 
-The single `ouedraogo-adj2` round used exactly 25 calls, no retries, with the same model/settings and screening rules. 7 of 25 extracted files compiled; 41 methods were retained. Previous groups, including `ouedraogo-adj`, remain unchanged. The five-group reports contain 1145 survival records and 905 coverage records.
+The single `ouedraogo-adj2` round used exactly 25 calls, no retries, with the same model/settings and screening rules. 7 of 25 extracted files compiled; 41 methods were retained. Previous groups, including `ouedraogo-adj`, remain unchanged. At completion of addendum 3, the five-group reports contained 1145 survival records and 905 coverage records.
 
 Reproduction inside the same KTester container (the pre-call check is mandatory and generation refuses existing call directories):
 
@@ -82,4 +82,17 @@ run python "$T/generate_adjusted2.py" --round 1
 run python "$T/continue_adjusted2.py"
 run python "$T/audit_adjusted2.py"
 run python "$T/close_adjusted2.py"
+```
+
+## Coverage-scoped developer group (addendum 4)
+
+Dev (scope) is the subset of the 185 frozen developer methods that pass when run alone at the anchor and cover at least one executable line in the five scope files. A test-factory or parameterized method is selected as one unit with all its cases. Survival is derived verbatim from the existing Dev method outcomes; coverage runs only the subgroup methods alive entering each index. The denominator is **153**, with 32 excluded methods (1 failed alone). See the [185-method coverage summary](results/dev-method-coverage-t.csv), [per-method JaCoCo XML and run evidence](results/dev-method-coverage-t/), [denominator](dev/dev-scope-denominator.csv), [exclusions](dev/dev-scope-excluded.csv), and [part 10 handover](docs/handover-part10.md). The CSV columns are `class,method,scope_lines_covered,scope_files_touched,total_lines_covered,seconds,status`; `scope_files_touched` contains a JSON list.
+
+The final survival endpoints are Dev **4/185** and Dev (scope) **0/153**. Four independent container network namespaces prevent fixed-port interference. The initial shared-network attempt is preserved under `results/addendum4-quarantine/` and excluded from the denominator. No model calls were made. Existing generated, raw, and coverage records are unchanged.
+
+Run the added stages from this repository root; the host driver launches all Java work inside the existing KTester container image:
+
+```sh
+python3 experiments/commit-survival-run2/tools/continue_dev_scope.py
+# Then run audit_dev_scope.py and close_dev_scope.py inside the KTester container.
 ```

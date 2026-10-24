@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "preserved_existing_files": 10991,
+  "modified_existing_evidence": [],
+  "previous_group_report_values_unchanged": true,
+  "model_calls": 0,
+  "new_phase_a_test_runs": 0,
+  "method_coverage_reports": 185,
+  "isolated_workers": 4,
+  "denominator": 153,
+  "excluded": 32,
+  "failed_alone": [
+    {
+      "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+      "status": "fail",
+      "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+    }
+  ],
+  "per_scope_file": {
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+    "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+    "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+    "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+    "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+  },
+  "derived_outcomes_identical_to_dev": true,
+  "alive_entering_equals_dev_intersection": true,
+  "measured_survival_records": 1145,
+  "derived_survival_records": 229,
+  "coverage_records": 1086,
+  "matching_executable_universes": 181,
+  "anchor_scope_coverage": {
+    "executable_lines": 689,
+    "dev_covered": 620,
+    "dev_scope_covered": 616,
+    "passing_isolated_union": 616,
+    "subgroup_equals_passing_isolated_union": true,
+    "dev_only_lines": [
+      {
+        "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+        "line": 76
+      },
+      {
+        "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+        "line": 79
+      },
+      {
+        "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+        "line": 80
+      },
+      {
+        "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+        "line": 606
+      }
+    ]
+  },
+  "coverage_runner_fingerprints_match": true
+}

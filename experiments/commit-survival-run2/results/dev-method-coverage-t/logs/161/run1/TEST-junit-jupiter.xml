@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Jupiter" tests="120" skipped="0" failures="0" errors="0" time="1.713" hostname="7c8f14c5975a" timestamp="2026-10-24T11:49:44">
+<properties>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/repo/experiments/commit-survival-run2/work/dev-method-coverage-t/suite-classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite"/>
+<property name="java.class.version" value="61.0"/>
+<property name="java.home" value="/usr/lib/jvm/java-17-openjdk-arm64"/>
+<property name="java.io.tmpdir" value="/tmp"/>
+<property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/aarch64-linux-gnu/jni:/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="java.specification.maintenance.version" value="1"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="17"/>
+<property name="java.vendor" value="Debian"/>
+<property name="java.vendor.url" value="https://tracker.debian.org/openjdk-17"/>
+<property name="java.vendor.url.bug" value="https://bugs.debian.org/openjdk-17"/>
+<property name="java.version" value="17.0.20.1"/>
+<property name="java.version.date" value="2026-08-18"/>
+<property name="java.vm.compressedOopsMode" value="32-bit"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="17"/>
+<property name="java.vm.vendor" value="Debian"/>
+<property name="java.vm.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="aarch64"/>
+<property name="os.name" value="Linux"/>
+<property name="os.version" value="7.0.12-linuxkit"/>
+<property name="path.separator" value=":"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-arm64/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+<property name="sun.java.command" value="org.junit.platform.console.ConsoleLauncher --disable-banner --disable-ansi-colors --fail-if-no-tests --details summary --select-method com.networknt.schema.UnevaluatedPropertiesTest#draft201909() --reports-dir /repo/experiments/commit-survival-run2/results/dev-method-coverage-t/logs/161/run1"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="sun.nio.ch.bugLevel" value=""/>
+<property name="user.country" value="US"/>
+<property name="user.dir" value="/repo/experiments/commit-survival/work/runtime"/>
+<property name="user.home" value="/root"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="root"/>
+<property name="user.timezone" value="Etc/UTC"/>
+</properties>
+<testcase name="draft201909()[33][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#33]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[21][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#21]/[dynamic-test:#1]
+display-name: when if is true and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[33][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#33]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[21][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#21]/[dynamic-test:#2]
+display-name: when if is true and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[21][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#21]/[dynamic-test:#3]
+display-name: when if is false and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[21][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#21]/[dynamic-test:#4]
+display-name: when if is false and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[3][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#3]/[dynamic-test:#4]
+display-name: Data with 2 valid AnyOf and 1 unevaluated property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[3][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#3]/[dynamic-test:#3]
+display-name: Data with just unevaluated property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[3][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#3]/[dynamic-test:#2]
+display-name: Data with 1 AnyOf and 1 unevaluated property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[3][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#3]/[dynamic-test:#1]
+display-name: Data with 1 valid AnyOf
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[18][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#18]/[dynamic-test:#1]
+display-name: when one matches and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[18][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#18]/[dynamic-test:#2]
+display-name: when one matches and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[18][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#18]/[dynamic-test:#3]
+display-name: when two match and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[32][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#32]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[20][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.025">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#20]/[dynamic-test:#1]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[32][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#32]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[4][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#4]/[dynamic-test:#2]
+display-name: Data with invalid allOf and one unevaluated property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[4][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#4]/[dynamic-test:#1]
+display-name: Data with allOf
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[29][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#29]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[17][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#17]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[29][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#29]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[17][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#17]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[15][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#15]/[dynamic-test:#2]
+display-name: with additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#4]
+display-name: c is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][5]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#5]
+display-name: d is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][6]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#6]
+display-name: a + b is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][7]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#7]
+display-name: a + c is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][8]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#8]
+display-name: a + d is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[31][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#31]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][9]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#9]
+display-name: b + c is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[31][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#31]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][10]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#10]
+display-name: b + d is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][11]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#11]
+display-name: c + d is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[1][5]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#1]/[dynamic-test:#5]
+display-name: Inside nested $ref
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][12]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#12]
+display-name: xx + a is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[1][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#1]/[dynamic-test:#4]
+display-name: Unevaluated - multiple properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][13]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#13]
+display-name: xx + b is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[1][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#1]/[dynamic-test:#3]
+display-name: Unevaluated Property - inside $ref
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][14]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#14]
+display-name: xx + c is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[1][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#1]/[dynamic-test:#2]
+display-name: Unevaluated Property - Outside $ref
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][15]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#15]
+display-name: xx + d is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[1][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.013">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#1]/[dynamic-test:#1]
+display-name: Basic Success Test
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][16]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#16]
+display-name: all is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][17]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#17]
+display-name: all + foo is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][18]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#18]
+display-name: all + a is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[28][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#28]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[9][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#9]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[16][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#16]/[dynamic-test:#1]
+display-name: with no additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[28][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#28]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[9][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#9]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[16][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#16]/[dynamic-test:#2]
+display-name: with additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[14][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#14]/[dynamic-test:#1]
+display-name: with no additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[26][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#26]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#3]
+display-name: x and y are invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[14][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#14]/[dynamic-test:#2]
+display-name: with additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#4]
+display-name: a and x are valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][5]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#5]
+display-name: a and y are valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][6]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#6]
+display-name: a and b and x are valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][7]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#7]
+display-name: a and b and y are valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][8]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#8]
+display-name: a and b and x and y are invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[30][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#30]/[dynamic-test:#1]
+display-name: with no nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[30][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#30]/[dynamic-test:#2]
+display-name: with nested unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[2][5]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#2]/[dynamic-test:#5]
+display-name: Data which doesn't satisfy any of oneOf schemas but having an invalid prop
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[2][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#2]/[dynamic-test:#4]
+display-name: Data which satisfies 2 oneOf schemas and an invalid prop
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[2][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#2]/[dynamic-test:#3]
+display-name: Data which satisfies 2 oneOf schemas
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[2][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#2]/[dynamic-test:#2]
+display-name: Data which satisfies 1 oneOf schemas, but fails due to unevaluated prop
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[2][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#2]/[dynamic-test:#1]
+display-name: Data with oneOf and one property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#1]
+display-name: Empty is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[27][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#27]/[dynamic-test:#1]
+display-name: always fails
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#2]
+display-name: a is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[15][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#15]/[dynamic-test:#1]
+display-name: with no additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[39][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#39]/[dynamic-test:#3]
+display-name: b is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[25][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#25]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#2]
+display-name: Single is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[13][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#13]/[dynamic-test:#1]
+display-name: with no additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[25][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#25]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#3]
+display-name: Unevaluated on 1st level is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[13][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#13]/[dynamic-test:#2]
+display-name: with additional properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#4]
+display-name: Nested is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][5]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#5]
+display-name: Unevaluated on 2nd level is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][6]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#6]
+display-name: Deep nested is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][7]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#7]
+display-name: Unevaluated on 3rd level is invalid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[7][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#7]/[dynamic-test:#1]
+display-name: Data with additional properties as type
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#1]
+display-name: Empty is invalid (no x or y)
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[26][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#26]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[38][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#38]/[dynamic-test:#2]
+display-name: a and b are invalid (no x or y)
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[36][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#36]/[dynamic-test:#1]
+display-name: base case: both properties present
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[24][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#24]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[36][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#36]/[dynamic-test:#2]
+display-name: in place applicator siblings, bar is missing
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[12][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.073">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#12]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[24][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#24]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[36][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#36]/[dynamic-test:#3]
+display-name: in place applicator siblings, foo is missing
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[12][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#12]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[40][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0.005">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#40]/[dynamic-test:#1]
+display-name: Not valid key against pattern
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[40][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#40]/[dynamic-test:#2]
+display-name: Not valid type
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[40][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#40]/[dynamic-test:#3]
+display-name: Valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[8][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#8]/[dynamic-test:#1]
+display-name: unevaluated property bar is in sub-schema
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[37][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#37]/[dynamic-test:#1]
+display-name: Empty is valid
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[35][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#35]/[dynamic-test:#1]
+display-name: base case: both properties present
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[23][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#23]/[dynamic-test:#1]
+display-name: when if is true and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[35][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#35]/[dynamic-test:#2]
+display-name: in place applicator siblings, bar is missing
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[11][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#11]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[23][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#23]/[dynamic-test:#2]
+display-name: when if is true and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[35][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#35]/[dynamic-test:#3]
+display-name: in place applicator siblings, foo is missing
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[11][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#11]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[23][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#23]/[dynamic-test:#3]
+display-name: when if is false and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[23][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#23]/[dynamic-test:#4]
+display-name: when if is false and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[5][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#5]/[dynamic-test:#2]
+display-name: Data - else schema with one unevaluated property
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[5][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#5]/[dynamic-test:#1]
+display-name: Data with if then and else
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[34][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#34]/[dynamic-test:#1]
+display-name: no extra properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[22][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#22]/[dynamic-test:#1]
+display-name: when if is true and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[34][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#34]/[dynamic-test:#2]
+display-name: uncle keyword evaluation is not significant
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[10][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#10]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[22][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#22]/[dynamic-test:#2]
+display-name: when if is true and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[10][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#10]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[22][3]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#22]/[dynamic-test:#3]
+display-name: when if is false and has no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[22][4]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#22]/[dynamic-test:#4]
+display-name: when if is false and has unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[19][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#19]/[dynamic-test:#1]
+display-name: with no unevaluated properties
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[6][1]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#6]/[dynamic-test:#1]
+display-name: Data with additional properties as object
+]]></system-out>
+</testcase>
+<testcase name="draft201909()[19][2]" classname="com.networknt.schema.UnevaluatedPropertiesTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.networknt.schema.UnevaluatedPropertiesTest]/[test-factory:draft201909()]/[dynamic-container:#19]/[dynamic-test:#2]
+display-name: with unevaluated properties
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: JUnit Jupiter
+]]></system-out>
+</testsuite>

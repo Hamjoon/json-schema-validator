@@ -1,0 +1,35 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+=== "mapping to base type"
+=== "mapped to Bedroom"
+=== "mapped to Kitchen"
+=== "mapped to KidsBedRoom"
+=== "mapped to Bedroom with missing number of beds"
+=== "mapped to KidsBedroom with missing number of beds"
+=== "mapped to KidsBedroom with missing tidiness"
+=== "mapped to GuestRoom with correct @type (mapping override on BedRoom)"
+=== "mapped to GuestRoom with incorrect @type (mapping override on BedRoom)"
+=== "mapped to invalid Room"
+=== "discriminator missing - falling back to default validation with failure as @type is mandatory"
+=== "discriminator missing - falling back to default anyOf behavior"
+=== "discriminator missing - with constructed schema conflict"
+=== "$ref without anyOf and therefore no discriminator context"
+=== "schema with discriminator and recursion with invalid BedRoom"
+=== "$ref without anyOf and therefore no discriminator context"
+=== "schema with discriminator and recursion with valid BedRoom"
+=== "schema with discriminator and recursion with invalid BedRoom"
+=== "$ref without anyOf and therefore no discriminator context"
+
+Test run finished after 1858 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         1 tests found           ]
+[         0 tests skipped         ]
+[         1 tests started         ]
+[         0 tests aborted         ]
+[         1 tests successful      ]
+[         0 tests failed          ]
+

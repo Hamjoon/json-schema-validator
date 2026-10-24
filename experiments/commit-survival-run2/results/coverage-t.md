@@ -1,9 +1,9 @@
 # Coverage at t
 
-| Scope file | Executable lines | Dev | KTester | Ouédraogo | Ouédraogo (adjusted) | Ouédraogo (adjusted 2) |
-|---|---:|---:|---:|---:|---:|---:|
-| src/main/java/com/networknt/schema/AnyOfValidator.java | 71 | 69 (97.2%) | 48 (67.6%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) |
-| src/main/java/com/networknt/schema/BaseJsonValidator.java | 95 | 87 (91.6%) | 35 (36.8%) | 0 (0.0%) | 15 (15.8%) | 17 (17.9%) |
-| src/main/java/com/networknt/schema/JsonSchema.java | 250 | 233 (93.2%) | 168 (67.2%) | 0 (0.0%) | 85 (34.0%) | 25 (10.0%) |
-| src/main/java/com/networknt/schema/JsonSchemaFactory.java | 210 | 181 (86.2%) | 151 (71.9%) | 0 (0.0%) | 164 (78.1%) | 172 (81.9%) |
-| src/main/java/com/networknt/schema/OneOfValidator.java | 63 | 50 (79.4%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) |
+| Scope file | Executable lines | Dev | Dev (scope) | KTester | Ouédraogo | Ouédraogo (adjusted) | Ouédraogo (adjusted 2) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| src/main/java/com/networknt/schema/AnyOfValidator.java | 71 | 69 (97.2%) | 66 (93.0%) | 48 (67.6%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) |
+| src/main/java/com/networknt/schema/BaseJsonValidator.java | 95 | 87 (91.6%) | 87 (91.6%) | 35 (36.8%) | 0 (0.0%) | 15 (15.8%) | 17 (17.9%) |
+| src/main/java/com/networknt/schema/JsonSchema.java | 250 | 233 (93.2%) | 232 (92.8%) | 168 (67.2%) | 0 (0.0%) | 85 (34.0%) | 25 (10.0%) |
+| src/main/java/com/networknt/schema/JsonSchemaFactory.java | 210 | 181 (86.2%) | 181 (86.2%) | 151 (71.9%) | 0 (0.0%) | 164 (78.1%) | 172 (81.9%) |
+| src/main/java/com/networknt/schema/OneOfValidator.java | 63 | 50 (79.4%) | 50 (79.4%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) | 0 (0.0%) |

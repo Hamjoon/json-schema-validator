@@ -1,0 +1,34 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (1):
+  JUnit Jupiter:Issue619Test
+    ClassSource [className = 'com.networknt.schema.Issue619Test', filePosition = null]
+    => java.lang.RuntimeException: java.net.BindException: Address already in use
+       io.undertow.Undertow.start(Undertow.java:254)
+       com.networknt.schema.HTTPServiceSupport.setUp(HTTPServiceSupport.java:68)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       [...]
+     Caused by: java.net.BindException: Address already in use
+       java.base/sun.nio.ch.Net.bind0(Native Method)
+       java.base/sun.nio.ch.Net.bind(Net.java:567)
+       java.base/sun.nio.ch.ServerSocketChannelImpl.netBind(ServerSocketChannelImpl.java:337)
+       java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:294)
+       java.base/sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:89)
+       [...]
+
+Test run finished after 1215 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         3 containers successful ]
+[         1 containers failed     ]
+[         1 tests found           ]
+[         0 tests skipped         ]
+[         0 tests started         ]
+[         0 tests aborted         ]
+[         0 tests successful      ]
+[         0 tests failed          ]
+

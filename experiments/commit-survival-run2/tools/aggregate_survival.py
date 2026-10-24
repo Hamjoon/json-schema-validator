@@ -7,11 +7,16 @@ from start import EXP, RESULTS, SHARED, write_json
 from select_scope import csvout
 from run_commit import GROUPS,denominator
 
-LABELS={'dev':'Dev','ktester':'KTester','ouedraogo':'Ouédraogo','ouedraogo-adj':'Ouédraogo (adjusted)','ouedraogo-adj2':'Ouédraogo (adjusted 2)'}
+LABELS={'dev':'Dev','dev-scope':'Dev (scope)','ktester':'KTester','ouedraogo':'Ouédraogo','ouedraogo-adj':'Ouédraogo (adjusted)','ouedraogo-adj2':'Ouédraogo (adjusted 2)'}
 
 
 def md(value):return str(value).replace('|','\\|').replace('\n',' ')
 def pct(n,d):return f'{n} ({100*n/d:.1f}%)' if d else f'{n} (n/a)'
+
+
+def survival_record_path(index,group):
+    folder='raw-derived' if group=='dev-scope' else 'raw'
+    return RESULTS/f'{folder}/{index}-{group}.json'
 
 
 def main():
@@ -30,7 +35,7 @@ def main():
         for g in GROUPS:
             lost=[]
             if i and build_ok:
-                path=RESULTS/f'raw/{i}-{g}.json'
+                path=survival_record_path(i,g)
                 if not path.exists():missing.append(dict(index=i,group=g));record['evaluated']='incomplete'
                 else:
                     raw=json.loads(path.read_text());expected={r['id'] for r in denominators[g]}
@@ -57,8 +62,11 @@ def main():
             if subset:lines.append(f'| {i} | {LABELS[g]} | {len(subset)} | '+md(dict(collections.Counter(r['kind'] for r in subset)))+' |')
     (RESULTS/'table2-breaking-commits.md').write_text('\n'.join(lines)+'\n')
     nonincreasing=all(all(a[g+'_alive']>=b[g+'_alive'] for a,b in zip(curves,curves[1:])) for g in GROUPS)
-    actual=len(list((RESULTS/'raw').glob('*.json')));expected=(len(commits)-len(failed))*len(GROUPS)
-    consistency=dict(nonincreasing=nonincreasing,index_zero_equals_denominators=all(curves[0][g+'_alive']==len(denominators[g]) for g in GROUPS),raw_records=actual,expected_raw_records=expected,raw_count_matches=actual==expected,missing_records=missing,build_fail_indices=failed)
+    measured=len(list((RESULTS/'raw').glob('*.json')))
+    derived=len(list((RESULTS/'raw-derived').glob('*-dev-scope.json'))) if 'dev-scope' in GROUPS else 0
+    actual=measured;expected=(len(commits)-len(failed))*sum(g!='dev-scope' for g in GROUPS)
+    expected_derived=(len(commits)-len(failed))*sum(g=='dev-scope' for g in GROUPS)
+    consistency=dict(measured_raw_records=measured,derived_raw_records=derived,expected_measured_raw_records=(len(commits)-len(failed))*sum(g!='dev-scope' for g in GROUPS),expected_derived_raw_records=(len(commits)-len(failed))*sum(g=='dev-scope' for g in GROUPS),nonincreasing=nonincreasing,index_zero_equals_denominators=all(curves[0][g+'_alive']==len(denominators[g]) for g in GROUPS),raw_records=actual,expected_raw_records=expected,raw_count_matches=actual==expected and derived==expected_derived,total_survival_records=measured+derived,expected_total_survival_records=expected+expected_derived,missing_records=missing,build_fail_indices=failed)
     write_json(RESULTS/'survival-consistency.json',consistency)
     (RESULTS/'consistency.md').write_text('# Consistency checks\n\n```json\n'+json.dumps(consistency,indent=2)+'\n```\n')
     sys.path.insert(0,str(SHARED/'work/python'))
@@ -66,7 +74,9 @@ def main():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     fig,ax=plt.subplots(figsize=(10,5.5),layout='constrained')
-    for g,color in zip(GROUPS,['#2563eb','#dc2626','#059669','#9333ea','#d97706']):
+    colors={'dev':'#2563eb','dev-scope':'#0891b2','ktester':'#dc2626','ouedraogo':'#059669','ouedraogo-adj':'#9333ea','ouedraogo-adj2':'#d97706'}
+    for g in GROUPS:
+        color=colors[g]
         n=len(denominators[g])
         if n:ax.step([int(r['index']) for r in curves],[100*r[g+'_alive']/n for r in curves],where='post',label=f'{LABELS[g]} (n={n})',color=color,lw=2)
         else:ax.plot([],[],color=color,label=f'{LABELS[g]} (n=0; unavailable)')

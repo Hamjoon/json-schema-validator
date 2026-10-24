@@ -1,10 +1,12 @@
 {
-  "survival_records": 1145,
-  "coverage_records": 905,
+  "survival_records": 1374,
+  "measured_survival_records": 1145,
+  "derived_survival_records": 229,
+  "coverage_records": 1086,
   "frozen_denominators_unchanged": true,
   "source_fingerprints_match": true,
   "coverage_selections_match_alive_entering": true,
-  "phase_a_flaky_pass_records": 21,
+  "phase_a_flaky_pass_records": 42,
   "instrumented_state_differences": [
     {
       "index": 2,
@@ -21,16 +23,30 @@
       "phase_b": "pass"
     },
     {
+      "index": 5,
+      "group": "dev-scope",
+      "id": "dev/src-test-t/java/com/networknt/schema/UnevaluatedItemsTest.java|com.networknt.schema.UnevaluatedItemsTest|draft201909",
+      "phase_a": "error",
+      "phase_b": "pass"
+    },
+    {
       "index": 8,
       "group": "dev",
+      "id": "dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java|com.networknt.schema.CustomMessageTest|draft201909__customMessagesEnabled",
+      "phase_a": "error",
+      "phase_b": "pass"
+    },
+    {
+      "index": 8,
+      "group": "dev-scope",
       "id": "dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java|com.networknt.schema.CustomMessageTest|draft201909__customMessagesEnabled",
       "phase_a": "error",
       "phase_b": "pass"
     }
   ],
   "first_failure_kinds": {
-    "error": 10,
-    "compile-fail": 335,
-    "fail": 30
+    "error": 18,
+    "compile-fail": 463,
+    "fail": 47
   }
 }

@@ -1,0 +1,1157 @@
+{
+  "method": {
+    "class": "com.networknt.schema.CollectorContextTest",
+    "method": "testCollectorContextWithMultipleThreads",
+    "kind": "plain",
+    "file": "dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java",
+    "id": "dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java|com.networknt.schema.CollectorContextTest|testCollectorContextWithMultipleThreads"
+  },
+  "source_sha256": "c0f856b5ea4dd5b348e203a287aca2461e739292119a5a5665343b9580efd7e7",
+  "run": {
+    "file": "dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java",
+    "compile": {
+      "command": [
+        "javac",
+        "-J-Xmx512m",
+        "-cp",
+        "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+        "-sourcepath",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java",
+        "-d",
+        "/repo/experiments/commit-survival-run2/work/dev-method-coverage-t/suite-classes",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/AbstractJsonSchemaTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/AbstractJsonSchemaTestSuite.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/BaseJsonSchemaValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/CustomMetaSchemaTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/CustomUriTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/CyclicDependencyTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/DateTimeDSTTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/DependentRequiredTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/DurationFormatValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/HTTPServiceSupport.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue255Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue285Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue295Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue313Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue314Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue327Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue342Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue347Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue366FailFastTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue366FailSlowTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue375Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue383Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue396Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue404Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue406Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue426Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue428Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue451Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue456Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue461Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue471Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue493Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue510Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue518Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue532Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue550Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue575Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue604Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue606Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue619Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue650Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue662Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue664Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue665Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue668Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue686Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue687Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue724Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue769ContainsTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue784Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue792.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue832Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/Issue898Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/JsonSchemaFactoryUriCacheTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/JsonSchemaTestSuiteExtrasTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/JsonSchemaTestSuiteTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/JsonWalkTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/MaximumValidatorPerfTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/MaximumValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/MinimumValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/NotAllowedValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/OpenAPI30JsonSchemaTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/OverrideValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/OverwritingCustomMessageBugTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/PathTypeTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/PatternPropertiesValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/PrefixItemsValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/PropertiesValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/ReadOnlyValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/RecursiveReferenceValidatorExceptionTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/SelfRefTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/SpecVersionDetectorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/ThresholdMixinPerfTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/TypeFactoryTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/TypeValidatorTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/UnevaluatedItemsTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/UnevaluatedPropertiesTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/UnknownMetaSchemaTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/UriMappingTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/UrnTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/V4JsonSchemaTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/ValidatorTypeCodeTest.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/regex/Issue814Test.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/suite/TestCase.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/suite/TestSource.java",
+        "/repo/experiments/commit-survival-run2/dev/src-test-t/java/com/networknt/schema/suite/TestSpec.java"
+      ],
+      "cwd": "/repo",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 2.243,
+      "log": "results/dev-method-coverage-t/logs/anchor-javac.txt",
+      "prepared_unix": 1792842384.933011
+    },
+    "runs": [
+      {
+        "command": [
+          "java",
+          "-Xmx1g",
+          "-XX:+UseSerialGC",
+          "-javaagent:/repo/experiments/commit-survival/work/libs/org.jacoco.agent-0.8.12-runtime.jar=destfile=/repo/experiments/commit-survival-run2/work/dev-method-coverage-t/1/jacoco.exec,append=true",
+          "-cp",
+          "/repo/experiments/commit-survival-run2/work/dev-method-coverage-t/suite-classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+          "org.junit.platform.console.ConsoleLauncher",
+          "--disable-banner",
+          "--disable-ansi-colors",
+          "--fail-if-no-tests",
+          "--details",
+          "summary",
+          "--select-method",
+          "com.networknt.schema.CollectorContextTest#testCollectorContextWithMultipleThreads()",
+          "--reports-dir",
+          "/repo/experiments/commit-survival-run2/results/dev-method-coverage-t/logs/1/run1"
+        ],
+        "cwd": "/repo/experiments/commit-survival/work/runtime",
+        "exit_code": 0,
+        "timeout": false,
+        "seconds": 4.836,
+        "log": "results/dev-method-coverage-t/logs/1/run1/console.txt"
+      }
+    ],
+    "methods": [
+      {
+        "class": "com.networknt.schema.CollectorContextTest",
+        "method": "testCollectorContextWithMultipleThreads",
+        "kind": "plain",
+        "file": "dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java",
+        "id": "dev/src-test-t/java/com/networknt/schema/CollectorContextTest.java|com.networknt.schema.CollectorContextTest|testCollectorContextWithMultipleThreads",
+        "state": "pass",
+        "message": "",
+        "flaky": false,
+        "initial_state": "pass",
+        "selector": [
+          "com.networknt.schema.CollectorContextTest#testCollectorContextWithMultipleThreads()"
+        ],
+        "baseline_states": [
+          "pass"
+        ]
+      }
+    ]
+  },
+  "coverage_report": {
+    "command": [
+      "java",
+      "-Xmx1g",
+      "-jar",
+      "/repo/experiments/commit-survival/work/libs/org.jacoco.cli-0.8.12-nodeps.jar",
+      "report",
+      "/repo/experiments/commit-survival-run2/work/dev-method-coverage-t/1/jacoco.exec",
+      "--classfiles",
+      "/repo/target/classes",
+      "--sourcefiles",
+      "/repo/src/main/java",
+      "--xml",
+      "/repo/experiments/commit-survival-run2/results/dev-method-coverage-t/com.networknt.schema.CollectorContextTest#testCollectorContextWithMultipleThreads.xml"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.525,
+    "log": "results/dev-method-coverage-t/logs/1/coverage-report.txt"
+  },
+  "coverage_xml": "results/dev-method-coverage-t/com.networknt.schema.CollectorContextTest#testCollectorContextWithMultipleThreads.xml",
+  "scope_lines_covered": 239,
+  "scope_files_touched": [
+    "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+    "src/main/java/com/networknt/schema/JsonSchema.java",
+    "src/main/java/com/networknt/schema/JsonSchemaFactory.java"
+  ],
+  "total_lines_covered": 883,
+  "seconds": 5.783,
+  "status": "pass",
+  "test_state": "pass",
+  "message": "",
+  "scope_lines": [
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 41
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 42
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 50
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 51
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 52
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 53
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 54
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 55
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 88
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 89
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 213
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 217
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 221
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 258
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+      "line": 269
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 42
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 46
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 47
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 59
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 60
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 63
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 66
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 108
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 109
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 110
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 111
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 112
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 115
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 116
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 117
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 124
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 135
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 136
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 137
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 159
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 161
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 188
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 258
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 259
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 271
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 273
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 275
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 276
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 277
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 278
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 279
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 281
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 295
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 296
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 297
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 299
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 303
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 304
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 307
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 308
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 312
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 315
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 321
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 335
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 336
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 337
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 338
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 339
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 340
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 341
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 342
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 343
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 344
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 346
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 350
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 353
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 354
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 355
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 358
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 362
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 366
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 367
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 368
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 369
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 370
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 373
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 380
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 381
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 383
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 385
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 387
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 388
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 390
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 392
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 394
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 395
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 396
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 410
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 412
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 441
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 472
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 474
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 476
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 478
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 480
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 482
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 485
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 486
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 490
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 577
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 578
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 580
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 581
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 582
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 583
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 584
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 586
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 594
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 598
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 610
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 611
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 613
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 644
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 645
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 648
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 649
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+      "line": 650
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 40
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 41
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 45
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 46
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 48
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 49
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 51
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 52
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 53
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 54
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 56
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 58
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 59
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 60
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 61
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 63
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 66
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 67
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 68
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 69
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 72
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 73
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 74
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 75
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 76
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 77
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 78
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 81
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 82
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 86
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 87
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 91
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 92
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 103
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 107
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 108
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 109
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 110
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 121
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 125
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 126
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 127
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 128
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 132
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 133
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 137
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 138
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 139
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 140
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 150
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 151
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 191
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 192
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 193
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 215
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 229
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 230
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 232
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 234
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 236
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 238
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 240
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 242
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 244
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 246
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 249
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 250
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 251
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 252
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 253
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 254
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 255
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 256
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 257
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 258
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 259
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 271
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 287
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 288
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 289
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 290
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 291
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 292
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 296
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 297
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 299
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 308
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 309
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 310
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 311
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 312
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 313
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 315
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 318
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 319
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 320
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 321
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 322
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 323
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 324
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 328
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 329
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 330
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 334
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 338
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 342
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 343
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 347
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 348
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 351
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 352
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 353
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 377
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 378
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 509
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 510
+    },
+    {
+      "file": "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+      "line": 512
+    }
+  ]
+}

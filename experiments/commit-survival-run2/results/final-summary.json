@@ -1,7 +1,7 @@
 {
   "status": "completed",
-  "finished": "2026-10-24T04:54:49.919578+00:00",
-  "wall_seconds": 32817.882999999994,
+  "finished": "2026-10-24T13:46:28.204324+00:00",
+  "wall_seconds": 40307.33299999999,
   "phase_seconds": {
     "step1": 77.80012,
     "phase-a": 6572.186,
@@ -38,9 +38,17 @@
     "addendum3-survival": 2.965,
     "addendum3-phase-b": 78.798,
     "addendum3-coverage": 9.358,
-    "addendum3-verify": 17.041
+    "addendum3-verify": 17.041,
+    "addendum4-anchor-prepare": 3.086,
+    "addendum4-anchor-methods": 324.062,
+    "addendum4-anchor-finalize": 0.86,
+    "addendum4-derive-survival": 7.436,
+    "addendum4-survival-report": 7.72,
+    "addendum4-phase-b": 6633.844,
+    "addendum4-coverage-report": 44.88,
+    "addendum4-verify": 123.41
   },
-  "timing_note": "Wall seconds sum measured original/addendum work, excluding idle gaps. Prior summaries are preserved in before-addendum2-final-summary.json and before-addendum3-final-summary.json.",
+  "timing_note": "Wall seconds sum the original run and measured addendum work, excluding gaps between requests. Each addendum summary states its timing boundaries; addendum 4 includes a quarantined attempt and brief orchestration hold.",
   "scope": {
     "classes": [
       {
@@ -104,6 +112,7 @@
   },
   "denominators": {
     "dev": 185,
+    "dev-scope": 153,
     "ktester": 131,
     "ouedraogo": 0,
     "ouedraogo-adj": 22,
@@ -112,6 +121,7 @@
   "ktester_ratio_to_dev": 0.7081081081081081,
   "final_survivors": {
     "dev": 4,
+    "dev-scope": 0,
     "ktester": 0,
     "ouedraogo": 0,
     "ouedraogo-adj": 0,
@@ -1068,6 +1078,20 @@
       "jobs": 181,
       "failed": [],
       "oom_quarantine": []
+    },
+    "phase-b-dev-scope": {
+      "seconds": 6633.844,
+      "workers": 4,
+      "network_isolation": "four independent Docker containers; one sequential worker in each",
+      "jobs": 181,
+      "failed": [],
+      "oom_quarantine": [],
+      "worker_seconds": [
+        6632.838,
+        6489.517,
+        6571.285,
+        6437.012
+      ]
     }
   },
   "deviations": [
@@ -1078,14 +1102,21 @@
     "Addendum removes the original minimum-three-classes stop. Prior stopped state retained in results/stopped-step1 and docs/handover-part1-stopped.md.",
     "Dev attempts all frozen Java sources at every measurement. If whole-suite javac fails, per-class compilation preserves the inherited class-specific failure attribution. Successful whole-suite classes are reused across isolated launches; only denominator methods are selected.",
     "Host continuation driver reloaded twice while only waiting for the already-running KTester round, to incorporate final reporting/commit bookkeeping. No model/test subprocess was interrupted or duplicated. Repeated await entries remain in driver-events.json.",
-    "Addendum 3 fixes the renderer defects for ouedraogo-adj2 only. The earlier ouedraogo-adj group and its recorded limitation remain unchanged."
+    "Addendum 3 fixes the renderer defects for ouedraogo-adj2 only. The earlier ouedraogo-adj group and its recorded limitation remain unchanged.",
+    "Dev (scope) selects passing isolated anchor methods with a scope-line hit. Its survival is filtered from existing Dev records; only its coverage is newly measured. Four container network namespaces avoid localhost:1234 contention. The initial shared-network attempt is quarantined and excluded."
   ],
   "survival_consistency": {
+    "measured_raw_records": 1145,
+    "derived_raw_records": 229,
+    "expected_measured_raw_records": 1145,
+    "expected_derived_raw_records": 229,
     "nonincreasing": true,
     "index_zero_equals_denominators": true,
     "raw_records": 1145,
     "expected_raw_records": 1145,
     "raw_count_matches": true,
+    "total_survival_records": 1374,
+    "expected_total_survival_records": 1374,
     "missing_records": [],
     "build_fail_indices": []
   },
@@ -1282,12 +1313,14 @@
       "all": {
         "executable": 11800,
         "dev": 3630,
+        "dev-scope": 3517,
         "ktester": 2053,
         "ouedraogo": 0,
         "ouedraogo-adj": 363,
         "ouedraogo-adj2": 206,
         "methods_lost_in_listed_commits": {
           "dev": 161,
+          "dev-scope": 133,
           "ktester": 131,
           "ouedraogo": 0,
           "ouedraogo-adj": 22,
@@ -1297,12 +1330,14 @@
       "scope": {
         "executable": 1399,
         "dev": 917,
+        "dev-scope": 915,
         "ktester": 553,
         "ouedraogo": 0,
         "ouedraogo-adj": 137,
         "ouedraogo-adj2": 96,
         "methods_lost_in_listed_commits": {
           "dev": 140,
+          "dev-scope": 125,
           "ktester": 101,
           "ouedraogo": 0,
           "ouedraogo-adj": 22,
@@ -1312,12 +1347,14 @@
       "other": {
         "executable": 10401,
         "dev": 2713,
+        "dev-scope": 2602,
         "ktester": 1500,
         "ouedraogo": 0,
         "ouedraogo-adj": 226,
         "ouedraogo-adj2": 110,
         "methods_lost_in_listed_commits": {
           "dev": 161,
+          "dev-scope": 133,
           "ktester": 131,
           "ouedraogo": 0,
           "ouedraogo-adj": 22,
@@ -1329,6 +1366,7 @@
       "src/main/java/com/networknt/schema/AnyOfValidator.java": {
         "executable": 71,
         "dev": 69,
+        "dev-scope": 66,
         "ktester": 48,
         "ouedraogo": 0,
         "ouedraogo-adj": 0,
@@ -1337,6 +1375,7 @@
       "src/main/java/com/networknt/schema/BaseJsonValidator.java": {
         "executable": 95,
         "dev": 87,
+        "dev-scope": 87,
         "ktester": 35,
         "ouedraogo": 0,
         "ouedraogo-adj": 15,
@@ -1345,6 +1384,7 @@
       "src/main/java/com/networknt/schema/JsonSchema.java": {
         "executable": 250,
         "dev": 233,
+        "dev-scope": 232,
         "ktester": 168,
         "ouedraogo": 0,
         "ouedraogo-adj": 85,
@@ -1353,6 +1393,7 @@
       "src/main/java/com/networknt/schema/JsonSchemaFactory.java": {
         "executable": 210,
         "dev": 181,
+        "dev-scope": 181,
         "ktester": 151,
         "ouedraogo": 0,
         "ouedraogo-adj": 164,
@@ -1361,6 +1402,7 @@
       "src/main/java/com/networknt/schema/OneOfValidator.java": {
         "executable": 63,
         "dev": 50,
+        "dev-scope": 50,
         "ktester": 0,
         "ouedraogo": 0,
         "ouedraogo-adj": 0,
@@ -1369,12 +1411,14 @@
     }
   },
   "final_verification": {
-    "survival_records": 1145,
-    "coverage_records": 905,
+    "survival_records": 1374,
+    "measured_survival_records": 1145,
+    "derived_survival_records": 229,
+    "coverage_records": 1086,
     "frozen_denominators_unchanged": true,
     "source_fingerprints_match": true,
     "coverage_selections_match_alive_entering": true,
-    "phase_a_flaky_pass_records": 21,
+    "phase_a_flaky_pass_records": 42,
     "instrumented_state_differences": [
       {
         "index": 2,
@@ -1391,17 +1435,31 @@
         "phase_b": "pass"
       },
       {
+        "index": 5,
+        "group": "dev-scope",
+        "id": "dev/src-test-t/java/com/networknt/schema/UnevaluatedItemsTest.java|com.networknt.schema.UnevaluatedItemsTest|draft201909",
+        "phase_a": "error",
+        "phase_b": "pass"
+      },
+      {
         "index": 8,
         "group": "dev",
+        "id": "dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java|com.networknt.schema.CustomMessageTest|draft201909__customMessagesEnabled",
+        "phase_a": "error",
+        "phase_b": "pass"
+      },
+      {
+        "index": 8,
+        "group": "dev-scope",
         "id": "dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java|com.networknt.schema.CustomMessageTest|draft201909__customMessagesEnabled",
         "phase_a": "error",
         "phase_b": "pass"
       }
     ],
     "first_failure_kinds": {
-      "error": 10,
-      "compile-fail": 335,
-      "fail": 30
+      "error": 18,
+      "compile-fail": 463,
+      "fail": 47
     }
   },
   "artifact_audit": {
@@ -1948,6 +2006,64 @@
       "raw_records": 1145,
       "coverage_records": 905,
       "matching_executable_universes": 181
+    },
+    "addendum4": {
+      "status": "passed",
+      "preserved_existing_files": 10991,
+      "modified_existing_evidence": [],
+      "previous_group_report_values_unchanged": true,
+      "model_calls": 0,
+      "new_phase_a_test_runs": 0,
+      "method_coverage_reports": 185,
+      "isolated_workers": 4,
+      "denominator": 153,
+      "excluded": 32,
+      "failed_alone": [
+        {
+          "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+          "status": "fail",
+          "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+        }
+      ],
+      "per_scope_file": {
+        "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+        "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+        "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+      },
+      "derived_outcomes_identical_to_dev": true,
+      "alive_entering_equals_dev_intersection": true,
+      "measured_survival_records": 1145,
+      "derived_survival_records": 229,
+      "coverage_records": 1086,
+      "matching_executable_universes": 181,
+      "anchor_scope_coverage": {
+        "executable_lines": 689,
+        "dev_covered": 620,
+        "dev_scope_covered": 616,
+        "passing_isolated_union": 616,
+        "subgroup_equals_passing_isolated_union": true,
+        "dev_only_lines": [
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 76
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 79
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 80
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+            "line": 606
+          }
+        ]
+      },
+      "coverage_runner_fingerprints_match": true
     }
   },
   "pushed": false,
@@ -2584,5 +2700,210 @@
     "measurement_skipped": false,
     "pushed": false
   },
-  "wall_seconds_before_addendum3": 31492.432999999997
+  "wall_seconds_before_addendum3": 31492.432999999997,
+  "addendum4": {
+    "status": "completed",
+    "started": "2026-10-24T11:41:38.754446+00:00",
+    "finished": "2026-10-24T13:46:28.204324+00:00",
+    "wall_seconds": 7489.45,
+    "timing_note": "Wall time starts at the evidence snapshot and includes the invalid shared-network attempt and a brief orchestration hold to clarify a misdirected message. Worker execution durations are recorded separately.",
+    "model_calls": 0,
+    "new_phase_a_test_runs": 0,
+    "denominator": 153,
+    "excluded": 32,
+    "exclusion_reasons": {
+      "failed-alone": 1,
+      "no-scope-line-covered": 31
+    },
+    "failed_alone": [
+      {
+        "class": "com.networknt.schema.Issue662Test",
+        "method": "testCorrectErrorForInvalidValue",
+        "kind": "plain",
+        "file": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java",
+        "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+        "status": "fail",
+        "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+      }
+    ],
+    "per_scope_file": {
+      "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+      "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+      "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+      "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+      "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+    },
+    "fewer_than_20": false,
+    "phase_seconds": {
+      "anchor-prepare": 3.086,
+      "anchor-methods": 324.062,
+      "anchor-finalize": 0.86,
+      "derive-survival": 7.436,
+      "survival-report": 7.72,
+      "phase-b": 6633.844,
+      "coverage-report": 44.88,
+      "verify": 123.41
+    },
+    "anchor_worker_seconds": [
+      227.582,
+      224.453,
+      228.353,
+      227.469
+    ],
+    "coverage_worker_seconds": [
+      6632.838,
+      6489.517,
+      6571.285,
+      6437.012
+    ],
+    "anchor": {
+      "methods": 185,
+      "selected": 153,
+      "excluded": 32,
+      "failed_alone": [
+        {
+          "class": "com.networknt.schema.Issue662Test",
+          "method": "testCorrectErrorForInvalidValue",
+          "kind": "plain",
+          "file": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java",
+          "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+          "status": "fail",
+          "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+        }
+      ],
+      "coverage_failures": [],
+      "per_scope_file": {
+        "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+        "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+        "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+      },
+      "workers": 4,
+      "network_isolation": "four Docker containers with independent network namespaces",
+      "retries": 0,
+      "model_calls": 0,
+      "seconds": 327.206,
+      "shared_anchor_compile_seconds": 2.243,
+      "fewer_than_20": false
+    },
+    "network_isolation": "four independent Docker containers; one sequential worker in each",
+    "invalid_attempt": {
+      "time": "2026-10-24T11:45:36.817944+00:00",
+      "reason": "Four JVM workers shared a container network namespace. HTTPServiceSupport binds localhost:1234, producing cross-method BindException failures. This attempt is invalid for isolated-method selection and is excluded wholesale.",
+      "completed_records": 148,
+      "states": {
+        "pass": 141,
+        "fail": 1,
+        "error": 6
+      },
+      "bind_errors": 6,
+      "resolution": "Four independent Docker containers, one sequential worker per network namespace. Same JUnit runner, selectors, heap caps, timeouts and frozen tests.",
+      "prior_attempt": "results/addendum4-quarantine/shared-network-anchor-attempt",
+      "model_calls": 0,
+      "deliberate_stop": true,
+      "container_exit_code": 137,
+      "oom": false
+    },
+    "denominators": {
+      "dev": 185,
+      "dev-scope": 153,
+      "ktester": 131,
+      "ouedraogo": 0,
+      "ouedraogo-adj": 22,
+      "ouedraogo-adj2": 41
+    },
+    "final_survivors": {
+      "dev": 4,
+      "dev-scope": 0,
+      "ktester": 0,
+      "ouedraogo": 0,
+      "ouedraogo-adj": 0,
+      "ouedraogo-adj2": 0
+    },
+    "dev_endpoints": {
+      "anchor": 185,
+      "final": 4
+    },
+    "dev_scope_endpoints": {
+      "anchor": 153,
+      "final": 0
+    },
+    "verification": {
+      "status": "passed",
+      "preserved_existing_files": 10991,
+      "modified_existing_evidence": [],
+      "previous_group_report_values_unchanged": true,
+      "model_calls": 0,
+      "new_phase_a_test_runs": 0,
+      "method_coverage_reports": 185,
+      "isolated_workers": 4,
+      "denominator": 153,
+      "excluded": 32,
+      "failed_alone": [
+        {
+          "id": "dev/src-test-t/java/com/networknt/schema/Issue662Test.java|com.networknt.schema.Issue662Test|testCorrectErrorForInvalidValue",
+          "status": "fail",
+          "message": "No validation error that the object is not expected ==> expected: <false> but was: <true>"
+        }
+      ],
+      "per_scope_file": {
+        "src/main/java/com/networknt/schema/BaseJsonValidator.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchema.java": 147,
+        "src/main/java/com/networknt/schema/JsonSchemaFactory.java": 153,
+        "src/main/java/com/networknt/schema/AnyOfValidator.java": 17,
+        "src/main/java/com/networknt/schema/OneOfValidator.java": 27
+      },
+      "derived_outcomes_identical_to_dev": true,
+      "alive_entering_equals_dev_intersection": true,
+      "measured_survival_records": 1145,
+      "derived_survival_records": 229,
+      "coverage_records": 1086,
+      "matching_executable_universes": 181,
+      "anchor_scope_coverage": {
+        "executable_lines": 689,
+        "dev_covered": 620,
+        "dev_scope_covered": 616,
+        "passing_isolated_union": 616,
+        "subgroup_equals_passing_isolated_union": true,
+        "dev_only_lines": [
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 76
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 79
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/AnyOfValidator.java",
+            "line": 80
+          },
+          {
+            "file": "src/main/java/com/networknt/schema/JsonSchema.java",
+            "line": 606
+          }
+        ]
+      },
+      "coverage_runner_fingerprints_match": true
+    },
+    "pushed": false,
+    "instrumented_state_differences": [
+      {
+        "index": 5,
+        "group": "dev-scope",
+        "id": "dev/src-test-t/java/com/networknt/schema/UnevaluatedItemsTest.java|com.networknt.schema.UnevaluatedItemsTest|draft201909",
+        "phase_a": "error",
+        "phase_b": "pass"
+      },
+      {
+        "index": 8,
+        "group": "dev-scope",
+        "id": "dev/src-test-t/java/com/networknt/schema/CustomMessageTest.java|com.networknt.schema.CustomMessageTest|draft201909__customMessagesEnabled",
+        "phase_a": "error",
+        "phase_b": "pass"
+      }
+    ]
+  },
+  "wall_seconds_before_addendum4": 32817.882999999994
 }
