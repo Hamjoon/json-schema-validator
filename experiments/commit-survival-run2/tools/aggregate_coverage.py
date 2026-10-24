@@ -16,7 +16,7 @@ def main():
     curves={int(r['index']):r for r in csv.DictReader((RESULTS/'survival.csv').open())}
     scope={r['file'] for r in json.loads((EXP/'population/scope.json').read_text())['classes']}
     indices=[int(r['index']) for r in csv.DictReader((RESULTS/'coverage-commits.csv').open())]
-    maps={};missing=[];identical=[]
+    maps={};missing=[];identical=[];universe_mismatches=[]
     for i in indices:
         maps[i]={}
         for g in GROUPS:
@@ -27,8 +27,14 @@ def main():
             assert len(data)==len(lines),(i,g,'duplicate lines')
             maps[i][g]=data
         available=[set(m) for m in maps[i].values() if m is not None]
-        assert not available or all(m==available[0] for m in available),(i,'different executable universe')
-        if len(available)==3:identical.append(i)
+        if available and any(m!=available[0] for m in available):
+            reference=next(g for g in GROUPS if maps[i][g] is not None)
+            for g in GROUPS:
+                if maps[i][g] is not None and set(maps[i][g])!=set(maps[i][reference]):
+                    universe_mismatches.append(dict(index=i,reference=reference,group=g,missing=sorted(set(maps[i][reference])-set(maps[i][g])),extra=sorted(set(maps[i][g])-set(maps[i][reference]))))
+        if len(available)==len(GROUPS):identical.append(i)
+    write_json(RESULTS/'coverage-universe-mismatches.json',universe_mismatches)
+    assert not universe_mismatches,'Executable universe mismatches recorded in coverage-universe-mismatches.json'
     rows=[];exposure={g:collections.Counter() for g in GROUPS};unknown=collections.Counter();zero=0;unavailable=0
     for commit in commits:
         if commit['changes-src-main']!='yes':continue
@@ -57,7 +63,7 @@ def main():
     lines=['# Table 3. Changed-line coverage','','Coverage uses methods alive entering each index. Changed-line coordinates are the post-image added/modified lines. Build failures and missing coverage remain unavailable.','']
     totals={}
     for category in ['all','scope','other']:
-        lines += ['## '+category.capitalize()+' files','','| Index | Subject | Executable lines | Dev covered | KTester covered | Ouédraogo covered | Dev lost | KTester lost | Ouédraogo lost |','|---:|---|---:|---:|---:|---:|---:|---:|---:|']
+        lines += ['## '+category.capitalize()+' files','','| Index | Subject | Executable lines | '+' | '.join(LABELS[g]+' covered' for g in GROUPS)+' | '+' | '.join(LABELS[g]+' lost' for g in GROUPS)+' |','|---:|---|---:|'+'---:|'*(2*len(GROUPS))]
         visible=[r for r in rows if r[category+'_executable'] not in ['',0]]
         for row in visible:
             n=row[category+'_executable'];cells=[row['index'],md(row['subject']),str(n)]
@@ -78,7 +84,7 @@ def main():
         lines += ['## '+LABELS[g],'','| Changed lines covered at c−1 | Lost at c | No loss at c |','|---|---:|---:|',f'| Yes | {exposure[g][True,True]} | {exposure[g][True,False]} |',f'| No | {exposure[g][False,True]} | {exposure[g][False,False]} |','',f'Unavailable observations: {unknown[g]}.','']
         assert sum(exposure[g].values())+unknown[g]==len(rows)
     (RESULTS/'table4-exposure-vs-break.md').write_text('\n'.join(lines)+'\n')
-    lines=['# Coverage at t','','| Scope file | Executable lines | Dev | KTester | Ouédraogo |','|---|---:|---:|---:|---:|']
+    lines=['# Coverage at t','','| Scope file | Executable lines | '+' | '.join(LABELS[g] for g in GROUPS)+' |','|---|---:|'+'---:|'*len(GROUPS)]
     baseline={};available=[m for m in maps[0].values() if m is not None]
     for file in sorted(scope):
         keys={p for p in available[0] if p[0]==file} if available else set()
@@ -89,7 +95,7 @@ def main():
     result=dict(coverage_indices=len(indices),production_changes=len(rows),identical_executable_line_sets=identical,missing=missing,zero_executable_change_commits=zero,unavailable_commits=unavailable,totals=totals,baseline=baseline)
     write_json(RESULTS/'coverage-consistency.json',result)
     with (RESULTS/'consistency.md').open('a') as out:
-        out.write(f'\nCoverage: identical executable line sets across all three groups at {len(identical)} indices. Required indices: {len(indices)}. Missing measurements: {len(missing)} (enumerated in coverage-consistency.json).\n')
+        out.write(f'\nCoverage: identical executable line sets across all {len(GROUPS)} groups at {len(identical)} indices. Required indices: {len(indices)}. Missing measurements: {len(missing)} (enumerated in coverage-consistency.json).\n')
     print(json.dumps({k:v for k,v in result.items() if k not in ['baseline','identical_executable_line_sets','missing']}),flush=True)
 
 

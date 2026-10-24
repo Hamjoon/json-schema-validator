@@ -2,7 +2,7 @@
 
 This run compares project-wide frozen developer tests with independently generated KTester and Ouédraogo tests at tag `1.1.0`, across 229 first-parent commits. The developer denominator is all 185 methods stable in run 1. Abstract production classes remain eligible; classes dominated by trivial accessors are excluded.
 
-Denominators: **Dev 185, KTester 131, Ouédraogo 0**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0**.
+Denominators: **Dev 185, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0, Ouédraogo (adjusted) 0**.
 
 Scope: `JsonSchema`, `BaseJsonValidator`, `AnyOfValidator`, `OneOfValidator`, `JsonSchemaFactory`; 64 focal methods. [Ranked scope](population/scope.md) and [accessor audit](population/accessor-audit.csv) explain why the executable rule yields 64 methods rather than the illustrative 73-method expectation. The addendum removes the minimum class count. The superseded stopped state is retained under `results/stopped-step1/` and local `docs/handover-part1-stopped.md`.
 
@@ -14,11 +14,11 @@ Results: [survival events](results/table1-survival-by-event.md), [breaking commi
 
 No methods survived generation screening for ouedraogo. Their survival percentages are n/a; no survival curve can be estimated. Coverage from an empty retained suite is zero and does not establish comparative test effectiveness. See every original/retry funnel and compiler diagnostic report.
 
-`dev/` holds the full frozen Java sources and fixtures; `population/` contains the audited scope and exact dataset; `generated/` preserves prompts, responses, generated files and independent three-run screening evidence. Per-prompt funnels are beside each round. `results/ouedraogo-round1-compile-failures.json` categorizes compiler failures without modifying prompts or generated sources. `tools/ORIGIN.md` records copied and adapted tooling. Local step/final handovers remain ignored under `docs/`.
+`dev/` holds the full frozen Java sources and fixtures; `population/` contains the audited scope and exact dataset; `generated/` preserves prompts, responses, generated files and independent three-run screening evidence. Per-prompt funnels are beside each round. `results/ouedraogo-round1-compile-failures.json` categorizes compiler failures without modifying prompts or generated sources. `tools/ORIGIN.md` records copied and adapted tooling. Earlier local step/final handovers remain ignored under `docs/`; the requested [part 8 handover](docs/handover-part8.md) is tracked.
 
 Every Dev measurement attempts compilation of the whole frozen Java suite. If that fails, class-isolated compilation attributes failure only to affected classes, preserving run 1's first-failure rule. Successful whole-suite compilation is shared by separate class launches; each class retains its 120-second timeout. All 185 denominator methods are evaluated in Phase A. Phase B runs only methods alive entering each index. Fail/error outcomes receive one rerun; a passing rerun remains alive and is marked flaky. Cumulative survival uses fixed denominators. Compile failures apply to every denominator method in that class. Unavailable measurements are never converted to zero.
 
-Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all three groups.
+Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all four groups.
 
 ## Reproduction
 
@@ -51,3 +51,19 @@ run python "$T/close_run2.py"
 ```
 
 Generation refuses to overwrite existing call directories. Phase records resume only with matching source and runner hashes. OOM/exit −9 records are quarantined and resumed at two workers. The host driver `tools/continue_run2.py` records stage events and local step commits. Author code and prompt templates remain unchanged. No push.
+
+## Adjusted Ouédraogo group (addendum 2)
+
+The single `ouedraogo-adj` round applies three adjustments together: the exact API-version / real-object constraint after each class source; anchor-source dependency constructor and public/protected method signatures, capped at 15 types and 400 lines; and deterministic repair of uniquely resolved missing-class imports, with at most two passes and no other source edits. See the [exact per-class prompt blocks and omission manifests](generated/ouedraogo-adj/round1/prompts/), [import fixes and compiler passes](generated/ouedraogo-adj/round1/import-fixes.json), [funnel](generated/ouedraogo-adj/round1/funnel.md), and [part 8 handover](docs/handover-part8.md). Pre-repair sources are stored beside repaired sources. Exactly 25 calls used `openai/gpt-oss-120b`, temperature 0.7 and max_tokens 16384; no retry calls or rounds were made. Original Dev, KTester and Ouédraogo generation and measurement records are reused unchanged, verified by SHA-256.
+
+The archived dependency blocks have a rendering defect in synthetic type headers: non-generic types appear with empty `<>`, and type declaration modifiers are omitted. The JDK parser also normalizes varargs parameter types to arrays. Constructor/method signatures came from the anchor source, but these blocks are not compilable Java stubs. The defect was discovered after generation started; all 25 frozen prompts were preserved and no replacement calls were made. Interpret this adjusted group with that prompt limitation.
+
+Reproduce the added stages inside the existing KTester container (generation refuses existing call directories):
+
+```sh
+run python "$T/adjusted_prompts.py"
+run python "$T/generate_adjusted.py" --round 1
+run python "$T/continue_adjusted.py"
+run python "$T/audit_adjusted.py"
+run python "$T/close_adjusted.py"
+```

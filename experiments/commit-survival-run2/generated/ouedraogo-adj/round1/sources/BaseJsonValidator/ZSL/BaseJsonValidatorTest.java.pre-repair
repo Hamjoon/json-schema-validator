@@ -1,0 +1,224 @@
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.util.*;
+
+import static org.junit.Assert.*;
+
+/**
+ * Unit tests for {@link BaseJsonValidator}.
+ */
+public class BaseJsonValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /** Simple concrete implementation of the abstract {@link BaseJsonValidator}. */
+    private static class TestValidator extends BaseJsonValidator {
+
+        TestValidator(String schemaPath,
+                      JsonNode schemaNode,
+                      JsonSchema parentSchema,
+                      ValidatorTypeCode validatorType,
+                      ValidationContext validationContext) {
+            super(schemaPath, schemaNode, parentSchema, validatorType, validationContext);
+        }
+
+        /** expose protected methods for testing */
+        void callPreloadJsonSchemas(Collection<JsonSchema> schemas) {
+            preloadJsonSchemas(schemas);
+        }
+
+        @Override
+        public Set<ValidationMessage> validate(ExecutionContext executionContext,
+                                              JsonNode node,
+                                              JsonNode rootNode,
+                                              String at) {
+            return Collections.emptySet();
+        }
+    }
+
+    /** Subclass of {@link JsonSchema} that records calls to {@link #initializeValidators()}. */
+    private static class RecordingJsonSchema extends JsonSchema {
+        boolean initialized = false;
+
+        RecordingJsonSchema(ValidationContext ctx, URI baseUri, JsonNode schemaNode) {
+            super(ctx, baseUri, schemaNode);
+        }
+
+        @Override
+        public void initializeValidators() {
+            initialized = true;
+        }
+    }
+
+    private TestValidator validator;
+    private ValidationContext dummyContext;
+
+    @Before
+    public void setUp() throws Exception {
+        // a minimal ValidationContext – all parameters are allowed to be null for the purpose of these tests
+        dummyContext = new ValidationContext(null, null, null, null, null);
+        JsonNode emptyNode = MAPPER.createObjectNode();
+        validator = new TestValidator("#", emptyNode, null, ValidatorTypeCode.TYPE, dummyContext);
+    }
+
+    @Test
+    public void testEqualsCloseNumbers() {
+        assertTrue(BaseJsonValidator.equals(1.000000000001, 1.000000000002));
+        assertFalse(BaseJsonValidator.equals(1.0, 1.1));
+    }
+
+    @Test
+    public void testDebugDoesNotThrow() {
+        Logger logger = LoggerFactory.getLogger(BaseJsonValidatorTest.class);
+        JsonNode node = MAPPER.createObjectNode().put("a", 1);
+        BaseJsonValidator.debug(logger, node, node, "/");
+        // no exception means success
+    }
+
+    @Test
+    public void testAtRootAndAtPath() {
+        // PathType.DEFAULT uses JSON pointer semantics (root = "$")
+        String root = validator.atRoot();
+        assertEquals(PathType.DEFAULT.getRoot(), root);
+
+        String childPath = validator.atPath(root, "foo");
+        assertEquals(PathType.DEFAULT.append(root, "foo"), childPath);
+
+        String indexedPath = validator.atPath(root, 2);
+        assertEquals(PathType.DEFAULT.append(root, 2), indexedPath);
+    }
+
+    @Test
+    public void testGetNodeFieldType() throws Exception {
+        // parent schema with a "type" field
+        ObjectNode parentNode = MAPPER.createObjectNode().put("type", "object");
+        JsonSchema parentSchema = new JsonSchema(null, new URI("http://example.com"), parentNode);
+        TestValidator v = new TestValidator("#/parent", MAPPER.createObjectNode(),
+                parentSchema, ValidatorTypeCode.TYPE, dummyContext);
+        assertEquals("object", v.getNodeFieldType());
+    }
+
+    @Test
+    public void testFetchSubSchemaNodeWhenSuppressed() {
+        // create a validator with suppressSubSchemaRetrieval = true
+        TestValidator suppressed = new TestValidator("#", MAPPER.createObjectNode(),
+                null, ValidatorTypeCode.TYPE, dummyContext, true);
+        assertNull(suppressed.fetchSubSchemaNode(dummyContext));
+    }
+
+    @Test
+    public void testFetchSubSchemaNodeWhenNoId() {
+        // schemaNode without an "id" field – obtainSubSchemaNode should return null
+        TestValidator v = new TestValidator("#", MAPPER.createObjectNode(),
+                null, ValidatorTypeCode.TYPE, dummyContext);
+        assertNull(v.fetchSubSchemaNode(dummyContext));
+    }
+
+    @Test
+    public void testCheckDiscriminatorMatchImplicit() {
+        DiscriminatorContext ctx = new DiscriminatorContext();
+
+        // discriminator without explicit mapping
+        ObjectNode discriminator = MAPPER.createObjectNode();
+        // property value that matches the schema path suffix
+        String propValue = "mytype";
+
+        // schema whose path ends with the property value
+        JsonSchema schema = new JsonSchema(null,
+                "/components/schemas/mytype",
+                new URI("http://example.com"),
+                MAPPER.createObjectNode(),
+                null);
+
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, propValue, schema);
+        assertTrue(ctx.isDiscriminatorMatchFound());
+    }
+
+    @Test
+    public void testCheckDiscriminatorMatchExplicitMapping() {
+        DiscriminatorContext ctx = new DiscriminatorContext();
+
+        // explicit mapping: "mytype" -> schema path
+        ObjectNode mapping = MAPPER.createObjectNode()
+                .put("mytype", "/components/schemas/mytype");
+        ObjectNode discriminator = MAPPER.createObjectNode()
+                .set("mapping", mapping);
+
+        JsonSchema schema = new JsonSchema(null,
+                "/components/schemas/mytype",
+                new URI("http://example.com"),
+                MAPPER.createObjectNode(),
+                null);
+
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "mytype", schema);
+        assertTrue(ctx.isDiscriminatorMatchFound());
+    }
+
+    @Test
+    public void testCheckDiscriminatorMatchNoMatch() {
+        DiscriminatorContext ctx = new DiscriminatorContext();
+
+        // discriminator without mapping and property value that does NOT match path
+        ObjectNode discriminator = MAPPER.createObjectNode();
+        JsonSchema schema = new JsonSchema(null,
+                "/components/schemas/other",
+                new URI("http://example.com"),
+                MAPPER.createObjectNode(),
+                null);
+
+        BaseJsonValidator.checkDiscriminatorMatch(ctx, discriminator, "mytype", schema);
+        assertFalse(ctx.isDiscriminatorMatchFound());
+    }
+
+    @Test
+    public void testRegisterAndMergeDiscriminatorRegistersRoot() {
+        DiscriminatorContext ctx = new DiscriminatorContext();
+
+        // root discriminator (no prior registration)
+        ObjectNode rootDiscriminator = MAPPER.createObjectNode()
+                .put("propertyName", "type");
+        // schema that also defines a discriminator (but we are testing the simple registration path)
+        ObjectNode schemaNode = MAPPER.createObjectNode()
+                .set("discriminator", MAPPER.createObjectNode().put("propertyName", "type"));
+        JsonSchema schema = new JsonSchema(null,
+                "/components/schemas/Root",
+                new URI("http://example.com"),
+                schemaNode,
+                null);
+
+        BaseJsonValidator.registerAndMergeDiscriminator(ctx, rootDiscriminator, schema, "/components/schemas/Root");
+        ObjectNode registered = ctx.getDiscriminatorForPath("/components/schemas/Root");
+        assertNotNull(registered);
+        assertEquals("type", registered.get("propertyName").asText());
+    }
+
+    @Test
+    public void testPreloadJsonSchemasCallsInitialize() {
+        RecordingJsonSchema s1 = new RecordingJsonSchema(null, URI.create("http://example.com/schema1"), MAPPER.createObjectNode());
+        RecordingJsonSchema s2 = new RecordingJsonSchema(null, URI.create("http://example.com/schema2"), MAPPER.createObjectNode());
+
+        List<JsonSchema> list = Arrays.asList(s1, s2);
+        validator.callPreloadJsonSchemas(list);
+
+        assertTrue(s1.initialized);
+        assertTrue(s2.initialized);
+    }
+
+    @Test
+    public void testPathGenerationWithDifferentTokens() {
+        String root = validator.atRoot();
+        String child = validator.atPath(root, "data");
+        String array = validator.atPath(child, 0);
+        assertEquals(PathType.DEFAULT.append(root, "data"), child);
+        assertEquals(PathType.DEFAULT.append(child, 0), array);
+    }
+}

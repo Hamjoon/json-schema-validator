@@ -1,0 +1,54 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:131: error: JsonSchemaFactory(ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator) has private access in JsonSchemaFactory
+            new JsonSchemaFactory(
+            ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:215: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:215: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:217: error: uriMap has private access in JsonSchemaFactory
+        assertEquals(original.uriMap, copy.uriMap);
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:217: error: uriMap has private access in JsonSchemaFactory
+        assertEquals(original.uriMap, copy.uriMap);
+                                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:219: error: enableUriSchemaCache has private access in JsonSchemaFactory
+        assertEquals(original.enableUriSchemaCache, copy.enableUriSchemaCache);
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:219: error: enableUriSchemaCache has private access in JsonSchemaFactory
+        assertEquals(original.enableUriSchemaCache, copy.enableUriSchemaCache);
+                                                        ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:234: error: cannot find symbol
+        Set<ValidationMessage> result = schema.validate(factory.getJsonMapper().readTree("\"hello\""));
+                                                               ^
+  symbol:   method getJsonMapper()
+  location: variable factory of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:262: error: cannot find symbol
+            Set<ValidationMessage> msgs = schema.validate(factory.getJsonMapper().readTree("123"));
+                                                                 ^
+  symbol:   method getJsonMapper()
+  location: variable factory of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:277: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(jsonUri));
+                           ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:281: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(yamlUri));
+                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:285: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(ymlUri));
+                          ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:331: error: cannot find symbol
+        JsonNode nodeWithId = factory.getJsonMapper().readTree(withId);
+                                     ^
+  symbol:   method getJsonMapper()
+  location: variable factory of type JsonSchemaFactory
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:340: error: cannot find symbol
+        JsonNode nodeOther = factory.getJsonMapper().readTree(withOtherId);
+                                    ^
+  symbol:   method getJsonMapper()
+  location: variable factory of type JsonSchemaFactory
+Note: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+14 errors

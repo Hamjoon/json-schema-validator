@@ -1,31 +1,11 @@
 # Table 4. Exposure versus break
 
-Exposure is coverage at c−1 of at least one executable pre-image changed line. A pure insertion has no pre-image changed lines and is unexposed by this definition. Break is any cumulative first failure at c.
+Exposure is coverage at c−1 of at least one executable pre-image changed line. Break is any cumulative first failure at c. Pure insertions are unexposed.
 
-## Dev
-
-| Changed lines covered at c−1 | Lost at c | No loss at c |
-|---|---:|---:|
-| Yes | 11 | 48 |
-| No | 0 | 69 |
-
-Unavailable observations: 0.
-
-## KTester
-
-| Changed lines covered at c−1 | Lost at c | No loss at c |
-|---|---:|---:|
-| Yes | 7 | 39 |
-| No | 0 | 82 |
-
-Unavailable observations: 0.
-
-## Ouédraogo
-
-| Changed lines covered at c−1 | Lost at c | No loss at c |
-|---|---:|---:|
-| Yes | 0 | 0 |
-| No | 0 | 128 |
-
-Unavailable observations: 0.
-
+| Exposure / break | Dev | KTester | Ouédraogo | Ouédraogo (adjusted) |
+|---|---:|---:|---:|---:|
+| Exposed / lost | 11 | 7 | 0 | 2 |
+| Exposed / no loss | 48 | 39 | 0 | 2 |
+| Unexposed / lost | 0 | 0 | 0 | 0 |
+| Unexposed / no loss | 69 | 82 | 128 | 124 |
+| Unavailable | 0 | 0 | 0 | 0 |

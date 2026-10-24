@@ -1,0 +1,193 @@
+**Solution Overview**
+
+The tests exercise the public behaviour of `AnyOfValidator`:
+
+| Test | What it validates |
+|------|-------------------|
+| `testAnyOfValidWhenOneSchemaMatches` | When at least one subschema validates the instance the validator returns an empty error set (early‑return path). |
+| `testAnyOfAllTypeMismatches` | When none of the subschemas match the instance type the validator reports a type‑mismatch error for each subschema. |
+| `testAnyOfRequiredErrorsWhenNoSchemaMatches` | When every subschema fails because a required property is missing the validator returns those *required* errors. |
+| `testWalkDoesNotValidateWhenFlagIsFalse` | The `walk` method must delegate to the subschemas without performing validation when `shouldValidateSchema` is `false`. |
+
+All tests build a real `ValidationContext`, `JsonSchema` objects and an `AnyOfValidator` exactly as the library expects – **no mocks or subclassing** are used.
+
+```java
+###Test START##
+package com.networknt.schema;
+
+import static org.junit.Assert.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.SchemaValidatorsConfig;
+import com.networknt.schema.ValidationContext.DiscriminatorContext;
+import java.net.URI;
+import java.util.Collections;
+import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Unit tests for {@link AnyOfValidator}.
+ *
+ * The tests construct real {@link ValidationContext}, {@link JsonSchema}
+ * and {@link AnyOfValidator} instances – no mocking is performed.
+ */
+public class AnyOfValidatorTest {
+
+    private ObjectMapper mapper;
+    private ValidationContext validationContext;
+    private ExecutionContext executionContext;
+
+    @Before
+    public void setUp() {
+        mapper = new ObjectMapper();
+
+        // -----------------------------------------------------------------
+        // Minimal but functional ValidationContext
+        // -----------------------------------------------------------------
+        // The library provides default implementations for the factories.
+        // They have public no‑arg constructors, therefore we can instantiate
+        // them directly.
+        URIFactory uriFactory = new URIFactory();
+        URNFactory urnFactory = new URNFactory();
+        JsonMetaSchema metaSchema = JsonMetaSchema.getV7();   // Draft‑07
+        JsonSchemaFactory schemaFactory = new JsonSchemaFactory();
+
+        // Configuration – discriminators are disabled for the first three tests.
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+        config.setOpenAPI3StyleDiscriminators(false);
+
+        validationContext = new ValidationContext(
+                uriFactory,
+                urnFactory,
+                metaSchema,
+                schemaFactory,
+                config);
+
+        // ExecutionContext with a fresh CollectorContext (created internally).
+        executionContext = new ExecutionContext();
+    }
+
+    /**
+     * anyOf [ {"type":"string"}, {"type":"integer"} ]
+     *
+     * The instance is a JSON string – the first subschema matches, the
+     * second one is ignored.  The validator must return an **empty**
+     * error set (early‑return path).
+     */
+    @Test
+    public void testAnyOfValidWhenOneSchemaMatches() throws Exception {
+        // ---- anyOf schema -------------------------------------------------
+        String anyOfSchema = "[{\"type\":\"string\"}, {\"type\":\"integer\"}]";
+        JsonNode schemaNode = mapper.readTree(anyOfSchema);
+
+        // ---- validator ----------------------------------------------------
+        AnyOfValidator validator = new AnyOfValidator(
+                "#/anyOf",               // arbitrary path
+                schemaNode,
+                null,                    // no parent schema
+                validationContext);
+
+        // ---- instance -----------------------------------------------------
+        JsonNode instance = mapper.readTree("\"hello\""); // a JSON string
+
+        // ---- validation ---------------------------------------------------
+        Set<ValidationMessage> messages = validator.validate(
+                executionContext,
+                instance,
+                instance,                // rootNode = instance
+                "$");                    // at = root
+
+        assertTrue("No validation errors expected because a subschema matches", messages.isEmpty());
+    }
+
+    /**
+     * anyOf [ {"type":"string"}, {"type":"integer"} ]
+     *
+     * The instance is a JSON boolean – it does **not** match the type of
+     * either subschema.  The validator must collect a type‑mismatch error
+     * for each subschema and return them.
+     */
+    @Test
+    public void testAnyOfAllTypeMismatches() throws Exception {
+        String anyOfSchema = "[{\"type\":\"string\"}, {\"type\":\"integer\"}]";
+        JsonNode schemaNode = mapper.readTree(anyOfSchema);
+        AnyOfValidator validator = new AnyOfValidator("#/anyOf", schemaNode, null, validationContext);
+
+        JsonNode instance = mapper.readTree("true"); // a JSON boolean
+
+        Set<ValidationMessage> messages = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                "$");
+
+        // Two type‑mismatch messages – one for each subschema
+        assertEquals("Two errors expected – one per subschema", 2, messages.size());
+
+        // All messages must be of type "anyOf"
+        for (ValidationMessage vm : messages) {
+            assertEquals("anyOf", vm.getType());
+        }
+    }
+
+    /**
+     * anyOf [ {"required":["a"]}, {"required":["b"]} ]
+     *
+     * The instance is an empty object – both subschemas fail because a
+     * required property is missing.  The validator must return the
+     * *required* errors.
+     */
+    @Test
+    public void testAnyOfRequiredErrorsWhenNoSchemaMatches() throws Exception {
+        String anyOfSchema = "[{\"required\":[\"a\"]}, {\"required\":[\"b\"]}]";
+        JsonNode schemaNode = mapper.readTree(anyOfSchema);
+        AnyOfValidator validator = new AnyOfValidator("#/anyOf", schemaNode, null, validationContext);
+
+        JsonNode instance = mapper.readTree("{}"); // empty object
+
+        Set<ValidationMessage> messages = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                "$");
+
+        // Two required‑property errors are expected
+        assertEquals("Two required errors expected", 2, messages.size());
+
+        // Verify that each message’s type is the REQUIRED validator code
+        for (ValidationMessage vm : messages) {
+            assertEquals(ValidatorTypeCode.REQUIRED.getValue(), vm.getType());
+        }
+    }
+
+    /**
+     * Verify the {@code walk} method when validation is disabled.
+     *
+     * The method must traverse each subschema (calling {@code walk} on them)
+     * but must **not** perform validation, therefore it must return an
+     * empty set.
+     */
+    @Test
+    public void testWalkDoesNotValidateWhenFlagIsFalse() throws Exception {
+        // anyOf with two trivial subschemas (empty objects)
+        String anyOfSchema = "[{}, {}]";
+        JsonNode schemaNode = mapper.readTree(anyOfSchema);
+        AnyOfValidator validator = new AnyOfValidator("#/anyOf", schemaNode, null, validationContext);
+
+        JsonNode instance = mapper.readTree("\"any\"");
+
+        Set<ValidationMessage> messages = validator.walk(
+                executionContext,
+                instance,
+                instance,
+                "$",
+                false);               // shouldValidateSchema = false
+
+        // walk must return an empty set
+        assertTrue("walk(..., false) must return an empty set", messages.isEmpty());
+    }
+}
+###Test END##
+```

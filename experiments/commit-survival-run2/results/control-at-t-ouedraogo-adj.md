@@ -1,0 +1,12 @@
+# Adjusted-group anchor control
+
+```json
+{
+  "denominator": 22,
+  "states": {
+    "pass": 22
+  },
+  "passed": true,
+  "seconds": 1.381
+}
+```

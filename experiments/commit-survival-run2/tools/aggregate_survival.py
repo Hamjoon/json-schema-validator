@@ -7,7 +7,7 @@ from start import EXP, RESULTS, SHARED, write_json
 from select_scope import csvout
 from run_commit import GROUPS,denominator
 
-LABELS={'dev':'Dev','ktester':'KTester','ouedraogo':'Ouédraogo'}
+LABELS={'dev':'Dev','ktester':'KTester','ouedraogo':'Ouédraogo','ouedraogo-adj':'Ouédraogo (adjusted)'}
 
 
 def md(value):return str(value).replace('|','\\|').replace('\n',' ')
@@ -47,7 +47,7 @@ def main():
     write_json(RESULTS/'alive-entering.json',entering)
     evaluated=[r for r in curves if r['evaluated']=='yes'];last=evaluated[-1]
     events=[r for r in curves if int(r['index'])==0 or any(r[g+'_lost'] for g in GROUPS) or r['index']==last['index']]
-    lines=['# Table 1. Survival by event','','| Index | Date | Subject | Dev | KTester | Ouédraogo |','|---:|---|---|---:|---:|---:|']
+    lines=['# Table 1. Survival by event','','| Index | Date | Subject | '+' | '.join(LABELS[g] for g in GROUPS)+' |','|---:|---|---|'+'---:|'*len(GROUPS)]
     for r in events:lines.append('| '+ ' | '.join([r['index'],r['date'][:10],md(r['subject']),*[pct(r[g+'_alive'],len(denominators[g])) for g in GROUPS]])+' |')
     (RESULTS/'table1-survival-by-event.md').write_text('\n'.join(lines)+'\n')
     lines=['# Table 2. Breaking commits','','| Index | Group | Methods lost | First-failure kinds |','|---:|---|---:|---|']
@@ -57,7 +57,7 @@ def main():
             if subset:lines.append(f'| {i} | {LABELS[g]} | {len(subset)} | '+md(dict(collections.Counter(r['kind'] for r in subset)))+' |')
     (RESULTS/'table2-breaking-commits.md').write_text('\n'.join(lines)+'\n')
     nonincreasing=all(all(a[g+'_alive']>=b[g+'_alive'] for a,b in zip(curves,curves[1:])) for g in GROUPS)
-    actual=len(list((RESULTS/'raw').glob('*.json')));expected=(len(commits)-len(failed))*3
+    actual=len(list((RESULTS/'raw').glob('*.json')));expected=(len(commits)-len(failed))*len(GROUPS)
     consistency=dict(nonincreasing=nonincreasing,index_zero_equals_denominators=all(curves[0][g+'_alive']==len(denominators[g]) for g in GROUPS),raw_records=actual,expected_raw_records=expected,raw_count_matches=actual==expected,missing_records=missing,build_fail_indices=failed)
     write_json(RESULTS/'survival-consistency.json',consistency)
     (RESULTS/'consistency.md').write_text('# Consistency checks\n\n```json\n'+json.dumps(consistency,indent=2)+'\n```\n')
@@ -66,13 +66,15 @@ def main():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     fig,ax=plt.subplots(figsize=(10,5.5),layout='constrained')
-    for g,color in zip(GROUPS,['#2563eb','#dc2626','#059669']):
+    for g,color in zip(GROUPS,['#2563eb','#dc2626','#059669','#9333ea']):
         n=len(denominators[g])
         if n:ax.step([int(r['index']) for r in curves],[100*r[g+'_alive']/n for r in curves],where='post',label=f'{LABELS[g]} (n={n})',color=color,lw=2)
         else:ax.plot([],[],color=color,label=f'{LABELS[g]} (n=0; unavailable)')
     ax.set(xlabel='First-parent commit index',ylabel='Methods surviving (%)',ylim=(-2,102),xlim=(0,len(commits)),title='Frozen-test survival after 1.1.0')
     ax.grid(alpha=.2);ax.legend(loc='best')
     for suffix in ['png','svg']:fig.savefig(RESULTS/f'figure1-survival-by-commit.{suffix}',dpi=180)
+    svg=RESULTS/'figure1-survival-by-commit.svg'
+    svg.write_text('\n'.join(line.rstrip() for line in svg.read_text().splitlines())+'\n')
     plt.close(fig)
     print(json.dumps(dict(final={g:last[g+'_alive'] for g in GROUPS},denominators={g:len(rows) for g,rows in denominators.items()},**consistency)),flush=True)
 

@@ -1,0 +1,23 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:61: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.isUriFragmentWithNoContext(null, "#/definitions/foo"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:63: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com"), "http://example.com/foo"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:65: error: isUriFragmentWithNoContext(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.isUriFragmentWithNoContext(URI.create("http://example.com/base"), "#/foo"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:72: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.uriRefersToSubschema(uriWithFragment, ""));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:74: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertTrue(JsonSchema.uriRefersToSubschema(uriWithFragment, "#"));
+                             ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:76: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(uriWithFragment, "/properties/name"));
+                              ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/ToT/JsonSchemaTest.java:78: error: uriRefersToSubschema(URI,String) has private access in JsonSchema
+        assertFalse(JsonSchema.uriRefersToSubschema(URI.create("http://example.com/schema.json"), "#"));
+                              ^
+7 errors

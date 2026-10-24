@@ -13,7 +13,7 @@ from archive_validation import archive
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--group',choices=['ktester','ouedraogo'],required=True);parser.add_argument('--round',required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--group',choices=['ktester','ouedraogo','ouedraogo-adj'],required=True);parser.add_argument('--round',required=True);args=parser.parse_args()
     start=time.monotonic();base=EXP/'generated'/args.group/args.round
     sources=base/'json-schema-validator/test_classes' if args.group=='ktester' else base/'sources'
     records=[]
@@ -30,7 +30,7 @@ def main():
                 if parts[0]=='M' and parts[3]:
                     _,cls,method,kind,eligible,signature,display,lineno,body_hash=parts
                     file=str(source.relative_to(EXP))
-                    members.append(dict(file=file,**{'class':cls},method=method,kind=kind,id='|'.join([file,cls,method]),body_hash=body_hash,round=args.round,technique=source.parent.name if args.group=='ouedraogo' else 'KTester'))
+                    members.append(dict(file=file,**{'class':cls},method=method,kind=kind,id='|'.join([file,cls,method]),body_hash=body_hash,round=args.round,technique=source.parent.name if args.group!='ktester' else 'KTester'))
         if parse['exit_code']==0:
             result=run_file(0,args.group,str(source.relative_to(EXP)),members,work/'test',repetitions=3,retry=False)
         else:

@@ -1,0 +1,9 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:71: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+        return new JsonSchema(validationContext, "#", null, schemaNode, null, false);
+               ^
+  required: ValidationContext,String,URI,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,String,<null>,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,String,URI,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error

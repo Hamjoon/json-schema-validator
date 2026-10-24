@@ -1,0 +1,21 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:11: error: cannot find symbol
+import com.networknt.schema.utils.URIUtils;
+                                 ^
+  symbol:   class URIUtils
+  location: package com.networknt.schema.utils
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:58: error: URIFactory is abstract; cannot be instantiated
+        URIFactory uriFactory = new URIFactory();
+                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:59: error: URNFactory is abstract; cannot be instantiated
+        URNFactory urnFactory = new URNFactory();
+                                ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:90: error: getValidators() has private access in JsonSchema
+        for (JsonValidator validator : rootSchema.getValidators()) {
+                                                 ^
+/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:90: error: for-each not applicable to expression type
+        for (JsonValidator validator : rootSchema.getValidators()) {
+                                                               ^
+  required: array or java.lang.Iterable
+  found:    Map<String,JsonValidator>
+5 errors

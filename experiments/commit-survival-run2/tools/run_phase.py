@@ -10,7 +10,7 @@ from run_commit import GROUPS, run_group
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--phase',choices=['a','b'],required=True);parser.add_argument('--workers',type=int,default=4);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--phase',choices=['a','b'],required=True);parser.add_argument('--workers',type=int,default=4);parser.add_argument('--groups',nargs='+',choices=[*GROUPS,'ouedraogo-adj'],default=GROUPS);parser.add_argument('--result-suffix',default='');args=parser.parse_args()
     start=time.monotonic()
     commits=list(csv.DictReader((RESULTS/'commits.csv').open()))
     indices=[int(r['index']) for r in commits] if args.phase=='a' else [int(r['index']) for r in csv.DictReader((RESULTS/'coverage-commits.csv').open())]
@@ -18,7 +18,7 @@ def main():
     jobs=[];skipped=[]
     for i in indices:
         if i and json.loads((RESULTS/f'builds/{i}.json').read_text())['build']!='ok':skipped.append(i);continue
-        jobs.extend((i,g) for g in GROUPS)
+        jobs.extend((i,g) for g in args.groups)
     def one(job):
         i,g=job
         try:
@@ -51,7 +51,7 @@ def main():
         for r in killed:
             path=RESULTS/f'{folder}/{r["index"]}-{r["group"]}.json'
             quarantine=RESULTS/f'quarantine/phase-{args.phase}/{path.name}';quarantine.parent.mkdir(parents=True,exist_ok=True);path.replace(quarantine)
-        write_json(RESULTS/f'phase-{args.phase}-oom.json',dict(quarantined=killed,resume_workers=2))
+        write_json(RESULTS/f'phase-{args.phase}{args.result_suffix}-oom.json',dict(quarantined=killed,resume_workers=2))
         retries,unfinished=bounded_batch([(r['index'],r['group']) for r in killed]+remaining,2)
         replacement={(r['index'],r['group']):r for r in retries}
         completed={(r['index'],r['group']):r for r in records};completed.update(replacement)
@@ -62,7 +62,7 @@ def main():
                 path=RESULTS/f'{folder}/{r["index"]}-{r["group"]}.json'
                 quarantine=RESULTS/f'quarantine/phase-{args.phase}/second-{path.name}';path.replace(quarantine)
         records.extend(dict(index=i,group=g,ok=False,killed=False,reason='not started after repeated memory failure') for i,g in unfinished)
-    write_json(RESULTS/f'phase-{args.phase}.json',dict(seconds=round(time.monotonic()-start,3),workers=args.workers,resume_workers=2 if killed else None,skipped_build_fail=skipped,jobs=len(jobs),failed=[r for r in records if not r['ok']],oom_quarantine=killed))
+    write_json(RESULTS/f'phase-{args.phase}{args.result_suffix}.json',dict(seconds=round(time.monotonic()-start,3),workers=args.workers,resume_workers=2 if killed else None,skipped_build_fail=skipped,jobs=len(jobs),failed=[r for r in records if not r['ok']],oom_quarantine=killed))
 
 
 if __name__=='__main__':main()

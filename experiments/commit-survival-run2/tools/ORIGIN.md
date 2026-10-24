@@ -76,3 +76,11 @@ The run 2 runner attempts whole-suite Dev compilation, then uses shared compiled
 Compiler-category reports additionally match unresolved type names to the frozen production inventory and retain generated package/import declarations. This separates known production types that were not resolved from unknown/external names without changing prompts or generated source.
 
 Final reporting explicitly explains any empty retained group: survival is unavailable, while zero coverage describes an empty suite and cannot establish comparative effectiveness.
+
+## Addendum 2: adjusted Ouédraogo
+
+`DependencyInventory.java` uses the same JDK parse-only API as SourceInventory to extract dependency declarations. `adjusted_prompts.py` orders and caps those declarations and inserts the prescribed constraint after the original class source. `generate_adjusted.py` invokes the unchanged copied generator with `authorized_attempt=1`, enforcing exactly 25 calls and no retries. `repair_adjusted_imports.py` compiles each extracted file and adds only uniquely resolved imports, with two repair passes at most. The original extraction function, class-isolated runner, timeout, flaky rerun, and body deduplication definitions remain unchanged.
+
+The existing validation and diagnostic tools accept the new group; the phase driver accepts an explicit group selection and separate summary suffix. Reporting tools derive four-group tables from existing evidence. `report_adjusted.py` and `continue_adjusted.py` never rerun original groups. `audit_adjusted.py` checks original evidence hashes, prompt identity, exact import-edit replay, and 916 / 724 record counts.
+
+Known prompt-rendering limitation: the frozen dependency blocks include synthetic type headers with empty `<>` for non-generic types and omit declaration modifiers; the JDK tree also normalizes varargs parameter types to arrays. Constructor and method declarations were extracted from the anchor sources, but these API blocks are not compilable Java stubs. The defect was detected after calls started; prompts were retained unchanged and no replacement calls were made. This limitation must accompany interpretation of the adjusted group.

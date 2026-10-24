@@ -1,0 +1,180 @@
+{
+  "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/2/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.834,
+    "log": "generated/ouedraogo-adj/round1/validation-logs/2/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testConstructorCreatesValidator",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testConstructorCreatesValidator",
+      "body_hash": "cdcc2ef3e3ffb803863bbf4f4ac5056b5eb48b480e3d64349d83091c68db9f49",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateSuccessfulMatch",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateSuccessfulMatch",
+      "body_hash": "0236b6105efb10b25ab4467091c8b6d1120ff318e052b177e125047fca26fde4",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateNoMatch",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateNoMatch",
+      "body_hash": "4e6733d0af2c4073e74a159e7ef2d882cd3ce3030fab24692c2c19128231f72f",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalkWhenShouldValidateTrue",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalkWhenShouldValidateTrue",
+      "body_hash": "1eb8d57d8f2ff2c7964780ccf051183372c5f0115da013a3175dda5659269ed5",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalkWhenShouldValidateFalse",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalkWhenShouldValidateFalse",
+      "body_hash": "65d1f0150f45fbcb00e749162d9332f3c09b8ebdf242711aba569eb204d200a5",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testPreloadJsonSchemaDoesNotThrow",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testPreloadJsonSchemaDoesNotThrow",
+      "body_hash": "c4331f488178f94df6a3c5ecfa29e629b96a72a0640d4d4a13a782e014eeb402",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithEmptyAnyOfArray",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithEmptyAnyOfArray",
+      "body_hash": "8ed3d9ddea0fdcbd44b3acae650dd1c90b6081090cf36f1849231f59c84af271",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithSubschemaHavingNoTypeValidator",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithSubschemaHavingNoTypeValidator",
+      "body_hash": "367f52d9ca73fb12213bd76d8554d8b3467849f3279e1a98c0ad176047ee9d6b",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithOpenApiDiscriminatorsEnabled",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithOpenApiDiscriminatorsEnabled",
+      "body_hash": "9d1032c2a62f0b09cecfadf3dd48fff1ef7ba6021d79b5aadf093d613d934ed1",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithNullNodeThrowsNPE",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithNullNodeThrowsNPE",
+      "body_hash": "54f9c6e25a8eea69f15b86dd7bb63f4797441d448c0e76fd67cd3553e04658a5",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testFullWorkflow",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testFullWorkflow",
+      "body_hash": "18981b248d5e89bd071d1fd6e7724dd489da0252fc60d000d2a8630f4689671f",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:56: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:57: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:58: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n                new JsonMetaSchema(),\n                ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:59: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.67,
+    "log": "generated/ouedraogo-adj/round1/validation-logs/2/inventory.tsv"
+  }
+}

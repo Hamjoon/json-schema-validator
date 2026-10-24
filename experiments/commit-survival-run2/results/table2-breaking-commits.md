@@ -1,26 +1,21 @@
 # Table 2. Breaking commits
 
-| Index | Group | Methods lost | First-failure kinds |
-|---:|---|---:|---|
-| 2 | Dev | 11 | {'error': 1, 'compile-fail': 9, 'fail': 1} |
-| 4 | Dev | 26 | {'compile-fail': 20, 'fail': 6} |
-| 4 | KTester | 49 | {'compile-fail': 47, 'fail': 2} |
-| 5 | Dev | 2 | {'error': 2} |
-| 5 | KTester | 1 | {'fail': 1} |
-| 6 | Dev | 2 | {'error': 2} |
-| 8 | Dev | 1 | {'error': 1} |
-| 10 | Dev | 49 | {'compile-fail': 46, 'fail': 3} |
-| 10 | KTester | 30 | {'compile-fail': 24, 'fail': 6} |
-| 18 | Dev | 4 | {'fail': 2, 'error': 2} |
-| 18 | KTester | 2 | {'error': 2} |
-| 25 | Dev | 1 | {'fail': 1} |
-| 32 | Dev | 1 | {'fail': 1} |
-| 38 | Dev | 6 | {'compile-fail': 6} |
-| 38 | KTester | 1 | {'fail': 1} |
-| 40 | Dev | 1 | {'compile-fail': 1} |
-| 55 | Dev | 4 | {'fail': 4} |
-| 148 | Dev | 13 | {'compile-fail': 13} |
-| 150 | Dev | 40 | {'compile-fail': 40} |
-| 150 | KTester | 18 | {'compile-fail': 18} |
-| 151 | Dev | 20 | {'compile-fail': 20} |
-| 151 | KTester | 30 | {'compile-fail': 30} |
+Cells show methods lost and first-failure kinds.
+
+| Index | Dev | KTester | Ouédraogo | Ouédraogo (adjusted) |
+|---:|---|---|---|---|
+| 2 | 11 (compile-fail: 9, error: 1, fail: 1) | 0 | 0 | 0 |
+| 4 | 26 (compile-fail: 20, fail: 6) | 49 (compile-fail: 47, fail: 2) | 0 | 0 |
+| 5 | 2 (error: 2) | 1 (fail: 1) | 0 | 1 (fail: 1) |
+| 6 | 2 (error: 2) | 0 | 0 | 0 |
+| 8 | 1 (error: 1) | 0 | 0 | 0 |
+| 10 | 49 (compile-fail: 46, fail: 3) | 30 (compile-fail: 24, fail: 6) | 0 | 21 (compile-fail: 21) |
+| 18 | 4 (error: 2, fail: 2) | 2 (error: 2) | 0 | 0 |
+| 25 | 1 (fail: 1) | 0 | 0 | 0 |
+| 32 | 1 (fail: 1) | 0 | 0 | 0 |
+| 38 | 6 (compile-fail: 6) | 1 (fail: 1) | 0 | 0 |
+| 40 | 1 (compile-fail: 1) | 0 | 0 | 0 |
+| 55 | 4 (fail: 4) | 0 | 0 | 0 |
+| 148 | 13 (compile-fail: 13) | 0 | 0 | 0 |
+| 150 | 40 (compile-fail: 40) | 18 (compile-fail: 18) | 0 | 0 |
+| 151 | 20 (compile-fail: 20) | 30 (compile-fail: 30) | 0 | 0 |

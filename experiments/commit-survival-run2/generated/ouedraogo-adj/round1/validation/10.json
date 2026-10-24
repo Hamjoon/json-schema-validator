@@ -1,0 +1,468 @@
+{
+  "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/CoT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.516,
+    "log": "generated/ouedraogo-adj/round1/validation-logs/10/test/javac.txt"
+  },
+  "runs": [
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateValidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateInvalidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetCurrentUriWhenNoId()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetRefSchemaNodeSimplePath()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorSetsDynamicFlag()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorInvalidTypeThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testInitializeValidatorsPreloads()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testHasRequiredAndTypeValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateChildSchemaPathPropagation()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testWalkDelegatesToValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testToStringContainsSchemaPathAndNode()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testFindAncestorRootIsSelfWhenNoParent()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateExecutionContextProvidesCollectorContext()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/run1"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.17,
+      "log": "generated/ouedraogo-adj/round1/validation-logs/10/test/run1/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateValidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateInvalidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetCurrentUriWhenNoId()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetRefSchemaNodeSimplePath()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorSetsDynamicFlag()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorInvalidTypeThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testInitializeValidatorsPreloads()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testHasRequiredAndTypeValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateChildSchemaPathPropagation()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testWalkDelegatesToValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testToStringContainsSchemaPathAndNode()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testFindAncestorRootIsSelfWhenNoParent()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateExecutionContextProvidesCollectorContext()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/run2"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.225,
+      "log": "generated/ouedraogo-adj/round1/validation-logs/10/test/run2/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateValidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testValidateInvalidString()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetCurrentUriWhenNoId()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testGetRefSchemaNodeSimplePath()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorSetsDynamicFlag()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorInvalidTypeThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testInitializeValidatorsPreloads()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testHasRequiredAndTypeValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateChildSchemaPathPropagation()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testWalkDelegatesToValidators()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testToStringContainsSchemaPathAndNode()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testFindAncestorRootIsSelfWhenNoParent()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaTest#testCreateExecutionContextProvidesCollectorContext()",
+        "--reports-dir",
+        "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj/round1/10/test/run3"
+      ],
+      "cwd": "/repo/experiments/commit-survival/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.119,
+      "log": "generated/ouedraogo-adj/round1/validation-logs/10/test/run3/console.txt"
+    }
+  ],
+  "methods": [
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testValidateValidString",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testValidateValidString",
+      "body_hash": "dd983735dc287467ebd571476db95fb4a566db84a9c7e54f66bf3dfa225d5981",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testValidateValidString()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testValidateInvalidString",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testValidateInvalidString",
+      "body_hash": "bc4fd1650dc31a1c3df879cd208ca39dd3bf5987ab0b39f1257f5ec077da32b5",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testValidateInvalidString()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetCurrentUriWhenNoId",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetCurrentUriWhenNoId",
+      "body_hash": "7d25831a79d5791806adea5eb1db1af485fdf6523f9fd9a7209778e1d7b98673",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testGetCurrentUriWhenNoId()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetRefSchemaNodeSimplePath",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetRefSchemaNodeSimplePath",
+      "body_hash": "60a4514bce2be62750b92d5a3e49e87fc2b7107cbc706cf933eff49bb15db2b7",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testGetRefSchemaNodeSimplePath()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testRecursiveAnchorSetsDynamicFlag",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testRecursiveAnchorSetsDynamicFlag",
+      "body_hash": "339966078bc3684995e4485b0019c3c5a11004e0b996f0e3e57342f7e890297f",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorSetsDynamicFlag()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testRecursiveAnchorInvalidTypeThrowsException",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testRecursiveAnchorInvalidTypeThrowsException",
+      "body_hash": "cc9e5ed56106c8bdfc2619d383331d0433cfe609d6400215476fe909ce361f0a",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testRecursiveAnchorInvalidTypeThrowsException()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testInitializeValidatorsPreloads",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testInitializeValidatorsPreloads",
+      "body_hash": "f05e161a7d0b8c6f43966954d055206b2b21d3f6fda9d15c6cb66ae0a29cc5d6",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testInitializeValidatorsPreloads()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testHasRequiredAndTypeValidators",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testHasRequiredAndTypeValidators",
+      "body_hash": "b804a6bee222ffb1e91c41f9bd0bd562862f9e1170e1d01b8da3ca4dc33a363d",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testHasRequiredAndTypeValidators()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testCreateChildSchemaPathPropagation",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testCreateChildSchemaPathPropagation",
+      "body_hash": "5906366caf0ae4b91c875ff88eb3f8da83ed33a23224b5b360d41b9a0c69afff",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testCreateChildSchemaPathPropagation()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testWalkDelegatesToValidators",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testWalkDelegatesToValidators",
+      "body_hash": "282bd179616f283649631b4536765b3dd5abb9da65eb5aa99b5e6911aa13a2f9",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testWalkDelegatesToValidators()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testToStringContainsSchemaPathAndNode",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testToStringContainsSchemaPathAndNode",
+      "body_hash": "bdbf1154db70c0aeaa83eb82e9ad9aaa9fb4620fab4bd91131b9837b3989c9f9",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testToStringContainsSchemaPathAndNode()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testFindAncestorRootIsSelfWhenNoParent",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testFindAncestorRootIsSelfWhenNoParent",
+      "body_hash": "cfcc962b02f01fc4f903e96c94519d97db8b369fd3c04d2f48390169bb5f76de",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testFindAncestorRootIsSelfWhenNoParent()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testCreateExecutionContextProvidesCollectorContext",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testCreateExecutionContextProvidesCollectorContext",
+      "body_hash": "a6b2ff5dc6d1ec71dc50dc29628b0abfa66b4f66caca625d305eb6afc4305690",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "error",
+      "message": "URIFactory must not be null",
+      "flaky": false,
+      "initial_state": "error",
+      "selector": [
+        "com.networknt.schema.JsonSchemaTest#testCreateExecutionContextProvidesCollectorContext()"
+      ],
+      "baseline_states": [
+        "error",
+        "error",
+        "error"
+      ]
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj/round1/sources/JsonSchema/CoT/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.517,
+    "log": "generated/ouedraogo-adj/round1/validation-logs/10/inventory.tsv"
+  }
+}
