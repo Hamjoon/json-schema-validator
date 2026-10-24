@@ -1,11 +1,11 @@
 # Run 2 status
 
-Completed, including addendum 2.
+Completed through addendum 3.
 
-Denominators: dev 185, ktester 131, ouedraogo 0, ouedraogo-adj 22. Final survivors: {'dev': 4, 'ktester': 0, 'ouedraogo': 0, 'ouedraogo-adj': 0}.
+Denominators: Dev 185, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22, Ouédraogo (adjusted 2) 41. Final survivors: {'dev': 4, 'ktester': 0, 'ouedraogo': 0, 'ouedraogo-adj': 0, 'ouedraogo-adj2': 0}.
 
-916 survival records and 724 coverage records; executable line sets match across four groups at all 181 indices. Original evidence hashes are unchanged. Exactly 25 adjusted-group model calls, no retries.
+1145 survival records and 905 coverage records. Executable line sets match across all five groups at all 181 indices. Previous group evidence and report values are unchanged. Exactly 25 new model calls, no retries.
 
-The archived dependency blocks have a rendering defect in synthetic type headers: non-generic types appear with empty `<>`, and type declaration modifiers are omitted. The JDK parser also normalizes varargs parameter types to arrays. Constructor/method signatures came from the anchor source, but these blocks are not compilable Java stubs. The defect was discovered after generation started; all 25 frozen prompts were preserved and no replacement calls were made. Interpret this adjusted group with that prompt limitation.
+The dependency renderer now emits type parameters only when present, preserves declaration modifiers (including implicit public/static modifiers of interface member types), and preserves varargs as Type... instead of arrays. All five dependency blocks passed the mandatory pre-call gate; their type order, membership, omitted types, caps, API order, and prompt constraints match addendum 2. Only the requested header and varargs formatting changed.
 
-See addendum2-summary.json and addendum2-audit.json. No push performed.
+The earlier adjusted group retains its documented renderer limitation; its records were not changed. See addendum3-summary.json, addendum3-audit.json, and docs/handover-part9.md. No push.

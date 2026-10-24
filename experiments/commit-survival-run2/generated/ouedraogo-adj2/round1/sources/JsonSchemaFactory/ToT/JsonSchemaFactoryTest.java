@@ -1,0 +1,366 @@
+/*
+ * Comprehensive JUnit‑4 test suite for {@link com.networknt.schema.JsonSchemaFactory}.
+ *
+ * The tests cover:
+ *   • Builder creation and cloning.
+ *   • Version flag handling and meta‑schema lookup.
+ *   • URI translation, schema fetching, caching and error handling.
+ *   • Edge cases such as malformed $schema values or unknown meta‑schema URIs.
+ *
+ * All objects are instantiated using only the public API defined in the supplied
+ * source code – no mocking or external libraries are used.
+ */
+package com.networknt.schema;
+import com.networknt.schema.SpecVersion.VersionFlag;
+
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import com.networknt.schema.uri.URITranslator;
+import com.networknt.schema.uri.URIFactory;
+import com.networknt.schema.uri.URISchemeFetcher;
+import com.networknt.schema.uri.URISchemeFactory;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.*;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.util.Collections;
+import java.util.Map;
+
+/**
+ * Test class for {@link JsonSchemaFactory}.
+ */
+public class JsonSchemaFactoryTest {
+
+    private static final String SIMPLE_JSON_SCHEMA = "{\"type\":\"object\"}";
+    private static final String SIMPLE_YAML_SCHEMA = "type: object";
+
+    private JsonSchemaFactory factoryWithCache;
+    private JsonSchemaFactory factoryWithoutCache;
+    private File jsonSchemaFile;
+    private File yamlSchemaFile;
+
+    @Before
+    public void setUp() throws IOException {
+        // Build a factory that knows the Draft‑V4 meta‑schema.
+        JsonMetaSchema v4Meta = JsonMetaSchema.getV4();
+
+        factoryWithCache = JsonSchemaFactory.builder()
+                .defaultMetaSchemaURI(v4Meta.getUri())
+                .addMetaSchema(v4Meta)
+                .enableUriSchemaCache(true)
+                .build();
+
+        factoryWithoutCache = JsonSchemaFactory.builder()
+                .defaultMetaSchemaURI(v4Meta.getUri())
+                .addMetaSchema(v4Meta)
+                .enableUriSchemaCache(false)
+                .build();
+
+        // Temporary JSON schema file (used for URI‑based loading).
+        jsonSchemaFile = File.createTempFile("test-schema", ".json");
+        try (Writer w = new FileWriter(jsonSchemaFile)) {
+            w.write(SIMPLE_JSON_SCHEMA);
+        }
+
+        // Temporary YAML schema file (used to test isYaml logic).
+        yamlSchemaFile = File.createTempFile("test-schema", ".yaml");
+        try (Writer w = new FileWriter(yamlSchemaFile)) {
+            w.write(SIMPLE_YAML_SCHEMA);
+        }
+    }
+
+    @After
+    public void tearDown() {
+        if (jsonSchemaFile != null) {
+            jsonSchemaFile.delete();
+        }
+        if (yamlSchemaFile != null) {
+            yamlSchemaFile.delete();
+        }
+    }
+
+    /*** Builder and basic factory creation ***/
+
+    @Test
+    public void testBuilderCreatesFactory() {
+        JsonSchemaFactory f = JsonSchemaFactory.builder()
+                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())
+                .addMetaSchema(JsonMetaSchema.getV4())
+                .build();
+
+        Assert.assertNotNull(f);
+        Assert.assertEquals(JsonMetaSchema.getV4().getUri(),
+                f.getUriFactory().create(JsonMetaSchema.getV4().getUri()).toString());
+    }
+
+    @Test
+    public void testBuilderCloningFromBlueprint() {
+        JsonSchemaFactory clone = JsonSchemaFactory.builder(factoryWithCache).build();
+        Assert.assertNotNull(clone);
+        // The clone must contain the same meta‑schema mapping.
+        Assert.assertEquals(factoryWithCache.getUriFactory().create(JsonMetaSchema.getV4().getUri()),
+                clone.getUriFactory().create(JsonMetaSchema.getV4().getUri()));
+    }
+
+    /*** Version handling ***/
+
+    @Test
+    public void testCheckVersionValidFlags() {
+        for (VersionFlag flag : new VersionFlag[]{
+                VersionFlag.V4, VersionFlag.V6, VersionFlag.V7,
+                VersionFlag.V201909, VersionFlag.V202012}) {
+            JsonSchemaVersion version = JsonSchemaFactory.checkVersion(flag);
+            Assert.assertNotNull(version);
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckVersionInvalidFlag() {
+        // Simulate a null flag – the method returns null, but the calling code
+        // expects a non‑null version. Using a bogus enum value is not possible,
+        // therefore we call the method directly with null.
+        JsonSchemaFactory.checkVersion(null);
+    }
+
+    /*** $schema handling – normal and error cases ***/
+
+    @Test
+    public void testFindMetaSchemaUsesDefaultWhenNo$schema() {
+        JsonSchema schema = factoryWithCache.getSchema(SIMPLE_JSON_SCHEMA);
+        Assert.assertNotNull(schema);
+        // The schema must have been created with the default meta‑schema (Draft‑V4).
+        Assert.assertEquals(JsonMetaSchema.getV4().getUri(),
+                schema.getValidationContext().getMetaSchema().getUri());
+    }
+
+    @Test
+    public void testFindMetaSchemaRespectsValid$schema() {
+        String schemaWithExplicit = "{\"$schema\":\"" + JsonMetaSchema.getV7().getUri() + "\",\"type\":\"object\"}";
+        JsonSchema schema = factoryWithCache.getSchema(schemaWithExplicit);
+        Assert.assertNotNull(schema);
+        Assert.assertEquals(JsonMetaSchema.getV7().getUri(),
+                schema.getValidationContext().getMetaSchema().getUri());
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testFindMetaSchemaRejectsNonTextual$schema() {
+        String schema = "{\"$schema\":123}";
+        factoryWithCache.getSchema(schema);
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testFindMetaSchemaRejectsUnknownDialect() {
+        String unknownDialect = "http://example.com/unknown-dialect";
+        String schema = "{\"$schema\":\"" + unknownDialect + "\",\"type\":\"object\"}";
+        factoryWithCache.getSchema(schema);
+    }
+
+    /*** URI‑based loading, caching and error handling ***/
+
+    @Test
+    public void testGetSchemaFromFileUriWithCache() throws URISyntaxException {
+        URI uri = jsonSchemaFile.toURI();
+        JsonSchema first = factoryWithCache.getSchema(uri);
+        JsonSchema second = factoryWithCache.getSchema(uri);
+        // With caching enabled both calls must return the same instance.
+        Assert.assertSame(first, second);
+    }
+
+    @Test
+    public void testGetSchemaFromFileUriWithoutCache() throws URISyntaxException {
+        URI uri = jsonSchemaFile.toURI();
+        JsonSchema first = factoryWithoutCache.getSchema(uri);
+        JsonSchema second = factoryWithoutCache.getSchema(uri);
+        // Without caching a new instance must be created each time.
+        Assert.assertNotSame(first, second);
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetSchemaFromInvalidUri() throws URISyntaxException {
+        // An intentionally malformed URI (illegal characters) triggers a failure
+        // during URI creation inside the factory.
+        URI badUri = new URI("http://[invalid]");
+        factoryWithCache.getSchema(badUri);
+    }
+
+    /*** isYaml detection (private method) ***/
+
+    @Test
+    public void testIsYamlDetection() throws Exception {
+        Method isYaml = JsonSchemaFactory.class.getDeclaredMethod("isYaml", URI.class);
+        isYaml.setAccessible(true);
+
+        // .yaml extension => true
+        URI yamlUri = yamlSchemaFile.toURI();
+        Assert.assertTrue((Boolean) isYaml.invoke(factoryWithCache, yamlUri));
+
+        // .json extension => false
+        URI jsonUri = jsonSchemaFile.toURI();
+        Assert.assertFalse((Boolean) isYaml.invoke(factoryWithCache, jsonUri));
+
+        // No extension => false
+        URI noExt = new URI("file:/tmp/somefile");
+        Assert.assertFalse((Boolean) isYaml.invoke(factoryWithCache, noExt));
+    }
+
+    /*** normalizeMetaSchemaUri utility ***/
+
+    @Test
+    public void testNormalizeMetaSchemaUriConvertsToHttps() {
+        String httpUri = "http://json-schema.org/draft-04/schema";
+        String normalized = JsonSchemaFactory.normalizeMetaSchemaUri(httpUri);
+        Assert.assertTrue(normalized.startsWith("https://"));
+        // The rest of the URI must be unchanged.
+        Assert.assertEquals("https://json-schema.org/draft-04/schema", normalized);
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testNormalizeMetaSchemaUriInvalidSyntax() {
+        // Passing a string that is not a valid URI triggers an exception.
+        JsonSchemaFactory.normalizeMetaSchemaUri("http://[bad");
+    }
+
+    /*** getUriFactory and getUriTranslator ***/
+
+    @Test
+    public void testGetUriFactoryReturnsConfiguredFactory() {
+        URIFactory factory = factoryWithCache.getUriFactory();
+        Assert.assertNotNull(factory);
+        // The factory must be able to create a simple URI.
+        URI uri = factory.create("http://example.com");
+        Assert.assertEquals("http://example.com", uri.toString());
+    }
+
+    @Test
+    public void testGetUriTranslatorAppliesMappings() {
+        // Add a mapping via the config object.
+        SchemaValidatorsConfig cfg = new SchemaValidatorsConfig();
+        cfg.getUriMappings().put("http://original", "http://mapped");
+
+        // The factory's translator must honour the mapping.
+        URITranslator translator = factoryWithCache.getUriTranslator();
+        URI original = URI.create("http://original");
+        URI translated = translator.translate(original);
+        Assert.assertEquals("http://mapped", translated.toString());
+    }
+
+    /*** getSchema(String) error handling ***/
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetSchemaFromInvalidJsonString() {
+        // Malformed JSON should result in a JsonSchemaException.
+        factoryWithCache.getSchema("{invalidJson}");
+    }
+
+    /*** idMatchesSourceUri edge case ***/
+
+    @Test
+    public void testIdMatchesSourceUriReturnsFalseWhenNoId() throws Exception {
+        // Use reflection to invoke the private method.
+        Method method = JsonSchemaFactory.class.getDeclaredMethod(
+                "idMatchesSourceUri", JsonMetaSchema.class, JsonNode.class, URI.class);
+        method.setAccessible(true);
+
+        JsonMetaSchema meta = JsonMetaSchema.getV4();
+        // Schema without an "$id" keyword.
+        JsonNode node = new ObjectMapper().readTree("{\"type\":\"object\"}");
+        URI uri = new URI("http://example.com/schema.json");
+
+        Boolean result = (Boolean) method.invoke(factoryWithCache, meta, node, uri);
+        Assert.assertFalse(result);
+    }
+
+    /*** getSchema(URI, JsonNode) overload – direct node usage ***/
+
+    @Test
+    public void testGetSchemaFromUriAndJsonNode() throws Exception {
+        JsonNode node = new ObjectMapper().readTree(SIMPLE_JSON_SCHEMA);
+        URI uri = jsonSchemaFile.toURI();
+        JsonSchema schema = factoryWithCache.getSchema(uri, node);
+        Assert.assertNotNull(schema);
+        Assert.assertEquals(uri, schema.getCurrentUri());
+    }
+
+    /*** getSchema(JsonNode) overload – without URI ***/
+
+    @Test
+    public void testGetSchemaFromJsonNodeOnly() throws Exception {
+        JsonNode node = new ObjectMapper().readTree(SIMPLE_JSON_SCHEMA);
+        JsonSchema schema = factoryWithCache.getSchema(node);
+        Assert.assertNotNull(schema);
+        // No base URI supplied – the current URI should be null.
+        Assert.assertNull(schema.getCurrentUri());
+    }
+
+    /*** create(ValidationContext, ...) – indirect verification ***/
+
+    @Test
+    public void testCreateChildSchemaViaFactoryCreateMethod() throws Exception {
+        // Build a parent schema first.
+        JsonSchema parent = factoryWithCache.getSchema("{\"type\":\"object\"}");
+        ValidationContext ctx = parent.getValidationContext();
+
+        // Child schema JSON.
+        JsonNode childNode = new ObjectMapper().readTree("{\"type\":\"string\"}");
+        JsonSchema child = factoryWithCache.create(ctx, "#/properties/name", childNode, parent);
+        Assert.assertNotNull(child);
+        // The child must have the same ValidationContext (shared factories, etc.).
+        Assert.assertSame(ctx, child.getValidationContext());
+    }
+
+    /*** getSchema(InputStream) overload ***/
+
+    @Test
+    public void testGetSchemaFromInputStream() throws IOException {
+        try (InputStream is = new ByteArrayInputStream(SIMPLE_JSON_SCHEMA.getBytes())) {
+            JsonSchema schema = factoryWithCache.getSchema(is);
+            Assert.assertNotNull(schema);
+        }
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetSchemaFromInputStreamInvalidJson() throws IOException {
+        try (InputStream is = new ByteArrayInputStream("{bad".getBytes())) {
+            factoryWithCache.getSchema(is);
+        }
+    }
+
+    /*** verify that the factory rejects null ObjectMapper in the builder ***/
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderRejectsNullObjectMapper() {
+        JsonSchemaFactory.builder()
+                .objectMapper(null)
+                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())
+                .addMetaSchema(JsonMetaSchema.getV4())
+                .build();
+    }
+
+    /*** verify that the factory rejects null defaultMetaSchemaURI ***/
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderRejectsNullDefaultMetaSchemaURI() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaURI(null)
+                .addMetaSchema(JsonMetaSchema.getV4())
+                .build();
+    }
+
+    /*** verify that the factory rejects empty meta‑schema collection ***/
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderRejectsEmptyMetaSchemaCollection() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())
+                // No meta‑schema added.
+                .build();
+    }
+}

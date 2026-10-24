@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "pre_call_gate_precedes_all_calls": true,
+  "original_group_report_values_unchanged": true,
+  "preserved_existing_files": 9753,
+  "modified_existing_evidence": [],
+  "model_calls": 25,
+  "retries": 0,
+  "prompt_integrity": true,
+  "dependency_caps": {
+    "OneOfValidator": {
+      "types": 10,
+      "lines": 148,
+      "omitted": []
+    },
+    "JsonSchemaFactory": {
+      "types": 15,
+      "lines": 230,
+      "omitted": [
+        "com.networknt.schema.uri.URNURIFactory",
+        "com.networknt.schema.uri.URLFetcher",
+        "com.networknt.schema.uri.ClasspathURLFactory",
+        "com.networknt.schema.uri.ClasspathURLFetcher"
+      ]
+    },
+    "JsonSchema": {
+      "types": 15,
+      "lines": 170,
+      "omitted": [
+        "com.networknt.schema.walk.DefaultKeywordWalkListenerRunner"
+      ]
+    },
+    "AnyOfValidator": {
+      "types": 10,
+      "lines": 139,
+      "omitted": []
+    },
+    "BaseJsonValidator": {
+      "types": 11,
+      "lines": 194,
+      "omitted": []
+    }
+  },
+  "import_only_replay_matches": true,
+  "files_with_import_fixes": 13,
+  "added_import_lines": 29,
+  "imports": {
+    "com.networknt.schema.uri.URIFactory": 12,
+    "com.networknt.schema.urn.URNFactory": 11,
+    "com.networknt.schema.ValidationContext.DiscriminatorContext": 1,
+    "com.networknt.schema.uri.URITranslator.CompositeURITranslator": 1,
+    "com.networknt.schema.uri.URIFetcher": 1,
+    "com.networknt.schema.uri.URISchemeFactory": 1,
+    "com.networknt.schema.uri.URISchemeFetcher": 1,
+    "com.networknt.schema.SpecVersion.VersionFlag": 1
+  },
+  "funnel": {
+    "group": "ouedraogo-adj2",
+    "round": "round1",
+    "files": 25,
+    "compiled": 7,
+    "methods": 313,
+    "stable_3_of_3": 41,
+    "duplicates": 0,
+    "kept_this_round": 41,
+    "total_kept": 41,
+    "seconds": 15.721,
+    "per_prompt": {
+      "ZSL": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 56,
+        "stable": 13,
+        "duplicates": 0,
+        "kept": 13
+      },
+      "FSL": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 37,
+        "stable": 5,
+        "duplicates": 0,
+        "kept": 5
+      },
+      "CoT": {
+        "files": 5,
+        "compiled": 1,
+        "methods": 75,
+        "stable": 0,
+        "duplicates": 0,
+        "kept": 0
+      },
+      "ToT": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 62,
+        "stable": 23,
+        "duplicates": 0,
+        "kept": 23
+      },
+      "GToT": {
+        "files": 5,
+        "compiled": 0,
+        "methods": 83,
+        "stable": 0,
+        "duplicates": 0,
+        "kept": 0
+      }
+    },
+    "developer_denominator": 185,
+    "ratio_to_dev": 0.22162162162162163
+  },
+  "raw_records": 1145,
+  "coverage_records": 905,
+  "matching_executable_universes": 181
+}

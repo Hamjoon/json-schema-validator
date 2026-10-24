@@ -1,0 +1,150 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+04:47:10.739 [main] ERROR c.networknt.schema.JsonSchemaFactory - Failed to load json schema!
+com.fasterxml.jackson.core.JsonParseException: Unexpected character ('i' (code 105)): was expecting double-quote to start field name
+ at [Source: (String)"{invalid json}"; line: 1, column: 3]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:750)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportUnexpectedChar(ParserMinimalBase.java:674)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddName(ReaderBasedJsonParser.java:1940)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextFieldName(ReaderBasedJsonParser.java:968)
+	at com.fasterxml.jackson.databind.deser.std.BaseNodeDeserializer._deserializeContainerNoRecursion(JsonNodeDeserializer.java:536)
+	at com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer.deserialize(JsonNodeDeserializer.java:100)
+	at com.fasterxml.jackson.databind.deser.std.JsonNodeDeserializer.deserialize(JsonNodeDeserializer.java:25)
+	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:323)
+	at com.fasterxml.jackson.databind.ObjectMapper._readTreeAndClose(ObjectMapper.java:4867)
+	at com.fasterxml.jackson.databind.ObjectMapper.readTree(ObjectMapper.java:3219)
+	at com.networknt.schema.JsonSchemaFactory.getSchema(JsonSchemaFactory.java:377)
+	at com.networknt.schema.JsonSchemaFactory.getSchema(JsonSchemaFactory.java:386)
+	at com.networknt.schema.JsonSchemaFactoryTest.testGetSchemaFromStringInvalidJsonThrowsException(JsonSchemaFactoryTest.java:183)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:19)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+
+Failures (5):
+  JUnit Vintage:JsonSchemaFactoryTest:testGetInstanceAndDefaultMetaSchemaURI
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactoryTest', methodName = 'testGetInstanceAndDefaultMetaSchemaURI', methodParameterTypes = '']
+    => org.junit.ComparisonFailure: expected:<http[s://json-schema.org/draft-04/schema]> but was:<http[://example.com]>
+       org.junit.Assert.assertEquals(Assert.java:117)
+       org.junit.Assert.assertEquals(Assert.java:146)
+       com.networknt.schema.JsonSchemaFactoryTest.testGetInstanceAndDefaultMetaSchemaURI(JsonSchemaFactoryTest.java:139)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+       [...]
+  JUnit Vintage:JsonSchemaFactoryTest:testGetUriFactoryReturnsConfiguredFactory
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactoryTest', methodName = 'testGetUriFactoryReturnsConfiguredFactory', methodParameterTypes = '']
+    => java.lang.AssertionError: expected same:<com.networknt.schema.JsonSchemaFactoryTest$SimpleURIFactory@5b080f3a> was not:<com.networknt.schema.uri.URISchemeFactory@773cbf4f>
+       org.junit.Assert.fail(Assert.java:89)
+       org.junit.Assert.failNotSame(Assert.java:829)
+       org.junit.Assert.assertSame(Assert.java:772)
+       org.junit.Assert.assertSame(Assert.java:783)
+       com.networknt.schema.JsonSchemaFactoryTest.testGetUriFactoryReturnsConfiguredFactory(JsonSchemaFactoryTest.java:286)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       [...]
+  JUnit Vintage:JsonSchemaFactoryTest:testBuilderValidation_nullYamlMapper
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactoryTest', methodName = 'testBuilderValidation_nullYamlMapper', methodParameterTypes = '']
+    => java.lang.AssertionError: Expected IllegalArgumentException because YAMLMapper is null
+       org.junit.Assert.fail(Assert.java:89)
+       com.networknt.schema.JsonSchemaFactoryTest.testBuilderValidation_nullYamlMapper(JsonSchemaFactoryTest.java:92)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+       org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+       [...]
+  JUnit Vintage:JsonSchemaFactoryTest:testBuilderCopyFromExistingFactory
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactoryTest', methodName = 'testBuilderCopyFromExistingFactory', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.JsonNode.isContainerNode()" because "node" is null
+       com.networknt.schema.TypeFactory.getValueNodeType(TypeFactory.java:61)
+       com.networknt.schema.utils.JsonNodeUtil.equalsToSchemaType(JsonNodeUtil.java:74)
+       com.networknt.schema.TypeValidator.equalsToSchemaType(TypeValidator.java:50)
+       com.networknt.schema.TypeValidator.validate(TypeValidator.java:61)
+       com.networknt.schema.JsonSchema.validate(JsonSchema.java:392)
+       com.networknt.schema.BaseJsonValidator.validate(BaseJsonValidator.java:230)
+       com.networknt.schema.JsonSchema.validate(JsonSchema.java:452)
+       com.networknt.schema.JsonSchemaFactoryTest.testBuilderCopyFromExistingFactory(JsonSchemaFactoryTest.java:305)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       [...]
+  JUnit Vintage:JsonSchemaFactoryTest:testBuilderValidation_nullObjectMapper
+    MethodSource [className = 'com.networknt.schema.JsonSchemaFactoryTest', methodName = 'testBuilderValidation_nullObjectMapper', methodParameterTypes = '']
+    => java.lang.AssertionError: Expected IllegalArgumentException because ObjectMapper is null
+       org.junit.Assert.fail(Assert.java:89)
+       com.networknt.schema.JsonSchemaFactoryTest.testBuilderValidation_nullObjectMapper(JsonSchemaFactoryTest.java:78)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+       org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+       [...]
+
+Test run finished after 455 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        18 tests found           ]
+[         0 tests skipped         ]
+[        18 tests started         ]
+[         0 tests aborted         ]
+[        13 tests successful      ]
+[         5 tests failed          ]
+

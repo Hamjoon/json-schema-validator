@@ -1,0 +1,203 @@
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.ValidationContext.DiscriminatorContext;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+
+/**
+ * JUnit‑4 test suite for {@link AnyOfValidator}.
+ *
+ * The tests cover:
+ * <ul>
+ *   <li>public constructor</li>
+ *   <li>validate(…, JsonNode, JsonNode, String)</li>
+ *   <li>walk(…, JsonNode, JsonNode, String, boolean)</li>
+ *   <li>preloadJsonSchema()</li>
+ *   <li>edge‑cases such as type mismatches and OpenAPI‑3 discriminator handling</li>
+ * </ul>
+ */
+public class AnyOfValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private ValidationContext validationContext;
+    private ValidationContext discriminatorEnabledContext;
+    private JsonNode anyOfSchemaNode;          //  [ {"type":"string"}, {"type":"integer"} ]
+    private JsonNode anyOfSchemaNodeWithDiscriminator; // same schema – discriminator flag will be turned on via config
+    private JsonSchema parentSchema;          // not used by the validator, can be null
+
+    @Before
+    public void setUp() throws Exception {
+        // -----------------------------------------------------------------
+        // 1️⃣  Build a normal ValidationContext (discriminators disabled)
+        // -----------------------------------------------------------------
+        SchemaValidatorsConfig normalConfig = new SchemaValidatorsConfig(); // defaults → discriminators disabled
+        validationContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                JsonMetaSchema.getV7(),
+                new JsonSchemaFactory(),
+                normalConfig);
+
+        // -----------------------------------------------------------------
+        // 2️⃣  Build a ValidationContext with OpenAPI‑3 style discriminators enabled
+        // -----------------------------------------------------------------
+        SchemaValidatorsConfig discriminatorConfig = new SchemaValidatorsConfig();
+        discriminatorConfig.setOpenAPI3StyleDiscriminators(true); // <-- enables the special branch
+        discriminatorEnabledContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                JsonMetaSchema.getV7(),
+                new JsonSchemaFactory(),
+                discriminatorConfig);
+
+        // -----------------------------------------------------------------
+        // 3️⃣  anyOf schema array node – this is the exact node that AnyOfValidator
+        //     receives (the value of the “anyOf” keyword)
+        // -----------------------------------------------------------------
+        anyOfSchemaNode = MAPPER.readTree("[{\"type\":\"string\"},{\"type\":\"integer\"}]");
+        anyOfSchemaNodeWithDiscriminator = anyOfSchemaNode; // schema content identical; only the context differs
+
+        // parent schema is not required for the tests; pass null
+        parentSchema = null;
+    }
+
+    // --------------------------------------------------------------
+    // Helper – creates an AnyOfValidator with the supplied context
+    // --------------------------------------------------------------
+    private AnyOfValidator createValidator(ValidationContext ctx, JsonNode schemaNode) {
+        return new AnyOfValidator("#/anyOf", schemaNode, parentSchema, ctx);
+    }
+
+    // --------------------------------------------------------------
+    // 1️⃣  Basic happy‑path – a matching string passes validation
+    // --------------------------------------------------------------
+    @Test
+    public void validate_StringMatchesAnyOf_ShouldReturnNoErrors() throws Exception {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        JsonNode instance = MAPPER.readTree("\"hello\""); // a JSON string
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.validate(execCtx, instance, instance, "#");
+
+        assertTrue("Expected no validation errors for a matching string", errors.isEmpty());
+    }
+
+    // --------------------------------------------------------------
+    // 2️⃣  Basic happy‑path – a matching integer passes validation
+    // --------------------------------------------------------------
+    @Test
+    public void validate_IntegerMatchesAnyOf_ShouldReturnNoErrors() throws Exception {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        JsonNode instance = MAPPER.readTree("123"); // a JSON integer
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.validate(execCtx, instance, instance, "#");
+
+        assertTrue("Expected no validation errors for a matching integer", errors.isEmpty());
+    }
+
+    // --------------------------------------------------------------
+    // 3️⃣  Edge case – value does NOT match any subschema (type mismatch)
+    // --------------------------------------------------------------
+    @Test
+    public void validate_BooleanDoesNotMatchAnyOf_ShouldReturnTypeErrors() throws Exception {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        JsonNode instance = MAPPER.readTree("true"); // a JSON boolean
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.validate(execCtx, instance, instance, "#");
+
+        // Two subschemas → two type‑mismatch messages expected
+        assertEquals("Two type‑mismatch errors expected", 2, errors.size());
+
+        // Verify that each message mentions the expected schema type (STRING / INTEGER)
+        boolean hasStringError = errors.stream()
+                .anyMatch(m -> m.getMessage().contains("string"));
+        boolean hasIntegerError = errors.stream()
+                .anyMatch(m -> m.getMessage().contains("integer"));
+        assertTrue("Should contain an error for type string", hasStringError);
+        assertTrue("Should contain an error for type integer", hasIntegerError);
+    }
+
+    // --------------------------------------------------------------
+    // 4️⃣  walk(...) with shouldValidateSchema = true → behaves like validate()
+    // --------------------------------------------------------------
+    @Test
+    public void walk_ShouldValidateWhenFlagTrue() throws Exception {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        JsonNode instance = MAPPER.readTree("42"); // integer matches second subschema
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.walk(execCtx, instance, instance, "#", true);
+
+        assertTrue("walk(true) should produce no errors for a matching integer", errors.isEmpty());
+    }
+
+    // --------------------------------------------------------------
+    // 5️⃣  walk(...) with shouldValidateSchema = false → never validates subschemas
+    // --------------------------------------------------------------
+    @Test
+    public void walk_ShouldNotValidateWhenFlagFalse() throws Exception {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        JsonNode instance = MAPPER.readTree("true"); // boolean – would normally fail
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.walk(execCtx, instance, instance, "#", false);
+
+        assertTrue("walk(false) must return an empty set regardless of instance", errors.isEmpty());
+    }
+
+    // --------------------------------------------------------------
+    // 6️⃣  preloadJsonSchema() – should complete without throwing
+    // --------------------------------------------------------------
+    @Test
+    public void preloadJsonSchema_ShouldNotThrowException() {
+        AnyOfValidator validator = createValidator(validationContext, anyOfSchemaNode);
+        // No assertion – the test passes if no exception propagates
+        validator.preloadJsonSchema();
+    }
+
+    // --------------------------------------------------------------
+    // 7️⃣  OpenAPI‑3 discriminator enabled – no discriminator match found
+    // --------------------------------------------------------------
+    @Test
+    public void validate_WithOpenAPI3Discriminator_NoMatch_ShouldReturnDiscriminatorError() throws Exception {
+        // Use the context where discriminators are turned on
+        AnyOfValidator validator = createValidator(discriminatorEnabledContext, anyOfSchemaNodeWithDiscriminator);
+        JsonNode instance = MAPPER.readTree("true"); // boolean – does not satisfy any subschema
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.validate(execCtx, instance, instance, "#");
+
+        // When discriminators are active and none matched, the validator adds a special message
+        assertEquals("Exactly one discriminator‑related error expected", 1, errors.size());
+
+        ValidationMessage msg = errors.iterator().next();
+        assertTrue("Error message must contain discriminator hint",
+                msg.getMessage().contains("based on the provided discriminator"));
+    }
+
+    // --------------------------------------------------------------
+    // 8️⃣  OpenAPI‑3 discriminator enabled – a subschema matches and clears errors
+    // --------------------------------------------------------------
+    @Test
+    public void validate_WithOpenAPI3Discriminator_MatchingSubschema_ShouldClearErrors() throws Exception {
+        AnyOfValidator validator = createValidator(discriminatorEnabledContext, anyOfSchemaNodeWithDiscriminator);
+        JsonNode instance = MAPPER.readTree("\"valid\""); // matches the first subschema (type string)
+
+        ExecutionContext execCtx = new ExecutionContext();
+        Set<ValidationMessage> errors = validator.validate(execCtx, instance, instance, "#");
+
+        // Because a subschema validates successfully, the validator returns an empty set
+        assertTrue("When a subschema validates, no errors must be returned even with discriminators enabled", errors.isEmpty());
+    }
+}

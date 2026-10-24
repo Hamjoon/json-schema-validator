@@ -1,0 +1,271 @@
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
+
+/**
+ * Unit tests for {@link BaseJsonValidator}.
+ *
+ * The tests cover:
+ * <ul>
+ *   <li>All public methods (basic behaviour)</li>
+ *   <li>Edge‑case handling for {@code fetchSubSchemaNode}</li>
+ *   <li>Path handling utilities</li>
+ * </ul>
+ *
+ * A concrete subclass {@link TestJsonValidator} is defined inside the test file so that an
+ * instance of the abstract {@code BaseJsonValidator} can be created without using any
+ * mocking framework.
+ */
+public class BaseJsonValidatorTest {
+
+    private static final String SCHEMA_PATH = "/mySchema";
+    private static final JsonNodeFactory FACTORY = JsonNodeFactory.instance;
+
+    private ObjectNode schemaNode;
+    private JsonSchema parentSchema;
+    private ValidationContext validationContext;
+    private ExecutionContext executionContext;
+
+    /**
+     * Minimal concrete implementation of {@link BaseJsonValidator}.
+     * The {@code validate(...)} method simply returns an empty {@link Set}.
+     */
+    private static class TestJsonValidator extends BaseJsonValidator {
+
+        TestJsonValidator(String schemaPath,
+                          JsonNode schemaNode,
+                          JsonSchema parentSchema,
+                          ValidatorTypeCode validatorType,
+                          ValidationContext validationContext,
+                          boolean suppressSubSchemaRetrieval) {
+            super(schemaPath, schemaNode, parentSchema, validatorType, validationContext, suppressSubSchemaRetrieval);
+        }
+
+        @Override
+        public Set<ValidationMessage> validate(ExecutionContext executionContext,
+                                               JsonNode node,
+                                               JsonNode rootNode,
+                                               String at) {
+            // trivial implementation – always succeeds
+            return Collections.emptySet();
+        }
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        // ---- schema node -------------------------------------------------------
+        schemaNode = FACTORY.objectNode();
+        schemaNode.put("title", "Test schema");
+
+        // ---- parent schema ------------------------------------------------------
+        // Use the public JsonSchema constructor that only requires a ValidationContext,
+        // a base URI and a schema node.  Supplying a dummy ValidationContext (null) is
+        // acceptable for the limited interactions performed in these tests.
+        parentSchema = new JsonSchema(null, new URI("http://example.com/parent"), FACTORY.objectNode());
+
+        // ---- validation context --------------------------------------------------
+        // For the purpose of these tests we do not need a fully‑functional
+        // ValidationContext – the only method that is exercised is the constructor
+        // argument check inside BaseJsonValidator.  Passing a non‑null instance avoids
+        // NPEs when {@code fetchSubSchemaNode} is called with {@code suppressSubSchemaRetrieval}
+        // set to {@code false}.  A minimal stub is created using the public constructor.
+        validationContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                JsonMetaSchema.builder().build(),
+                new JsonSchemaFactory(),
+                new SchemaValidatorsConfig());
+
+        // ---- execution context --------------------------------------------------
+        executionContext = new ExecutionContext();
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*  PUBLIC METHOD TESTS                                                   */
+    /* ---------------------------------------------------------------------- */
+
+    @Test
+    public void testGetSchemaPath() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertEquals("Schema path should be returned unchanged", SCHEMA_PATH, validator.getSchemaPath());
+    }
+
+    @Test
+    public void testGetSchemaNode() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertSame("Schema node reference must be identical", schemaNode, validator.getSchemaNode());
+    }
+
+    @Test
+    public void testGetParentSchema() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertSame("Parent schema reference must be identical", parentSchema, validator.getParentSchema());
+    }
+
+    @Test
+    public void testFetchSubSchemaNodeWhenSuppressed() {
+        // When suppressSubSchemaRetrieval is true the method must return null
+        // without delegating to obtainSubSchemaNode (which would need a fully
+        // configured ValidationContext).
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, true);
+        assertNull("fetchSubSchemaNode should return null when suppressed",
+                validator.fetchSubSchemaNode(validationContext));
+    }
+
+    @Test
+    public void testValidateDelegatesToThreeArgValidate() {
+        // The one‑argument validate method should delegate to the four‑argument
+        // version with the root path supplied by atRoot().
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        JsonNode testNode = FACTORY.objectNode();
+        Set<ValidationMessage> result = validator.validate(executionContext, testNode);
+        assertNotNull("Result set must not be null", result);
+        assertTrue("Result set is expected to be empty", result.isEmpty());
+    }
+
+    @Test
+    public void testGetNodeFieldType() {
+        // Parent schema node contains a "type" property.
+        ObjectNode parentNode = FACTORY.objectNode();
+        parentNode.put("type", "string");
+        JsonSchema customParent = new JsonSchema(null, new URI("http://example.com/parent2"), parentNode);
+
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, customParent,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertEquals("Should read the 'type' field from the parent schema",
+                "string", validator.getNodeFieldType());
+    }
+
+    @Test
+    public void testPreloadJsonSchemas() {
+        // The method iterates over the collection and calls initializeValidators()
+        // on each JsonSchema.  We verify that no exception is thrown for a normal
+        // collection.  (The actual side effect is internal to JsonSchema and is
+        // not observable without deep inspection, which is outside the scope of
+        // this unit test.)
+        JsonSchema childSchema = new JsonSchema(null, new URI("http://example.com/child"), FACTORY.objectNode());
+
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        validator.preloadJsonSchemas(Collections.singletonList(childSchema));
+        // If no exception is thrown the test passes.
+    }
+
+    @Test
+    public void testGetPathType() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertNotNull("PathType should never be null", validator.getPathType());
+    }
+
+    @Test
+    public void testAtRoot() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        String root = validator.atRoot();
+        assertNotNull("Root path must not be null", root);
+        assertEquals("Root path must match PathType#getRoot()", validator.getPathType().getRoot(), root);
+    }
+
+    @Test
+    public void testAtPathString() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        String current = "/properties";
+        String token = "name";
+        String expected = validator.getPathType().append(current, token);
+        assertEquals("atPath(String,String) must delegate to PathType.append",
+                expected, validator.atPath(current, token));
+    }
+
+    @Test
+    public void testAtPathIndex() {
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, schemaNode, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        String current = "/items";
+        int index = 2;
+        String expected = validator.getPathType().append(current, index);
+        assertEquals("atPath(String,int) must delegate to PathType.append",
+                expected, validator.atPath(current, index));
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*  EDGE‑CASE TESTS FOR fetchSubSchemaNode                                 */
+    /* ---------------------------------------------------------------------- */
+
+    @Test
+    public void testFetchSubSchemaNodeWhenIdMissing() {
+        // schemaNode without an "id" field – obtainSubSchemaNode should return null.
+        // suppressSubSchemaRetrieval is false, but the method must still return null
+        // because the internal logic cannot locate a sub‑schema.
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, FACTORY.objectNode(), parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertNull("When no 'id' field exists fetchSubSchemaNode should return null",
+                validator.fetchSubSchemaNode(validationContext));
+    }
+
+    @Test
+    public void testFetchSubSchemaNodeWhenIdIsNull() {
+        // schemaNode contains an "id" property with a null value – the helper returns null.
+        ObjectNode nodeWithNullId = FACTORY.objectNode();
+        nodeWithNullId.putNull("id");
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, nodeWithNullId, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertNull("When 'id' is null fetchSubSchemaNode should return null",
+                validator.fetchSubSchemaNode(validationContext));
+    }
+
+    @Test
+    public void testFetchSubSchemaNodeWhenIdInvalidUri() {
+        // schemaNode contains an "id" that is not a valid URI – obtainSubSchemaNode catches
+        // IllegalArgumentException and returns null.
+        ObjectNode nodeWithBadId = FACTORY.objectNode();
+        nodeWithBadId.put("id", "!!! not a uri !!!");
+        TestJsonValidator validator = new TestJsonValidator(
+                SCHEMA_PATH, nodeWithBadId, parentSchema,
+                ValidatorTypeCode.TYPE, validationContext, false);
+        assertNull("Invalid URI in 'id' must result in null sub‑schema", validator.fetchSubSchemaNode(validationContext));
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*  UTILITY TESTS FOR equals(double,double) (static)                        */
+    /* ---------------------------------------------------------------------- */
+
+    @Test
+    public void testEqualsWithinTolerance() {
+        // The tolerance used by the method is 1e‑12.
+        assertTrue("Numbers within tolerance should be considered equal",
+                BaseJsonValidator.equals(1.000000000001, 1.000000000002));
+        assertFalse("Numbers outside tolerance should not be considered equal",
+                BaseJsonValidator.equals(1.0, 1.000000001));
+    }
+}

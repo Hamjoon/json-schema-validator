@@ -2,7 +2,7 @@
 
 This run compares project-wide frozen developer tests with independently generated KTester and Ouédraogo tests at tag `1.1.0`, across 229 first-parent commits. The developer denominator is all 185 methods stable in run 1. Abstract production classes remain eligible; classes dominated by trivial accessors are excluded.
 
-Denominators: **Dev 185, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0, Ouédraogo (adjusted) 0**.
+Denominators: **Dev 185, KTester 131, Ouédraogo 0, Ouédraogo (adjusted) 22, Ouédraogo (adjusted 2) 41**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0, Ouédraogo (adjusted) 0, Ouédraogo (adjusted 2) 0**.
 
 Scope: `JsonSchema`, `BaseJsonValidator`, `AnyOfValidator`, `OneOfValidator`, `JsonSchemaFactory`; 64 focal methods. [Ranked scope](population/scope.md) and [accessor audit](population/accessor-audit.csv) explain why the executable rule yields 64 methods rather than the illustrative 73-method expectation. The addendum removes the minimum class count. The superseded stopped state is retained under `results/stopped-step1/` and local `docs/handover-part1-stopped.md`.
 
@@ -18,7 +18,7 @@ No methods survived generation screening for ouedraogo. Their survival percentag
 
 Every Dev measurement attempts compilation of the whole frozen Java suite. If that fails, class-isolated compilation attributes failure only to affected classes, preserving run 1's first-failure rule. Successful whole-suite compilation is shared by separate class launches; each class retains its 120-second timeout. All 185 denominator methods are evaluated in Phase A. Phase B runs only methods alive entering each index. Fail/error outcomes receive one rerun; a passing rerun remains alive and is marked flaky. Cumulative survival uses fixed denominators. Compile failures apply to every denominator method in that class. Unavailable measurements are never converted to zero.
 
-Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all four groups.
+Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all five groups.
 
 ## Reproduction
 
@@ -66,4 +66,20 @@ run python "$T/generate_adjusted.py" --round 1
 run python "$T/continue_adjusted.py"
 run python "$T/audit_adjusted.py"
 run python "$T/close_adjusted.py"
+```
+
+## Corrected adjusted Ouédraogo group (addendum 3)
+
+The dependency renderer now emits type parameters only when present, preserves declaration modifiers (including implicit public/static modifiers of interface member types), and preserves varargs as Type... instead of arrays. All five dependency blocks passed the mandatory pre-call gate; their type order, membership, omitted types, caps, API order, and prompt constraints match addendum 2. Only the requested header and varargs formatting changed. See the [block diff](generated/ouedraogo-adj2/round1/prompts/block-diff.md), [pre-call gate](generated/ouedraogo-adj2/round1/prompts/pre-call-check.json), [import-fix ledger](generated/ouedraogo-adj2/round1/import-fixes.json), [funnel](generated/ouedraogo-adj2/round1/funnel.md), and [part 9 handover](docs/handover-part9.md).
+
+The single `ouedraogo-adj2` round used exactly 25 calls, no retries, with the same model/settings and screening rules. 7 of 25 extracted files compiled; 41 methods were retained. Previous groups, including `ouedraogo-adj`, remain unchanged. The five-group reports contain 1145 survival records and 905 coverage records.
+
+Reproduction inside the same KTester container (the pre-call check is mandatory and generation refuses existing call directories):
+
+```sh
+run python "$T/adjusted2_prompts.py"
+run python "$T/generate_adjusted2.py" --round 1
+run python "$T/continue_adjusted2.py"
+run python "$T/audit_adjusted2.py"
+run python "$T/close_adjusted2.py"
 ```

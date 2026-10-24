@@ -10,7 +10,7 @@ from run_commit import GROUPS, run_group
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--phase',choices=['a','b'],required=True);parser.add_argument('--workers',type=int,default=4);parser.add_argument('--groups',nargs='+',choices=[*GROUPS,'ouedraogo-adj'],default=GROUPS);parser.add_argument('--result-suffix',default='');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--phase',choices=['a','b'],required=True);parser.add_argument('--workers',type=int,default=4);parser.add_argument('--groups',nargs='+',choices=[*GROUPS,'ouedraogo-adj','ouedraogo-adj2'],default=GROUPS);parser.add_argument('--result-suffix',default='');args=parser.parse_args()
     start=time.monotonic()
     commits=list(csv.DictReader((RESULTS/'commits.csv').open()))
     indices=[int(r['index']) for r in commits] if args.phase=='a' else [int(r['index']) for r in csv.DictReader((RESULTS/'coverage-commits.csv').open())]

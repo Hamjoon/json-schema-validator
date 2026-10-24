@@ -1,0 +1,524 @@
+{
+  "round": "round1",
+  "failed_files": 18,
+  "category_file_counts": {
+    "method-or-constructor-signature": 6,
+    "abstract-or-override-contract": 12,
+    "incompatible-types": 3,
+    "unresolved-symbol": 5,
+    "inaccessible-member-or-constructor": 3,
+    "parse-failure": 1
+  },
+  "categories_may_overlap": true,
+  "symbol_classification_note": "Known production type candidates come from the frozen inventory; unresolved simple names often indicate missing imports. Unknown/external means absent from that inventory, not proof that a dependency lacks the type. Raw diagnostics and generated package/import declarations are retained for judging root causes.",
+  "files": [
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.networknt.schema.ValidationContext.DiscriminatorContext",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/0/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:47: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:48: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:50: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:59: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:60: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/CoT/AnyOfValidatorTest.java:62: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n6 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "technique": "FSL",
+      "categories": [
+        "incompatible-types"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.networknt.schema.SpecVersion.VersionFlag",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/11/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "method",
+          "symbol": "atRoot()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.networknt.schema.utils.StringUtils",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/12/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:42: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:43: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:45: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n        JsonSchemaFactory schemaFactory = new JsonSchemaFactory();      // default factory\n                                          ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:383: error: cannot find symbol\n        ValidationResult result = schema.walkAtNode(ctx, data, data, ctx.atRoot(), false);\n                                                                        ^\n  symbol:   method atRoot()\n  location: variable ctx of type ExecutionContext\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/14/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:22: error: SimpleURIFactory is not abstract and does not override abstract method create(String) in URIFactory\n    public static class SimpleURIFactory implements URIFactory {\n                  ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java",
+      "technique": "CoT",
+      "categories": [
+        "inaccessible-member-or-constructor"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "com.networknt.schema.uri.URITranslator",
+        "com.networknt.schema.uri.URIFetcher",
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.uri.URISchemeFactory",
+        "com.networknt.schema.uri.URISchemeFetcher",
+        "com.networknt.schema.urn.URNFactory",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.io.ByteArrayInputStream",
+        "java.io.InputStream",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashMap",
+        "java.util.Map",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/15/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:53: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(v4Uri, factory.defaultMetaSchemaURI);\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:54: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertTrue(factory.jsonMetaSchemas.containsKey(JsonSchemaFactory.normalizeMetaSchemaUri(v4Uri)));\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:78: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(v4Uri, factory.defaultMetaSchemaURI);\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:85: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(v4Uri, factory.defaultMetaSchemaURI);\n                                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:114: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);\n                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:114: error: defaultMetaSchemaURI has private access in JsonSchemaFactory\n        assertEquals(original.defaultMetaSchemaURI, copy.defaultMetaSchemaURI);\n                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java:115: error: jsonMetaSchemas has private access in JsonSchemaFactory\n        assertTrue(copy.jsonMetaSchemas.containsKey(JsonSchemaFactory.normalizeMetaSchemaUri(v4Uri)));\n                       ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n7 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "technique": "FSL",
+      "categories": [
+        "parse-failure"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "static org.junit.Assert.*",
+        "java.io.ByteArrayInputStream",
+        "java.io.File",
+        "java.io.IOException",
+        "java.io.InputStream",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.net.URISyntaxException",
+        "java.nio.file.Files",
+        "java.util.Collections",
+        "java.util.Map",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.networknt.schema.SpecVersion.VersionFlag",
+        "com.networknt.schema.uri.URITranslator",
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.uri.URIFetcher",
+        "com.networknt.schema.uri.URLFactory",
+        "org.junit.Test"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/16/inventory.tsv",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\nC\tcom.networknt.schema.JsonSchemaFactoryTest\tCLASS\ttrue\t\t/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java\nM\tcom.networknt.schema.JsonSchemaFactoryTest\tv4Uri\t\tfalse\tv4Uri()\t\t35\t472ac40f23610cf752241f3989459f0c57ce95382ef261e9b3e2f55e90fa303d\nM\tcom.networknt.schema.JsonSchemaFactoryTest\tminimalFactory\t\tfalse\tminimalFactory()\t\t40\t3414f6f7de637c0d06c6218d1215239b61d26b47ebb32ed4afe0c9c3b0c010c1\nM\tcom.networknt.schema.JsonSchemaFactoryTest\treadJson\t\tfalse\treadJson(String)\t\t48\t1e3c01529f8a119b04fc26a012e7290b0e69cdb86b54144d826a2254bba5897a\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestBuilderCreatesFactory\tplain\ttrue\ttestBuilderCreatesFactory()\t\t52\t88ff5322fc0c5c81d67d22d3ebdcf806cdcdf568315e8a5cd1c985a4ef9437e1\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetInstanceAndCheckVersion\tplain\ttrue\ttestGetInstanceAndCheckVersion()\t\t63\t6a8ec1c69faf04584ee8660ad7c4fd373d26c2f508ade31156e1434266017849\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestNormalizeMetaSchemaUri\tplain\ttrue\ttestNormalizeMetaSchemaUri()\t\t464\td7c9583943e0b08d6f741205adc686c19cd8a9a05bfb3e4465154013ab107b21\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestIsYamlDetection\tplain\ttrue\ttestIsYamlDetection()\t\t480\tba2ff3e5dad618431c46a06c1cd3c84179606844bf4c9b555a0a0055a13cb06a\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetSchemaFromStringValidJson\tplain\ttrue\ttestGetSchemaFromStringValidJson()\t\t494\t8bb5b60d9dd8a3330d8145ed45826ea82bec7ea67bac3e89fb055b5204a15b6e\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetSchemaFromStringInvalidJson\tplain\ttrue\ttestGetSchemaFromStringInvalidJson()\t\t510\tcea527cb1c03c3ddf7c4ebc87035eb1b12193b6a3d983bc234a4de92dd4d9d82\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetSchemaFromInputStream\tplain\ttrue\ttestGetSchemaFromInputStream()\t\t522\tfdf097ac7be5e55113f62cd348c6d1a27d2b78c6c361b3b214521ee0759d376b\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetSchemaFromUriWithCache\tplain\ttrue\ttestGetSchemaFromUriWithCache()\t\t533\t6af11a8c7c25f2dee374cc67c30aace749f0c98cc6dab0445479f5260b3d259e\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestGetSchemaFromUriUnsupportedScheme\tplain\ttrue\ttestGetSchemaFromUriUnsupportedScheme()\t\t550\t2a5a29c23567a93244868ca8f30cf47346d226541800aa6e290d2ef06cb7ff31\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestBuilderCopyPreservesConfiguration\tplain\ttrue\ttestBuilderCopyPreservesConfiguration()\t\t562\tf44d9a5a758390b214c6c590594adec1614de114996bd425b57e86a8f1a6ddc9\nM\tcom.networknt.schema.JsonSchemaFactoryTest\ttestUriTranslatorMapping\tplain\ttrue\ttestUriTranslatorMapping()\t\t662\t63602b213e3a7c61ce253ae0badc933b02d17bb6f26ee12e0c8cd42ea9256452\nM\tcom.networknt.schema.JsonSchemaFactoryTest\tinvokeStaticProtected\t\tfalse\tinvokeStaticProtected(String, Object[])\t\t689\tf68fd18b02c51282d37549076095cc8667adf2bc5bc362aea1eded3e5691b7f2\nM\tcom.networknt.schema.JsonSchemaFactoryTest\tgetPrivateField\t\tfalse\tgetPrivateField(Object, String)\t\t696\t72f21ec5d3e9c561b9e9e98c721d7c238a91cce5a3fe13a1da29cd4425e42f81\nException in thread \"main\" java.lang.IllegalStateException: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:456: error: ')' expected\n                .build();\n                        ^\n\tat SourceInventory.main(SourceInventory.java:65)\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "inaccessible-member-or-constructor"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "method",
+          "symbol": "getJsonMetaSchema()",
+          "known_production_types": []
+        },
+        {
+          "kind": "method",
+          "symbol": "getSchemaNode()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URITranslator.CompositeURITranslator",
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.uri.URIFetcher",
+        "com.networknt.schema.uri.URISchemeFactory",
+        "com.networknt.schema.uri.URISchemeFetcher",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.dataformat.yaml.YAMLMapper",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.io.ByteArrayInputStream",
+        "java.io.IOException",
+        "java.io.InputStream",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.nio.charset.StandardCharsets",
+        "java.util.Collections",
+        "java.util.HashMap",
+        "java.util.Map",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/17/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:218: error: cannot find symbol\n        JsonNode node = schema.getValidationContext().getJsonMetaSchema().getNodeByFragmentRef(\"/\", schema.getValidationContext().getSchemaNode());\n                                                     ^\n  symbol:   method getJsonMetaSchema()\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:218: error: cannot find symbol\n        JsonNode node = schema.getValidationContext().getJsonMetaSchema().getNodeByFragmentRef(\"/\", schema.getValidationContext().getSchemaNode());\n                                                                                                                                 ^\n  symbol:   method getSchemaNode()\n  location: class ValidationContext\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:331: error: JsonSchemaFactory(ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator) has private access in JsonSchemaFactory\n            super(jsonMapper, yamlMapper, defaultMetaSchemaURI, uriFactory, uriFetcher,\n            ^\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "inaccessible-member-or-constructor"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/2/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "unresolved-symbol",
+        "incompatible-types"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "method",
+          "symbol": "isMatchedNode()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/20/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:179: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> walkMessages = jsonSchema.walk(node, true);\n                                                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:198: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> walkMessages = jsonSchema.walk(node, false);\n                                                             ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java:253: error: cannot find symbol\n        assertTrue(\"matchedNode flag must be true after successful validation\", state.isMatchedNode());\n                                                                                     ^\n  symbol:   method isMatchedNode()\n  location: variable state of type ValidatorState\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/CoT/OneOfValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java",
+      "technique": "FSL",
+      "categories": [
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "static org.junit.Assert.*",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.BooleanNode",
+        "com.fasterxml.jackson.databind.node.IntNode",
+        "com.fasterxml.jackson.databind.node.TextNode",
+        "org.junit.Before",
+        "org.junit.Test"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/21/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:76: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java:77: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/FSL/OneOfValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.slf4j.LoggerFactory",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/22/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java:43: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/GToT/OneOfValidatorTest.java:44: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();\n                                ^\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "unresolved-symbol",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "method",
+          "symbol": "isMatchedNode()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "static org.junit.Assert.*",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.LinkedHashSet",
+        "java.util.Set",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "org.junit.Before",
+        "org.junit.Test"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/23/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:58: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();                     // public no\u2011arg ctor\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:59: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();                     // public no\u2011arg ctor\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:132: error: cannot find symbol\n                state.isMatchedNode());\n                     ^\n  symbol:   method isMatchedNode()\n  location: variable state of type ValidatorState\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java:253: error: cannot find symbol\n        assertTrue(\"matchedNode flag must be reset to true\", state.isMatchedNode());\n                                                                  ^\n  symbol:   method isMatchedNode()\n  location: variable state of type ValidatorState\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ToT/OneOfValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collection",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/24/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:50: error: URIFactory is abstract; cannot be instantiated\n        this.uriFactory = new URIFactory();\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:51: error: URNFactory is abstract; cannot be instantiated\n        this.urnFactory = new URNFactory();\n                          ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:52: error: constructor JsonMetaSchema in class JsonMetaSchema cannot be applied to given types;\n        this.metaSchema = new JsonMetaSchema();               // default meta\u2011schema\n                          ^\n  required: String,String,Map<String,Keyword>\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/OneOfValidator/ZSL/OneOfValidatorTest.java:53: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n        this.jsonSchemaFactory = new JsonSchemaFactory();    // default factory\n                                 ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "com.networknt.schema.CollectorContext.Scope",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/3/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:26: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:27: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java:29: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n        JsonSchemaFactory schemaFactory = new JsonSchemaFactory();          // default factory\n                                          ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n3 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java",
+      "technique": "ZSL",
+      "categories": [
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ArrayNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/4/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:41: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java:42: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();\n                                ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ZSL/AnyOfValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n2 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java",
+      "technique": "CoT",
+      "categories": [
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "org.junit.Before",
+        "org.junit.Test",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashSet",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/5/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:87: error: URIFactory is abstract; cannot be instantiated\n                new URIFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:88: error: URNFactory is abstract; cannot be instantiated\n                new URNFactory(),\n                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:90: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n                new JsonSchemaFactory(),\n                ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:89: error: no suitable method found for builder(no arguments)\n                JsonMetaSchema.builder().build(),\n                              ^\n    method JsonMetaSchema.builder(String) is not applicable\n      (actual and formal argument lists differ in length)\n    method JsonMetaSchema.builder(String,JsonMetaSchema) is not applicable\n      (actual and formal argument lists differ in length)\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java",
+      "technique": "GToT",
+      "categories": [
+        "unresolved-symbol",
+        "method-or-constructor-signature",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [
+        {
+          "kind": "method",
+          "symbol": "getV2019_09()",
+          "known_production_types": []
+        }
+      ],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.networknt.schema.ValidationContext.DiscriminatorContext",
+        "com.networknt.schema.uri.URIFactory",
+        "com.networknt.schema.urn.URNFactory",
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.ObjectMapper",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.slf4j.Logger",
+        "org.slf4j.LoggerFactory",
+        "java.net.URI",
+        "java.util.Collections",
+        "java.util.HashSet",
+        "java.util.Set",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/7/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:120: error: URIFactory is abstract; cannot be instantiated\n        URIFactory uriFactory = new URIFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:121: error: URNFactory is abstract; cannot be instantiated\n        URNFactory urnFactory = new URNFactory();\n                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:122: error: cannot find symbol\n        JsonMetaSchema metaSchema = JsonMetaSchema.getV2019_09(); // static factory in real lib\n                                                  ^\n  symbol:   method getV2019_09()\n  location: class JsonMetaSchema\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java:123: error: constructor JsonSchemaFactory in class JsonSchemaFactory cannot be applied to given types;\n        JsonSchemaFactory schemaFactory = new JsonSchemaFactory();\n                                          ^\n  required: ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator\n  found:    no arguments\n  reason: actual and formal argument lists differ in length\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/GToT/BaseJsonValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\n4 errors\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java",
+      "technique": "ToT",
+      "categories": [
+        "incompatible-types",
+        "abstract-or-override-contract"
+      ],
+      "unresolved_symbols": [],
+      "source_package": "com.networknt.schema",
+      "source_imports": [
+        "com.fasterxml.jackson.databind.JsonNode",
+        "com.fasterxml.jackson.databind.node.JsonNodeFactory",
+        "com.fasterxml.jackson.databind.node.ObjectNode",
+        "org.junit.Before",
+        "org.junit.Test",
+        "org.junit.runner.RunWith",
+        "org.junit.runners.JUnit4",
+        "org.slf4j.Logger",
+        "java.lang.reflect.Method",
+        "java.net.URI",
+        "java.util.*",
+        "static org.junit.Assert.*"
+      ],
+      "log": "generated/ouedraogo-adj2/round1/validation-logs/8/test/javac.txt",
+      "diagnostics": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:80: error: RecordingLogger is not abstract and does not override abstract method isDebugEnabled(Marker) in Logger\n    private static class RecordingLogger implements Logger {\n                   ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:308: error: incompatible types: String cannot be converted to URI\n        JsonSchema dummy = new JsonSchema(null, \"/any\", nf.objectNode());\n                                                ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:317: error: incompatible types: String cannot be converted to URI\n        JsonSchema catSchema = new JsonSchema(null, \"/schemas/cat\", nf.objectNode());\n                                                    ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:324: error: incompatible types: String cannot be converted to URI\n        JsonSchema dogSchema = new JsonSchema(null, \"/animals/dog\", nf.objectNode());\n                                                    ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:332: error: incompatible types: String cannot be converted to URI\n        JsonSchema fishSchema = new JsonSchema(null, \"/animals/fish\", nf.objectNode());\n                                                     ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:351: error: incompatible types: String cannot be converted to URI\n        JsonSchema parent1 = new JsonSchema(null, \"/schemas/dog\", nf.objectNode());\n                                                  ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:357: error: incompatible types: String cannot be converted to URI\n        JsonSchema parent2 = new JsonSchema(null, \"/schemas/dog\", nf.objectNode());\n                                                  ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:390: error: incompatible types: String cannot be converted to URI\n        JsonSchema childSchema = new JsonSchema(null, \"/schemas/dog\", nf.objectNode());\n                                                      ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:410: error: incompatible types: String cannot be converted to URI\n        JsonSchema illegalSchema = new JsonSchema(null, \"/schemas/illegalCat\", nf.objectNode());\n                                                        ^\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:426: error: incompatible types: String cannot be converted to URI\n        JsonSchema parent = new JsonSchema(null, \"/parent\", schemaNode);\n                                                 ^\nNote: /repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java uses or overrides a deprecated API.\nNote: Recompile with -Xlint:deprecation for details.\nNote: Some messages have been simplified; recompile with -Xdiags:verbose to get full output\n10 errors\n"
+    }
+  ],
+  "prompts_changed": true,
+  "generated_sources_repaired": true
+}

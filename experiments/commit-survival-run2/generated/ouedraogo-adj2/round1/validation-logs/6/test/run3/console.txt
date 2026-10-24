@@ -1,0 +1,148 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (9):
+  JUnit Vintage:BaseJsonValidatorTest:testGetNodeFieldType
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testGetNodeFieldType', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testGetNodeFieldType(BaseJsonValidatorTest.java:335)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testRegisterAndMergeDiscriminatorMappingRedefinitionThrows
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testRegisterAndMergeDiscriminatorMappingRedefinitionThrows', methodParameterTypes = '']
+    => java.lang.Exception: Unexpected exception, expected<com.networknt.schema.JsonSchemaException> but was<java.lang.NullPointerException>
+       org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:30)
+       org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+       org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+       org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+       org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+       [...]
+     Caused by: java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testRegisterAndMergeDiscriminatorMappingRedefinitionThrows(BaseJsonValidatorTest.java:290)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testCheckDiscriminatorMatchNullValue
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testCheckDiscriminatorMatchNullValue', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testCheckDiscriminatorMatchNullValue(BaseJsonValidatorTest.java:146)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testRegisterAndMergeDiscriminatorMergeMappings
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testRegisterAndMergeDiscriminatorMergeMappings', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testRegisterAndMergeDiscriminatorMergeMappings(BaseJsonValidatorTest.java:255)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testCheckDiscriminatorMatchExplicitNoMatchImplicitAllowed
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testCheckDiscriminatorMatchExplicitNoMatchImplicitAllowed', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testCheckDiscriminatorMatchExplicitNoMatchImplicitAllowed(BaseJsonValidatorTest.java:203)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testCheckDiscriminatorMatchExplicit
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testCheckDiscriminatorMatchExplicit', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testCheckDiscriminatorMatchExplicit(BaseJsonValidatorTest.java:182)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testRegisterAndMergeDiscriminatorRedefinePropertyName
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testRegisterAndMergeDiscriminatorRedefinePropertyName', methodParameterTypes = '']
+    => java.lang.Exception: Unexpected exception, expected<com.networknt.schema.JsonSchemaException> but was<java.lang.NullPointerException>
+       org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:30)
+       org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+       org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+       org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+       org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+       [...]
+     Caused by: java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testRegisterAndMergeDiscriminatorRedefinePropertyName(BaseJsonValidatorTest.java:227)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testPreloadJsonSchemas
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testPreloadJsonSchemas', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest$1DummySchema.<init>(BaseJsonValidatorTest.java:374)
+       com.networknt.schema.BaseJsonValidatorTest.testPreloadJsonSchemas(BaseJsonValidatorTest.java:383)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       [...]
+  JUnit Vintage:BaseJsonValidatorTest:testCheckDiscriminatorMatchImplicit
+    MethodSource [className = 'com.networknt.schema.BaseJsonValidatorTest', methodName = 'testCheckDiscriminatorMatchImplicit', methodParameterTypes = '']
+    => java.lang.NullPointerException: Cannot invoke "com.networknt.schema.ValidationContext.getMetaSchema()" because "validationContext" is null
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:110)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:91)
+       com.networknt.schema.JsonSchema.<init>(JsonSchema.java:77)
+       com.networknt.schema.BaseJsonValidatorTest.testCheckDiscriminatorMatchImplicit(BaseJsonValidatorTest.java:161)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+
+Test run finished after 399 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        14 tests found           ]
+[         0 tests skipped         ]
+[        14 tests started         ]
+[         0 tests aborted         ]
+[         5 tests successful      ]
+[         9 tests failed          ]
+

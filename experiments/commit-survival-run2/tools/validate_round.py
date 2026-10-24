@@ -13,7 +13,7 @@ from archive_validation import archive
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--group',choices=['ktester','ouedraogo','ouedraogo-adj'],required=True);parser.add_argument('--round',required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--group',choices=['ktester','ouedraogo','ouedraogo-adj','ouedraogo-adj2'],required=True);parser.add_argument('--round',required=True);args=parser.parse_args()
     start=time.monotonic();base=EXP/'generated'/args.group/args.round
     sources=base/'json-schema-validator/test_classes' if args.group=='ktester' else base/'sources'
     records=[]

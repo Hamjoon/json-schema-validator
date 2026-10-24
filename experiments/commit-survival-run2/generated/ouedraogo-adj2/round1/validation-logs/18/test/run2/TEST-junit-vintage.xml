@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Vintage" tests="26" skipped="0" failures="3" errors="1" time="0.526" hostname="a9bd1eac6f65" timestamp="2026-10-24T04:47:09">
+<properties>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj2/round1/18/test/classes:/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/repo/experiments/commit-survival-run2/dev/src-test-t/resources:/repo/experiments/commit-survival-run2/dev/src-test-t/suite"/>
+<property name="java.class.version" value="61.0"/>
+<property name="java.home" value="/usr/lib/jvm/java-17-openjdk-arm64"/>
+<property name="java.io.tmpdir" value="/tmp"/>
+<property name="java.library.path" value="/usr/java/packages/lib:/usr/lib/aarch64-linux-gnu/jni:/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="java.specification.maintenance.version" value="1"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="17"/>
+<property name="java.vendor" value="Debian"/>
+<property name="java.vendor.url" value="https://tracker.debian.org/openjdk-17"/>
+<property name="java.vendor.url.bug" value="https://bugs.debian.org/openjdk-17"/>
+<property name="java.version" value="17.0.20.1"/>
+<property name="java.version.date" value="2026-08-18"/>
+<property name="java.vm.compressedOopsMode" value="32-bit"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="17"/>
+<property name="java.vm.vendor" value="Debian"/>
+<property name="java.vm.version" value="17.0.20.1+1-1-deb12u1-Debian"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="aarch64"/>
+<property name="os.name" value="Linux"/>
+<property name="os.version" value="7.0.12-linuxkit"/>
+<property name="path.separator" value=":"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-arm64/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+<property name="sun.java.command" value="org.junit.platform.console.ConsoleLauncher --disable-banner --disable-ansi-colors --fail-if-no-tests --details summary --select-method com.networknt.schema.JsonSchemaFactoryTest#testBuilderCreatesFactory() --select-method com.networknt.schema.JsonSchemaFactoryTest#testBuilderCloningFromBlueprint() --select-method com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionValidFlags() --select-method com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionInvalidFlag() --select-method com.networknt.schema.JsonSchemaFactoryTest#testFindMetaSchemaUsesDefaultWhenNo$schema() --select-method com.networknt.schema.JsonSchemaFactoryTest#testFindMetaSchemaRespectsValid$schema() --select-method com.networknt.schema.JsonSchemaFactoryTest#testFindMetaSchemaRejectsNonTextual$schema() --select-method com.networknt.schema.JsonSchemaFactoryTest#testFindMetaSchemaRejectsUnknownDialect() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromFileUriWithCache() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromFileUriWithoutCache() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromInvalidUri() --select-method com.networknt.schema.JsonSchemaFactoryTest#testIsYamlDetection() --select-method com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriConvertsToHttps() --select-method com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriInvalidSyntax() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetUriFactoryReturnsConfiguredFactory() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetUriTranslatorAppliesMappings() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromInvalidJsonString() --select-method com.networknt.schema.JsonSchemaFactoryTest#testIdMatchesSourceUriReturnsFalseWhenNoId() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromUriAndJsonNode() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromJsonNodeOnly() --select-method com.networknt.schema.JsonSchemaFactoryTest#testCreateChildSchemaViaFactoryCreateMethod() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromInputStream() --select-method com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromInputStreamInvalidJson() --select-method com.networknt.schema.JsonSchemaFactoryTest#testBuilderRejectsNullObjectMapper() --select-method com.networknt.schema.JsonSchemaFactoryTest#testBuilderRejectsNullDefaultMetaSchemaURI() --select-method com.networknt.schema.JsonSchemaFactoryTest#testBuilderRejectsEmptyMetaSchemaCollection() --reports-dir /repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj2/round1/18/test/run2"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="user.country" value="US"/>
+<property name="user.dir" value="/repo/experiments/commit-survival/work/runtime"/>
+<property name="user.home" value="/root"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="root"/>
+<property name="user.timezone" value="Etc/UTC"/>
+</properties>
+<testcase name="testFindMetaSchemaRejectsNonTextual$schema" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.017">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testFindMetaSchemaRejectsNonTextual$schema(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testFindMetaSchemaRejectsNonTextual$schema
+]]></system-out>
+</testcase>
+<testcase name="testFindMetaSchemaRespectsValid$schema" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testFindMetaSchemaRespectsValid$schema(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testFindMetaSchemaRespectsValid$schema
+]]></system-out>
+</testcase>
+<testcase name="testBuilderCloningFromBlueprint" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testBuilderCloningFromBlueprint(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testBuilderCloningFromBlueprint
+]]></system-out>
+</testcase>
+<testcase name="testFindMetaSchemaRejectsUnknownDialect" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.008">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testFindMetaSchemaRejectsUnknownDialect(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testFindMetaSchemaRejectsUnknownDialect
+]]></system-out>
+</testcase>
+<testcase name="testIdMatchesSourceUriReturnsFalseWhenNoId" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testIdMatchesSourceUriReturnsFalseWhenNoId(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testIdMatchesSourceUriReturnsFalseWhenNoId
+]]></system-out>
+</testcase>
+<testcase name="testNormalizeMetaSchemaUriConvertsToHttps" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testNormalizeMetaSchemaUriConvertsToHttps(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testNormalizeMetaSchemaUriConvertsToHttps
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromInvalidUri" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.002">
+<error message="Unexpected exception, expected&lt;com.networknt.schema.JsonSchemaException&gt; but was&lt;java.net.URISyntaxException&gt;" type="java.lang.Exception"><![CDATA[java.lang.Exception: Unexpected exception, expected<com.networknt.schema.JsonSchemaException> but was<java.net.URISyntaxException>
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:30)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+Caused by: java.net.URISyntaxException: Malformed IPv6 address at index 8: http://[invalid]
+	at java.base/java.net.URI$Parser.fail(URI.java:2976)
+	at java.base/java.net.URI$Parser.parseIPv6Reference(URI.java:3613)
+	at java.base/java.net.URI$Parser.parseServer(URI.java:3357)
+	at java.base/java.net.URI$Parser.parseAuthority(URI.java:3284)
+	at java.base/java.net.URI$Parser.parseHierarchical(URI.java:3221)
+	at java.base/java.net.URI$Parser.parse(URI.java:3177)
+	at java.base/java.net.URI.<init>(URI.java:623)
+	at com.networknt.schema.JsonSchemaFactoryTest.testGetSchemaFromInvalidUri(JsonSchemaFactoryTest.java:190)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:19)
+	... 38 more
+]]></error>
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromInvalidUri(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromInvalidUri
+]]></system-out>
+</testcase>
+<testcase name="testBuilderRejectsNullDefaultMetaSchemaURI" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testBuilderRejectsNullDefaultMetaSchemaURI(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testBuilderRejectsNullDefaultMetaSchemaURI
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromFileUriWithoutCache" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromFileUriWithoutCache(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromFileUriWithoutCache
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromInputStreamInvalidJson" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.009">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromInputStreamInvalidJson(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromInputStreamInvalidJson
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromUriAndJsonNode" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromUriAndJsonNode(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromUriAndJsonNode
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromInputStream" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.002">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromInputStream(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromInputStream
+]]></system-out>
+</testcase>
+<testcase name="testCheckVersionValidFlags" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testCheckVersionValidFlags(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testCheckVersionValidFlags
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromJsonNodeOnly" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromJsonNodeOnly(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromJsonNodeOnly
+]]></system-out>
+</testcase>
+<testcase name="testBuilderRejectsEmptyMetaSchemaCollection" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.003">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testBuilderRejectsEmptyMetaSchemaCollection(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testBuilderRejectsEmptyMetaSchemaCollection
+]]></system-out>
+</testcase>
+<testcase name="testCheckVersionInvalidFlag" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<failure message="Expected exception: java.lang.IllegalArgumentException" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Expected exception: java.lang.IllegalArgumentException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:34)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testCheckVersionInvalidFlag(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testCheckVersionInvalidFlag
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromInvalidJsonString" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromInvalidJsonString(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromInvalidJsonString
+]]></system-out>
+</testcase>
+<testcase name="testBuilderCreatesFactory" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testBuilderCreatesFactory(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testBuilderCreatesFactory
+]]></system-out>
+</testcase>
+<testcase name="testIsYamlDetection" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.394">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testIsYamlDetection(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testIsYamlDetection
+]]></system-out>
+</testcase>
+<testcase name="testBuilderRejectsNullObjectMapper" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.001">
+<failure message="Expected exception: java.lang.IllegalArgumentException" type="java.lang.AssertionError"><![CDATA[java.lang.AssertionError: Expected exception: java.lang.IllegalArgumentException
+	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:34)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testBuilderRejectsNullObjectMapper(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testBuilderRejectsNullObjectMapper
+]]></system-out>
+</testcase>
+<testcase name="testFindMetaSchemaUsesDefaultWhenNo$schema" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testFindMetaSchemaUsesDefaultWhenNo$schema(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testFindMetaSchemaUsesDefaultWhenNo$schema
+]]></system-out>
+</testcase>
+<testcase name="testCreateChildSchemaViaFactoryCreateMethod" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.039">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testCreateChildSchemaViaFactoryCreateMethod(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testCreateChildSchemaViaFactoryCreateMethod
+]]></system-out>
+</testcase>
+<testcase name="testGetUriTranslatorAppliesMappings" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.015">
+<failure message="expected:&lt;http://[mapped]&gt; but was:&lt;http://[original]&gt;" type="org.junit.ComparisonFailure"><![CDATA[org.junit.ComparisonFailure: expected:<http://[mapped]> but was:<http://[original]>
+	at org.junit.Assert.assertEquals(Assert.java:117)
+	at org.junit.Assert.assertEquals(Assert.java:146)
+	at com.networknt.schema.JsonSchemaFactoryTest.testGetUriTranslatorAppliesMappings(JsonSchemaFactoryTest.java:252)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.executeTests(ConsoleTestExecutor.java:66)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.lambda$execute$0(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.tasks.CustomContextClassLoaderExecutor.invoke(CustomContextClassLoaderExecutor.java:33)
+	at org.junit.platform.console.tasks.ConsoleTestExecutor.execute(ConsoleTestExecutor.java:58)
+	at org.junit.platform.console.ConsoleLauncher.executeTests(ConsoleLauncher.java:120)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:82)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:55)
+	at org.junit.platform.console.ConsoleLauncher.execute(ConsoleLauncher.java:48)
+	at org.junit.platform.console.ConsoleLauncher.main(ConsoleLauncher.java:42)
+]]></failure>
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetUriTranslatorAppliesMappings(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetUriTranslatorAppliesMappings
+]]></system-out>
+</testcase>
+<testcase name="testGetUriFactoryReturnsConfiguredFactory" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetUriFactoryReturnsConfiguredFactory(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetUriFactoryReturnsConfiguredFactory
+]]></system-out>
+</testcase>
+<testcase name="testNormalizeMetaSchemaUriInvalidSyntax" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testNormalizeMetaSchemaUriInvalidSyntax(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testNormalizeMetaSchemaUriInvalidSyntax
+]]></system-out>
+</testcase>
+<testcase name="testGetSchemaFromFileUriWithCache" classname="com.networknt.schema.JsonSchemaFactoryTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]/[runner:com.networknt.schema.JsonSchemaFactoryTest]/[test:testGetSchemaFromFileUriWithCache(com.networknt.schema.JsonSchemaFactoryTest)]
+display-name: testGetSchemaFromFileUriWithCache
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-vintage]
+display-name: JUnit Vintage
+]]></system-out>
+</testsuite>

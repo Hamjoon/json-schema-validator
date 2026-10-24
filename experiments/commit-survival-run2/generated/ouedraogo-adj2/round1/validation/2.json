@@ -1,0 +1,167 @@
+{
+  "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj2/round1/2/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.77,
+    "log": "generated/ouedraogo-adj2/round1/validation-logs/2/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testConstructorPopulatesSubSchemas",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testConstructorPopulatesSubSchemas",
+      "body_hash": "10d7acb6b8c61a5285db97419cbd88912b6b17f9c0388c54525cc72a1fc23989",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateMatchesFirstSubSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateMatchesFirstSubSchema",
+      "body_hash": "2c88b06eebc9d414f51adbface02f49dd59a6167202f5175a254581e1badd81b",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateMatchesSecondSubSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateMatchesSecondSubSchema",
+      "body_hash": "c1d701102094d810e1b0460d4749d669bf54f8a8ffee9543c587740f98abbdd2",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateNoMatchProducesErrors",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateNoMatchProducesErrors",
+      "body_hash": "6195c4fcc07e3de985f2c62e0c544f9d6bb46766ad08bab563b531e9fa5ca3c2",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateEmptyAnyOfAlwaysFails",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateEmptyAnyOfAlwaysFails",
+      "body_hash": "3301050a8592719c55e6286cf428df1ba6f7722c6e90012f0892f0f445787504",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalkDelegatesToValidateWhenFlagTrue",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalkDelegatesToValidateWhenFlagTrue",
+      "body_hash": "173253ae312178d6b7c7d8edd6dafd5fd31e3d3e80ab3190a75808cddb3d443a",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testWalkWithoutValidationReturnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testWalkWithoutValidationReturnsEmptySet",
+      "body_hash": "86e297a2ac38c53d8cccafa5fe1bc2784747e858a1736011c2c1652abf888ec6",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testPreloadJsonSchemaDoesNotThrow",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testPreloadJsonSchemaDoesNotThrow",
+      "body_hash": "ff8ce5b24cf57cda3bc9907ed0b0582d870e0d372858b5102fefde27fd2fdd51",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithOpenAPI3DiscriminatorFlagWhenNoMatch",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithOpenAPI3DiscriminatorFlagWhenNoMatch",
+      "body_hash": "3e6fea1177d3bcaff1f63c9fbe649d7320acef632ecacc0a48ce7ad9e0eec3fc",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java",
+      "class": "com.networknt.schema.AnyOfValidatorTest",
+      "method": "testValidateWithOpenAPI3DiscriminatorFlagWhenMatchFound",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java|com.networknt.schema.AnyOfValidatorTest|testValidateWithOpenAPI3DiscriminatorFlagWhenMatchFound",
+      "body_hash": "fbf55a6953fb473d91727cff893035d9dadc13877e0b6f5a47a0e33131095dce",
+      "round": "round1",
+      "technique": "GToT",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java:220: error: DISCRIMINATOR_REMARK has private access in AnyOfValidator\n                .anyMatch(m -> m.getMessage().contains(AnyOfValidator.DISCRIMINATOR_REMARK));\n                                                                     ^\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/AnyOfValidator/GToT/AnyOfValidatorTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.726,
+    "log": "generated/ouedraogo-adj2/round1/validation-logs/2/inventory.tsv"
+  }
+}

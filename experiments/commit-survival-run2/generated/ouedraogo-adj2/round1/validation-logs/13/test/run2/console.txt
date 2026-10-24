@@ -1,0 +1,172 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+
+Failures (11):
+  JUnit Vintage:JsonSchemaTest:getRefSchemaNode_NonExistingFragmentReturnsNull
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'getRefSchemaNode_NonExistingFragmentReturnsNull', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.getRefSchemaNode_NonExistingFragmentReturnsNull(JsonSchemaTest.java:135)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:createExecutionContext_ReturnsContextWithCollector
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'createExecutionContext_ReturnsContextWithCollector', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.createExecutionContext_ReturnsContextWithCollector(JsonSchemaTest.java:173)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:validate_WithOpenAPIDiscriminator_RegistersAndChecks
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'validate_WithOpenAPIDiscriminator_RegistersAndChecks', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.validate_WithOpenAPIDiscriminator_RegistersAndChecks(JsonSchemaTest.java:241)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+       [...]
+  JUnit Vintage:JsonSchemaTest:toString_IncludesPathAndNode
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'toString_IncludesPathAndNode', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.toString_IncludesPathAndNode(JsonSchemaTest.java:268)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:isDynamicAnchor_TrueWhenRecursiveAnchorIsTrue
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'isDynamicAnchor_TrueWhenRecursiveAnchorIsTrue', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.isDynamicAnchor_TrueWhenRecursiveAnchorIsTrue(JsonSchemaTest.java:162)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:validateAndCollect_TypeMismatchProducesError
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'validateAndCollect_TypeMismatchProducesError', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.validateAndCollect_TypeMismatchProducesError(JsonSchemaTest.java:201)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:validate_EmptySchemaProducesNoErrors
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'validate_EmptySchemaProducesNoErrors', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.validate_EmptySchemaProducesNoErrors(JsonSchemaTest.java:187)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:combineCurrentUriWithIds_FragmentWithoutBase_ResultsInNullUri
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'combineCurrentUriWithIds_FragmentWithoutBase_ResultsInNullUri', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.combineCurrentUriWithIds_FragmentWithoutBase_ResultsInNullUri(JsonSchemaTest.java:87)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:combineCurrentUriWithIds_NoId_ReturnsOriginalUri
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'combineCurrentUriWithIds_NoId_ReturnsOriginalUri', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.combineCurrentUriWithIds_NoId_ReturnsOriginalUri(JsonSchemaTest.java:71)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:getRefSchemaNode_ResolvesLocalDefinition
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'getRefSchemaNode_ResolvesLocalDefinition', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.getRefSchemaNode_ResolvesLocalDefinition(JsonSchemaTest.java:121)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+  JUnit Vintage:JsonSchemaTest:findAncestor_ReturnsRootSchema
+    MethodSource [className = 'com.networknt.schema.JsonSchemaTest', methodName = 'findAncestor_ReturnsRootSchema', methodParameterTypes = '']
+    => java.lang.IllegalArgumentException: URIFactory must not be null
+       com.networknt.schema.ValidationContext.<init>(ValidationContext.java:42)
+       com.networknt.schema.JsonSchemaTest$SimpleValidationContext.<init>(JsonSchemaTest.java:34)
+       com.networknt.schema.JsonSchemaTest.buildSchema(JsonSchemaTest.java:59)
+       com.networknt.schema.JsonSchemaTest.findAncestor_ReturnsRootSchema(JsonSchemaTest.java:148)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+       java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+       java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+       java.base/java.lang.reflect.Method.invoke(Method.java:569)
+       org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+       org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+       [...]
+
+Test run finished after 755 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[        12 tests found           ]
+[         0 tests skipped         ]
+[        12 tests started         ]
+[         0 tests aborted         ]
+[         1 tests successful      ]
+[        11 tests failed          ]
+

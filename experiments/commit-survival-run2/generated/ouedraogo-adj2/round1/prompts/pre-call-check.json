@@ -1,0 +1,125 @@
+{
+  "passed": true,
+  "checked_at": "2026-10-24T04:34:04.333407+00:00",
+  "empty_angle_brackets": false,
+  "headers_have_modifiers": true,
+  "only_requested_changes": true,
+  "renderer_sha256": {
+    "DependencyInventory2.java": "366cec31e3bad91f6479a06b2461565ad61bc9f987f001fca21aa0fb8d79fb7c",
+    "adjusted2_prompts.py": "2226ec9eed0537c1a9af60acbf64690269f3b3b6d17d77605b9de6001a018054",
+    "check_adjusted2_blocks.py": "a2b2434b4889a6b3908736bc2b55e820bcea0e79d66281ddd5221b824c809777"
+  },
+  "blocks": [
+    {
+      "class_name": "JsonSchema",
+      "types": 15,
+      "lines": 170,
+      "varargs_parameters": 4,
+      "headers": [
+        "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+        "public abstract class ValidationMessageHandler {",
+        "public interface JsonValidator extends JsonSchemaWalker {",
+        "public interface JsonSchemaWalker {",
+        "public class ValidationContext {",
+        "public class JsonMetaSchema {",
+        "public class TypeValidator extends BaseJsonValidator {",
+        "public interface WalkListenerRunner {",
+        "public class ExecutionContext {",
+        "public class ValidationMessage {",
+        "public class ValidationResult {",
+        "public static class Scope {",
+        "public enum VersionFlag {",
+        "public static class DiscriminatorContext {",
+        "public final class StringUtils {"
+      ],
+      "old_sha256": "b30918566e9b7acd000821feb046e83c7585905902a07c83f89f8a4b01f791aa",
+      "new_sha256": "960b6504eba50b2a32af747ee855a2176f78f7c665889086c545c6ba57cafd00"
+    },
+    {
+      "class_name": "BaseJsonValidator",
+      "types": 11,
+      "lines": 194,
+      "varargs_parameters": 4,
+      "headers": [
+        "public abstract class ValidationMessageHandler {",
+        "public interface JsonValidator extends JsonSchemaWalker {",
+        "public interface JsonSchemaWalker {",
+        "public class JsonSchema extends BaseJsonValidator {",
+        "public enum ValidatorTypeCode implements Keyword,ErrorMessageType {",
+        "public class ValidationContext {",
+        "public class ApplyDefaultsStrategy {",
+        "public enum PathType {",
+        "public static class DiscriminatorContext {",
+        "public class ExecutionContext {",
+        "public class ValidationMessage {"
+      ],
+      "old_sha256": "f6e41d700957a91afd94286cc40c7ede86f78dcb14a5ab2b9e667fd1c56ab4ea",
+      "new_sha256": "0ebd413afd9f9668dacd0a776fe32ae8fae8a74418e3de3fbea7d78afda9416f"
+    },
+    {
+      "class_name": "AnyOfValidator",
+      "types": 10,
+      "lines": 139,
+      "varargs_parameters": 4,
+      "headers": [
+        "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+        "public abstract class ValidationMessageHandler {",
+        "public interface JsonValidator extends JsonSchemaWalker {",
+        "public interface JsonSchemaWalker {",
+        "public class JsonSchema extends BaseJsonValidator {",
+        "public class ValidationContext {",
+        "public static class DiscriminatorContext {",
+        "public class ExecutionContext {",
+        "public class ValidationMessage {",
+        "public static class Scope {"
+      ],
+      "old_sha256": "1428a36571aa33d73553cacf72176f565a4c0b997dbec18e15d4a9566b16eb2a",
+      "new_sha256": "75d6d3b8b46c3e9ce83c7947c6bcf2ec8d51252d29852d8076d3a42fdc7e8411"
+    },
+    {
+      "class_name": "OneOfValidator",
+      "types": 10,
+      "lines": 148,
+      "varargs_parameters": 4,
+      "headers": [
+        "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+        "public abstract class ValidationMessageHandler {",
+        "public interface JsonValidator extends JsonSchemaWalker {",
+        "public interface JsonSchemaWalker {",
+        "public class JsonSchema extends BaseJsonValidator {",
+        "public class ValidationContext {",
+        "public class ExecutionContext {",
+        "public class ValidationMessage {",
+        "public class CollectorContext {",
+        "public static class Scope {"
+      ],
+      "old_sha256": "377c6bb4a4e06c331c1ea57ad8ed033e07b4818298400499cbcd30b390c4a195",
+      "new_sha256": "37d2b2449c32cf4021a351db81457e1a09f95e753fdaa0c1df0fed18bd5c933b"
+    },
+    {
+      "class_name": "JsonSchemaFactory",
+      "types": 15,
+      "lines": 230,
+      "varargs_parameters": 4,
+      "headers": [
+        "public class URISchemeFactory implements URIFactory {",
+        "public class URISchemeFetcher implements URIFetcher {",
+        "public interface URNFactory {",
+        "public class JsonMetaSchema {",
+        "public static class CompositeURITranslator extends ArrayList<URITranslator> implements URITranslator {",
+        "public class JsonSchema extends BaseJsonValidator {",
+        "public static class Builder {",
+        "public enum VersionFlag {",
+        "public abstract class JsonSchemaVersion {",
+        "public class SchemaValidatorsConfig {",
+        "public class ValidationContext {",
+        "public interface URIFactory {",
+        "public interface URITranslator {",
+        "public interface URIFetcher {",
+        "public final class URLFactory implements URIFactory {"
+      ],
+      "old_sha256": "3183f2c1994ff63e4ae56ea2df133adc48d3b47f1e1ce65bd438036123b7b109",
+      "new_sha256": "c1def13dd8f9961fb466ee6fda82c0207919216f63ac97589fd7b481a939c843"
+    }
+  ]
+}

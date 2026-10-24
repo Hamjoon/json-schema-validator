@@ -1,0 +1,396 @@
+{
+  "status": "completed",
+  "started": "2026-10-24T04:32:44.469265+00:00",
+  "finished": "2026-10-24T04:54:49.919578+00:00",
+  "wall_seconds": 1325.45,
+  "timing_note": "Wall time starts at the evidence preservation snapshot; preliminary instruction review is excluded.",
+  "renderer_fix": "The dependency renderer now emits type parameters only when present, preserves declaration modifiers (including implicit public/static modifiers of interface member types), and preserves varargs as Type... instead of arrays. All five dependency blocks passed the mandatory pre-call gate; their type order, membership, omitted types, caps, API order, and prompt constraints match addendum 2. Only the requested header and varargs formatting changed.",
+  "pre_call_check": {
+    "passed": true,
+    "checked_at": "2026-10-24T04:34:04.333407+00:00",
+    "empty_angle_brackets": false,
+    "headers_have_modifiers": true,
+    "only_requested_changes": true,
+    "renderer_sha256": {
+      "DependencyInventory2.java": "366cec31e3bad91f6479a06b2461565ad61bc9f987f001fca21aa0fb8d79fb7c",
+      "adjusted2_prompts.py": "2226ec9eed0537c1a9af60acbf64690269f3b3b6d17d77605b9de6001a018054",
+      "check_adjusted2_blocks.py": "a2b2434b4889a6b3908736bc2b55e820bcea0e79d66281ddd5221b824c809777"
+    },
+    "blocks": [
+      {
+        "class_name": "JsonSchema",
+        "types": 15,
+        "lines": 170,
+        "varargs_parameters": 4,
+        "headers": [
+          "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+          "public abstract class ValidationMessageHandler {",
+          "public interface JsonValidator extends JsonSchemaWalker {",
+          "public interface JsonSchemaWalker {",
+          "public class ValidationContext {",
+          "public class JsonMetaSchema {",
+          "public class TypeValidator extends BaseJsonValidator {",
+          "public interface WalkListenerRunner {",
+          "public class ExecutionContext {",
+          "public class ValidationMessage {",
+          "public class ValidationResult {",
+          "public static class Scope {",
+          "public enum VersionFlag {",
+          "public static class DiscriminatorContext {",
+          "public final class StringUtils {"
+        ],
+        "old_sha256": "b30918566e9b7acd000821feb046e83c7585905902a07c83f89f8a4b01f791aa",
+        "new_sha256": "960b6504eba50b2a32af747ee855a2176f78f7c665889086c545c6ba57cafd00"
+      },
+      {
+        "class_name": "BaseJsonValidator",
+        "types": 11,
+        "lines": 194,
+        "varargs_parameters": 4,
+        "headers": [
+          "public abstract class ValidationMessageHandler {",
+          "public interface JsonValidator extends JsonSchemaWalker {",
+          "public interface JsonSchemaWalker {",
+          "public class JsonSchema extends BaseJsonValidator {",
+          "public enum ValidatorTypeCode implements Keyword,ErrorMessageType {",
+          "public class ValidationContext {",
+          "public class ApplyDefaultsStrategy {",
+          "public enum PathType {",
+          "public static class DiscriminatorContext {",
+          "public class ExecutionContext {",
+          "public class ValidationMessage {"
+        ],
+        "old_sha256": "f6e41d700957a91afd94286cc40c7ede86f78dcb14a5ab2b9e667fd1c56ab4ea",
+        "new_sha256": "0ebd413afd9f9668dacd0a776fe32ae8fae8a74418e3de3fbea7d78afda9416f"
+      },
+      {
+        "class_name": "AnyOfValidator",
+        "types": 10,
+        "lines": 139,
+        "varargs_parameters": 4,
+        "headers": [
+          "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+          "public abstract class ValidationMessageHandler {",
+          "public interface JsonValidator extends JsonSchemaWalker {",
+          "public interface JsonSchemaWalker {",
+          "public class JsonSchema extends BaseJsonValidator {",
+          "public class ValidationContext {",
+          "public static class DiscriminatorContext {",
+          "public class ExecutionContext {",
+          "public class ValidationMessage {",
+          "public static class Scope {"
+        ],
+        "old_sha256": "1428a36571aa33d73553cacf72176f565a4c0b997dbec18e15d4a9566b16eb2a",
+        "new_sha256": "75d6d3b8b46c3e9ce83c7947c6bcf2ec8d51252d29852d8076d3a42fdc7e8411"
+      },
+      {
+        "class_name": "OneOfValidator",
+        "types": 10,
+        "lines": 148,
+        "varargs_parameters": 4,
+        "headers": [
+          "public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {",
+          "public abstract class ValidationMessageHandler {",
+          "public interface JsonValidator extends JsonSchemaWalker {",
+          "public interface JsonSchemaWalker {",
+          "public class JsonSchema extends BaseJsonValidator {",
+          "public class ValidationContext {",
+          "public class ExecutionContext {",
+          "public class ValidationMessage {",
+          "public class CollectorContext {",
+          "public static class Scope {"
+        ],
+        "old_sha256": "377c6bb4a4e06c331c1ea57ad8ed033e07b4818298400499cbcd30b390c4a195",
+        "new_sha256": "37d2b2449c32cf4021a351db81457e1a09f95e753fdaa0c1df0fed18bd5c933b"
+      },
+      {
+        "class_name": "JsonSchemaFactory",
+        "types": 15,
+        "lines": 230,
+        "varargs_parameters": 4,
+        "headers": [
+          "public class URISchemeFactory implements URIFactory {",
+          "public class URISchemeFetcher implements URIFetcher {",
+          "public interface URNFactory {",
+          "public class JsonMetaSchema {",
+          "public static class CompositeURITranslator extends ArrayList<URITranslator> implements URITranslator {",
+          "public class JsonSchema extends BaseJsonValidator {",
+          "public static class Builder {",
+          "public enum VersionFlag {",
+          "public abstract class JsonSchemaVersion {",
+          "public class SchemaValidatorsConfig {",
+          "public class ValidationContext {",
+          "public interface URIFactory {",
+          "public interface URITranslator {",
+          "public interface URIFetcher {",
+          "public final class URLFactory implements URIFactory {"
+        ],
+        "old_sha256": "3183f2c1994ff63e4ae56ea2df133adc48d3b47f1e1ce65bd438036123b7b109",
+        "new_sha256": "c1def13dd8f9961fb466ee6fda82c0207919216f63ac97589fd7b481a939c843"
+      }
+    ]
+  },
+  "model_calls": 25,
+  "retry_calls": 0,
+  "model": "openai/gpt-oss-120b",
+  "temperature": 0.7,
+  "max_tokens": 16384,
+  "generation_seconds": 734.123,
+  "phase_seconds": {
+    "imports": 15.938,
+    "screen": 15.763,
+    "diagnostics": 0.038,
+    "control": 3.93,
+    "phase-a": 325.109,
+    "survival": 2.965,
+    "phase-b": 78.798,
+    "coverage": 9.358,
+    "verify": 17.041
+  },
+  "funnel": {
+    "group": "ouedraogo-adj2",
+    "round": "round1",
+    "files": 25,
+    "compiled": 7,
+    "methods": 313,
+    "stable_3_of_3": 41,
+    "duplicates": 0,
+    "kept_this_round": 41,
+    "total_kept": 41,
+    "seconds": 15.721,
+    "per_prompt": {
+      "ZSL": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 56,
+        "stable": 13,
+        "duplicates": 0,
+        "kept": 13
+      },
+      "FSL": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 37,
+        "stable": 5,
+        "duplicates": 0,
+        "kept": 5
+      },
+      "CoT": {
+        "files": 5,
+        "compiled": 1,
+        "methods": 75,
+        "stable": 0,
+        "duplicates": 0,
+        "kept": 0
+      },
+      "ToT": {
+        "files": 5,
+        "compiled": 2,
+        "methods": 62,
+        "stable": 23,
+        "duplicates": 0,
+        "kept": 23
+      },
+      "GToT": {
+        "files": 5,
+        "compiled": 0,
+        "methods": 83,
+        "stable": 0,
+        "duplicates": 0,
+        "kept": 0
+      }
+    },
+    "developer_denominator": 185,
+    "ratio_to_dev": 0.22162162162162163
+  },
+  "import_fix_files": 13,
+  "import_fix_lines": 29,
+  "kept_by_class": {
+    "com.networknt.schema.BaseJsonValidatorTest": 5,
+    "com.networknt.schema.JsonSchemaTest": 1,
+    "com.networknt.schema.JsonSchemaFactoryTest": 35
+  },
+  "kept_by_prompt": {
+    "FSL": 5,
+    "ToT": 23,
+    "ZSL": 13
+  },
+  "first_failures": [
+    {
+      "index": 2,
+      "kind": "compile-fail",
+      "methods": 1
+    },
+    {
+      "index": 4,
+      "kind": "compile-fail",
+      "methods": 27
+    },
+    {
+      "index": 5,
+      "kind": "fail",
+      "methods": 1
+    },
+    {
+      "index": 10,
+      "kind": "compile-fail",
+      "methods": 12
+    }
+  ],
+  "denominators": {
+    "dev": 185,
+    "ktester": 131,
+    "ouedraogo": 0,
+    "ouedraogo-adj": 22,
+    "ouedraogo-adj2": 41
+  },
+  "final_survivors": {
+    "dev": 4,
+    "ktester": 0,
+    "ouedraogo": 0,
+    "ouedraogo-adj": 0,
+    "ouedraogo-adj2": 0
+  },
+  "generation_statuses": {
+    "ok": 25
+  },
+  "finish_reasons": {
+    "stop": 25
+  },
+  "compile_failure_categories": {
+    "method-or-constructor-signature": 6,
+    "abstract-or-override-contract": 12,
+    "incompatible-types": 3,
+    "unresolved-symbol": 5,
+    "inaccessible-member-or-constructor": 3,
+    "parse-failure": 1
+  },
+  "failed_stage_attempts": [],
+  "preflight_history": [
+    {
+      "time": "2026-10-24T04:34:02.830166+00:00",
+      "status": "blocked-before-model-calls",
+      "model_calls": 0,
+      "reason": "CompositeURITranslator is nested in an interface; the parse-only AST omits its implicit public/static modifiers.",
+      "resolution": "Render implicit public/static modifiers for interface member types and add a regression case."
+    }
+  ],
+  "verification": {
+    "status": "passed",
+    "pre_call_gate_precedes_all_calls": true,
+    "original_group_report_values_unchanged": true,
+    "preserved_existing_files": 9753,
+    "modified_existing_evidence": [],
+    "model_calls": 25,
+    "retries": 0,
+    "prompt_integrity": true,
+    "dependency_caps": {
+      "OneOfValidator": {
+        "types": 10,
+        "lines": 148,
+        "omitted": []
+      },
+      "JsonSchemaFactory": {
+        "types": 15,
+        "lines": 230,
+        "omitted": [
+          "com.networknt.schema.uri.URNURIFactory",
+          "com.networknt.schema.uri.URLFetcher",
+          "com.networknt.schema.uri.ClasspathURLFactory",
+          "com.networknt.schema.uri.ClasspathURLFetcher"
+        ]
+      },
+      "JsonSchema": {
+        "types": 15,
+        "lines": 170,
+        "omitted": [
+          "com.networknt.schema.walk.DefaultKeywordWalkListenerRunner"
+        ]
+      },
+      "AnyOfValidator": {
+        "types": 10,
+        "lines": 139,
+        "omitted": []
+      },
+      "BaseJsonValidator": {
+        "types": 11,
+        "lines": 194,
+        "omitted": []
+      }
+    },
+    "import_only_replay_matches": true,
+    "files_with_import_fixes": 13,
+    "added_import_lines": 29,
+    "imports": {
+      "com.networknt.schema.uri.URIFactory": 12,
+      "com.networknt.schema.urn.URNFactory": 11,
+      "com.networknt.schema.ValidationContext.DiscriminatorContext": 1,
+      "com.networknt.schema.uri.URITranslator.CompositeURITranslator": 1,
+      "com.networknt.schema.uri.URIFetcher": 1,
+      "com.networknt.schema.uri.URISchemeFactory": 1,
+      "com.networknt.schema.uri.URISchemeFetcher": 1,
+      "com.networknt.schema.SpecVersion.VersionFlag": 1
+    },
+    "funnel": {
+      "group": "ouedraogo-adj2",
+      "round": "round1",
+      "files": 25,
+      "compiled": 7,
+      "methods": 313,
+      "stable_3_of_3": 41,
+      "duplicates": 0,
+      "kept_this_round": 41,
+      "total_kept": 41,
+      "seconds": 15.721,
+      "per_prompt": {
+        "ZSL": {
+          "files": 5,
+          "compiled": 2,
+          "methods": 56,
+          "stable": 13,
+          "duplicates": 0,
+          "kept": 13
+        },
+        "FSL": {
+          "files": 5,
+          "compiled": 2,
+          "methods": 37,
+          "stable": 5,
+          "duplicates": 0,
+          "kept": 5
+        },
+        "CoT": {
+          "files": 5,
+          "compiled": 1,
+          "methods": 75,
+          "stable": 0,
+          "duplicates": 0,
+          "kept": 0
+        },
+        "ToT": {
+          "files": 5,
+          "compiled": 2,
+          "methods": 62,
+          "stable": 23,
+          "duplicates": 0,
+          "kept": 23
+        },
+        "GToT": {
+          "files": 5,
+          "compiled": 0,
+          "methods": 83,
+          "stable": 0,
+          "duplicates": 0,
+          "kept": 0
+        }
+      },
+      "developer_denominator": 185,
+      "ratio_to_dev": 0.22162162162162163
+    },
+    "raw_records": 1145,
+    "coverage_records": 905,
+    "matching_executable_universes": 181
+  },
+  "measurement_skipped": false,
+  "pushed": false
+}

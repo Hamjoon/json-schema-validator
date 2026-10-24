@@ -7,7 +7,7 @@ from start import EXP, RESULTS, SHARED, write_json
 from select_scope import csvout
 from run_commit import GROUPS,denominator
 
-LABELS={'dev':'Dev','ktester':'KTester','ouedraogo':'Ouédraogo','ouedraogo-adj':'Ouédraogo (adjusted)'}
+LABELS={'dev':'Dev','ktester':'KTester','ouedraogo':'Ouédraogo','ouedraogo-adj':'Ouédraogo (adjusted)','ouedraogo-adj2':'Ouédraogo (adjusted 2)'}
 
 
 def md(value):return str(value).replace('|','\\|').replace('\n',' ')
@@ -66,7 +66,7 @@ def main():
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     fig,ax=plt.subplots(figsize=(10,5.5),layout='constrained')
-    for g,color in zip(GROUPS,['#2563eb','#dc2626','#059669','#9333ea']):
+    for g,color in zip(GROUPS,['#2563eb','#dc2626','#059669','#9333ea','#d97706']):
         n=len(denominators[g])
         if n:ax.step([int(r['index']) for r in curves],[100*r[g+'_alive']/n for r in curves],where='post',label=f'{LABELS[g]} (n={n})',color=color,lw=2)
         else:ax.plot([],[],color=color,label=f'{LABELS[g]} (n=0; unavailable)')

@@ -63,7 +63,7 @@ def main():
         counts.update(categories)
         package=re.search(r'^\s*package\s+([^;]+);',source_text,re.M)
         records.append(dict(file=r['file'],technique=source.parent.name,categories=categories,unresolved_symbols=symbols,source_package=package.group(1) if package else None,source_imports=re.findall(r'^\s*import\s+([^;]+);',source_text,re.M),log=str(log.relative_to(EXP)),diagnostics=diagnostics))
-    result=dict(round=args.round,failed_files=len(records),category_file_counts=dict(counts),categories_may_overlap=True,symbol_classification_note='Known production type candidates come from the frozen inventory; unresolved simple names often indicate missing imports. Unknown/external means absent from that inventory, not proof that a dependency lacks the type. Raw diagnostics and generated package/import declarations are retained for judging root causes.',files=records,prompts_changed=args.group=='ouedraogo-adj',generated_sources_repaired=args.group=='ouedraogo-adj')
+    result=dict(round=args.round,failed_files=len(records),category_file_counts=dict(counts),categories_may_overlap=True,symbol_classification_note='Known production type candidates come from the frozen inventory; unresolved simple names often indicate missing imports. Unknown/external means absent from that inventory, not proof that a dependency lacks the type. Raw diagnostics and generated package/import declarations are retained for judging root causes.',files=records,prompts_changed=args.group in ['ouedraogo-adj','ouedraogo-adj2'],generated_sources_repaired=args.group in ['ouedraogo-adj','ouedraogo-adj2'])
     write_json(RESULTS/f'{args.group}-{args.round}-compile-failures.json',result)
     print(json.dumps({k:v for k,v in result.items() if k!='files'}),flush=True)
 

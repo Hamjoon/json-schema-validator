@@ -1,0 +1,193 @@
+{
+  "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/target/classes:/repo/experiments/commit-survival/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-1.14.1.jar:/repo/experiments/commit-survival/work/libs/byte-buddy-agent-1.14.1.jar:/repo/experiments/commit-survival/work/libs/commons-io-2.16.1.jar:/repo/experiments/commit-survival/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/commit-survival/work/libs/hamcrest-2.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/commit-survival/work/libs/mockito-core-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-inline-5.2.0.jar:/repo/experiments/commit-survival/work/libs/mockito-junit-jupiter-5.2.0.jar:/repo/experiments/commit-survival/work/libs/objenesis-3.3.jar:/repo/experiments/commit-survival/work/libs/opentest4j-1.3.0.jar:/repo/experiments/commit-survival/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/commit-survival/work/libs/junit-4.13.2.jar:/repo/experiments/commit-survival/work/libs/hamcrest-core-1.3.jar:/repo/experiments/commit-survival/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.7.0/itu-1.7.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.15.3/jackson-databind-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.15.3/jackson-annotations-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.15.3/jackson-core-2.15.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.15.3/jackson-dataformat-yaml-2.15.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.1/snakeyaml-2.1.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.25.Final/undertow-core-2.2.25.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.7.Final/xnio-api-3.8.7.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.7.Final/xnio-nio-3.8.7.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/2.2/hamcrest-2.2.jar:/root/.m2/repository/org/jruby/joni/joni/2.1.41/joni-2.1.41.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.55/jcodings-1.0.55.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar",
+      "-sourcepath",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL",
+      "-d",
+      "/repo/experiments/commit-survival-run2/work/validation/ouedraogo-adj2/round1/11/test/classes",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 1,
+    "timeout": false,
+    "seconds": 0.62,
+    "log": "generated/ouedraogo-adj2/round1/validation-logs/11/test/javac.txt"
+  },
+  "runs": [],
+  "methods": [
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetCurrentUriWhenNoId",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetCurrentUriWhenNoId",
+      "body_hash": "f8890a8e8ecfd4cb0cdc17ce4c5b35f85b01bbc03e79a9576979d25169720244",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetCurrentUriWithIdResolution",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetCurrentUriWithIdResolution",
+      "body_hash": "648e4d68135f20c3e40a7da9c7a2a88868129bba94a36108e5c9ba557c6ea459",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testGetRefSchemaNodeFragmentResolution",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testGetRefSchemaNodeFragmentResolution",
+      "body_hash": "e19123dbebb98a185bd9cc42d5e4046c7fa04f22e11de0730853977738ae6d54",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testFindLexicalRootStopsAtId",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testFindLexicalRootStopsAtId",
+      "body_hash": "d8e60991dc3fa769c5d4af5b4c6bd4829c0d123d6d763c7ab45feb850e2efa8b",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testFindAncestorReturnsRoot",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testFindAncestorReturnsRoot",
+      "body_hash": "fce7ce91ef0f02caff6d482bc0eee062fb941d9f38f8651fc43a5d5066b5ff66",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testHasRequiredAndTypeValidators",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testHasRequiredAndTypeValidators",
+      "body_hash": "26ecfc43fa159175bb10c0b8152c2b19718e66eab39e5c4ba38cf8ff038fa96b",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testDynamicAnchorRecognition",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testDynamicAnchorRecognition",
+      "body_hash": "8cbe3b5e5fbcc94455753b9aa4e357811f9d173c8e6a59a22b0911f9df7af1a7",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testInitializeValidatorsIdempotent",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testInitializeValidatorsIdempotent",
+      "body_hash": "c61de43e8a4d93ba1ba88b7459490df7842862233d4aaa8bdfeb5b5acad911d2",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testToStringFormatting",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testToStringFormatting",
+      "body_hash": "9044e29eacf12808d26e81006591badc7e7628ea1f843afa03c6d4ec0eba7569",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testValidateEmptySchemaReturnsNoErrors",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testValidateEmptySchemaReturnsNoErrors",
+      "body_hash": "bc2f0102c7e52e018d2804aa1498188bc1d6f398a9ca81f604f062241b9fc882",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testValidateAndCollectReturnsEmptyResult",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testValidateAndCollectReturnsEmptyResult",
+      "body_hash": "22e431ed5eda4d64b771a603ec040ac8af33a0b838bba46f071415ac5ee71ec4",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java",
+      "class": "com.networknt.schema.JsonSchemaTest",
+      "method": "testWalkWithNoValidatorsReturnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java|com.networknt.schema.JsonSchemaTest|testWalkWithNoValidatorsReturnsEmptySet",
+      "body_hash": "5a539147ef57771afc390241f9c53e6ce90cf4159ef03433c6d2d3999d6aee34",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "compile-fail",
+      "flaky": false,
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java:148: error: incompatible types: ValidationResult cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.walk(ctx, instance, false);\n                                                     ^\n1 error\n"
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/repo/experiments/commit-survival-run2/tools/SourceInventory.java",
+      "/repo/experiments/commit-survival-run2/generated/ouedraogo-adj2/round1/sources/JsonSchema/FSL/JsonSchemaTest.java"
+    ],
+    "cwd": "/repo",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 0.52,
+    "log": "generated/ouedraogo-adj2/round1/validation-logs/11/inventory.tsv"
+  }
+}

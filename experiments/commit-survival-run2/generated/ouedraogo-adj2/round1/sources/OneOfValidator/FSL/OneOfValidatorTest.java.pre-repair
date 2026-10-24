@@ -1,0 +1,216 @@
+/**
+ * JUnit‑4 test suite for {@link com.networknt.schema.OneOfValidator}.
+ *
+ * The tests exercise the core behaviour of the validator:
+ *
+ * <ul>
+ *   <li>exactly one subschema matches – validation succeeds</li>
+ *   <li>no subschema matches – a {@code oneOf} error is produced</li>
+ *   <li>more than one subschema matches – a {@code oneOf} error is produced</li>
+ *   <li>the {@code walk} method forwards the call correctly when validation is disabled</li>
+ * </ul>
+ *
+ * The tests build real {@link com.networknt.schema.JsonSchema} objects using the
+ * public API of the library (no mocking or subclassing of internal classes).  A
+ * {@link com.networknt.schema.ValidationContext} together with a {@link com.networknt.schema.ExecutionContext}
+ * and a {@link com.networknt.schema.CollectorContext} are created for each test.
+ *
+ * The JSON schema used in the tests contains a {@code oneOf} keyword with two
+ * simple subschemas – a “string” type validator and an “integer” type validator.
+ * By supplying different JSON instances we can control which subschemas match.
+ */
+package com.networknt.schema;
+
+import static org.junit.Assert.*;
+
+import java.net.URI;
+import java.util.Collections;
+import java.util.Set;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.BooleanNode;
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Tests for {@link OneOfValidator}.
+ */
+public class OneOfValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /** Validation context used for all tests. */
+    private ValidationContext validationContext;
+
+    /** Execution context that holds a fresh {@link CollectorContext}. */
+    private ExecutionContext executionContext;
+
+    /** The compiled schema that contains the {@code oneOf} keyword. */
+    private JsonSchema schemaWithOneOf;
+
+    /**
+     * Build a {@link ValidationContext} that uses the default factories shipped
+     * with the library.  The concrete factories are obtained via the static
+     * helper methods provided by the library – they are part of the public API
+     * and therefore allowed.
+     */
+    @Before
+    public void setUp() throws Exception {
+        // -----------------------------------------------------------------
+        // 1️⃣  Build the ValidationContext
+        // -----------------------------------------------------------------
+        // The library supplies a ready‑made factory for the default meta‑schema
+        // (draft‑07).  Using it keeps the test simple and guarantees that the
+        // subschemas (type validators) are available.
+        JsonMetaSchema metaSchema = JsonMetaSchema.getV7();
+        JsonSchemaFactory schemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+
+        validationContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                metaSchema,
+                schemaFactory,
+                config);
+
+        // -----------------------------------------------------------------
+        // 2️⃣  Build the JSON schema that contains a oneOf definition
+        // -----------------------------------------------------------------
+        //   {
+        //     "oneOf": [
+        //       { "type": "string" },
+        //       { "type": "integer" }
+        //     ]
+        //   }
+        String schemaJson = "{"
+                + "\"oneOf\": ["
+                + "  {\"type\":\"string\"},"
+                + "  {\"type\":\"integer\"}"
+                + "]"
+                + "}";
+        JsonNode schemaNode = MAPPER.readTree(schemaJson);
+        // The root schema has no parent (null) and an empty base‑uri.
+        schemaWithOneOf = new JsonSchema(validationContext, URI.create(""), schemaNode);
+
+        // -----------------------------------------------------------------
+        // 3️⃣  Prepare a fresh ExecutionContext for each test case
+        // -----------------------------------------------------------------
+        executionContext = new ExecutionContext(new CollectorContext());
+    }
+
+    /**
+     * Helper that runs validation against the {@code schemaWithOneOf} and
+     * returns the set of {@link ValidationMessage}s.
+     */
+    private Set<ValidationMessage> validate(JsonNode instance) {
+        // The {@code validate} method that takes the root node is the one
+        // defined in {@link JsonSchema}.  It internally creates a new
+        // ExecutionContext (if necessary) and then delegates to the
+        // OneOfValidator.
+        return schemaWithOneOf.validate(executionContext, instance, instance, "$");
+    }
+
+    // -----------------------------------------------------------------
+    // ✔  Exactly one subschema matches – validation must succeed
+    // -----------------------------------------------------------------
+    @Test
+    public void whenExactlyOneSchemaMatches_thenNoErrors() throws Exception {
+        // a JSON string matches the first subschema (type=string) only
+        JsonNode jsonString = new TextNode("hello");
+
+        Set<ValidationMessage> errors = validate(jsonString);
+
+        assertTrue("Expected no validation errors because exactly one subschema matches", errors.isEmpty());
+
+        // a JSON integer matches the second subschema (type=integer) only
+        JsonNode jsonInt = new IntNode(42);
+        errors = validate(jsonInt);
+        assertTrue("Expected no validation errors because exactly one subschema matches", errors.isEmpty());
+    }
+
+    // -----------------------------------------------------------------
+    // ✖  No subschema matches – a oneOf error must be reported
+    // -----------------------------------------------------------------
+    @Test
+    public void whenNoSchemaMatches_thenOneOfErrorIsReturned() throws Exception {
+        // a JSON boolean does not satisfy either "string" or "integer"
+        JsonNode jsonBool = BooleanNode.TRUE;
+
+        Set<ValidationMessage> errors = validate(jsonBool);
+
+        assertFalse("Expected a validation error because no subschema matches", errors.isEmpty());
+
+        // The message produced by OneOfValidator contains the number of
+        // matching subschemas (0) as the first argument.
+        ValidationMessage message = errors.iterator().next();
+        assertEquals("0", message.getArguments()[0]);
+
+        // The error code for ONE_OF is defined by the enum
+        assertEquals(ValidatorTypeCode.ONE_OF.getErrorCodeKey(),
+                     message.getCode());
+    }
+
+    // -----------------------------------------------------------------
+    // ✖  More than one subschema matches – a oneOf error must be reported
+    // -----------------------------------------------------------------
+    @Test
+    public void whenMultipleSchemasMatch_thenOneOfErrorIsReturned() throws Exception {
+        // The following subschema combination matches both:
+        //   - {"type":"string"}   → matches any JSON string
+        //   - {"enum":["foo"]}    → also matches the string "foo"
+        // To reuse the existing schema we add a third subschema that is an
+        // enum containing the same value.  We rebuild the root schema only
+        // for this test.
+        String extendedSchema = "{"
+                + "\"oneOf\": ["
+                + "  {\"type\":\"string\"},"
+                + "  {\"enum\":[\"foo\"]}"
+                + "]"
+                + "}";
+        JsonNode schemaNode = MAPPER.readTree(extendedSchema);
+        JsonSchema multiMatchSchema = new JsonSchema(validationContext, URI.create(""), schemaNode);
+
+        JsonNode json = new TextNode("foo");
+        Set<ValidationMessage> errors = multiMatchSchema.validate(executionContext, json, json, "$");
+
+        assertFalse("Expected a validation error because more than one subschema matches", errors.isEmpty());
+
+        ValidationMessage message = errors.iterator().next();
+        // two schemas matched → argument[0] must be "2"
+        assertEquals("2", message.getArguments()[0]);
+        assertEquals(ValidatorTypeCode.ONE_OF.getErrorCodeKey(), message.getCode());
+    }
+
+    // -----------------------------------------------------------------
+    // ✔  walk() with validation disabled must delegate to child schemas
+    // -----------------------------------------------------------------
+    @Test
+    public void walkWhenValidationDisabledShouldDelegateToChildren() throws Exception {
+        // Build an ExecutionContext that carries a fresh CollectorContext.
+        ExecutionContext ctx = new ExecutionContext(new CollectorContext());
+
+        // The root schema (with oneOf) is asked to walk with validation disabled.
+        // According to the implementation the method should invoke walk on each
+        // child schema but must not collect any ValidationMessage.
+        Set<ValidationMessage> messages = schemaWithOneOf.walk(ctx,
+                new TextNode("any"),               // node – value does not matter
+                new TextNode("any"),               // rootNode – same as node
+                "$",                               // location
+                false);                            // shouldValidateSchema = false
+
+        // No messages are expected because validation was disabled.
+        assertTrue("walk() with validation disabled must return an empty set", messages.isEmpty());
+
+        // Verify that the collector context has not been polluted with evaluated
+        // items or properties (the OneOfValidator clears them only when an error
+        // occurs, but we assert the state remains clean).
+        CollectorContext collector = ctx.getCollectorContext();
+        assertTrue("Evaluated items collection must be empty",
+                collector.getEvaluatedItems().isEmpty());
+        assertTrue("Evaluated properties collection must be empty",
+                collector.getEvaluatedProperties().isEmpty());
+    }
+}
