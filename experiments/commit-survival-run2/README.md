@@ -1,3 +1,53 @@
 # Commit-survival experiment, run 2
 
-In progress under the scope-rule addendum. Revised Step 1: 5 classes, 64 focal methods, 185 developer methods. See [scope](population/scope.md), [accessor audit](population/accessor-audit.csv), and [status](results/STATUS.md). Prior stop records are archived in results/stopped-step1. No push.
+This run compares project-wide frozen developer tests with independently generated KTester and Ouédraogo tests at tag `1.1.0`, across 229 first-parent commits. The developer denominator is all 185 methods stable in run 1. Abstract production classes remain eligible; classes dominated by trivial accessors are excluded.
+
+Denominators: **Dev 185, KTester 131, Ouédraogo 0**. KTester/Dev ratio: 0.7081. Final survivors: **Dev 4, KTester 0, Ouédraogo 0**.
+
+Scope: `JsonSchema`, `BaseJsonValidator`, `AnyOfValidator`, `OneOfValidator`, `JsonSchemaFactory`; 64 focal methods. [Ranked scope](population/scope.md) and [accessor audit](population/accessor-audit.csv) explain why the executable rule yields 64 methods rather than the illustrative 73-method expectation. The addendum removes the minimum class count. The superseded stopped state is retained under `results/stopped-step1/` and local `docs/handover-part1-stopped.md`.
+
+Anchor: `0c14a7a8664334fd10108895f84d8232f6c34019`. Range endpoint: `1b57102e7c13acbfc9c82be20693efafb3983256`. Build failures are excluded and carry survival forward. [Reuse provenance](results/reuse.md) and `reuse-manifest.json` document the copied run 1 inputs. Checkouts, classpath caches and runtime libraries are reused in place.
+
+Results: [survival events](results/table1-survival-by-event.md), [breaking commits](results/table2-breaking-commits.md), [changed-line coverage](results/table3-changed-line-coverage.md), [exposure versus break](results/table4-exposure-vs-break.md), [anchor coverage](results/coverage-t.md), [figure](results/figure1-survival-by-commit.png), [consistency](results/consistency.md), [final verification](results/final-verification.json). `results/final-summary.json` contains timings, model-call counts, failures, quarantine events and final counts.
+
+
+
+No methods survived generation screening for ouedraogo. Their survival percentages are n/a; no survival curve can be estimated. Coverage from an empty retained suite is zero and does not establish comparative test effectiveness. See every original/retry funnel and compiler diagnostic report.
+
+`dev/` holds the full frozen Java sources and fixtures; `population/` contains the audited scope and exact dataset; `generated/` preserves prompts, responses, generated files and independent three-run screening evidence. Per-prompt funnels are beside each round. `results/ouedraogo-round1-compile-failures.json` categorizes compiler failures without modifying prompts or generated sources. `tools/ORIGIN.md` records copied and adapted tooling. Local step/final handovers remain ignored under `docs/`.
+
+Every Dev measurement attempts compilation of the whole frozen Java suite. If that fails, class-isolated compilation attributes failure only to affected classes, preserving run 1's first-failure rule. Successful whole-suite compilation is shared by separate class launches; each class retains its 120-second timeout. All 185 denominator methods are evaluated in Phase A. Phase B runs only methods alive entering each index. Fail/error outcomes receive one rerun; a passing rerun remains alive and is marked flaky. Cumulative survival uses fixed denominators. Compile failures apply to every denominator method in that class. Unavailable measurements are never converted to zero.
+
+Changed-line coverage uses post-image executable lines, split all/scope/other files. Exposure uses pre-image lines at c−1. Scope paths stay frozen to the anchor. The consistency checks compare executable line sets across all three groups.
+
+## Reproduction
+
+All Java builds/tests and model calls execute in the KTester container. Copy run 1 inputs as listed in `results/reuse.md`, retaining run 1 caches. Use the existing compose configuration and credential environment file; never commit credentials. From KTester/docker:
+
+```sh
+run() { docker compose -f compose.yml -f compose.commit-survival.yml run --rm ktester "$@"; }
+T=/repo/experiments/commit-survival-run2/tools
+run bash -c 'java /repo/experiments/commit-survival-run2/tools/AccessorAudit.java /repo/src/main/java > /repo/experiments/commit-survival-run2/population/accessor-methods.tsv'
+run python "$T/select_scope_run2.py"
+run python "$T/prepare_ktester.py" dataset
+run python "$T/generate_ktester.py" --round 1
+run python "$T/validate_round.py" --group ktester --round round1
+run python "$T/describe_round.py" ktester round1
+run python "$T/generate_ouedraogo.py" --round 1
+run python "$T/validate_round.py" --group ouedraogo --round round1
+run python "$T/describe_round.py" ouedraogo round1
+# Repeat Ouédraogo rounds while kept < 185, at most 3 rounds.
+# Retry a zero-compiled round once after 60 seconds using --attempt 2
+# and screen its roundN-retry label. KTester has one round only.
+run python "$T/control_at_t.py"
+run python "$T/run_phase.py" --phase a --workers 4
+run python "$T/aggregate_survival.py"
+# Reuse the copied changes/ and coverage-commits.csv; do not recompute.
+run python "$T/run_phase.py" --phase b --workers 4
+run python "$T/aggregate_coverage.py"
+run python "$T/final_check.py"
+run python "$T/audit_run2.py"
+run python "$T/close_run2.py"
+```
+
+Generation refuses to overwrite existing call directories. Phase records resume only with matching source and runner hashes. OOM/exit −9 records are quarantined and resumed at two workers. The host driver `tools/continue_run2.py` records stage events and local step commits. Author code and prompt templates remain unchanged. No push.
