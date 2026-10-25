@@ -1,4 +1,4 @@
-"""Write final status, reproducibility instructions and local handover from records."""
+"""Write final status and reproducibility instructions from records."""
 import csv
 import datetime
 import json
@@ -28,8 +28,6 @@ def main():
     result['final_verification']=json.loads((RESULTS/'final-verification.json').read_text())
     write_json(RESULTS/'final-summary.json',result)
     (RESULTS/'STATUS.md').write_text('# Experiment status\n\n'+result['status']+'.\n\n'+f"Anchor: `{anchor['sha']}`. Complete prescribed range: {anchor['n']} first-parent commits ending at `{anchor['origin_master']}`. Denominators: Dev {denominators['dev']}, KTester {denominators['ktester']}, five-prompt {denominators['ouedraogo']}.\n\n"+'\n\n'.join(generation_caveats)+'\n\nSee final-summary.json for phase timings, model-call counts, recorded setup failures and deviations. No author code patched. No push performed.\n')
-    handovers='\n\n'.join(p.read_text() for p in sorted((EXP/'docs').glob('handover-part*.md')))
-    (EXP/'docs/handover-final.md').write_text('# Final handover\n\n'+handovers+'\n\n## Recorded final state\n\n```json\n'+json.dumps(result,indent=2)+'\n```\n')
     readme=f'''# Commit-survival experiment
 
 This experiment compares frozen developer tests with independently generated method-focused and five-prompt test groups. Tests are screened at tag `1.1.0` and evaluated cumulatively against the complete first-parent range to the pinned fork master.
@@ -42,7 +40,7 @@ Scope: {', '.join('`'+r['class']+'`' for r in scope['classes'])}. These are all 
 
 Generation caveat: {' '.join(generation_caveats) if generation_caveats else 'No recorded interruption of author-tool repair.'} Counts and compiler/run evidence are retained in each round's funnel and validation records. The retained denominators passed the final anchor control.
 
-`results/` contains the anchor, full commit/build ledger, baseline reports, raw survival records, JaCoCo XML and line CSVs, four tables, figure, consistency checks, and final status. `dev/` contains frozen Java/resources/suite inputs and the developer method denominator. `population/` contains the source inventory selection and exact KTester dataset. `generated/` retains prompts, responses, original test sources, and validation funnels. `tools/ORIGIN.md` and `tools/origin.json` record copied-tool provenance and local adaptations. Ignored `work/` and `checkouts/` contain reproducible build/runtime intermediates; ignored `docs/handover-*.md` contain local handovers.
+`results/` contains the anchor, full commit/build ledger, baseline reports, raw survival records, JaCoCo XML and line CSVs, four tables, figure, consistency checks, and final status. `dev/` contains frozen Java/resources/suite inputs and the developer method denominator. `population/` contains the source inventory selection and exact KTester dataset. `generated/` retains prompts, responses, original test sources, and validation funnels. `tools/ORIGIN.md` and `tools/origin.json` record copied-tool provenance and local adaptations. Ignored `work/` and `checkouts/` contain reproducible build/runtime intermediates.
 
 ## Reproduction
 

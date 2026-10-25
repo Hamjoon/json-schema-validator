@@ -36,10 +36,9 @@ def run(stage,script,*args):
 
 
 def checkpoint(step,title,details):
-    (EXP/f'docs/handover-part{step}.md').write_text('# Step '+str(step)+' handover\n\n'+details+'\n\nSee results/driver-events.json for execution times and logs.\n')
     subprocess.run(['git','add',str(EXP.relative_to(REPO))],cwd=REPO,check=True)
     subprocess.run(['git','commit','-q','--only','-m',title,'-m',TRAILER,'--',str(EXP.relative_to(REPO))],cwd=REPO,check=True)
-    event('commit-step'+str(step),'completed',commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip())
+    event('commit-step'+str(step),'completed',commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=REPO,text=True).strip(),details=details)
 
 
 def count(group):
@@ -73,7 +72,6 @@ def main():
     checkpoint(3,'Freeze the screened Ouedraogo denominator for run 2',json.dumps({'kept':count('ouedraogo'),'last_round':round_number,'last_funnel':funnel},indent=2))
     if count('ktester')+count('ouedraogo')==0:
         event('mandatory-stop','both-generated-groups-empty')
-        (EXP/'docs/handover-final.md').write_text('# Mandatory stop\n\nBoth generated groups have zero retained methods. See funnels and driver-events.json. No Phase A/B measurements.\n')
         checkpoint(4,'Record empty-generation stop for run 2','Both generated groups are empty; no fabricated survival or coverage.')
         return
     run('anchor-control','control_at_t.py')

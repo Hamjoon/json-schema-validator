@@ -36,13 +36,13 @@ def main():
     begun = json.loads((RESULTS/'run2-start.json').read_text())
     now = datetime.datetime.now(datetime.timezone.utc)
     seconds = round((now - datetime.datetime.fromisoformat(begun['started'])).total_seconds(), 3)
-    quote = 'If Step 1.2 (build at t) fails twice, or Step 2 selects fewer than 3 classes, or both LLM groups end with zero methods: stop after writing the handover and `results/STATUS.md`.'
+    quote = 'If Step 1.2 (build at t) fails twice, or Step 2 selects fewer than 3 classes, or both LLM groups end with zero methods: stop after writing `results/STATUS.md`.'
     summary = dict(status='stopped-scope-fewer-than-three-classes', started=begun['started'], finished=now.isoformat(), wall_seconds=seconds,
                    phase_seconds={'step1_setup_scope_dataset_and_verification': seconds}, selected_classes=scope['classes'], focal_methods=80,
                    developer_denominator=185, llm_denominators={'ktester': None, 'ouedraogo': None},
                    model_call_counts={'ktester': 0, 'ouedraogo': 0}, generation_rounds=[], phase_a='not run', phase_b='not run',
                    worker_counts={'phase_a': 0, 'phase_b': 0}, oom_events=[], quarantine_events=[],
-                   stop_source='Run 1 docs/cc-instructions-source.md, Retries and stop conditions; inherited by run 2', stop_instruction=quote,
+                   stop_source='Run 1 retries and stop conditions; inherited by run 2', stop_instruction=quote,
                    reuse_source_commit=manifest['source_commit'], copied_files_verified=len(manifest['files']), frozen_files_verified=len(frozen),
                    developer_method_kinds=dict(collections.Counter(r['kind'] for r in dev)),
                    author_code_unchanged=True, cache_trees_duplicated=False, deviations=[],
@@ -55,10 +55,6 @@ def main():
     status += 'The “fewer than 3 classes” scope condition applies to run 2 Step 1 (renumbered from run 1 Step 2). The run 2 exception for cumulative m < 50 does not apply because m=80.\n\n'
     status += 'Dev: 185 stable methods. KTester population: 80 unique final IDs, one raw ID collision corrected. KTester and Ouédraogo retained denominators: unavailable (generation not run). Model calls: 0. Phase A/B: not run. No author code changed; no push.\n'
     (RESULTS/'STATUS.md').write_text(status)
-    handover = '# Run 2 final handover\n\n'+status+'\n## Verified execution record\n\n```json\n'+json.dumps(summary, indent=2)+'\n```\n\n'
-    handover += 'To proceed with these exact scope/cap rules, an explicit change to the inherited minimum-three-classes stop condition is needed. Do not silently add or skip classes. Copied downstream adapters retain run 1 semantics; before a future continuation, apply the run 2 one-round KTester label, project-wide whole-suite Dev compilation, compile-failure categorization, and run 2 reporting changes. No downstream tool has run.\n'
-    (EXP/'docs/handover-part1.md').write_text(handover)
-    (EXP/'docs/handover-final.md').write_text(handover)
     (EXP/'README.md').write_text('''# Commit-survival experiment, run 2
 
 **Stopped after Step 1 under the inherited minimum-three-classes condition.** No model calls, survival runs, or coverage runs were performed.
@@ -69,7 +65,7 @@ The project-wide developer denominator contains all 185 methods stable in run 1.
 
 Anchor: `0c14a7a8664334fd10108895f84d8232f6c34019` (tag `1.1.0`). The reused range contains 229 first-parent commits ending at `1b57102e7c13acbfc9c82be20693efafb3983256`, with 181 required coverage indices. These are copied inputs, not run 2 measurements.
 
-Files: `population/` holds the scope, methods and dataset; `dev/` holds the full frozen suite and denominator; `results/reuse.md` and `reuse-manifest.json` record copied inputs; `results/final-summary.json` records timing, validation and the stop; `tools/ORIGIN.md` records tool provenance. Local handovers are in ignored `docs/handover-*.md`. Run 1 checkout and classpath caches are reused in place without duplication.
+Files: `population/` holds the scope, methods and dataset; `dev/` holds the full frozen suite and denominator; `results/reuse.md` and `reuse-manifest.json` record copied inputs; `results/final-summary.json` records timing, validation and the stop; `tools/ORIGIN.md` records tool provenance. Run 1 checkout and classpath caches are reused in place without duplication.
 
 Step 1 commands, from KTester/docker, after copying inputs as recorded in `results/reuse.md`:
 

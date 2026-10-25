@@ -67,9 +67,6 @@ def main():
     (RESULTS / 'build-at-t.md').write_text('# Anchor build\n\nJDK 17, `mvn -q -DskipTests package`, inside KTester. No author files modified.\n\n' + '\n'.join(f"- Attempt {i}: exit {r['exit_code']}, {r['seconds']} seconds; `{r['log']}`." for i,r in enumerate(attempts, 1)) + '\n')
     (RESULTS / 'STATUS.md').write_text('# Experiment status\n\n' + ('Anchor build passed; Step 1 continues.\n' if success else 'STOP: Step 1.2 failed twice, triggering the mandatory stop condition. Later steps were not run.\n'))
     if not success:
-        handover = '# Step 1 handover\n\nMandatory stop: anchor package build failed twice. See results/build-at-t.json and attempt logs. No tests or model calls run. No Phase A/B workers, OOMs, or quarantine events.\n'
-        (EXP / 'docs/handover-part1.md').write_text(handover)
-        (EXP / 'docs/handover-final.md').write_text(handover)
         raise SystemExit(2)
 
 
