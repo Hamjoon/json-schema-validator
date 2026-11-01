@@ -1,0 +1,102 @@
+[
+  {
+    "group": "Lazy loading behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Non\u2011null TypeValidator instance returned; getValidators() method is invoked exactly once",
+        "description": "When the internal `validators` field is null, calling `getTypeValidator()` should trigger lazy loading via `getValidators()`. The mocked `getValidators()` populates both `validators` and `typeValidator`. The test verifies that the returned object is not null and that `getValidators()` was called."
+      }
+    ]
+  },
+  {
+    "group": "Already initialized behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The previously set TypeValidator instance is returned; getValidators() is NOT invoked",
+        "description": "The `validators` list is pre\u2011populated (e.g., with a dummy validator) and `typeValidator` is set to a known stub. Calling `getTypeValidator()` must return that stub without calling `getValidators()`. The test uses a spy or Mockito `verify` to ensure `getValidators()` is never invoked."
+      }
+    ]
+  },
+  {
+    "group": "Null TypeValidator after loading",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null is returned; getValidators() is invoked but does not set typeValidator",
+        "description": "Simulate a schema that does not contain a `type` keyword. The mocked `getValidators()` populates `validators` with other validators but leaves `typeValidator` as null. After invoking `getTypeValidator()`, the method should return null, confirming that the lazy\u2011load path works even when no TypeValidator exists."
+      }
+    ]
+  },
+  {
+    "group": "Repeated lazy loading calls",
+    "cases": [
+      {
+        "input": [],
+        "expected": "First call triggers getValidators(); subsequent calls return the same non\u2011null TypeValidator instance without invoking getValidators() again",
+        "description": "Create a JsonSchema spy where getValidators() is stubbed to populate validators and typeValidator. Call getTypeValidator() twice. Verify getValidators() was called exactly once and both returned references are identical."
+      }
+    ]
+  },
+  {
+    "group": "Pre\u2011initialized validators without TypeValidator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null is returned; getValidators() is NOT invoked",
+        "description": "Manually set the `validators` field to an empty ArrayList and leave `typeValidator` as null. Invoke getTypeValidator() and assert that the result is null and that getValidators() was never called."
+      }
+    ]
+  },
+  {
+    "group": "Validators list empty after lazy loading",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null is returned; getValidators() is invoked exactly once",
+        "description": "Mock getValidators() to set `validators` to an empty list and leave `typeValidator` null. Call getTypeValidator() and verify that it returns null while confirming that getValidators() was executed once."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation from getValidators",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException thrown from getValidators() propagates out of getTypeValidator()",
+        "description": "Configure the JsonSchema spy so that getValidators() throws a RuntimeException (e.g., new IllegalStateException(\"boom\")). Invoke getTypeValidator() and assert that the same exception is thrown to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Custom TypeValidator subclass returned",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Instance of the custom subclass is returned; getValidators() invoked once",
+        "description": "Create a subclass of TypeValidator (e.g., MySpecialTypeValidator). Stub getValidators() to assign this instance to `typeValidator`. After calling getTypeValidator(), verify that the returned object is an instance of MySpecialTypeValidator and that getValidators() was called exactly once."
+      }
+    ]
+  },
+  {
+    "group": "NullPointerException propagation from getValidators",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException thrown from getValidators() propagates out of getTypeValidator()",
+        "description": "Configure a JsonSchema spy so that its getValidators() method throws a NullPointerException (e.g., new NullPointerException(\"null boom\")). Invoke getTypeValidator() and assert that the same NullPointerException is thrown to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Error propagation from getValidators",
+    "cases": [
+      {
+        "input": [],
+        "expected": "AssertionError thrown from getValidators() propagates out of getTypeValidator()",
+        "description": "Stub getValidators() to throw an AssertionError (or any subclass of java.lang.Error). Call getTypeValidator() and verify that the Error is not caught and propagates unchanged."
+      }
+    ]
+  }
+]

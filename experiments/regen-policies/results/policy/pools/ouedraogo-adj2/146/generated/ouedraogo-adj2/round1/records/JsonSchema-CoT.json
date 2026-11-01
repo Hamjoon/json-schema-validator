@@ -1,0 +1,58 @@
+{
+  "class_name": "JsonSchema",
+  "technique": "CoT",
+  "status": "ok",
+  "attempts": 1,
+  "calls": [
+    {
+      "timestamp": "2026-10-29T16:00:47.942834+00:00",
+      "latency": 77.383,
+      "status": "ok",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "provider": "CoreWeave",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_reported": "openai/gpt-oss-120b",
+      "request_id": "gen-1793289648-iAoSjUhurv60qfQnnUmD",
+      "usage": {
+        "prompt_tokens": 14677,
+        "completion_tokens": 5222,
+        "total_tokens": 19899,
+        "cost": 0.00132805,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00132805,
+          "upstream_inference_prompt_cost": 0.00044031,
+          "upstream_inference_completions_cost": 0.00088774
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1828,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "error_type": null,
+      "prompt_sha256": "3a8bf4db02ca886a41f5c6805ed626609534556859cca4de8ea8a6b0a320dbfd",
+      "response_sha256": "14405084811ac16a330a930c74343ea725c55de20f326b161554175bad63918f"
+    }
+  ],
+  "extraction": {
+    "msr_detected": true,
+    "csr_v2": true,
+    "class_name": "JsonSchemaTest",
+    "package": "com.networknt.schema",
+    "fqcn": "com.networknt.schema.JsonSchemaTest",
+    "csr_success": null,
+    "selection": "markers",
+    "marker_pair": true,
+    "braces_balanced": true,
+    "html_detected": false
+  },
+  "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/CoT/JsonSchemaTest.java"
+}

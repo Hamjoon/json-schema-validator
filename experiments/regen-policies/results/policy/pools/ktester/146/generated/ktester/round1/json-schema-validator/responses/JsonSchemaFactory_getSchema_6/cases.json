@@ -1,0 +1,362 @@
+[
+  {
+    "group": "Valid URI \u2013 schema loaded successfully",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content of simple-schema.json",
+        "description": "A well\u2011formed classpath URI that points to an existing JSON schema file. The method should resolve the URI, read the schema and return a non\u2011null JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/tmp/external-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content of external-schema.json",
+        "description": "A file\u2011system URI that points to a readable schema file. The method should use the default SchemaLoader to load the file and return a valid JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Invalid URI \u2013 malformed or unsupported scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"ht!tp://bad[uri]\")"
+          }
+        ],
+        "expected": "java.net.URISyntaxException thrown before getSchema(URI) is invoked",
+        "description": "The URI string is syntactically invalid; construction of the URI itself fails, so getSchema is never called."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"mailto:user@example.com\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported schema URI scheme\"",
+        "description": "The URI uses a scheme that the factory does not know how to resolve (e.g., mailto). The method should detect this and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Null argument handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException thrown",
+        "description": "Passing a null URI should cause a NullPointerException because the implementation immediately calls schemaUri.toString()."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011existent resource \u2013 loading failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/missing-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating that the resource could not be found",
+        "description": "The URI is syntactically correct but points to a resource that does not exist on the classpath. The method should attempt to load it and propagate a meaningful exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/nonexistent/path/schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating file not found",
+        "description": "A file\u2011system URI that refers to a file that cannot be read. The method should surface the I/O problem."
+      }
+    ]
+  },
+  {
+    "group": "Custom SchemaValidatorsConfig effect",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/with\u2011defaults.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance whose configuration reflects the defaults created by createSchemaValidatorsConfig() (e.g., $ref handling enabled)",
+        "description": "Ensures that getSchema(URI) forwards the default SchemaValidatorsConfig produced by createSchemaValidatorsConfig() to the underlying loader."
+      }
+    ]
+  },
+  {
+    "group": "Remote HTTP URI \u2013 successful load",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://localhost:8080/remote-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content served by the HTTP endpoint",
+        "description": "A well\u2011formed HTTP URI that points to an accessible JSON schema served by a mock HTTP server. The method should perform an HTTP GET, read the response, and return a valid JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Remote HTTP URI \u2013 404 Not Found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://localhost:8080/missing-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating that the remote resource could not be retrieved (HTTP 404)",
+        "description": "The HTTP endpoint returns a 404 status. The factory should surface the I/O problem rather than returning a null schema."
+      }
+    ]
+  },
+  {
+    "group": "URI with fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/simple-schema.json#section\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content of simple-schema.json (fragment is ignored)",
+        "description": "A classpath URI that includes a fragment. The fragment should not affect schema loading; the factory should strip it and load the underlying resource."
+      }
+    ]
+  },
+  {
+    "group": "URI with query parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/simple-schema.json?version=1\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content of simple-schema.json (query is ignored)",
+        "description": "A classpath URI that contains a query string. The loader should ignore the query part and successfully load the schema."
+      }
+    ]
+  },
+  {
+    "group": "Empty schema file",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/empty-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating that the schema content is empty or cannot be parsed",
+        "description": "The referenced file exists but contains no characters. The factory should attempt to parse it and fail with a clear exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/invalid-json-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating JSON parsing error",
+        "description": "The file exists but contains malformed JSON (e.g., missing commas). The method should throw an exception that reflects the parsing problem."
+      }
+    ]
+  },
+  {
+    "group": "Caching \u2013 repeated calls with same URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "The second invocation of getSchema(URI) returns the same JsonSchema instance (reference equality) as the first call",
+        "description": "JsonSchemaFactory caches loaded schemas in a ConcurrentMap. Verify that calling getSchema with an identical URI reuses the cached JsonSchema rather than creating a new object."
+      }
+    ]
+  },
+  {
+    "group": "Relative URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported schema URI scheme\" or \"Relative URIs are not supported\"",
+        "description": "A URI without a scheme (relative path) is supplied. The factory expects absolute URIs and should reject the input with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Jar scheme URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"jar:file:/path/to/app.jar!/schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its root node matches the JSON content of simple-schema.json inside the JAR",
+        "description": "A JAR URL points to a schema packaged within a JAR file. The loader should be able to resolve the resource and return a valid JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref to external resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/with-ref-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; validation of a sample JSON document that follows the $ref resolves the external schema correctly",
+        "description": "The primary schema contains a $ref to another schema located via a classpath URI. Verify that getSchema loads both schemas and that the resulting JsonSchema can resolve the reference during validation."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported scheme \u2013 FTP",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"ftp://example.com/schema.json\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported schema URI scheme\"",
+        "description": "The URI uses the FTP scheme which the factory does not support. The method should detect the unsupported scheme and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported scheme \u2013 Data URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"data:application/json,{\\\"type\\\":\\\"object\\\"}\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported schema URI scheme\"",
+        "description": "A data URI embeds the schema directly. The factory does not handle data URIs and must reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Directory URI \u2013 loading failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/tmp/\" )"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating that the target is not a readable schema file",
+        "description": "The URI points to a directory rather than a regular file. When the loader attempts to read it, it should fail and propagate an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Unreachable HTTP host \u2013 connection error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://nonexistent-host-12345.local/schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) caused by a connection failure (e.g., UnknownHostException)",
+        "description": "The HTTP URI refers to a host that cannot be resolved or contacted. The factory should surface the I/O problem rather than returning a schema."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref \u2013 recursion detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/circular-ref-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalStateException) indicating a circular reference or recursion limit exceeded",
+        "description": "The referenced schema contains a $ref that ultimately points back to itself, forming a cycle. The factory must detect the circular reference and throw a clear exception."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported draft version \u2013 unknown $schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"classpath:/schemas/unknown-draft-schema.json\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported schema version\"",
+        "description": "The schema declares a $schema IRI that does not correspond to any known draft (e.g., \"http://json-schema.org/draft-99/schema#\"). The factory should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Empty URI string \u2013 invalid argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Schema location must not be empty\"",
+        "description": "An empty URI string is syntactically valid but provides no location information. The factory should treat this as an illegal argument and throw an IllegalArgumentException."
+      }
+    ]
+  }
+]

@@ -1,0 +1,67 @@
+{
+  "index": 202,
+  "sha": "2575a025007dca1028df1105bb225e5f4397c3ea",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/202",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 4.826,
+      "log": "results/builds/logs/202-1.txt"
+    }
+  ],
+  "input_sha256": "28ac73b8144797a5245e38f5f199ebac97d89da438807543675d781abbf54bb3",
+  "pom_sha256": "15023be73069dcae7a3a0d658d172f3561dc74b9a72f0b64d3c0ef4c3b74a062",
+  "classpath": "work/classpaths/15023be73069dcae7a3a0d658d172f3561dc74b9a72f0b64d3c0ef4c3b74a062.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/202",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 2.817,
+      "log": "results/builds/logs/classpath-202/go-offline-63b91155e71c4d5daa171958e7c82382/1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-U",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/202",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 3.038,
+      "log": "results/builds/logs/classpath-202/go-offline-63b91155e71c4d5daa171958e7c82382/2.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/regen-policies/work/classpaths/15023be73069dcae7a3a0d658d172f3561dc74b9a72f0b64d3c0ef4c3b74a062-bab455d04a134dc3864fd569893e733b.tmp"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/202",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 2.01,
+      "log": "results/builds/logs/classpath-202/build-classpath-04d44dca8f16418386849f0535d215d1/1.txt"
+    }
+  ]
+}

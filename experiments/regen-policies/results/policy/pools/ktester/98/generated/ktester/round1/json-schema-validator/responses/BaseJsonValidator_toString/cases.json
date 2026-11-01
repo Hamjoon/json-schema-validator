@@ -1,0 +1,87 @@
+[
+  {
+    "group": "BaseJsonValidator.toString()",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"root\"",
+        "description": "When the evaluation path contains a single element \"root\", getEvaluationPath().getName(-1) should return that element. toString() must therefore return \"root\"."
+      },
+      {
+        "input": [],
+        "expected": "\"grandchild\"",
+        "description": "When the evaluation path contains multiple elements [\"root\", \"child\", \"grandchild\"], getName(-1) should return the last element \"grandchild\". toString() must return \"grandchild\"."
+      },
+      {
+        "input": [],
+        "expected": "IndexOutOfBoundsException",
+        "description": "When the evaluation path is empty (no elements), calling getName(-1) is expected to throw an IndexOutOfBoundsException. toString() should propagate this exception."
+      },
+      {
+        "input": [],
+        "expected": "null",
+        "description": "When the evaluation path\u2019s last element is explicitly null, getName(-1) returns null. toString() should therefore return null."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString() - additional cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"\"",
+        "description": "When the evaluation path contains a single element that is an empty string, getEvaluationPath().getName(-1) returns \"\" and toString() must return the empty string."
+      },
+      {
+        "input": [],
+        "expected": "\"   \"",
+        "description": "When the evaluation path's last element consists only of whitespace, toString() should return that whitespace unchanged."
+      },
+      {
+        "input": [],
+        "expected": "\"12345\"",
+        "description": "When the last element of the evaluation path is a numeric string, toString() must return the exact numeric string."
+      },
+      {
+        "input": [],
+        "expected": "\"node@#%&*\"",
+        "description": "When the evaluation path ends with a string containing special characters, toString() should return the same special\u2011character string."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "If getEvaluationPath() returns null, invoking getName(-1) causes a NullPointerException which toString() must propagate."
+      },
+      {
+        "input": [],
+        "expected": "IllegalStateException",
+        "description": "When the JsonNodePath implementation throws an IllegalStateException inside getName(-1), toString() should propagate that exception."
+      },
+      {
+        "input": [],
+        "expected": "\"leaf1000\"",
+        "description": "When the evaluation path contains a large number of elements (e.g., 1000) and the last element is \"leaf1000\", toString() must correctly return the last element regardless of path length."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString() - exception edge cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalArgumentException",
+        "description": "When getEvaluationPath() returns a JsonNodePath whose getName(-1) implementation throws IllegalArgumentException (e.g., because the internal index handling is invalid), toString() must propagate the IllegalArgumentException."
+      },
+      {
+        "input": [],
+        "expected": "UnsupportedOperationException",
+        "description": "When getEvaluationPath() returns a JsonNodePath that does not support negative indexing and throws UnsupportedOperationException from getName(-1), toString() should propagate that exception."
+      },
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "When getEvaluationPath() returns a JsonNodePath whose getName(-1) throws a generic RuntimeException (simulating an unexpected failure), toString() must propagate the RuntimeException unchanged."
+      }
+    ]
+  }
+]

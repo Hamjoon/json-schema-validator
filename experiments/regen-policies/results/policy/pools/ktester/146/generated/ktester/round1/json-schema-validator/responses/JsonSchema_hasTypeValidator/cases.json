@@ -1,0 +1,242 @@
+[
+  {
+    "group": "hasTypeValidator",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When the JsonSchema instance has a non\u2011null TypeValidator (e.g., created from a schema that defines a \"type\" keyword), hasTypeValidator() should return true."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When the JsonSchema instance has no TypeValidator (e.g., created from a schema without a \"type\" keyword), hasTypeValidator() should return false."
+      },
+      {
+        "input": [],
+        "expected": "No exception",
+        "description": "Calling hasTypeValidator() should never throw an exception regardless of the internal state of the schema."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_withObjectType",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": true,
+        "description": "A schema that defines a top\u2011level \"type\": \"object\" should cause hasTypeValidator() to return true."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_withArrayOfTypes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": [\"string\", \"null\"] }"
+          }
+        ],
+        "expected": true,
+        "description": "When the \"type\" keyword is an array of allowed types, the schema still has a TypeValidator, so hasTypeValidator() returns true."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_anyOfWithoutTopLevelType",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"anyOf\": [ { \"type\": \"string\" }, { \"type\": \"number\" } ] }"
+          }
+        ],
+        "expected": false,
+        "description": "A schema that only contains an \"anyOf\" with sub\u2011schemas that have types but no top\u2011level \"type\" keyword should return false."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_refToTypeSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "mainSchemaJson",
+            "value": "{ \"$ref\": \"#/definitions/target\" , \"definitions\": { \"target\": { \"type\": \"array\", \"items\": { \"type\": \"integer\" } } } }"
+          }
+        ],
+        "expected": true,
+        "description": "A schema that $ref\u2011s to another definition which defines a \"type\" should resolve the reference and report true."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_refToNoTypeSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "mainSchemaJson",
+            "value": "{ \"$ref\": \"#/definitions/target\" , \"definitions\": { \"target\": { \"properties\": { \"id\": { \"type\": \"string\" } } } } }"
+          }
+        ],
+        "expected": false,
+        "description": "A $ref that points to a schema without a top\u2011level \"type\" keyword should result in false."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_withEnumOnly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"enum\": [1, 2, 3] }"
+          }
+        ],
+        "expected": false,
+        "description": "A schema that only defines an \"enum\" (no \"type\") must return false."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_afterInitializeValidators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          }
+        ],
+        "expected": false,
+        "description": "Even after calling initializeValidators() on a schema that lacks a top\u2011level \"type\", hasTypeValidator() remains false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"boolean\", \"properties\": { \"flag\": { \"type\": \"boolean\" } } }"
+          }
+        ],
+        "expected": true,
+        "description": "After initializeValidators() on a schema that already has a top\u2011level \"type\", the method still returns true."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_typeNullValue",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": null }"
+          }
+        ],
+        "expected": false,
+        "description": "A schema where \"type\" is explicitly set to null should not create a TypeValidator and therefore returns false (no exception should be thrown)."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_invalidTypeValue",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": 123 }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the \"type\" keyword is a number (invalid type definition), getTypeValidator() should throw IllegalArgumentException, causing hasTypeValidator() to propagate the exception."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_unresolvableRef",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$ref\": \"#/definitions/missing\" }"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "A $ref that points to a non\u2011existent definition should cause schema resolution to fail and throw a JsonSchemaException when hasTypeValidator() accesses the TypeValidator."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_circularRef",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$ref\": \"#/definitions/self\", \"definitions\": { \"self\": { \"$ref\": \"#/definitions/self\" } } }"
+          }
+        ],
+        "expected": "StackOverflowError",
+        "description": "A schema that references itself directly creates a circular reference; attempting to resolve the TypeValidator should eventually overflow the stack."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_malformedSchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the root schema node is null (e.g., schema parsing returned null), calling hasTypeValidator() should result in a NullPointerException when getTypeValidator() dereferences the node."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_typeArrayWithInvalidElement",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": [\"string\", 5, \"null\"] }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the \"type\" array contains a non\u2011string element (the number 5), the TypeValidator creation should fail with IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "hasTypeValidator_unsupportedKeywordCombination",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"object\", \"anyOf\": [ { \"type\": \"string\" } ] }"
+          }
+        ],
+        "expected": "UnsupportedOperationException",
+        "description": "If the implementation does not allow a top\u2011level \"type\" together with \"anyOf\" (or similar combinators) for TypeValidator creation, it may throw UnsupportedOperationException."
+      }
+    ]
+  }
+]

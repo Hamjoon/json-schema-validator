@@ -1,0 +1,710 @@
+[
+  {
+    "group": "PreWalkListenerSkip",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_skipPreWalk"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned empty error set; walk body not executed; only post\u2011walk listeners invoked",
+        "description": "Pre\u2011walk listeners return false (skip). The method should bypass the validator walk loop body and directly invoke post\u2011walk listeners, resulting in an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "PreWalkListenerProceed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_proceedPreWalk"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Returned empty error set; validator walk executed; post\u2011walk listeners invoked",
+        "description": "Pre\u2011walk listeners return true, so the validator walk is performed. The validator returns null, which makes the collector merge scopes without adding errors."
+      }
+    ]
+  },
+  {
+    "group": "ValidatorReturnsNullOrEmpty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_nullResult"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned empty error set; collectorContext merges parent scope with child scope (no errors added)",
+        "description": "Validator walk returns null. The method should treat it like an empty result, merge the dynamic scopes and return an empty error set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_emptyResult"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned empty error set; collectorContext merges parent scope with child scope (no errors added)",
+        "description": "Validator walk returns an empty Set. The method should merge scopes and not add any errors."
+      }
+    ]
+  },
+  {
+    "group": "ValidatorReturnsErrors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_withErrors"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned error set containing the validator's messages; collectorContext does NOT merge parent scope with child scope",
+        "description": "Validator walk returns a non\u2011empty Set of ValidationMessage. The method should add those messages to the final error set and skip merging the parent scope with the child scope."
+      }
+    ]
+  },
+  {
+    "group": "ValidatorSpecificTypes_Items",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_itemsValidator"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned error set (if any); collectorContext.evaluatedItems contains items from child scope after walk",
+        "description": "Validator is an instance of ItemsValidator (or PrefixItemsValidator / ItemsValidator202012 / ContainsValidator). After a non\u2011empty result, the method must copy evaluated items from the child scope into CollectorContext.evaluatedItems."
+      }
+    ]
+  },
+  {
+    "group": "ValidatorSpecificTypes_Properties",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_propertiesValidator"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Returned error set (if any); collectorContext.evaluatedProperties contains properties from child scope after walk",
+        "description": "Validator is an instance of PropertiesValidator (or AdditionalPropertiesValidator / PatternPropertiesValidator). After a non\u2011empty result, the method must copy evaluated properties from the child scope into CollectorContext.evaluatedProperties."
+      }
+    ]
+  },
+  {
+    "group": "ExceptionDuringValidatorWalk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_exception"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Method propagates the exception after post\u2011walk listeners are executed; error set is not returned",
+        "description": "Validator walk throws a RuntimeException. The finally block must still invoke post\u2011walk listeners before the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "NullKeywordWalkListenerRunner",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_noRunner"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown before any validator walk or post\u2011walk listener execution because keywordWalkListenerRunner is null.",
+        "description": "The JsonSchema instance has its keywordWalkListenerRunner field left null. The walk method attempts to call runPreWalkListeners, which should raise a NullPointerException. This verifies that the method does not silently ignore a missing runner."
+      }
+    ]
+  },
+  {
+    "group": "MultipleValidatorsMixedResults",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_twoValidators"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned error set containing only the messages from the second validator; first validator returned an empty set, so its scope is merged into the parent scope.",
+        "description": "JsonSchema contains two validators. The first validator returns an empty Set, the second returns a non\u2011empty Set of ValidationMessage. The walk method must aggregate errors from the second validator only and still merge the first validator's dynamic scope into the parent."
+      }
+    ]
+  },
+  {
+    "group": "PostWalkListenersInvokedOnSkip",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_skipPreWalkPostCheck"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Returned empty error set; validator walk body not executed; post\u2011walk listeners are still invoked exactly once per validator.",
+        "description": "Pre\u2011walk listeners return false (skip). The test verifies that, despite the skip, the finally block still triggers runPostWalkListeners for each validator."
+      }
+    ]
+  },
+  {
+    "group": "EmptyValidatorsList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_noValidators"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned empty error set; no pre\u2011walk or post\u2011walk listeners are called because there are no validators.",
+        "description": "The schema's getValidators() method returns an empty list. The walk method should simply return an empty LinkedHashSet without invoking any listeners."
+      }
+    ]
+  },
+  {
+    "group": "PreWalkListenerThrowsException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_preWalkException"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException propagates after post\u2011walk listeners are executed; no error set is returned.",
+        "description": "A pre\u2011walk listener throws a RuntimeException. The finally block must still invoke runPostWalkListeners before the exception bubbles up, mirroring the behavior tested for validator\u2011thrown exceptions."
+      }
+    ]
+  },
+  {
+    "group": "EvaluatedItemsNotAddedWhenNoErrors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_itemsValidatorEmptyResult"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Returned empty error set; collectorContext.evaluatedItems remains unchanged because the ItemsValidator returned an empty result.",
+        "description": "Validator is an instance of ItemsValidator (or PrefixItemsValidator/ItemsValidator202012/ContainsValidator) but its walk method returns an empty Set. The method must NOT copy evaluated items from the child scope into the collector context."
+      }
+    ]
+  },
+  {
+    "group": "EvaluatedPropertiesNotAddedWhenNoErrors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_propertiesValidatorEmptyResult"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Returned empty error set; collectorContext.evaluatedProperties remains unchanged because the PropertiesValidator returned an empty result.",
+        "description": "Validator is an instance of PropertiesValidator (or AdditionalPropertiesValidator/PatternPropertiesValidator) and returns an empty Set. The evaluatedProperties set must not be populated."
+      }
+    ]
+  },
+  {
+    "group": "NullExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown when the method attempts to call executionContext.getCollectorContext()",
+        "description": "The supplied ExecutionContext is null. The walk method should immediately throw a NullPointerException before any listener or validator interaction."
+      }
+    ]
+  },
+  {
+    "group": "NullCollectorContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_withNullCollector"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException is thrown when collectorContext.enterDynamicScope(this) is invoked",
+        "description": "The ExecutionContext returns a null CollectorContext. The walk method should raise a NullPointerException at the point where it tries to enter a dynamic scope."
+      }
+    ]
+  },
+  {
+    "group": "NullValidatorsList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown because getValidators() returns null and the for\u2011each loop attempts to iterate over it",
+        "description": "The JsonSchema instance is configured so that getValidators() returns null. The walk method should not silently treat it as empty; it will throw a NullPointerException when the enhanced for\u2011loop starts."
+      }
+    ]
+  },
+  {
+    "group": "NullValidatorInList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException is thrown when the loop attempts to call v.getEvaluationPath() on a null validator",
+        "description": "The validators list contains a null element. The walk method should raise a NullPointerException at the first dereference of the validator."
+      }
+    ]
+  },
+  {
+    "group": "NullEvaluationPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown when evaluationPathWithKeyword.getName(-1) is called on a null evaluation path",
+        "description": "A validator returns null from getEvaluationPath(). The walk method should throw a NullPointerException while trying to retrieve the keyword name."
+      }
+    ]
+  },
+  {
+    "group": "EmptyEvaluationPathIndexOutOfBounds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "IndexOutOfBoundsException is thrown when getName(-1) is invoked on an empty JsonNodePath",
+        "description": "The validator's getEvaluationPath() returns an empty JsonNodePath. Calling getName(-1) should raise an IndexOutOfBoundsException, which must propagate out of walk."
+      }
+    ]
+  },
+  {
+    "group": "NullSchemaNodeDuringPostWalk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown inside runPostWalkListeners because this.schemaNode is null",
+        "description": "The JsonSchema instance has its schemaNode field set to null. When the finally block invokes runPostWalkListeners, the null schemaNode causes a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "PostWalkListenerThrowsException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_postWalkException"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "RuntimeException propagates after the post\u2011walk listeners are invoked; the method does not return an error set",
+        "description": "runPostWalkListeners throws a RuntimeException. The walk method must still have entered the finally block, invoke the listener (which throws), and let the exception bubble up."
+      }
+    ]
+  }
+]

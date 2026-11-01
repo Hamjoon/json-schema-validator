@@ -1,0 +1,508 @@
+[
+  {
+    "group": "Successful validation with validate=true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat (captures ValidationResult as a List<String>)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing no validation messages (empty list) because the instance node matches the schema and validation is performed.",
+        "description": "A valid JSON object is supplied, validation is enabled and a non\u2011null OutputFormat is used. The method should walk the schema, perform validation and return an empty result set."
+      }
+    ]
+  },
+  {
+    "group": "Validation disabled (validate=false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "OutputFormat returns a List containing no validation messages (empty list) because validation is skipped.",
+        "description": "Even though the instance node could be invalid, the `validate` flag is false, so the walk method must skip validation and still return a result via the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Invalid instance node \u2013 validation error produced",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"not-an-integer\""
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing at least one ValidationMessage indicating type mismatch (expected integer, found string).",
+        "description": "The schema expects an integer, but a string is supplied. With validation enabled, the walk method must detect the type error and propagate it through the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Null node argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown because the node argument is null.",
+        "description": "The method should guard against a null JsonNode and throw an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown because the OutputFormat argument is null.",
+        "description": "The method must validate that the OutputFormat is provided; a null value should result in an exception."
+      }
+    ]
+  },
+  {
+    "group": "Schema with recursive anchor \u2013 ensure walk handles recursion flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"$ref\": \"#\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List with no validation messages (the recursive anchor is correctly resolved without infinite recursion).",
+        "description": "When the schema contains a recursive `$ref` (self\u2011reference), walk should detect `isRecursiveAnchor()` and avoid stack overflow, still producing a valid result."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property \u2013 validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\", \"required\": [\"id\"], \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing one ValidationMessage indicating that required property 'id' is missing.",
+        "description": "The schema requires property 'id' of type integer, but the instance object is empty. With validation enabled, walk should report a missing\u2011required\u2011property error."
+      }
+    ]
+  },
+  {
+    "group": "Enum constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"enum\": [\"red\", \"green\", \"blue\"] }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing one ValidationMessage stating that the value is not one of the allowed enum values.",
+        "description": "The schema restricts the string to a set of enum values. The instance value is not in that set, so a validation error must be produced."
+      }
+    ]
+  },
+  {
+    "group": "Pattern constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"pattern\": \"^[A-Z]{3}[0-9]{4}$\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing one ValidationMessage indicating that the string does not match the required regex pattern.",
+        "description": "The schema defines a regex pattern for a product code. The supplied string fails to match, so walk should emit a pattern\u2011mismatch message."
+      }
+    ]
+  },
+  {
+    "group": "Array items type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"array\", \"items\": { \"type\": \"integer\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing at least one ValidationMessage for the array element that is not an integer.",
+        "description": "The schema expects an array of integers. The instance array contains a non\u2011integer element (e.g., a string), which must be reported."
+      }
+    ]
+  },
+  {
+    "group": "OneOf schema \u2013 matching subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"oneOf\": [ { \"type\": \"string\" }, { \"type\": \"integer\" } ] }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns an empty List because the instance matches at least one subschema (string or integer).",
+        "description": "The schema uses oneOf with two alternatives. The supplied instance is a valid string, so validation succeeds with no messages."
+      }
+    ]
+  },
+  {
+    "group": "OneOf schema \u2013 no matching subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"oneOf\": [ { \"type\": \"boolean\" }, { \"type\": \"null\" } ] }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns a List containing at least one ValidationMessage stating that none of the oneOf subschemas matched.",
+        "description": "The instance is a number (default JSON number node used by the test harness) which does not satisfy either boolean or null subschemas, so a oneOf validation error is expected."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "ExceptionThrowingOutputFormat (throws RuntimeException on any call)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException propagated from the OutputFormat implementation.",
+        "description": "A custom OutputFormat that deliberately throws an exception is supplied. walk should not swallow the exception; it must propagate it to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false with invalid instance \u2013 no messages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "OutputFormat returns an empty List because validation is disabled, even though the instance node is not an integer.",
+        "description": "The schema expects an integer, but the supplied instance is a JSON string. Since validate is false, walk must skip validation and return no messages."
+      }
+    ]
+  },
+  {
+    "group": "Schema allowing null \u2013 node is JSON null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": [\"null\", \"string\"] }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "OutputFormat returns an empty List because the instance is JSON null, which is permitted by the schema.",
+        "description": "The schema permits either null or string. The instance supplied is the JSON literal null, so validation should succeed with no messages."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat returning non\u2011collection result",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"boolean\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "BooleanResultOutputFormat (returns Boolean true if validation passes, false otherwise)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "true (the Boolean value returned by the OutputFormat indicating successful validation).",
+        "description": "A generic OutputFormat that returns a Boolean is used. The instance matches the schema, so walk should return true."
+      }
+    ]
+  },
+  {
+    "group": "Unresolved $ref leads to JsonSchemaException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"$ref\": \"#/nonexistent\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) thrown because the $ref cannot be resolved to any subschema.",
+        "description": "The schema contains a $ref that points to a fragment that does not exist. walk should attempt to resolve the reference and fail, propagating an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $id URI causing UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"$id\": \"http://example.com/schema%ZZ\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "UnsupportedEncodingException thrown while decoding the $id URI.",
+        "description": "The $id contains an invalid percent\u2011encoding sequence. During walk the schema id is URL\u2011decoded, which should raise an UnsupportedEncodingException."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref without recursive anchor causing StackOverflowError",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"$ref\": \"#/definitions/self\" , \"definitions\": { \"self\": { \"$ref\": \"#/definitions/self\" } } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "StackOverflowError (or similar recursion error) because the schema contains a self\u2011referencing $ref that is not marked as a recursive anchor.",
+        "description": "When walk follows the $ref chain it will recurse indefinitely, eventually overflowing the stack. The test verifies that such a situation results in a runtime error."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws checked IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "IOExceptionThrowingOutputFormat (throws java.io.IOException on format call)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException (or unchecked wrapper) propagating the IOException thrown by the OutputFormat.",
+        "description": "A custom OutputFormat deliberately throws a checked IOException during its processing. walk must not swallow the exception; it should be wrapped or re\u2011thrown as an unchecked exception."
+      }
+    ]
+  },
+  {
+    "group": "MissingNode argument causes IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "MissingNode.INSTANCE"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) thrown because the supplied JsonNode is a MissingNode, which is not a valid instance for validation.",
+        "description": "When the caller passes Jackson's MissingNode (representing a non\u2011existent field) walk should reject it and raise an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext creation failure leads to IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException thrown from createExecutionContext() when the schema has not been initialized properly (e.g., missing validation context).",
+        "description": "If the JsonSchema instance is in an invalid state such that createExecutionContext() cannot construct a usable ExecutionContext, walk should propagate the IllegalStateException."
+      }
+    ]
+  }
+]

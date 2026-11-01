@@ -1,0 +1,30 @@
+{
+    "group": "builder() method - additional scenarios",
+    "cases": [
+        {
+            "input": [],
+            "expected": "instance of type com.networknt.schema.JsonSchemaFactory.Builder",
+            "description": "Verify that the object returned by builder() is an instance of the nested Builder class (i.e., its runtime class name matches JsonSchemaFactory.Builder)."
+        },
+        {
+            "input": [],
+            "expected": "two Builder instances are not equal via == and not equal via equals()",
+            "description": "Ensure that two separate calls to builder() produce distinct objects: the references are different (== returns false) and the default equals() implementation also reports inequality, confirming no shared state or overridden equality."
+        },
+        {
+            "input": [],
+            "expected": "each Builder created in parallel threads is a distinct, non‑null instance",
+            "description": "Spawn multiple threads (e.g., 10) that each invoke JsonSchemaFactory.builder() concurrently and collect the results. Assert that every collected Builder is non‑null and that no two references are identical, demonstrating thread‑safety and lack of hidden caching."
+        },
+        {
+            "input": [],
+            "expected": "default configuration fields inside the Builder are non‑null (e.g., versionFlag = null, config = new SchemaValidatorsConfig())",
+            "description": "Using reflection, inspect the newly created Builder to confirm that its internal configuration objects are initialized to sensible defaults (no null pointers). This checks that the Builder constructor performs proper initialization."
+        },
+        {
+            "input": [],
+            "expected": "calling builder().build() returns a JsonSchemaFactory instance whose getJsonMapper() is not null",
+            "description": "After obtaining a Builder from builder(), invoke its build() method (the standard Builder pattern) and verify that the resulting JsonSchemaFactory is functional – specifically, its ObjectMapper (or JsonMapper) is instantiated, indicating the Builder correctly wired the factory."
+        }
+    ]
+}

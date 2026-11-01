@@ -1,0 +1,74 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:147: error: cannot find symbol
+        JsonNodePath path = new JsonNodePath(JsonNodePath.PathType.LEGACY);
+                                                         ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:177: error: cannot find symbol
+        JsonNodePath path = new JsonNodePath(JsonNodePath.PathType.LEGACY);
+                                                         ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:214: error: cannot find symbol
+        java.util.function.Function<JsonNodePath.PathType, ValidationContext> ctxFactory = (type) -> {
+                                                ^
+  symbol:   class PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:219: error: cannot find symbol
+                        .getMethod("setPathType", JsonNodePath.PathType.class);
+                                                              ^
+  symbol:   class PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:231: error: cannot find symbol
+        for (JsonNodePath.PathType pt : new JsonNodePath.PathType[]{
+                                                        ^
+  symbol:   class PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:232: error: cannot find symbol
+                JsonNodePath.PathType.LEGACY,
+                            ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:233: error: cannot find symbol
+                JsonNodePath.PathType.JSON_POINTER,
+                            ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:234: error: cannot find symbol
+                JsonNodePath.PathType.JSON_PATH}) {
+                            ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:231: error: cannot find symbol
+        for (JsonNodePath.PathType pt : new JsonNodePath.PathType[]{
+                         ^
+  symbol:   class PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:311: error: cannot find symbol
+        validator.putAnnotation(ctx, builder -> builder.property("testProp"));
+                                                       ^
+  symbol:   method property(String)
+  location: variable builder of type Builder
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:314: error: cannot find symbol
+        JsonNodeAnnotation stored = ctx.getAnnotations().get(validator.evaluationPath);
+                                                        ^
+  symbol:   method get(JsonNodePath)
+  location: class JsonNodeAnnotations
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:316: error: cannot find symbol
+        assertEquals("testProp", stored.getProperty());
+                                       ^
+  symbol:   method getProperty()
+  location: variable stored of type JsonNodeAnnotation
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:337: error: cannot find symbol
+        JsonSchema parentSchema = vc.newSchema(SchemaLocation.DOCUMENT, new JsonNodePath(JsonNodePath.PathType.LEGACY), parentNode, null);
+                                                                                                     ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java:341: error: cannot find symbol
+                new JsonNodePath(JsonNodePath.PathType.LEGACY).append("child"),
+                                             ^
+  symbol:   variable PathType
+  location: class JsonNodePath
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+14 errors

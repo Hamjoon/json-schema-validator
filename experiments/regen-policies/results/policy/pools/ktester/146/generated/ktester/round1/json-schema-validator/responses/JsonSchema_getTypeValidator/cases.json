@@ -1,0 +1,92 @@
+[
+  {
+    "group": "validators is null \u2013 lazy loading triggers getValidators()",
+    "cases": [
+      {
+        "input": [],
+        "expected": "typeValidator is the dummy instance set by overridden getValidators(); getValidatorsCalled flag is true",
+        "description": "When the internal `validators` field is null, `getTypeValidator()` should invoke `getValidators()`. The overridden `getValidators()` in the test subclass records that it was called and initializes `typeValidator` with a dummy `TypeValidator`. The method then returns this dummy instance."
+      }
+    ]
+  },
+  {
+    "group": "validators already initialized \u2013 getValidators() not called",
+    "cases": [
+      {
+        "input": [],
+        "expected": "typeValidator is the pre\u2011set dummy instance; getValidatorsCalled flag is false",
+        "description": "When `validators` is already non\u2011null, `getTypeValidator()` must return the existing `typeValidator` without calling `getValidators()`. The test pre\u2011populates both `validators` and `typeValidator` fields and verifies that the method returns the same `typeValidator` and that the overridden `getValidators()` is never invoked."
+      }
+    ]
+  },
+  {
+    "group": "validators null \u2013 lazy loading with getValidators not setting typeValidator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "typeValidator remains null; getValidatorsCalled flag is true; validators list is initialized (non\u2011null)",
+        "description": "When the internal `validators` field is null, `getTypeValidator()` should invoke the overridden `getValidators()`. The overridden method creates a non\u2011empty validators list but deliberately does **not** assign a `typeValidator`. The method must therefore return `null` while still having called `getValidators()` and populated `validators`."
+      }
+    ]
+  },
+  {
+    "group": "validators already initialized but typeValidator null \u2013 no lazy loading",
+    "cases": [
+      {
+        "input": [],
+        "expected": "typeValidator is null; getValidatorsCalled flag is false",
+        "description": "If `validators` is already non\u2011null (pre\u2011populated by the test) but `typeValidator` has not been set, `getTypeValidator()` must simply return `null` and must **not** invoke `getValidators()` again."
+      }
+    ]
+  },
+  {
+    "group": "multiple getTypeValidator calls after lazy loading \u2013 getValidators called only once",
+    "cases": [
+      {
+        "input": [],
+        "expected": "first call returns dummy TypeValidator; second call returns same instance; getValidatorsCalled flag is true and remains true (no second invocation)",
+        "description": "When `validators` is initially null, the first call to `getTypeValidator()` triggers lazy loading via `getValidators()` which sets a dummy `typeValidator`. A subsequent call should return the already\u2011initialized `typeValidator` without invoking `getValidators()` a second time. The test verifies that the flag indicating a `getValidators()` call stays true after both calls."
+      }
+    ]
+  },
+  {
+    "group": "validators null \u2013 getValidators throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException propagated from getValidators; typeValidator remains null",
+        "description": "If the overridden `getValidators()` throws a `RuntimeException` (simulating an unexpected error during lazy loading), `getTypeValidator()` must not swallow the exception; it should propagate it to the caller. The test confirms that the exception type and message match the one thrown by `getValidators()`."
+      }
+    ]
+  },
+  {
+    "group": "validators null \u2013 getValidators throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalArgumentException propagated from getValidators; typeValidator remains null",
+        "description": "When `validators` is null, `getTypeValidator()` calls `getValidators()`. The overridden `getValidators()` throws an `IllegalArgumentException` with a custom message. The method must not catch it; the exception should bubble up unchanged and `typeValidator` should stay null."
+      }
+    ]
+  },
+  {
+    "group": "validators null \u2013 getValidators throws IllegalStateException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException propagated from getValidators; typeValidator remains null",
+        "description": "Simulate a failure during lazy loading where `getValidators()` throws an `IllegalStateException`. `getTypeValidator()` should propagate this unchecked exception without alteration."
+      }
+    ]
+  },
+  {
+    "group": "validators null \u2013 getValidators throws AssertionError (Error subclass)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "AssertionError propagated from getValidators; typeValidator remains null",
+        "description": "Even though `Error` is not an `Exception`, the method must not swallow it. The overridden `getValidators()` throws an `AssertionError`; `getTypeValidator()` should let the error propagate."
+      }
+    ]
+  }
+]

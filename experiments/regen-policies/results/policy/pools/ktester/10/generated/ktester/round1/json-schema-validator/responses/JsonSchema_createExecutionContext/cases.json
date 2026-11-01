@@ -1,0 +1,77 @@
+[
+  {
+    "group": "createExecutionContext",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned whose ExecutionConfig.locale equals the locale from the SchemaValidatorsConfig, ExecutionConfig.formatAssertionsEnabled equals the flag from the config, and no customizer is invoked (i.e., the ExecutionContext remains unmodified).",
+        "description": "When the ValidationContext's config does not provide an ExecutionContextCustomizer (null), the method should create a fresh ExecutionContext populated with the config's locale and format\u2011assertions flag and return it without any further modification."
+      },
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned with the same locale and formatAssertionsEnabled values as in the config, and additionally the provided ExecutionContextCustomizer has been invoked \u2013 e.g., it sets a custom flag or property on the ExecutionContext that can be asserted after the call.",
+        "description": "When the ValidationContext's config supplies a non\u2011null ExecutionContextCustomizer, the method must invoke the customizer's `customize` method passing the newly created ExecutionContext and the ValidationContext. The test verifies that the customizer was called and that its side\u2011effects are reflected in the returned ExecutionContext."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_additional_localeAndFormatFlag",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned whose ExecutionConfig.locale equals Locale.GERMAN and ExecutionConfig.formatAssertionsEnabled equals false (as provided by the SchemaValidatorsConfig). No customizer is invoked, so the ExecutionContext remains otherwise untouched.",
+        "description": "Validate that when the ValidationContext's config specifies a non\u2011default locale (German) and disables format assertions, the created ExecutionContext correctly reflects those values and no customization occurs."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_additional_unevaluatedFlags",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned whose CollectorContext.unevaluatedItemsAnalysisDisabled and CollectorContext.unevaluatedPropertiesAnalysisDisabled are both true, matching the flags set in SchemaValidatorsConfig. ExecutionConfig values are default (locale null, formatAssertionsEnabled false) because they were not overridden.",
+        "description": "Ensure that the CollectorContext constructed inside createExecutionContext copies the unevaluated\u2011items and unevaluated\u2011properties analysis disable flags from the configuration."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_additional_customizerModifiesLocale",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned where the ExecutionConfig.locale has been changed to Locale.FRENCH by the ExecutionContextCustomizer. The customizer receives the newly created ExecutionContext and the original ValidationContext.",
+        "description": "Test that a non\u2011null ExecutionContextCustomizer is invoked and can mutate the ExecutionContext (e.g., overriding the locale). The test asserts that the locale after customization matches the value set by the customizer."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_additional_customizerThrowsException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException is thrown and propagates out of createExecutionContext, because the provided ExecutionContextCustomizer throws an exception during customization.",
+        "description": "Verify that createExecutionContext does not swallow exceptions from the customizer; any RuntimeException thrown by the customizer should be propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_nullValidationContext",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the JsonSchema instance's internal validationContext field is null, calling createExecutionContext() should throw a NullPointerException because the method attempts to invoke validationContext.getConfig()."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext_nullConfig",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When validationContext.getConfig() returns null, createExecutionContext() should throw a NullPointerException while trying to access methods on the returned config (e.g., config.isUnevaluatedItemsAnalysisDisabled())."
+      }
+    ]
+  }
+]

@@ -1,0 +1,531 @@
+[
+  {
+    "group": "Valid JSON input with JSON InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing no validation errors (e.g., \"[]\")",
+        "description": "A well\u2011formed JSON document is supplied together with the JSON InputFormat and a simple OutputFormat that returns the validation messages as a JSON string. The method should deserialize the input, run validation (which succeeds for this minimal schema) and return the formatted result."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input with YAML InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing no validation errors (e.g., \"[]\")",
+        "description": "A well\u2011formed YAML document is supplied together with the YAML InputFormat. The method must use YamlMapperFactory to deserialize, then validate and format the result."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a null input should trigger an IllegalArgumentException before any deserialization occurs."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "An empty string cannot be parsed into a JsonNode; the method should detect this early and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":John}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in RuntimeException",
+        "description": "Malformed JSON should cause the underlying Jackson parser to throw a JsonProcessingException, which the method propagates (or wraps) as a runtime exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John: Doe"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in RuntimeException",
+        "description": "Malformed YAML should result in a parsing exception similar to the JSON case."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If the InputFormat argument is null the method must reject the call before attempting deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A null OutputFormat cannot be used to format validation results; the method should throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported character encoding (simulated)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E0%A4%A"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "UnsupportedEncodingException wrapped in RuntimeException",
+        "description": "If URLDecoder.decode throws UnsupportedEncodingException (e.g., when the input contains malformed percent\u2011encoding), the method should propagate the exception."
+      }
+    ]
+  },
+  {
+    "group": "Schema with required validator that fails",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing a validation error about missing required property \"name\"",
+        "description": "The schema defines a required property \"name\". Supplying an empty JSON object should cause the validator to produce a ValidationMessage which the OutputFormat returns."
+      }
+    ]
+  },
+  {
+    "group": "Mismatched InputFormat \u2013 JSON string with YAML InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in RuntimeException",
+        "description": "A well\u2011formed JSON document is supplied but the caller incorrectly specifies InputFormat.YAML. The deserializer should attempt YAML parsing and fail, resulting in a JsonProcessingException (wrapped as a RuntimeException)."
+      }
+    ]
+  },
+  {
+    "group": "Mismatched InputFormat \u2013 YAML string with JSON InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in RuntimeException",
+        "description": "A valid YAML document is supplied while the method is told to treat it as JSON. The JSON parser will reject the YAML syntax and throw a JsonProcessingException (wrapped)."
+      }
+    ]
+  },
+  {
+    "group": "Valid URL\u2011encoded JSON input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22John%22%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing no validation errors (e.g., \"[]\")",
+        "description": "The input string is URL\u2011encoded JSON. The method should decode it via URLDecoder, deserialize the resulting JSON, validate successfully and return an empty\u2011error result."
+      }
+    ]
+  },
+  {
+    "group": "Valid UTF\u20118 characters in JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"greeting\":\"\u3053\u3093\u306b\u3061\u306f\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing no validation errors (e.g., \"[]\")",
+        "description": "JSON containing Unicode characters should be correctly handled using UTF\u20118 (the default charset). Validation must succeed and the output format should return an empty error list."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "   "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in RuntimeException",
+        "description": "A string that contains only whitespace cannot be parsed into a JsonNode; the JSON parser will throw a JsonProcessingException which the method propagates (wrapped)."
+      }
+    ]
+  },
+  {
+    "group": "Schema type mismatch \u2013 expecting string, got number",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":123}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing a validation error about type mismatch for property \"age\"",
+        "description": "The schema defines property \"age\" as type string. Supplying a numeric value should trigger a type\u2011validator error that the SimpleOutputFormat will render."
+      }
+    ]
+  },
+  {
+    "group": "Schema enum violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"blue\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing a validation error about value not being one of the allowed enum values",
+        "description": "The schema restricts the root value to the enum [\"red\",\"green\"]. Providing \"blue\" must produce an enum\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Schema pattern violation (invalid email)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"email\":\"not-an-email\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing a validation error about pattern mismatch for property \"email\"",
+        "description": "The schema defines a regex pattern for an email address. Supplying a non\u2011matching string should cause a pattern\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Additional properties not allowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"allowed\":\"yes\",\"extra\":\"no\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "String containing a validation error about disallowed additional property \"extra\"",
+        "description": "The schema sets \"additionalProperties\": false. The presence of an unexpected property should be reported as a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat that throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new ThrowingOutputFormat()"
+          }
+        ],
+        "expected": "RuntimeException thrown by OutputFormat",
+        "description": "The supplied OutputFormat deliberately throws a RuntimeException when its format method is called. The validate method should let this exception propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Malformed percent\u2011encoding causing IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E0%A4"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The input string contains an incomplete percent\u2011escape sequence. URLDecoder.decode throws IllegalArgumentException before deserialization, which should be propagated by the validate method."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat value (simulated enum mismatch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleOutputFormat()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If an InputFormat value that the method does not recognise (e.g., a future enum constant) is supplied, the internal switch should reject it and throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws checked Exception wrapped in RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new CheckedThrowingOutputFormat()"
+          }
+        ],
+        "expected": "RuntimeException wrapping the checked exception from OutputFormat",
+        "description": "A custom OutputFormat implementation throws a checked exception (e.g., IOException) from its format method. The validate method must wrap this checked exception into a RuntimeException and propagate it."
+      }
+    ]
+  }
+]

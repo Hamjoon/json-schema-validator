@@ -1,0 +1,510 @@
+[
+  {
+    "group": "Validate flag true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "When `validate` is true the method should walk the schema and perform validation, returning a successful ValidationResult for a node that satisfies the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.failure containing at least one ValidationMessage",
+        "description": "When `validate` is true and the node does **not** conform to the schema, the walk should return a ValidationResult that contains validation errors."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "anyJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) \u2013 walk performed without validation",
+        "description": "When `validate` is false the method should still walk the schema but skip validation, therefore the returned ValidationResult must be successful regardless of node content."
+      }
+    ]
+  },
+  {
+    "group": "Null executionCustomizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "If the `executionCustomizer` argument is null the method must fall back to the default behaviour (no customisation) and still return a successful ValidationResult for a valid node."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"ExecutionContext must not be null\"",
+        "description": "The method is expected to guard against a null `ExecutionContext`. Passing null should cause an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Null node argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"JsonNode must not be null\"",
+        "description": "A null `JsonNode` is not acceptable for walking a schema; the method should throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer modifies context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "executionCustomizerThatAddsCustomAttribute"
+          }
+        ],
+        "expected": "ValidationResult.success and the ExecutionContext contains the custom attribute set by the customizer",
+        "description": "When a non\u2011null `ExecutionContextCustomizer` is supplied it must be invoked and allowed to mutate the context before validation proceeds."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false with null executionCustomizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "anyJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) \u2013 walk performed without validation even when customizer is null",
+        "description": "When `validate` is false the method must ignore validation regardless of whether the `executionCustomizer` is null; the returned ValidationResult should be successful."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext with validate false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"ExecutionContext must not be null\"",
+        "description": "The method must validate its first argument before considering the `validate` flag; a null `ExecutionContext` should always cause an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer that throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "executionCustomizerThatThrows"
+          }
+        ],
+        "expected": "RuntimeException propagated from ExecutionContextCustomizer",
+        "description": "If the supplied `ExecutionContextCustomizer` throws an unchecked exception, `walk` must not catch it silently; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "No\u2011op ExecutionCustomizer (empty lambda)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "noOpExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "A customizer that does nothing should behave identically to passing `null` \u2013 the walk proceeds normally and validation succeeds for a conforming node."
+      }
+    ]
+  },
+  {
+    "group": "Customizer influences validation outcome",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNodeMissingRequiredProperty"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerAddsDefaultValues"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) \u2013 the customizer injected default values that satisfy the schema",
+        "description": "The customizer can mutate the `ExecutionContext` (e.g., by adding a map of default values) that downstream validators use. After the customizer runs, a node that would otherwise be invalid becomes valid, resulting in a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Validate true with type\u2011mismatch node (array vs object schema)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "arrayJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a type\u2011mismatch ValidationMessage",
+        "description": "When the schema expects an object but the supplied node is an array, validation must fail and the ValidationResult should contain a message indicating the type error."
+      }
+    ]
+  },
+  {
+    "group": "Validate false with node that would be invalid if validated",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNodeMissingRequiredProperty"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) \u2013 validation is skipped",
+        "description": "Even though the node violates the schema, the `validate` flag is false, so the method must return a successful ValidationResult without reporting errors."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer that records invocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "recordingExecutionCustomizer"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) and the customizer's invocation flag set to true",
+        "description": "A customizer that only records that it has been called (e.g., toggles a boolean in a test\u2011side holder) should be invoked exactly once before validation; the walk result must still be successful."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextThatThrowsRuntimeException"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "RuntimeException propagated from ExecutionContext",
+        "description": "If the supplied `ExecutionContext` throws an unchecked exception during the walk (e.g., when the validator collection is accessed), the `walk` method must not catch it; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer creates illegal validation state",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "executionCustomizerThatSetsInvalidContextState"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Invalid validation state\"",
+        "description": "A customizer that mutates the `ExecutionContext` into an invalid state (e.g., clears the schema validators map) should cause the subsequent validation step to detect the inconsistency and throw an `IllegalArgumentException`."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer is null but validate flag true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "When `executionCustomizer` is null the method should behave as if a no\u2011op customizer was supplied; with `validate` true it must still perform validation and return a successful result for a conforming node."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer is null and validate flag false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNodeMissingRequiredProperty"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages) \u2013 validation is skipped even though the node is invalid",
+        "description": "When `validate` is false the method must skip validation entirely; a null customizer must not change this behaviour."
+      }
+    ]
+  }
+]

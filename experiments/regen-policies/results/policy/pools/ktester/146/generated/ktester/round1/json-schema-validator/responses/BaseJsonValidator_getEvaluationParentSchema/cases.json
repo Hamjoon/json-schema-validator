@@ -1,0 +1,37 @@
+[
+  {
+    "group": "EvaluationParentSchema Retrieval",
+    "cases": [
+      {
+        "input": [],
+        "expected": "evaluationParentSchemaInstance",
+        "description": "evaluationParentSchema field is pre\u2011populated (non\u2011null). The method should return this instance without delegating to getParentSchema()."
+      },
+      {
+        "input": [],
+        "expected": "parentSchemaInstance",
+        "description": "evaluationParentSchema field is null. The method should fall back to getParentSchema() and return the parent schema that has been set on the validator."
+      },
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Both evaluationParentSchema and the parent schema are null. The method should return null (the fallback path is exercised and getParentSchema() also yields null)."
+      }
+    ]
+  },
+  {
+    "group": "Dynamic Parent Schema Retrieval",
+    "cases": [
+      {
+        "input": [],
+        "expected": "parentSchemaInstanceA",
+        "description": "evaluationParentSchema is null and the validator\u2019s getParentSchema() initially returns a specific JsonSchema instance (A). The method should return that instance. This verifies the fallback path works for the first call."
+      },
+      {
+        "input": [],
+        "expected": "parentSchemaInstanceB",
+        "description": "After the first call, the parent schema reference inside the validator is changed to a different JsonSchema instance (B). Because evaluationParentSchema is still null, a subsequent call to getEvaluationParentSchema() should now return the new parent (B). This confirms that the method does not cache the fallback value."
+      }
+    ]
+  }
+]

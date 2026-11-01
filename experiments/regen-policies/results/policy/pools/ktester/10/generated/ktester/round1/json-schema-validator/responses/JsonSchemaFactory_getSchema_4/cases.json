@@ -1,0 +1,336 @@
+[
+  {
+    "group": "getSchema(SchemaLocation) - null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) is thrown because the schema location argument is null",
+        "description": "Verify that calling getSchema with a null SchemaLocation fails fast with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - valid classpath resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its meta\u2011schema version matches the factory's default version",
+        "description": "Load a well\u2011formed JSON schema that lives on the classpath. The method should return a non\u2011null JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - valid file system resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/test-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and can be used for validation",
+        "description": "Load a schema from an absolute file URI. The method should resolve the file, parse it and return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - non\u2011existent resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/missing-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaNotFoundException (or a RuntimeException indicating the schema could not be located) is thrown",
+        "description": "When the supplied SchemaLocation points to a resource that cannot be found, the factory should raise an exception rather than returning a null schema."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - malformed JSON schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/malformed-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaParseException (or a JsonProcessingException wrapped in a RuntimeException) is thrown",
+        "description": "If the schema file exists but contains invalid JSON, the method must propagate a parsing error."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - meta\u2011schema resolution branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/schema-with-$ref.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its $ref references are resolved using the factory's meta\u2011schema loader",
+        "description": "A schema that contains $ref to another schema triggers the internal branch that loads referenced schemas. The test ensures the reference is resolved and no exception is thrown."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - custom configuration via overloaded method (indirect branch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/simple-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; the instance reflects the default SchemaValidatorsConfig created inside the method",
+        "description": "The one\u2011parameter overload delegates to getSchema(schemaUri, createSchemaValidatorsConfig()). This test confirms that the delegation occurs and the returned schema is built with the default configuration."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - HTTP resource",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://localhost:8080/schemas/http-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; the schema is loaded over HTTP without throwing an exception",
+        "description": "Verify that the factory can resolve a schema located at an HTTP URL (using a lightweight test server) and produce a valid JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unsupported scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"ftp://example.com/schemas/unsupported-schema.json\")"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown because the URI scheme is not supported by JsonSchemaFactory",
+        "description": "Ensure that a schema location with an unsupported protocol (e.g., ftp) fails fast with a clear exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - empty location string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"\")"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) is thrown indicating that the location string is empty or invalid",
+        "description": "Check that providing an empty string to SchemaLocation results in a validation error rather than attempting to load a schema."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - $ref disabled via config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/schema-with-$ref.json\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setHandleReference(false)"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalStateException) is thrown because $ref handling is disabled but the schema contains a $ref",
+        "description": "Validate that when the SchemaValidatorsConfig disables $ref processing, loading a schema that contains $ref results in an exception, confirming the config is respected."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - YAML schema parsing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/yaml-schema.yaml\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; the YAML content is correctly parsed into a JSON schema model",
+        "description": "Test that the factory detects a .yaml/.yml file, uses the YAML mapper, and successfully creates a JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - custom meta\u2011schema id",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/custom-meta-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchema instance is returned and its meta\u2011schema version matches the custom meta\u2011schema id defined inside the schema (e.g., \"https://example.com/custom-meta-schema\")",
+        "description": "Ensure that when a schema declares a non\u2011default $id/meta\u2011schema URI, the factory loads and applies that meta\u2011schema rather than falling back to the default."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - invalid URI syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"ht!tp://[invalid]\")"
+          }
+        ],
+        "expected": "IllegalArgumentException (or URISyntaxException wrapped in RuntimeException) is thrown because the supplied URI string cannot be parsed",
+        "description": "Verify that a malformed URI string inside SchemaLocation causes the factory to fail fast with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - directory path instead of file",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/\" )"
+          }
+        ],
+        "expected": "JsonSchemaNotFoundException (or IOException) is thrown because the location resolves to a directory, not a readable schema file",
+        "description": "Ensure that pointing to a directory rather than a concrete schema file results in an error rather than an unexpected JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - non\u2011JSON/YAML content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/not-a-schema.txt\")"
+          }
+        ],
+        "expected": "JsonProcessingException (wrapped in JsonSchemaException or RuntimeException) is thrown because the content cannot be parsed as JSON/YAML",
+        "description": "Load a resource that exists but contains plain text; the factory should attempt to parse it and fail with a parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - cyclic $ref detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/cyclic-ref-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalStateException) is thrown indicating a reference cycle was detected",
+        "description": "Validate that the factory detects a $ref loop (schema A -> B -> A) and aborts with a clear cycle\u2011detection exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unsupported meta\u2011schema version",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/unsupported-meta-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) is thrown because the $schema value refers to a meta\u2011schema version that the factory does not recognize",
+        "description": "Load a schema that declares an unknown $schema URI; the factory should reject it rather than silently defaulting."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - file permission I/O error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/root/secret-schema.json\")"
+          }
+        ],
+        "expected": "IOException (wrapped in JsonSchemaException) is thrown because the file cannot be read due to insufficient permissions",
+        "description": "Attempt to load a schema file that exists but is not readable by the process, verifying that the factory propagates the I/O failure."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unsupported jar scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"jar:file:/app.jar!/schemas/inside.jar-schema.json\")"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown because the \"jar\" URI scheme is not supported by JsonSchemaFactory",
+        "description": "Confirm that a jar\u2011based URI is rejected with a clear unsupported\u2011scheme exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - HTTPS resource with SSL handshake failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"https://untrusted.example.com/bad-schema.json\")"
+          }
+        ],
+        "expected": "RuntimeException (e.g., SSLHandshakeException wrapped) is thrown when the factory attempts to fetch the schema over HTTPS and the SSL validation fails",
+        "description": "Simulate an HTTPS endpoint with an invalid certificate to verify that network\u2011level SSL errors are surfaced as exceptions."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - internal null path in SchemaLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(null)"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) is thrown because the underlying location string is null",
+        "description": "Directly construct a SchemaLocation with a null string to ensure the factory validates the internal state before proceeding."
+      }
+    ]
+  }
+]

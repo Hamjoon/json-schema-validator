@@ -1,0 +1,146 @@
+```java
+package com.networknt.schema;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Set;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+/**
+ * Unit tests for {@link BaseJsonValidator#getKeyword()}.
+ *
+ * The test creates a minimal concrete subclass of {@link BaseJsonValidator}
+ * (named {@code TestValidator}) and injects a {@link Keyword} implementation
+ * via reflection into the protected {@code keyword} field defined in
+ * {@link ValidationMessageHandler}. The {@code getKeyword()} method is then
+ * exercised and its result verified.
+ */
+class BaseJsonValidator_getKeyword_Test {
+
+    /** Minimal {@link Keyword} implementation that returns a configurable value. */
+    private static class DummyKeyword implements Keyword {
+
+        private final String value;
+
+        DummyKeyword(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+        // The remaining methods are not required for the current tests.
+        @Override public JsonNode getSchemaNode() { return null; }
+        @Override public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node) { return null; }
+        @Override public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath at) { return null; }
+        @Override public boolean isValid(JsonNode node) { return true; }
+        @Override public String getMessage() { return null; }
+        @Override public String getMessageKey() { return null; }
+        @Override public String getMessageKey(String key) { return null; }
+        @Override public String getMessageKey(String key, String defaultMessage) { return null; }
+        @Override public String getMessageKey(String key, Object... args) { return null; }
+        @Override public String getMessageKey(String key, String defaultMessage, Object... args) { return null; }
+        @Override public String getMessageKey(String key, java.util.Locale locale) { return null; }
+        @Override public String getMessageKey(String key, java.util.Locale locale, Object... args) { return null; }
+        @Override public String getMessageKey(String key, java.util.Locale locale, String defaultMessage) { return null; }
+        @Override public String getMessageKey(String key, java.util.Locale locale, String defaultMessage, Object... args) { return null; }
+    }
+
+    /**
+     * Minimal concrete subclass of {@link BaseJsonValidator}.  It only needs to
+     * implement the abstract {@code validate} method; the method body is irrelevant
+     * for the {@code getKeyword()} tests.
+     */
+    private static class TestValidator extends BaseJsonValidator {
+
+        TestValidator(SchemaLocation schemaLocation,
+                      JsonNodePath evaluationPath,
+                      JsonNode schemaNode,
+                      JsonSchema parentSchema,
+                      Keyword validatorType,
+                      ValidationContext validationContext) {
+            super(schemaLocation, evaluationPath, schemaNode, parentSchema, validatorType, validationContext);
+        }
+
+        @Override
+        public Set<ValidationMessage> validate(ExecutionContext executionContext,
+                                               JsonNode node,
+                                               JsonNode rootNode,
+                                               JsonNodePath at) {
+            return Collections.emptySet();
+        }
+    }
+
+    /** Instance under test. */
+    private TestValidator validator;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        // All constructor arguments except the keyword are irrelevant for the tests,
+        // so we pass {@code null} for them.
+        validator = new TestValidator(
+                null,               // SchemaLocation
+                null,               // JsonNodePath
+                null,               // JsonNode (schemaNode)
+                null,               // JsonSchema (parentSchema)
+                new DummyKeyword("initial"), // Keyword
+                null);              // ValidationContext
+
+        // Inject a known keyword instance into the protected field defined in
+        // ValidationMessageHandler so that getKeyword() returns the expected value.
+        Field keywordField = ValidationMessageHandler.class.getDeclaredField("keyword");
+        keywordField.setAccessible(true);
+        keywordField.set(validator, new DummyKeyword("testKeyword"));
+    }
+
+    @Test
+    void getKeyword_returnsConfiguredKeywordValue() {
+        String result = validator.getKeyword();
+        assertEquals("testKeyword", result,
+                "BaseJsonValidator#getKeyword() should return the value supplied by the Keyword instance");
+    }
+
+    /**
+     * Parameterised test that verifies the method works for any keyword value.
+     *
+     * @param keyword the keyword string to be returned by the injected DummyKeyword
+     */
+    @ParameterizedTest
+    @ValueSource(strings = { "type", "properties" })
+    void getKeyword_returnsVariousKeywordValues(String keyword) throws Exception {
+        // Replace the internal keyword with a new one for each iteration.
+        Field keywordField = ValidationMessageHandler.class.getDeclaredField("keyword");
+        keywordField.setAccessible(true);
+        keywordField.set(validator, new DummyKeyword(keyword));
+
+        String result = validator.getKeyword();
+        assertEquals(keyword, result,
+                "BaseJsonValidator#getKeyword() should return the keyword value supplied at construction");
+    }
+
+    /**
+     * When the internal {@code keyword} field (in {@link ValidationMessageHandler})
+     * is {@code null}, {@code getKeyword()} is expected to throw a
+     * {@link NullPointerException}.
+     */
+    @Test
+    void getKeyword_throwsNPEWhenKeywordIsNull() throws Exception {
+        // Set the protected field to {@code null}.
+        Field keywordField = ValidationMessageHandler.class.getDeclaredField("keyword");
+        keywordField.setAccessible(true);
+        keywordField.set(validator, null);
+
+        assertThrows(NullPointerException.class,
+                validator::getKeyword,
+                "BaseJsonValidator#getKeyword() should throw NPE when the internal keyword field is null");
+    }
+}
+```

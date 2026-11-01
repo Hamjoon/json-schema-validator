@@ -1,0 +1,112 @@
+[
+  {
+    "group": "Lazy loading when validators is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The TypeValidator instance created inside getValidators() is returned; getValidators() is invoked exactly once.",
+        "description": "The JsonSchema instance starts with `validators == null`. Calling getTypeValidator() should trigger lazy loading by invoking getValidators(), which populates both `validators` and `typeValidator`. The method must then return the newly created TypeValidator. The test verifies that getValidators() was called once (e.g., via a spy or overridden method) and that the returned object equals the TypeValidator set by getValidators()."
+      }
+    ]
+  },
+  {
+    "group": "No lazy loading when validators already initialized",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The pre\u2011set TypeValidator instance is returned; getValidators() is NOT invoked.",
+        "description": "The JsonSchema instance is prepared with a non\u2011null `validators` list and a known `typeValidator` (using reflection or a test subclass). Calling getTypeValidator() must return the existing TypeValidator without calling getValidators(). The test asserts that the returned instance is the same as the one injected and that getValidators() was never invoked."
+      }
+    ]
+  },
+  {
+    "group": "Lazy loading invoked only once on repeated calls",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The first call triggers getValidators() exactly once; subsequent calls return the same TypeValidator without invoking getValidators() again.",
+        "description": "A fresh JsonSchema instance with `validators == null` is used. Call `getTypeValidator()` twice. Verify via a spy or overridden method that `getValidators()` is called only on the first invocation and that both returned objects are identical."
+      }
+    ]
+  },
+  {
+    "group": "Return null when schema does not define a type validator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Create a JsonSchema from a JSON schema that contains no `type` keyword (e.g., `{ \"properties\": { \"name\": { \"type\": \"string\" } } }`). After the schema is fully initialized, `getTypeValidator()` should return `null` because no TypeValidator was created during validator construction."
+      }
+    ]
+  },
+  {
+    "group": "Existing validators list but null typeValidator returns null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Manually inject a non\u2011null `validators` list (e.g., an empty `ArrayList`) into a JsonSchema instance via reflection while leaving the private `typeValidator` field as `null`. Calling `getTypeValidator()` must return `null` and must not trigger a lazy\u2011load call to `getValidators()`."
+      }
+    ]
+  },
+  {
+    "group": "Custom subclass overrides getValidators without setting typeValidator",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Define a test subclass of JsonSchema that overrides `getValidators()` to return an empty list and deliberately does **not** assign a TypeValidator to the `typeValidator` field. With `validators` initially `null`, invoking `getTypeValidator()` should call the overridden `getValidators()` and then return `null` because no TypeValidator was created."
+      }
+    ]
+  },
+  {
+    "group": "Concurrent access does not create multiple TypeValidator instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "All threads receive the same TypeValidator instance; `getValidators()` is invoked at most once.",
+        "description": "Spawn several threads that simultaneously call `getTypeValidator()` on the same freshly created JsonSchema (where `validators == null`). After all threads complete, assert that the returned TypeValidator objects are identical (by reference) and that `getValidators()` was executed only once (e.g., using an atomic counter in an overridden subclass)."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation when getValidators throws NullPointerException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Create a subclass of JsonSchema that overrides getValidators() to throw a NullPointerException. With validators initially null, invoking getTypeValidator() should trigger the overridden getValidators() and the NullPointerException must propagate out of getTypeValidator()."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation when getValidators throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalArgumentException",
+        "description": "Create a subclass of JsonSchema that overrides getValidators() to throw an IllegalArgumentException (e.g., because the schema contains an unsupported keyword). Calling getTypeValidator() on a fresh instance (validators == null) must cause the IllegalArgumentException to be thrown by getTypeValidator()."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation when getValidators throws custom unchecked exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "SchemaException",
+        "description": "Define a custom unchecked exception class SchemaException extending RuntimeException. Subclass JsonSchema and override getValidators() to throw new SchemaException(\"custom error\"). When getTypeValidator() is invoked, the SchemaException should be propagated unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Error propagation when getValidators throws OutOfMemoryError",
+    "cases": [
+      {
+        "input": [],
+        "expected": "OutOfMemoryError",
+        "description": "Subclass JsonSchema and override getValidators() to throw an OutOfMemoryError. Invoking getTypeValidator() must let the Error bubble up, demonstrating that getTypeValidator() does not catch Errors."
+      }
+    ]
+  }
+]

@@ -1,0 +1,653 @@
+[
+  {
+    "group": "Valid JSON input \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with no errors (isSuccess() == true)",
+        "description": "Ensures that a well\u2011formed JSON string is deserialized correctly, the walk proceeds with validation enabled and the output format collects a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON input \u2013 validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"id\\\":123}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no validation performed)",
+        "description": "Verifies that when the `validate` flag is false the walk still returns a successful result without applying any validators."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext \u2013 should be created internally",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"type\\\":\\\"string\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (method creates a default ExecutionContext)",
+        "description": "Checks that a `null` ExecutionContext does not cause NPE and the method internally creates a fresh context before walking the node."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string \u2013 deserialization should produce empty node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult containing a single ValidationMessage about empty input",
+        "description": "Ensures that an empty string is handled gracefully \u2013 the deserializer returns a null/empty node and the walk reports a meaningful validation message."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON \u2013 deserialization throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"unclosed\":\"value\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws IOException (or JsonProcessingException) wrapped in a RuntimeException",
+        "description": "Confirms that malformed JSON triggers the deserialization exception path, which should be propagated as a runtime exception from `walk`."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat \u2013 should raise IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"some text\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'InputFormat cannot be null'",
+        "description": "Validates that a `null` InputFormat is rejected early, exercising the branch that checks for unsupported or missing format."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat that throws during processing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new ThrowingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "RuntimeException propagated from OutputFormat",
+        "description": "Ensures that any exception thrown by the supplied OutputFormat is not swallowed and bubbles up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "YAML input format \u2013 successful walk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: Jane\\nage: 25\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true",
+        "description": "Tests the branch where the method selects a non\u2011JSON deserializer (YAML) and verifies normal processing."
+      }
+    ]
+  },
+  {
+    "group": "Boolean flag false with null outputFormat \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"x\\\":10}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException with message containing 'outputFormat'",
+        "description": "Verifies that a null OutputFormat is not accepted, exercising the null\u2011check branch before delegating to walkAtNodeInternal."
+      }
+    ]
+  },
+  {
+    "group": "Null input string \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException with message containing 'input'",
+        "description": "When the supplied JSON string is null the deserializer cannot operate and the method should fail fast with a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input \u2013 treated as empty JSON node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"   \\n\\t  \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no validation performed on empty node)",
+        "description": "A string that contains only whitespace should be deserialized to an empty JsonNode; with validation disabled the walk should succeed without errors."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML \u2013 deserialization throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: [30,]\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "RuntimeException wrapping an IOException (or JsonProcessingException) from the YAML parser",
+        "description": "Malformed YAML must cause the private `deserialize` method to throw an IOException, which is wrapped and propagated by `walk`."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat with validation enabled \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException with message containing 'outputFormat'",
+        "description": "Even when validation is requested, a null OutputFormat is illegal and must be rejected before any walking occurs."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 schema violation reported",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":25}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult where isSuccess() == false and contains a ValidationMessage about missing required property 'name'",
+        "description": "The schema (configured for the test) requires a string property `name`. Supplying JSON without that property should cause validation to fail and the CollectingOutputFormat to return a result with the appropriate error."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat returning non\u2011ValidationResult type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"[1,2,3]\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new NodeCountOutputFormat()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "Integer value 3 (the number of elements in the JSON array)",
+        "description": "`NodeCountOutputFormat` implements `OutputFormat<Integer>` and counts the number of JSON nodes visited. With validation disabled the walk should still invoke the output format and return the count."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported non\u2011null InputFormat \u2013 should raise IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"some plain text\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'Unsupported InputFormat'",
+        "description": "Passing an InputFormat value that the `deserialize` method does not recognise must trigger an early argument\u2011validation failure."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws while validation flag is false \u2013 exception propagates",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"x\\\":10}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new ThrowingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "RuntimeException propagated from ThrowingOutputFormat",
+        "description": "Even when validation is disabled, the supplied OutputFormat is still invoked; any exception it throws must not be swallowed."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat and Null OutputFormat \u2013 InputFormat validation precedes OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"key\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'InputFormat cannot be null'",
+        "description": "Both InputFormat and OutputFormat are null, but the method should fail fast on the missing InputFormat before checking the OutputFormat, raising an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported URL\u2011encoded InputFormat \u2013 deserializer throws UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"%ZZ%\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "RuntimeException wrapping UnsupportedEncodingException",
+        "description": "When the input is malformed URL\u2011encoded data, the private `deserialize` method (which uses `URLDecoder`) throws an UnsupportedEncodingException. The `walk` method must propagate this as a RuntimeException."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws a checked exception (IOException) \u2013 should be wrapped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new IOExceptionThrowingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "RuntimeException wrapping IOException",
+        "description": "A custom `OutputFormat` implementation deliberately throws an IOException during `apply`. The `walk` method must not swallow the exception; it should be wrapped in a RuntimeException and propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext null and InputFormat null \u2013 InputFormat validation still triggers IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"x\\\":10}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'InputFormat cannot be null'",
+        "description": "Even when the supplied `ExecutionContext` is null (which the method would normally replace with a default), the first argument check for a non\u2011null `InputFormat` must fire, resulting in an IllegalArgumentException."
+      }
+    ]
+  }
+]

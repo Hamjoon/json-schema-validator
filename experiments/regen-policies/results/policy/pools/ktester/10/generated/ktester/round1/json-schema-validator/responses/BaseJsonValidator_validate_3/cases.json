@@ -1,0 +1,311 @@
+[
+  {
+    "group": "BaseJsonValidator.validate(ExecutionContext, JsonNode, OutputFormat<T>, ExecutionContextCustomizer)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format returns \"RESULT-NULL-CUSTOMIZER\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns \"RESULT-NULL-CUSTOMIZER\". verify that OutputFormat.customize(executionContext, validationContext) is called exactly once, and ExecutionContextCustomizer.customize is NOT called.",
+        "description": "When the executionCustomizer argument is null, the method should skip the customizer step, still invoke format.customize, and return the value produced by format.format."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format returns \"RESULT-WITH-CUSTOMIZER\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer (customize records invocation)"
+          }
+        ],
+        "expected": "Returns \"RESULT-WITH-CUSTOMIZER\". verify that OutputFormat.customize is called once, ExecutionContextCustomizer.customize is called once with the same executionContext and validationContext, and format.format is called once returning the expected result.",
+        "description": "When a non\u2011null ExecutionContextCustomizer is supplied, the method must invoke its customize method after the format.customize call, then continue to validation and return the formatted result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize throws RuntimeException \"customize-failure\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException with message \"customize-failure\" is propagated.",
+        "description": "If OutputFormat.customize throws an exception, the method should not swallow it; the exception propagates to the caller."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize succeeds, format throws IllegalStateException \"format-failure\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "IllegalStateException with message \"format-failure\" is propagated.",
+        "description": "If OutputFormat.format throws an exception after validation, the method should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - executionCustomizer throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format returns \"RESULT-IGNORED\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer (customize throws RuntimeException \"customizer-failure\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer-failure\" is propagated; OutputFormat.format is never invoked.",
+        "description": "When the supplied ExecutionContextCustomizer throws an exception, the method must propagate that exception without calling format.format."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - validation messages propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode (represents JSON that fails validation, producing two ValidationMessage objects: \"msg1\" and \"msg2\")"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format records received ValidationMessage set and returns \"RESULT-MESSAGES\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns \"RESULT-MESSAGES\"; the mock OutputFormat receives a Set containing exactly the two ValidationMessage objects generated by the validator.",
+        "description": "Ensures that the Set produced by the internal validate(executionContext, node) call is passed unchanged to OutputFormat.format."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - null format argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown (format is dereferenced before any null\u2011check).",
+        "description": "Verifies that passing a null OutputFormat leads to an immediate NPE, matching the method's contract."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize records received executionContext null, format returns \"RESULT-NULL-CTX\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns \"RESULT-NULL-CTX\"; OutputFormat.customize receives a null executionContext.",
+        "description": "Checks that the method tolerates a null ExecutionContext and forwards it to the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - null node argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format returns \"RESULT-NULL-NODE\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns \"RESULT-NULL-NODE\"; internal validate(executionContext, null) is invoked (implementation\u2011dependent) and its result is passed to format.format.",
+        "description": "Ensures that a null JsonNode does not cause the method itself to fail; the underlying validator decides how to handle it."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - call order verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize records \"customize\", format records \"format\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer (customize records \"customizer\")"
+          }
+        ],
+        "expected": "Returns whatever format.format returns (e.g., \"RESULT-ORDER\"); the recorded call sequence must be [\"customize\", \"customizer\", \"validate\", \"format\"].",
+        "description": "Verifies the exact order of operations: OutputFormat.customize \u2192 ExecutionContextCustomizer.customize \u2192 internal validate \u2192 OutputFormat.format."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - internal validation throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format records invocation but is not called because exception occurs earlier)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException with message \"validation-failure\" is propagated; OutputFormat.format is never invoked.",
+        "description": "The subclass of BaseJsonValidator overrides the protected validate(ExecutionContext, JsonNode) method to throw a RuntimeException. The test verifies that the exception bubbles up and that the OutputFormat.format method is not called."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.validate - internal validation returns null causing format.format NPE",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat (customize does nothing, format throws NullPointerException when received null ValidationMessage set)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown by OutputFormat.format because the Set<ValidationMessage> argument is null.",
+        "description": "A subclass of BaseJsonValidator overrides validate(ExecutionContext, JsonNode) to return null instead of a Set. The mock OutputFormat is programmed to throw NPE when the validationMessages argument is null. The test ensures that the NPE propagates and no other side\u2011effects occur."
+      }
+    ]
+  }
+]

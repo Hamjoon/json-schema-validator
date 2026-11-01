@@ -1,0 +1,135 @@
+[
+  {
+    "group": "JsonSchemaFactory.getInstance(SpecVersion.VersionFlag) - valid version flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchemaFactory whose internal meta\u2011schema corresponds to Draft\u2011V4 (e.g., getMetaSchema(\"http://json-schema.org/draft-04/schema#\") is not null).",
+        "description": "Verify that the factory is correctly created for the Draft\u2011V4 flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchemaFactory whose internal meta\u2011schema corresponds to Draft\u2011V6 (e.g., getMetaSchema(\"http://json-schema.org/draft-06/schema#\") is not null).",
+        "description": "Verify that the factory is correctly created for the Draft\u2011V6 flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchemaFactory whose internal meta\u2011schema corresponds to Draft\u2011V7 (e.g., getMetaSchema(\"http://json-schema.org/draft-07/schema#\") is not null).",
+        "description": "Verify that the factory is correctly created for the Draft\u2011V7 flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2019_09"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchemaFactory whose internal meta\u2011schema corresponds to the 2019\u201109 draft (e.g., getMetaSchema(\"https://json-schema.org/draft/2019-09/schema\") is not null).",
+        "description": "Verify that the factory is correctly created for the 2019\u201109 draft flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2020_12"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchemaFactory whose internal meta\u2011schema corresponds to the 2020\u201112 draft (e.g., getMetaSchema(\"https://json-schema.org/draft/2020-12/schema\") is not null).",
+        "description": "Verify that the factory is correctly created for the 2020\u201112 draft flag."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getInstance(SpecVersion.VersionFlag) - edge cases and caching",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because a null version flag is not allowed.",
+        "description": "Verify that the factory method validates its argument and fails fast when a null VersionFlag is supplied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "Two successive calls with the same flag return the identical JsonSchemaFactory instance (reference equality).",
+        "description": "Check that the factory caches instances per version flag, so repeated calls with V7 yield the same object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          }
+        ],
+        "expected": "Two factories created with different flags (V4 vs V6) are not the same instance (reference inequality).",
+        "description": "Ensure that factories for different draft versions are distinct objects."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2020_12"
+          }
+        ],
+        "expected": "When invoked concurrently from multiple threads, all calls return the same JsonSchemaFactory instance (reference equality).",
+        "description": "Validate thread\u2011safety of the caching mechanism by spawning several threads that each call getInstance(DRAFT_2020_12) and asserting that the returned references are identical."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getInstance(SpecVersion.VersionFlag, Consumer) - customizer exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "consumer -> { throw new IllegalStateException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "IllegalStateException with message \"customizer failure\" is thrown and propagates out of getInstance.",
+        "description": "Verify that a runtime exception thrown inside the customizer Consumer is not swallowed by getInstance and is re\u2011thrown to the caller."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "consumer -> { throw new NullPointerException(\"null inside customizer\"); }"
+          }
+        ],
+        "expected": "NullPointerException with message \"null inside customizer\" is thrown.",
+        "description": "Ensure that any exception type (including NullPointerException) raised by the customizer is propagated unchanged."
+      }
+    ]
+  }
+]

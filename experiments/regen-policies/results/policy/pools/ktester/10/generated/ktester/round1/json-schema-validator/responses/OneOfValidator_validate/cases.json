@@ -1,0 +1,510 @@
+[
+  {
+    "group": "Walk disabled \u2013 exactly one matching schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns empty Set<ValidationMessage> (no errors, state.matchedNode set to true)",
+        "description": "state.isWalkEnabled() is false, the single registered schema validates without errors and state.hasMatchedNode() remains true, so numberOfValidSchema == 1 and the validator returns an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "Walk disabled \u2013 schema returns errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(invalidNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage and the child ValidationMessage(s) from the failing schema",
+        "description": "state.isWalkEnabled() is false, the schema produces validation errors, therefore numberOfValidSchema stays 0, failFast is false, so a OneOf error is added together with the child errors."
+      }
+    ]
+  },
+  {
+    "group": "Walk disabled \u2013 schema matches but state.hasMatchedNode is false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, matchedNodeAfterValidate=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage (no valid schema counted)",
+        "description": "Even though the schema returns no errors, state.hasMatchedNode() is false after validation, causing the `continue` path; numberOfValidSchema remains 0, leading to a OneOf error."
+      }
+    ]
+  },
+  {
+    "group": "Walk disabled \u2013 more than one matching schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage (numberOfValidSchema == 2, short\u2011circuit after second schema)",
+        "description": "Two schemas both validate without errors, causing numberOfValidSchema to become 2, which triggers the break and later the OneOf error because exactly one schema must match."
+      }
+    ]
+  },
+  {
+    "group": "Fail\u2011fast mode \u2013 invalid number of matching schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=true, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(invalidNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws JsonSchemaException containing OneOf ValidationMessage",
+        "description": "failFast is true and the number of valid schemas is not exactly one, so the validator throws a JsonSchemaException instead of returning an error set."
+      }
+    ]
+  },
+  {
+    "group": "Walk enabled \u2013 schema validation performed via walk()",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=true, failFast=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns empty Set<ValidationMessage> (schema.walk returns empty, state.hasMatchedNode true)",
+        "description": "When walk is enabled, the validator calls schema.walk(). The mock walk returns no errors and leaves state.hasMatchedNode true, resulting in a successful OneOf validation with no errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=true, failFast=false, validationEnabled=true, matchedNodeAfterWalk=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage (schema.walk returns empty but state.hasMatchedNode false)",
+        "description": "Even with walk enabled, if after schema.walk() the validator state reports no matched node, the schema is ignored (continue) and the final result is a OneOf error."
+      }
+    ]
+  },
+  {
+    "group": "No schemas registered \u2013 always OneOf error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, schemas=[])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(anyNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage (numberOfValidSchema == 0, childErrors empty)",
+        "description": "When the OneOfValidator has an empty schema list, the loop never increments numberOfValidSchema, so the validator must always produce a OneOf error regardless of the input node."
+      }
+    ]
+  },
+  {
+    "group": "Walk enabled \u2013 schema returns errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=true, failFast=false, validationEnabled=true, schemas=[errorSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(invalidNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage and the child ValidationMessage(s) from errorSchema.walk",
+        "description": "With walk enabled, the validator calls schema.walk(). The mock walk returns a non\u2011empty error set, so numberOfValidSchema stays 0 and the final result contains the OneOf error plus the child errors."
+      }
+    ]
+  },
+  {
+    "group": "Fail\u2011fast mode \u2013 exactly one matching schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=true, validationEnabled=true, schemas=[validSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns empty Set<ValidationMessage> (no exception, state.matchedNode true)",
+        "description": "Fail\u2011fast only throws when the OneOf condition fails. Here a single schema validates successfully, so the validator returns an empty error set even though failFast is true."
+      }
+    ]
+  },
+  {
+    "group": "Walk enabled \u2013 validation disabled (state.isValidationEnabled = false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=true, failFast=false, validationEnabled=false, schemas=[validSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns empty Set<ValidationMessage> (schema.walk called with validationEnabled=false, but still counts as valid, state.matchedNode true)",
+        "description": "When walk is enabled but the validator state reports validationEnabled = false, the schema.walk() is invoked with the flag false. The mock schema is set up to ignore validation when the flag is false and return an empty error set, leading to a successful OneOf validation."
+      }
+    ]
+  },
+  {
+    "group": "Multiple schemas \u2013 first matches, second returns errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, schemas=[validSchema, errorSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage and child ValidationMessage(s) from errorSchema (numberOfValidSchema == 1, but childErrors from second schema are added)",
+        "description": "The first schema validates without errors, incrementing numberOfValidSchema to 1. The second schema produces errors; those errors are collected in childErrors and returned together with the OneOf error because exactly one schema must match, but additional errors from non\u2011matching schemas are also reported."
+      }
+    ]
+  },
+  {
+    "group": "State.matchedNode reset between schemas \u2013 first matches but resets to false before second",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, schemas=[validSchema, resetMatchedNodeSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "returns Set containing OneOf ValidationMessage (numberOfValidSchema == 0 after second schema resets matchedNode)",
+        "description": "The first schema validates successfully and leaves state.matchedNode true, but the second schema explicitly sets state.matchedNode to false (simulated via mock). Because the loop continues, the first successful match is discarded, resulting in zero valid schemas and a OneOf error."
+      }
+    ]
+  },
+  {
+    "group": "Fail\u2011fast mode \u2013 multiple matching schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=true, validationEnabled=true, schemas=[validSchema, validSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws JsonSchemaException containing OneOf ValidationMessage (numberOfValidSchema == 2)",
+        "description": "failFast is true and two schemas both validate without errors, so numberOfValidSchema becomes 2. The validator short\u2011circuits the loop and then throws a JsonSchemaException instead of returning an error set."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(anyNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The method dereferences executionContext immediately to obtain CollectorContext; passing null triggers a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null collectorContext inside executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectorContext=null, walkEnabled=false, failFast=false, validationEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(anyNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The validator calls executionContext.getCollectorContext().enterDynamicScope(); if the collectorContext is null a NullPointerException is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Null schema element in schemas list",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, schemas=[validSchema, null])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(validNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "During iteration the code invokes schema.validate on a null entry, causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schema.validate returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=false, failFast=false, validationEnabled=true, schemas=[nullReturningValidateSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(anyNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "If a schema's validate method returns null, the subsequent call to schemaErrors.isEmpty() triggers a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schema.walk returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(walkEnabled=true, failFast=false, validationEnabled=true, schemas=[nullReturningWalkSchema])"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(anyNode)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockJsonNode(root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockJsonNodePath(\"/path\")"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "When walk is enabled the validator calls schema.walk; if that method returns null, the later schemaErrors.isEmpty() call throws a NullPointerException."
+      }
+    ]
+  }
+]

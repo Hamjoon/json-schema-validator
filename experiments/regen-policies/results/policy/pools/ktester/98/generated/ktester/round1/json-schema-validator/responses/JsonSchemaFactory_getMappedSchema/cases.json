@@ -1,0 +1,267 @@
+[
+  {
+    "group": "Successful loads without fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/simple-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created via doCreate with suppressSubSchemaRetrieval=true (no fragment handling).",
+        "description": "Loads a JSON schema file (extension .json) where the URI has no fragment. The schemaLoader returns a non\u2011null InputStream, isYaml() returns false, readTree parses JSON, and the method follows the \"Schema without fragment\" branch."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/simple-schema.yaml"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created via doCreate with suppressSubSchemaRetrieval=true (no fragment handling).",
+        "description": "Loads a YAML schema file (extension .yaml) with no fragment. The isYaml() check returns true, readTree parses YAML, and the method follows the same branch as above."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/simple-schema.json#"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created via doCreate with suppressSubSchemaRetrieval=true (no fragment handling).",
+        "description": "URI contains an empty fragment ('#'). The fragment object exists but its nameCount is 0, therefore the method treats it as a schema without fragment and follows the first branch."
+      }
+    ]
+  },
+  {
+    "group": "Successful loads with fragment (sub\u2011schema retrieval)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/complex-schema.json#/definitions/address"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at /definitions/address.",
+        "description": "Loads a JSON schema that contains a fragment pointing to a sub\u2011schema. The method follows the \"Schema with fragment\" branch: creates a document schema, then calls getRefSchema on the fragment and returns the referenced sub\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/complex-schema.yaml#/components/schemas/Person"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at /components/schemas/Person.",
+        "description": "Same as above but the source file is YAML, so isYaml() returns true and readTree parses YAML before the fragment handling logic."
+      }
+    ]
+  },
+  {
+    "group": "Error handling \u2013 missing InputStream",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/missing-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchemaException with message \"Failed to load json schema from file:/tmp/missing-schema.json\" and cause IOException(\"Cannot load schema at file:/tmp/missing-schema.json\").",
+        "description": "The schemaLoader returns a SchemaResource whose getInputStream() returns null. The method throws an IOException which is caught and wrapped in a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Error handling \u2013 readTree throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/bad-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchemaException with message \"Failed to load json schema from file:/tmp/bad-schema.json\" and cause the original IOException from readTree.",
+        "description": "The InputStream is non\u2011null, but readTree throws an IOException (e.g., malformed JSON). The catch block converts it to a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema detection via $schema keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/draft07-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created with JsonMetaSchema corresponding to Draft\u201107 (the $schema keyword in the document is 'http://json-schema.org/draft-07/schema#'). The call to getMetaSchemaOrDefault must return the Draft\u201107 meta\u2011schema instead of the factory default.",
+        "description": "Loads a JSON schema file that contains a top\u2011level \"$schema\" keyword pointing to Draft\u201107. The method should recognise the keyword, load the appropriate meta\u2011schema and create the JsonSchema using that meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Custom PathType in SchemaValidatorsConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/simple-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithJsonPointerPath"
+          }
+        ],
+        "expected": "JsonSchema instance created successfully; the JsonNodePath used inside the method is instantiated with PathType.JSON_POINTER (as supplied by the custom config). No exception is thrown.",
+        "description": "Verifies that the method respects the PathType supplied by a custom SchemaValidatorsConfig. The schema loads normally, but the internal evaluationPath must be built with the configured PathType."
+      }
+    ]
+  },
+  {
+    "group": "SchemaLoader throws IOException before InputStream acquisition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/unreachable-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchemaException with message 'Failed to load json schema from file:/tmp/unreachable-schema.json' and cause IOException thrown by SchemaLoader.getSchema(...).",
+        "description": "The SchemaLoader is mocked to throw an IOException when getSchema(schemaUri) is called. The method must catch the IOException, log it and re\u2011throw a JsonSchemaException wrapping the original cause."
+      }
+    ]
+  },
+  {
+    "group": "Fragment points to non\u2011existent sub\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/complex-schema.json#/definitions/unknown"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchemaException (or a null return depending on implementation) indicating that the fragment '/definitions/unknown' cannot be resolved.",
+        "description": "The schema loads successfully, but the fragment references a path that does not exist in the document. The method should attempt to retrieve the sub\u2011schema via getRefSchema and fail, resulting in an exception that propagates to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Remote HTTP URI without fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://example.com/schemas/remote-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created via doCreate with suppressSubSchemaRetrieval=true (no fragment handling).",
+        "description": "Ensures that the method works with non\u2011file schemes (e.g., HTTP). The loader returns a valid InputStream, isYaml() returns false, and the method follows the 'schema without fragment' branch."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported file extension treated as JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/schema.txt"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance created via doCreate with suppressSubSchemaRetrieval=true (no fragment handling).",
+        "description": "A file with an unknown extension (.txt) should be processed as JSON because isYaml() returns false. The method must successfully parse the content and return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null arguments validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown before entering the try\u2011with\u2011resources block because schemaUri is null and the method attempts to call schemaUri.getAbsoluteIri().",
+        "description": "Verifies that passing a null SchemaLocation causes an immediate NPE rather than being wrapped in JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/simple-schema.json"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException thrown when config.getPathType() is invoked inside the method.",
+        "description": "Ensures that a null SchemaValidatorsConfig leads to an NPE (not wrapped) because the method dereferences config to create JsonNodePath."
+      }
+    ]
+  }
+]

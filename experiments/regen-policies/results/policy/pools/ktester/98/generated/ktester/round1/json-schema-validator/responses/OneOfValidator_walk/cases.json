@@ -1,0 +1,395 @@
+[
+  {
+    "group": "validateWhenShouldValidateTrue",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Set containing two ValidationMessage objects with messages \"error A\" and \"error B\"",
+        "description": "When shouldValidateSchema is true the validator should delegate to validate(..., true) and return the messages produced by that call."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Empty Set",
+        "description": "When shouldValidateSchema is true but validate returns an empty set, walk should also return an empty set."
+      }
+    ]
+  },
+  {
+    "group": "walkWhenShouldValidateFalse",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set and schema.walk called zero times",
+        "description": "When shouldValidateSchema is false and the internal schemas list is empty, walk should iterate over no schemas and return an empty set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set and schema.walk called three times with the same parameters",
+        "description": "When shouldValidateSchema is false and the validator holds three schemas, walk must invoke each schema's walk method with the original arguments but must not collect any ValidationMessage, therefore it returns an empty set."
+      }
+    ]
+  },
+  {
+    "group": "walkWhenShouldValidateFalseWithChildMessages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set; each child schema's walk method is invoked once with the same parameters and may return ValidationMessage sets, but those messages are ignored by OneOfValidator.walk",
+        "description": "When shouldValidateSchema is false and the validator holds several child schemas that each produce ValidationMessage objects, OneOfValidator.walk must still return an empty Set because it never aggregates child messages."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenExecutionContextIsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is true and executionContext is null, the call to validate(...) should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenNodeIsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is true and the node argument is null, validate(...) is expected to raise a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenRootNodeIsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is true and rootNode is null, validate(...) should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenInstanceLocationIsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is true and instanceLocation is null, the validate(...) call is expected to raise a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenValidateReturnsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is true and the overridden validate(..., true) method returns null, addAll(null) triggers a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenSchemasListIsNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is false and the internal `schemas` field is null, iterating over it throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenSchemasContainNullElement",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When shouldValidateSchema is false and the `schemas` list contains a null entry, invoking `null.walk(...)` results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "walkExceptionWhenChildSchemaWalkThrowsRuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "When shouldValidateSchema is false and a child schema's walk method throws a RuntimeException, OneOfValidator.walk should propagate that exception."
+      }
+    ]
+  }
+]

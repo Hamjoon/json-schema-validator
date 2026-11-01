@@ -1,0 +1,325 @@
+[
+  {
+    "group": "Successful loading \u2013 JSON schema without fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid JSON schema file, absolute IRI = \"classpath:/schemas/simple.json\", fragment = null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig() with default PathType"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance returned. The returned schema is created via doCreate with suppressSubSchemaRetrieval = true. No calls to getYamlMapper().readTree().",
+        "description": "Verifies the happy path when the schema file is JSON, there is no fragment in the URI, and the InputStream is successfully opened. The method should read the JSON, resolve the meta\u2011schema, build a ValidationContext and call doCreate with suppressSubSchemaRetrieval = true."
+      }
+    ]
+  },
+  {
+    "group": "Successful loading \u2013 YAML schema without fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid YAML schema file, absolute IRI = \"classpath:/schemas/simple.yaml\", fragment = null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance returned. The method should invoke getYamlMapper().readTree() instead of getJsonMapper().readTree().",
+        "description": "Ensures the isYaml() branch is exercised: when the URI ends with .yaml/.yml the loader must use the YAML mapper."
+      }
+    ]
+  },
+  {
+    "group": "Successful loading \u2013 JSON schema with fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation with absolute IRI = \"classpath:/schemas/complex.json#\\/definitions\\/address\", fragment not null and nameCount > 0"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A JsonSchema representing the sub\u2011schema referenced by the fragment is returned. The method should create a ValidationContext via createValidationContext(), call doCreate with suppressSubSchemaRetrieval = false, then call document.getRefSchema(fragment).",
+        "description": "Tests the branch where a fragment is present. The method must load the whole document schema first, then resolve the fragment to a sub\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 InputStream is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a non\u2011existent resource, absolute IRI = \"classpath:/schemas/missing.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException thrown with message containing \"Failed to load json schema from\" and cause = IOException with message \"Cannot load schema at classpath:/schemas/missing.json\".",
+        "description": "Simulates the situation where SchemaLoader returns a SchemaReference whose getInputStream() returns null. The method should throw an IOException which is wrapped into JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 IOException while reading schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid resource but whose InputStream throws IOException on read (e.g., corrupted zip entry)."
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException thrown; its cause is the original IOException. The logger should record an error with the absolute IRI.",
+        "description": "Covers the catch block. Any IOException occurring inside the try\u2011with\u2011resources (including from readTree()) must be caught, logged and re\u2011thrown as JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Edge case \u2013 Fragment present but empty (nameCount == 0)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation with absolute IRI = \"classpath:/schemas/simple.json#\" (fragment exists but has zero path segments)."
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Same behaviour as the \"no fragment\" branch: doCreate called with suppressSubSchemaRetrieval = true and the full schema returned.",
+        "description": "Ensures that a fragment object with nameCount == 0 is treated as if there were no fragment, exercising the conditional `(schemaUri.getFragment() == null) || (schemaUri.getFragment().getNameCount() == 0)`."
+      }
+    ]
+  },
+  {
+    "group": "Successful loading \u2013 YAML schema with fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid YAML schema file, absolute IRI = \"classpath:/schemas/complex.yaml#\\/definitions\\/address\", fragment not null and nameCount > 0"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig() with default PathType"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance representing the sub\u2011schema referenced by the fragment is returned. The method must invoke getYamlMapper().readTree() (YAML branch) and then call doCreate with suppressSubSchemaRetrieval = false followed by document.getRefSchema(fragment).",
+        "description": "Exercises the path where the schema file is YAML and a non\u2011empty fragment is present. Verifies that the YAML mapper is used, the full document schema is first created, and the fragment is resolved to the correct sub\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 SchemaLoader throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a resource whose SchemaLoader.getSchema() throws an IOException (e.g., simulated network failure)."
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException thrown with message containing \"Failed to load json schema from\" and its cause being the original IOException thrown by SchemaLoader.",
+        "description": "Ensures that an IOException occurring *before* the InputStream is obtained (e.g., while locating the schema) is caught by the outer catch block, logged, wrapped in JsonSchemaException and re\u2011thrown."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 Invalid meta\u2011schema identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid JSON schema file whose root node contains \"$schema\": \"http://example.com/unknown-meta-schema\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException thrown (or any RuntimeException) originating from getMetaSchemaOrDefault when it cannot resolve the supplied meta\u2011schema identifier.",
+        "description": "Tests the branch where getMetaSchemaOrDefault fails to locate a meta\u2011schema for the supplied \"$schema\" URI. The method does not catch this exception, so it should propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Edge case \u2013 Null SchemaValidatorsConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid JSON schema file, absolute IRI = \"classpath:/schemas/simple.json\", fragment = null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException thrown when the method attempts to call config.getPathType().",
+        "description": "Validates that a null configuration argument is not tolerated and results in an NPE at the point where the method creates a JsonNodePath."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 SchemaLoader returns null SchemaReference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid resource, but the mocked SchemaLoader returns null for getSchema()"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException thrown when the method attempts to invoke getInputStream() on a null SchemaReference.",
+        "description": "The SchemaLoader is stubbed to return null. The try\u2011with\u2011resources block then calls .getInputStream() on the null reference, causing an NPE before any IOException handling."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 schemaUri argument is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException thrown when the method calls schemaUri.getAbsoluteIri().",
+        "description": "Passing a null SchemaLocation should cause an NPE at the first usage of the argument (inside the try block)."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 schemaUri.getAbsoluteIri() returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation whose getAbsoluteIri() method is mocked to return null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException thrown when the method attempts to use the null IRI (e.g., in logger.error or IOException message).",
+        "description": "Even though the SchemaLocation object itself is non\u2011null, its absolute IRI is null, leading to an NPE during logging or exception construction."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 Config with null PathType",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a valid JSON schema file"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig instance whose getPathType() returns null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown when constructing new JsonNodePath(null).",
+        "description": "The method creates a JsonNodePath using config.getPathType(). If the path type is null, the constructor should reject it, causing an exception before any schema processing."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 document.getRefSchema(fragment) not found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation with absolute IRI = \"classpath:/schemas/simple.json#\\/nonexistent\" (fragment points to a definition that does not exist)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) thrown by document.getRefSchema() because the fragment cannot be resolved.",
+        "description": "The method loads the whole document successfully, but when it attempts to resolve the fragment to a sub\u2011schema, the lookup fails and an unchecked exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 getMetaSchemaOrDefault receives null schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to an empty file (readTree returns null)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException thrown inside getMetaSchemaOrDefault when it tries to inspect a null JsonNode.",
+        "description": "When the input stream is valid but contains no JSON/YAML content, the mapper returns null. Subsequent call to getMetaSchemaOrDefault should fail with NPE."
+      }
+    ]
+  },
+  {
+    "group": "Failure \u2013 SchemaLoader throws unchecked RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation pointing to a resource whose SchemaLoader.getSchema() throws a RuntimeException (e.g., IllegalStateException)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalStateException (or the original RuntimeException) propagates out of getMappedSchema without being wrapped.",
+        "description": "Only IOException is caught and wrapped. Any other unchecked exception from SchemaLoader should bubble up unchanged."
+      }
+    ]
+  }
+]

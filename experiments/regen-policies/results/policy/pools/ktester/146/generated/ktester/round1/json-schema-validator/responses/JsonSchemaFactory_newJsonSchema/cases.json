@@ -1,0 +1,255 @@
+[
+  {
+    "group": "Valid inputs \u2013 happy path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; doCreate is invoked once with the ValidationContext created from the supplied schemaNode and config, the normalized SchemaLocation, a JsonNodePath built from the config's path type, the supplied schemaNode, parentSchema = null and suppressSubSchemaRetrieval = false; preload is invoked with the created JsonSchema and the supplied config.",
+        "description": "Ensures that with normal, non\u2011null arguments the method creates a ValidationContext, delegates to doCreate, pre\u2011loads the schema and returns the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null SchemaValidatorsConfig \u2013 default configuration fallback",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; createValidationContext is called with a null config and must internally create a default SchemaValidatorsConfig; the subsequent doCreate and preload calls behave as in the happy path.",
+        "description": "Verifies that when the config argument is null the factory falls back to its default configuration rather than throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode \u2013 should reject missing schema definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "throws NullPointerException (or IllegalArgumentException) because schemaNode is required for ValidationContext creation.",
+        "description": "Ensures that the method validates its mandatory schemaNode argument and fails fast when it is null."
+      }
+    ]
+  },
+  {
+    "group": "Null SchemaLocation \u2013 factory must handle missing location",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; getSchemaLocation receives null and should return null (or a default placeholder) which is then passed to doCreate; the method must not throw an exception solely because schemaUri is null.",
+        "description": "Tests that the method tolerates a null schema location, delegating the null value to doCreate, which is expected to handle it gracefully."
+      }
+    ]
+  },
+  {
+    "group": "Config with custom PathType \u2013 verifies JsonNodePath construction",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "customPathConfig (pathType = JSON_POINTER)"
+          }
+        ],
+        "expected": "returns a JsonSchema; the JsonNodePath passed to doCreate is built using the custom path type (JSON_POINTER) from the supplied config.",
+        "description": "Confirms that the method respects the path type defined in the supplied SchemaValidatorsConfig when constructing the JsonNodePath."
+      }
+    ]
+  },
+  {
+    "group": "Both schemaUri and config null \u2013 default handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema; a default SchemaValidatorsConfig is created internally; getSchemaLocation receives null and returns null (or a placeholder); doCreate is invoked with the default config, null schema location, a JsonNodePath built from the default path type, the supplied schemaNode, parentSchema = null and suppressSubSchemaRetrieval = false; preload is called with the created JsonSchema and the default config.",
+        "description": "Verifies that when both the schema location and the configuration are null the factory falls back to its default configuration and still creates a JsonSchema without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid SchemaLocation format \u2013 should reject malformed URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "invalid://@@@"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the supplied SchemaLocation cannot be parsed/normalized, getSchemaLocation is expected to throw IllegalArgumentException, which propagates out of newJsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Config with null PathType \u2013 JsonNodePath construction fails",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mockJsonNode"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithNullPathType"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the SchemaValidatorsConfig supplied contains a null path type, validationContext.getConfig().getPathType() returns null and the JsonNodePath constructor throws NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object JsonNode \u2013 schema node must be an object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "jsonPrimitiveNode"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "doCreate expects the root schema node to be a JSON object; passing a primitive (e.g., a text node) should cause it to throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported $schema identifier \u2013 version flag not recognised",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "schemaNodeWithUnsupportedMetaSchema"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the schema JSON contains a $schema value that does not map to any known JsonMetaSchema, doCreate should raise IllegalArgumentException indicating an unsupported schema version."
+      }
+    ]
+  },
+  {
+    "group": "Circular schema reference \u2013 detection triggers IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockCircularSchemaLocation"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "circularSchemaNode"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If the supplied schema (or its $ref chain) creates a circular reference, doCreate is expected to detect it and throw IllegalStateException."
+      }
+    ]
+  }
+]

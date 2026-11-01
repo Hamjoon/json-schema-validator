@@ -1,0 +1,71 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:68: error: cannot find symbol
+        factory = JsonSchemaFactory.getInstance(VersionFlag.V201909);
+                                                ^
+  symbol:   variable VersionFlag
+  location: class JsonSchemaTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:168: error: no suitable method found for getMetaSchema(no arguments)
+        assertEquals(factory.getMetaSchema(), ctx.getMetaSchema());
+                            ^
+    method JsonSchemaFactory.getMetaSchema(JsonNode,SchemaValidatorsConfig) is not applicable
+      (actual and formal argument lists differ in length)
+    method JsonSchemaFactory.getMetaSchema(String,SchemaValidatorsConfig) is not applicable
+      (actual and formal argument lists differ in length)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:342: error: cannot find symbol
+        assertTrue("Walk with valid data must have no errors", result.getMessages().isEmpty());
+                                                                     ^
+  symbol:   method getMessages()
+  location: variable result of type ValidationResult
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:350: error: cannot find symbol
+        assertFalse("Walk with invalid data must contain errors", result.getMessages().isEmpty());
+                                                                        ^
+  symbol:   method getMessages()
+  location: variable result of type ValidationResult
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:420: error: incompatible types: String cannot be converted to JsonNodePath
+        schema.getRefSchema("nonexistentAnchor");
+                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:477: error: no suitable method found for walk(JsonNode,boolean,(execution[...] true)
+        ValidationResult result = schema.walk(instance, true, executionContext -> called[0] = true);
+                                        ^
+    method JsonSchema.<T#1>walk(ExecutionContext,JsonNode,OutputFormat<T#1>,boolean,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#1
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#2>walk(ExecutionContext,JsonNode,OutputFormat<T#2>,boolean,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method JsonSchema.walk(ExecutionContext,JsonNode,boolean) is not applicable
+      (argument mismatch; JsonNode cannot be converted to ExecutionContext)
+    method JsonSchema.<T#3>walk(ExecutionContext,String,InputFormat,OutputFormat<T#3>,boolean) is not applicable
+      (cannot infer type-variable(s) T#3
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#4>walk(ExecutionContext,String,InputFormat,OutputFormat<T#4>,boolean,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#5>walk(JsonNode,OutputFormat<T#5>,boolean) is not applicable
+      (cannot infer type-variable(s) T#5
+        (argument mismatch; boolean cannot be converted to OutputFormat<T#5>))
+    method JsonSchema.walk(String,InputFormat,boolean) is not applicable
+      (argument mismatch; JsonNode cannot be converted to String)
+  where T#1,T#2,T#3,T#4,T#5 are type-variables:
+    T#1 extends Object declared in method <T#1>walk(ExecutionContext,JsonNode,OutputFormat<T#1>,boolean,ExecutionContextCustomizer)
+    T#2 extends Object declared in method <T#2>walk(ExecutionContext,JsonNode,OutputFormat<T#2>,boolean,Consumer<ExecutionContext>)
+    T#3 extends Object declared in method <T#3>walk(ExecutionContext,String,InputFormat,OutputFormat<T#3>,boolean)
+    T#4 extends Object declared in method <T#4>walk(ExecutionContext,String,InputFormat,OutputFormat<T#4>,boolean,ExecutionContextCustomizer)
+    T#5 extends Object declared in method <T#5>walk(JsonNode,OutputFormat<T#5>,boolean)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:479: error: cannot find symbol
+        assertTrue(result.getMessages().isEmpty());
+                         ^
+  symbol:   method getMessages()
+  location: variable result of type ValidationResult
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:486: error: incompatible types: com.networknt.schema.OutputFormat.List cannot be converted to OutputFormat<java.util.List<String>>
+        OutputFormat<List<String>> format = OutputFormat.LIST;
+                                                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java:507: error: cannot find symbol
+        assertTrue(result.getMessages().isEmpty());
+                         ^
+  symbol:   method getMessages()
+  location: variable result of type ValidationResult
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/GToT/JsonSchemaTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+9 errors

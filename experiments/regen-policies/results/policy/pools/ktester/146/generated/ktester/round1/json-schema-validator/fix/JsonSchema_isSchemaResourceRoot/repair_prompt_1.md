@@ -1,0 +1,252 @@
+
+You are an experienced Java developer tasked with fixing a piece of code that contains compilation errors. Your task is to resolve these issues after analyzing the code and its compilation feedback.
+
+Use the following steps to guide your analysis and correction process:
+1. Review the provided Java code for any syntactical or logical errors.
+2. Analyze the compilation feedback to understand the specific errors and their locations within the code.
+3. Apply necessary corrections to the code based on the feedback, and output the compelete correct code.
+The Java code you need to fix is provided below:
+```java
+package com.networknt.schema;
+
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import java.util.Objects;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.provider.Arguments;
+import java.lang.reflect.Field;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class JsonSchema_isSchemaResourceRoot_Test {
+
+    /**
+     * Supplies the edge‑case arguments.
+     */
+    private static Stream<Arguments> edgeCaseProvider() {
+        // distinct IRIs for the “different” case
+        AbsoluteIri iri1 = AbsoluteIri.create("http://example.com/iri1");
+        AbsoluteIri iri2 = AbsoluteIri.create("http://example.com/iri2");
+        SchemaLocation childLocDiff = new SchemaLocation(iri1, null);
+        SchemaLocation parentLocDiff = new SchemaLocation(iri2, null);
+        // shared IRI for the “same” case
+        AbsoluteIri sharedIri = AbsoluteIri.create("http://example.com/shared");
+        SchemaLocation childLocSame = new SchemaLocation(sharedIri, null);
+        SchemaLocation parentLocSame = new SchemaLocation(sharedIri, null);
+        // both locations null
+        Arguments bothNull = Arguments.of("Both schemaLocation and parentSchemaLocation are null → result false", null, null, null, false);
+        // child null, parent non‑null
+        Arguments childNullParentNonNull = Arguments.of("Child location null, parent location non‑null → result true", null, null, parentLocDiff, true);
+        // child non‑null, parent null
+        Arguments childNonNullParentNull = Arguments.of("Child location non‑null, parent location null → result true", null, childLocDiff, null, true);
+        // empty id (non‑null) → should short‑circuit to true
+        Arguments emptyId = Arguments.of("Empty string id is non‑null → result true", "", null, null, true);
+        // different IRIs → true
+        Arguments iriDifferent = Arguments.of("Different absolute IRIs → result true", null, childLocDiff, parentLocDiff, true);
+        // same IRIs → false
+        Arguments iriSame = Arguments.of("Same absolute IRI → result false", null, childLocSame, parentLocSame, false);
+        return Stream.of(bothNull, childNullParentNonNull, childNonNullParentNull, emptyId, iriDifferent, iriSame);
+    }
+
+    /**
+     * Helper to set a private field via reflection.
+     */
+    private static void setField(Object target, String name, Object value) {
+        try {
+            Field f = target.getClass().getDeclaredField(name);
+            f.setAccessible(true);
+            f.set(target, value);
+        } catch (Exception e) {
+            throw new AssertionError("Unable to set field '" + name + "' on " + target, e);
+        }
+    }
+
+    /**
+     * When the schema has a non‑null {@code id}, the method must return {@code true}
+     * regardless of the parent schema.
+     */
+    @Test
+    void whenIdIsNotNull_thenRootIsTrue() {
+        JsonSchema schema = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909).getSchema(// a minimal valid schema
+        "{}");
+        // force a non‑null id
+        setField(schema, "id", "someId");
+        // parent and location are irrelevant – they stay as created
+        Assertions.assertTrue(schema.isSchemaResourceRoot(), "Schema with a non‑null id should be considered a resource root");
+    }
+
+    /**
+     * When the schema has a {@code null} id and no parent, it is a root.
+     */
+    @Test
+    void whenIdIsNullAndParentIsNull_thenRootIsTrue() {
+        JsonSchema schema = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909).getSchema("{}");
+        setField(schema, "id", null);
+        setField(schema, "parentSchema", null);
+        Assertions.assertTrue(schema.isSchemaResourceRoot(), "Schema with null id and no parent should be a resource root");
+    }
+
+    /**
+     * When the schema has a {@code null} id, a parent exists and the absolute IRIs are
+     * different, the method must return {@code true}.
+     */
+    @Test
+    void whenIdIsNullAndParentExistsAndIriDiffers_thenRootIsTrue() {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909);
+        JsonSchema child = factory.getSchema("{}");
+        JsonSchema parent = factory.getSchema("{}");
+        setField(child, "id", null);
+        setField(parent, "id", null);
+        setField(child, "parentSchema", parent);
+        // distinct IRIs
+        AbsoluteIri childIri = AbsoluteIri.create("http://example.com/child");
+        AbsoluteIri parentIri = AbsoluteIri.create("http://example.com/parent");
+        setField(child, "schemaLocation", new SchemaLocation(childIri, null));
+        setField(parent, "schemaLocation", new SchemaLocation(parentIri, null));
+        Assertions.assertTrue(child.isSchemaResourceRoot(), "Schema with different absolute IRIs from its parent should be a resource root");
+    }
+
+    /**
+     * When the schema has a {@code null} id, a parent exists and the absolute IRIs are
+     * the same, the method must return {@code false}.
+     */
+    @Test
+    void whenIdIsNullAndParentExistsAndIriSame_thenRootIsFalse() {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909);
+        JsonSchema child = factory.getSchema("{}");
+        JsonSchema parent = factory.getSchema("{}");
+        setField(child, "id", null);
+        setField(parent, "id", null);
+        setField(child, "parentSchema", parent);
+        // shared IRI instance
+        AbsoluteIri sharedIri = AbsoluteIri.create("http://example.com/shared");
+        setField(child, "schemaLocation", new SchemaLocation(sharedIri, null));
+        setField(parent, "schemaLocation", new SchemaLocation(sharedIri, null));
+        Assertions.assertFalse(child.isSchemaResourceRoot(), "Schema with the same absolute IRI as its parent should not be a resource root");
+    }
+
+    /**
+     * Parameterized edge‑case scenarios.
+     *
+     * @param description   human‑readable description for the test case
+     * @param id            value returned by {@code getId()}
+     * @param childLoc      {@code SchemaLocation} for the child (may be {@code null})
+     * @param parentLoc     {@code SchemaLocation} for the parent (may be {@code null})
+     * @param expected      expected result of {@code isSchemaResourceRoot()}
+     */
+    @ParameterizedTest(name = "{index}: {0}")
+    @MethodSource("edgeCaseProvider")
+    void edgeCases(String description, String id, SchemaLocation childLoc, SchemaLocation parentLoc, boolean expected) {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909);
+        JsonSchema child = factory.getSchema("{}");
+        JsonSchema parent = factory.getSchema("{}");
+        setField(child, "id", id);
+        setField(parent, "id", null);
+        setField(child, "parentSchema", parent);
+        setField(child, "schemaLocation", childLoc);
+        setField(parent, "schemaLocation", parentLoc);
+        boolean actual = child.isSchemaResourceRoot();
+        Assertions.assertEquals(expected, actual, () -> "Edge case failed: " + description);
+    }
+
+    /**
+     * When {@code getSchemaLocation()} returns {@code null} while a parent exists,
+     * the method dereferences a {@code null} and throws {@link NullPointerException}.
+     */
+    @Test
+    void whenIdNullParentExistsAndChildLocationNull_thenThrowsNPE() {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909);
+        JsonSchema child = factory.getSchema("{}");
+        JsonSchema parent = factory.getSchema("{}");
+        setField(child, "id", null);
+        setField(child, "schemaLocation", null);
+        setField(parent, "schemaLocation", new SchemaLocation(AbsoluteIri.create("http://example.com/p"), null));
+        setField(child, "parentSchema", parent);
+        Assertions.assertThrows(NullPointerException.class, child::isSchemaResourceRoot, "Expected NPE when child schemaLocation is null and parent is present");
+    }
+
+    /**
+     * When the parent schema's {@code getSchemaLocation()} returns {@code null}
+     * while the child schema's location is non‑null, dereferencing the parent causes
+     * a {@link NullPointerException}.
+     */
+    @Test
+    void whenIdNullParentExistsAndParentLocationNull_thenThrowsNPE() {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V201909);
+        JsonSchema child = factory.getSchema("{}");
+        JsonSchema parent = factory.getSchema("{}");
+        setField(child, "id", null);
+        setField(child, "schemaLocation", new SchemaLocation(AbsoluteIri.create("http://example.com/c"), null));
+        setField(parent, "schemaLocation", null);
+        setField(child, "parentSchema", parent);
+        Assertions.assertThrows(NullPointerException.class, child::isSchemaResourceRoot, "Expected NPE when parent schemaLocation is null and child is present");
+    }
+}
+```
+
+Corresponding compilation feedback:
+```
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:11: error: package org.mockito.junit.jupiter does not exist
+import org.mockito.junit.jupiter.MockitoExtension;
+                                ^
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:13: error: cannot find symbol
+@ExtendWith(MockitoExtension.class)
+            ^
+  symbol: class MockitoExtension
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:21: error: cannot find symbol
+        AbsoluteIri iri1 = AbsoluteIri.create("http://example.com/iri1");
+                                      ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:22: error: cannot find symbol
+        AbsoluteIri iri2 = AbsoluteIri.create("http://example.com/iri2");
+                                      ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:26: error: cannot find symbol
+        AbsoluteIri sharedIri = AbsoluteIri.create("http://example.com/shared");
+                                           ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:95: error: cannot find symbol
+        AbsoluteIri childIri = AbsoluteIri.create("http://example.com/child");
+                                          ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:96: error: cannot find symbol
+        AbsoluteIri parentIri = AbsoluteIri.create("http://example.com/parent");
+                                           ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:115: error: cannot find symbol
+        AbsoluteIri sharedIri = AbsoluteIri.create("http://example.com/shared");
+                                           ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:156: error: cannot find symbol
+        setField(parent, "schemaLocation", new SchemaLocation(AbsoluteIri.create("http://example.com/p"), null));
+                                                                         ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+src/test/java/com/networknt/schema/JsonSchema_isSchemaResourceRoot_Test.java:172: error: cannot find symbol
+        setField(child, "schemaLocation", new SchemaLocation(AbsoluteIri.create("http://example.com/c"), null));
+                                                                        ^
+  symbol:   method create(String)
+  location: class AbsoluteIri
+10 errors
+
+```
+
+And you can use the following related information to assist you in your analysis and correction:
+```
+{'api document of class com.networknt.schema.JsonSchema': '\n * Used for creating a schema with validators for validating inputs. This is\n * created using {@link JsonSchemaFactory#getInstance(VersionFlag, Consumer)}\n * and should be cached for performance.\n * <p>\n * This is the core of json constraint implementation. It parses json constraint\n * file and generates JsonValidators. The class is thread safe, once it is\n * constructed, it can be used to validate multiple json data concurrently.\n * <p>\n * JsonSchema instances are thread-safe provided its configuration is not\n * modified.\n ', 'api document of method isSchemaResourceRoot()': '\n     * Determines if this schema resource is a schema resource root.\n     * <p>\n     * This is either the schema document root or the subschema resource root.\n     *\n     * @return if this schema is a schema resource root\n     ', 'return type': 'boolean', 'dependent classes': 'class `com.networknt.schema.JsonSchema`:\n\trelated functions:\n\t\tmethod `public JsonSchema findLexicalRoot()` returns `com.networknt.schema.JsonSchema`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`;\n\t\tmethod `public boolean isSchemaResourceRoot()` returns `boolean`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`, api document: \n     * Determines if this schema resource is a schema resource root.\n     * <p>\n     * This is either the schema document root or the subschema resource root.\n     *\n     * @return if this schema is a schema resource root\n     ;\nclass `com.networknt.schema.RefValidator`:\n\trelated functions:\n\t\tmethod `private static String resolve(JsonSchema, String)` returns `java.lang.String`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`;\nclass `com.networknt.schema.BaseJsonValidator`:\n\trelated functions:\n\t\tmethod `public JsonSchema getEvaluationParentSchema()` returns `com.networknt.schema.JsonSchema`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`, api document: \n     * Gets the evaluation parent schema.\n     * <p>\n     * This is the dynamic parent schema when following references.\n     * \n     * @see JsonSchema#fromRef(JsonSchema, JsonNodePath)\n     * @return the evaluation parent schema\n     ;\nclass `com.networknt.schema.RecursiveRefValidator`:\n\trelated functions:\n\t\tmethod ` static JsonSchema getSchema(JsonSchema, ValidationContext, String, JsonNodePath)` returns `com.networknt.schema.JsonSchema`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`;\nclass `com.networknt.schema.result.JsonNodeResult`:\n\trelated functions:\n\t\tmethod `public boolean equals(Object)` returns `boolean`, related with `com.networknt.schema.JsonSchema.isSchemaResourceRoot()`;'}
+```
+
+**Note**: If the method-to-test in the @Test function is a private method, you can use **reflection** to call it.
+
+Now you should output the corrected Java code wrapped in a Markdown code block ```java at the beginning and ``` at the end: 
+
+

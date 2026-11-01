@@ -1,0 +1,62 @@
+[
+  {
+    "group": "findSchemaResourceRoot - basic scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same JsonSchema instance (root) is returned",
+        "description": "When the current schema is already a schema\u2011resource root (isSchemaResourceRoot() returns true), the method should return the instance itself without traversing to a parent."
+      },
+      {
+        "input": [],
+        "expected": "the direct parent JsonSchema instance is returned",
+        "description": "When the current schema is not a root (isSchemaResourceRoot() returns false) but its immediate parent is a root, the loop should iterate once and return that parent."
+      },
+      {
+        "input": [],
+        "expected": "the top\u2011most ancestor that is a schema\u2011resource root is returned",
+        "description": "With a chain of three schemas (child \u2192 intermediate \u2192 root) where only the topmost ancestor reports true for isSchemaResourceRoot(), the method must walk up two levels and return the root instance."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException is thrown",
+        "description": "If the schema hierarchy is malformed such that a non\u2011root schema has a null parent (getParentSchema() returns null), the while loop will eventually call isSchemaResourceRoot() on null, resulting in a NullPointerException. This case verifies that the method does not silently succeed on an invalid hierarchy."
+      }
+    ]
+  },
+  {
+    "group": "findSchemaResourceRoot - deep hierarchy",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the top\u2011most ancestor (level 10) is returned",
+        "description": "Create a chain of ten JsonSchema objects where only the level\u201110 schema reports true for isSchemaResourceRoot(). The method should traverse nine parent links and return the level\u201110 instance."
+      },
+      {
+        "input": [],
+        "expected": "the top\u2011most ancestor (level 50) is returned",
+        "description": "Create a longer chain (e.g., 50 levels) with the root at the deepest level. This verifies that the while\u2011loop works correctly for deep hierarchies and does not overflow the stack."
+      }
+    ]
+  },
+  {
+    "group": "findSchemaResourceRoot - exceptional internal failures",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException is propagated",
+        "description": "When isSchemaResourceRoot() throws an IllegalStateException (e.g., due to corrupted internal state), the method should not catch it and the exception must propagate to the caller."
+      },
+      {
+        "input": [],
+        "expected": "UnsupportedOperationException is propagated",
+        "description": "When getParentSchema() throws an UnsupportedOperationException (e.g., the schema hierarchy is immutable), the method should propagate the exception without swallowing it."
+      },
+      {
+        "input": [],
+        "expected": "Method does not terminate (infinite loop) leading to test timeout",
+        "description": "If a circular parent reference is introduced (schema A's parent is schema B and schema B's parent is schema A) and neither reports true for isSchemaResourceRoot(), the while\u2011loop never exits. The test should enforce a timeout and verify that the method fails to return, indicating a potential infinite\u2011loop bug."
+      }
+    ]
+  }
+]

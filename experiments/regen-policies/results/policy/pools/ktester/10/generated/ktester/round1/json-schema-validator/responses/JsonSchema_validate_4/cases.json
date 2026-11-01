@@ -1,0 +1,338 @@
+[
+  {
+    "group": "Normal validation \u2013 valid JSON, default customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } }, \"required\": [\"name\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (no validation errors)",
+        "description": "A well\u2011formed JSON instance that satisfies the schema. The customizer is null, so the method should behave like the overload without a customizer and return an empty validation result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } }, \"required\": [\"age\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> { /* no modifications */ }"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty",
+        "description": "Same as above but with an explicit no\u2011op customizer. The method must invoke the overload with the provided Consumer and still return an empty set."
+      }
+    ]
+  },
+  {
+    "group": "Validation failures \u2013 schema violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } }, \"required\": [\"id\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains at least one message about missing required property \"id\"",
+        "description": "The instance does not contain the required property defined by the schema, so the validator must return a non\u2011empty set with an appropriate message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"price\": { \"type\": \"number\" } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.setFailFast(true)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains exactly one message (fail\u2011fast mode)",
+        "description": "A customizer forces fail\u2011fast validation. The instance violates the schema (price is missing but not required, but suppose another rule like \"minimum\": 0 is added in the real schema). The validator should stop after the first error, returning a single message."
+      }
+    ]
+  },
+  {
+    "group": "Null / illegal arguments",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) is thrown",
+        "description": "Passing a null JsonNode is not allowed; the method should validate its arguments and throw an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\" is propagated",
+        "description": "If the provided ExecutionContextCustomizer itself throws, the validate method must not swallow the exception; it should propagate it to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Customizer side\u2011effects \u2013 context manipulation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"code\": { \"type\": \"string\", \"pattern\": \"^[A-Z]{3}$\" } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.setEnabledFeatures(Set.of(\"PATTERN_PROPERTIES\"))"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty when instance matches pattern, non\u2011empty otherwise",
+        "description": "The customizer enables a specific validation feature (e.g., pattern properties). The test should verify that the validator respects the modified execution context."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"code\": { \"type\": \"string\", \"pattern\": \"^[A-Z]{3}$\" } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.setEnabledFeatures(Collections.emptySet())"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty regardless of pattern mismatch",
+        "description": "When the customizer disables the pattern\u2011checking feature, the validator should skip that rule, resulting in no errors even if the instance does not match the pattern."
+      }
+    ]
+  },
+  {
+    "group": "Multiple violations \u2013 failFast disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\", \"minimum\": 0 }, \"code\": { \"type\": \"string\", \"pattern\": \"^[A-Z]{3}$\" } }, \"required\": [\"age\", \"code\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains exactly two messages \u2013 one for \"age\" below minimum and one for \"code\" not matching the pattern",
+        "description": "The instance violates two independent constraints and the default execution context does not enable fail\u2011fast, so both errors must be reported."
+      }
+    ]
+  },
+  {
+    "group": "Type mismatch \u2013 customizer disables type checking",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"integer\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.setEnabledFeatures(Collections.emptySet())"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (type validator is disabled by the customizer)",
+        "description": "A customizer clears all enabled features, effectively turning off the type validator. Even though the instance is a string, no validation error should be produced."
+      }
+    ]
+  },
+  {
+    "group": "Array schema validation \u2013 valid case",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"array\", \"items\": { \"type\": \"integer\" } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (all array items satisfy the integer type)",
+        "description": "The schema expects an array of integers and the instance provides a correct array; validation must succeed."
+      }
+    ]
+  },
+  {
+    "group": "Array schema validation \u2013 invalid case",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"array\", \"items\": { \"type\": \"integer\" } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a message about element at index 1 not being an integer",
+        "description": "The instance contains a non\u2011integer element; the validator must report the type error for that specific array index."
+      }
+    ]
+  },
+  {
+    "group": "Reference resolution \u2013 $ref handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"$ref\": \"#/definitions/id\", \"definitions\": { \"id\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a type\u2011mismatch message because the instance is a string while the referenced schema expects an integer",
+        "description": "The validator must resolve the $ref correctly and apply the referenced integer type constraint."
+      }
+    ]
+  },
+  {
+    "group": "Custom format validator \u2013 customizer registers format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"email\": { \"type\": \"string\", \"format\": \"custom-email\" } }, \"required\": [\"email\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.addFormatValidator(\"custom-email\", (value, node) -> value.matches(\"^[^@]+@[^@]+\\\\.[^@]+$\") ? Optional.empty() : Optional.of(\"Invalid custom email\"))"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (the custom format validator accepts the provided email)",
+        "description": "A custom format validator is registered via the customizer; the instance complies with that validator, so no error is reported."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"email\": { \"type\": \"string\", \"format\": \"custom-email\" } }, \"required\": [\"email\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.addFormatValidator(\"custom-email\", (value, node) -> Optional.of(\"Invalid custom email\"))"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains exactly one message \"Invalid custom email\"",
+        "description": "The same custom format is registered but deliberately fails; the validator must surface the custom error message."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer invocation \u2013 side\u2011effect verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } }, \"required\": [\"id\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> SideEffectHolder.invoked = true"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty and SideEffectHolder.invoked == true after validation",
+        "description": "The test asserts that the provided customizer is actually executed (by toggling a static flag) and that normal validation still succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Locale/message customization \u2013 customizer sets locale",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"required\": [\"name\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "execution -> execution.setLocale(java.util.Locale.FRENCH)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a message whose text is in French (e.g., \"la propri\u00e9t\u00e9 requise 'name' est manquante\")",
+        "description": "When the customizer changes the locale, the validator must produce messages in the selected language."
+      }
+    ]
+  },
+  {
+    "group": "Empty schema \u2013 no constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (an empty schema imposes no validation rules)",
+        "description": "A schema without any keywords should never produce validation errors regardless of the instance content."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema \u2013 malformed $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"$ref\": \"http://[invalid-url]\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) is thrown due to malformed URI in $ref",
+        "description": "The schema contains a $ref with an invalid URI. When validate(JsonNode, ExecutionContextCustomizer) attempts to resolve the reference it should detect the malformed reference and throw an appropriate exception rather than silently ignoring it."
+      }
+    ]
+  }
+]

@@ -1,0 +1,294 @@
+[
+  {
+    "group": "Successful schema loading",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a valid JSON schema (e.g., {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance is returned (the schema node should be parsed without errors).",
+        "description": "Verify that a well\u2011formed JSON schema supplied as an InputStream is read correctly and a JsonSchema object is created."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a valid YAML schema (e.g., \"type: object\")"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance is returned (the YAML content is parsed into a JsonNode and wrapped).",
+        "description": "Verify that a well\u2011formed YAML schema is correctly parsed when the inputFormat is YAML and a JsonSchema object is returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a valid JSON schema"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance is returned (null config is accepted and defaults are used).",
+        "description": "Confirm that passing a null SchemaValidatorsConfig does not cause a failure; the factory should fall back to default configuration."
+      }
+    ]
+  },
+  {
+    "group": "Error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "MockInputStream that throws IOException on any read"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (the original IOException is wrapped)",
+        "description": "Simulates an IOException while reading the schema stream to verify that the method translates it into a JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing valid JSON schema (e.g., {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (null InputFormat leads to parsing failure)",
+        "description": "Ensures that a null InputFormat is not accepted and results in an exception rather than undefined behaviour."
+      }
+    ]
+  },
+  {
+    "group": "Invalid inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException or JsonSchemaException is thrown",
+        "description": "Verifies that passing a null InputStream is handled gracefully (the method should not succeed)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing empty content"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (empty content cannot be parsed into a JsonNode)",
+        "description": "Checks behaviour when the stream is syntactically empty \u2013 parsing should fail."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing valid JSON schema (e.g., {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (JSON content cannot be parsed as YAML)",
+        "description": "Ensures that a mismatch between the declared InputFormat and the actual content results in a parsing error."
+      }
+    ]
+  },
+  {
+    "group": "Custom configurations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a valid JSON schema with $ref (e.g., {\"$ref\":\"#/definitions/foo\",\"definitions\":{\"foo\":{\"type\":\"string\"}}})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with failFast=true"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance is returned (configuration is applied)",
+        "description": "Verifies that a non\u2011default SchemaValidatorsConfig (failFast enabled) does not prevent schema creation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a very large JSON schema (e.g., 10\u202f000 nested objects)"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance is returned (factory handles large payloads)",
+        "description": "Tests the method's ability to process a large schema without running out of memory or timing out."
+      }
+    ]
+  },
+  {
+    "group": "Partial stream IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "MockInputStream that returns a few bytes then throws IOException on subsequent read"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (the underlying IOException from the stream is wrapped)",
+        "description": "Simulates a stream that fails part\u2011way through reading to verify that the method propagates the IOException as a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing a valid JSON schema (e.g., {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN (a non\u2011standard enum value not handled by readTree)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (readTree does not recognise the supplied InputFormat)",
+        "description": "Passes an InputFormat value that the factory does not support, expecting an IllegalArgumentException before any IOException handling."
+      }
+    ]
+  },
+  {
+    "group": "Null schema node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream that readTree is stubbed to return null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException is thrown (newJsonSchema receives a null JsonNode)",
+        "description": "Mocks readTree to return null, causing newJsonSchema to be invoked with a null schemaNode and resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema content causing newJsonSchema failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream containing syntactically valid JSON but semantically invalid schema (e.g., {\"type\":\"unknown\"})"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (newJsonSchema validates the node and throws due to unsupported type)",
+        "description": "Provides a JSON document that parses correctly but fails schema validation inside newJsonSchema, ensuring the exception propagates unchanged."
+      }
+    ]
+  }
+]

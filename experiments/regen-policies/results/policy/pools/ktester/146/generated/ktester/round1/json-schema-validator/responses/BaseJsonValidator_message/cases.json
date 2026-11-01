@@ -1,0 +1,67 @@
+[
+  {
+    "group": "BaseJsonValidator.message()",
+    "cases": [
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode equals the non\u2011null ObjectNode supplied to the validator",
+        "description": "Validate that when the validator is constructed with a concrete (non\u2011null) schemaNode, the overridden message() method returns a builder that carries the same schemaNode. This exercises the normal execution path of the method."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is null",
+        "description": "Validate that when the validator is constructed with a null schemaNode, the overridden message() method still returns a builder without throwing an exception and the builder\u2019s schemaNode property is null. This covers the edge case where the field is null."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.message() additional scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is the same TextNode instance supplied to the validator (e.g., a JsonNode of type TextNode with value \"example\")",
+        "description": "Validate that when the validator is constructed with a non\u2011ObjectNode JsonNode (a TextNode), the overridden message() method still propagates that exact node to the builder, confirming that the method does not require the node to be an ObjectNode."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode reference reflects mutations performed on the original ObjectNode after validator construction",
+        "description": "Create an ObjectNode with an initial field, construct the validator with it, then add another field to the ObjectNode before invoking message(). Verify that the builder's schemaNode contains the newly added field, demonstrating that the builder holds a reference to the original node rather than a snapshot."
+      },
+      {
+        "input": [],
+        "expected": "Two distinct MessageSourceValidationMessage.Builder instances on successive calls to message() (i.e., builder1 != builder2)",
+        "description": "Call the message() method twice on the same validator instance and confirm that each invocation returns a new builder object. This ensures that the method does not reuse a single builder instance across calls, which could lead to unintended state sharing."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is an empty ObjectNode when the validator is constructed with an empty ObjectNode",
+        "description": "Validate that providing an empty ObjectNode (no fields) as the schemaNode results in a builder whose schemaNode is that same empty ObjectNode, confirming correct handling of edge\u2011case but non\u2011null schema nodes."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is a complex nested ObjectNode (containing arrays and child objects) supplied to the validator",
+        "description": "Construct the validator with a richly structured ObjectNode (including nested objects and arrays) and verify that the builder's schemaNode preserves the full structure, ensuring that deep JSON structures are passed through unchanged."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.message() exception scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "Create a concrete subclass of BaseJsonValidator that overrides the protected `message()` method of the superclass (`ValidationMessageHandler`) to return `null`. Invoking the overridden `BaseJsonValidator.message()` should then attempt to call `.schemaNode(this.schemaNode)` on a null reference, causing a NullPointerException. This verifies the method does not guard against a null builder from the super\u2011class."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.IllegalArgumentException",
+        "description": "Construct the validator with a `JsonNode` of a type that the `MessageSourceValidationMessage.Builder.schemaNode(JsonNode)` method does not accept (e.g., a `BinaryNode` or `MissingNode`). When `message()` calls `.schemaNode(this.schemaNode)`, the builder should reject the unsupported node type and throw an IllegalArgumentException. This tests type\u2011validation inside the builder."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "Create a subclass of `BaseJsonValidator` that, after calling `super.message()`, immediately calls `build()` on the returned builder (finalising it). Then, still within the same `message()` call, invoke `.schemaNode(this.schemaNode)`. The builder, being already built, should refuse further modification and throw an IllegalStateException. This validates that the method respects the builder\u2019s lifecycle constraints."
+      }
+    ]
+  }
+]

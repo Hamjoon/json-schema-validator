@@ -1,0 +1,427 @@
+[
+  {
+    "group": "Valid inputs - happy path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema matches the supplied schema",
+        "description": "All arguments are non\u2011null and represent a valid JSON schema. The method should delegate to newJsonSchema and return a properly constructed JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (default configuration applied)",
+        "description": "Configuration is null \u2013 the factory should fall back to its default SchemaValidatorsConfig and still produce a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null arguments validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) indicating that schemaUri must not be null",
+        "description": "When the schema location is null the factory cannot resolve a schema; the method should reject the call with a clear exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) indicating that jsonNode must not be null",
+        "description": "A null JsonNode means there is no schema definition to parse; the method should fail fast with an appropriate exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) for the first null argument encountered",
+        "description": "All three arguments are null \u2013 the method must guard against nulls and throw a predictable exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid SchemaLocation handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"http://[invalid-uri]\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException or IOException indicating that the URI is malformed or cannot be accessed",
+        "description": "A malformed URI should be detected early and result in an exception rather than an undefined JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/non\u2011existent.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IOException (or a custom SchemaLoadingException) because the classpath resource cannot be found",
+        "description": "When the supplied classpath location does not exist the factory should surface the loading failure."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JsonNode content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"[1,2,3]\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the root node must be an OBJECT node",
+        "description": "A JSON schema must be represented by an object node; providing an array should cause validation to reject the input."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"notAValidKeyword\\\":true}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance (schema parsing succeeds) but later validation of data will fail for unknown keywords",
+        "description": "The method should still create a JsonSchema even if the node contains unknown keywords; schema creation does not enforce strict keyword validation."
+      }
+    ]
+  },
+  {
+    "group": "Custom SchemaValidatorsConfig propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"age\\\":{\\\"type\\\":\\\"integer\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setTypeLoose(true); } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose ValidationContext reflects the custom config (typeLoose = true)",
+        "description": "Passing a config with typeLoose enabled should be honored by the created schema; the test verifies that the returned schema is not null and that the custom flag is stored in its context."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"email\\\":{\\\"format\\\":\\\"email\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setFormatValidatorFactory(uri -> (value) -> true); } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that will accept any string for the 'email' format because the custom format validator always returns true",
+        "description": "Ensures that a user\u2011provided format validator factory is correctly injected and influences the resulting schema's validation behavior."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema resolution via $schema keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/unknown-meta-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-06/schema#\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is the Draft\u201106 meta\u2011schema",
+        "description": "The $schema keyword should drive meta\u2011schema selection; the factory must load the Draft\u201106 meta\u2011schema even though the default version flag may be later."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/custom-meta-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$schema\\\":\\\"urn:custom:meta\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setCustomMetaSchemaUri(\"urn:custom:meta\"); } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema matches the custom URI supplied in the config",
+        "description": "Verifies that a custom meta\u2011schema URI configured via SchemaValidatorsConfig is respected when the $schema keyword points to it."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported URI scheme handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"ftp://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the URI scheme 'ftp' is not supported",
+        "description": "The factory should reject schema locations with unsupported schemes and throw a clear IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Remote URL loading failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"http://nonexistent.invalid/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IOException (or UncheckedIOException) indicating that the remote schema could not be retrieved",
+        "description": "When the supplied HTTP URI points to a host that cannot be resolved, the factory should surface the I/O failure rather than returning a schema."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref reference handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$ref\\\":\\\"#/nonexistent\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the $ref target could not be resolved",
+        "description": "A $ref that points to a non\u2011existent definition must cause schema creation to fail with a descriptive exception."
+      }
+    ]
+  },
+  {
+    "group": "Cyclic $ref detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/cyclic-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$ref\\\":\\\"#\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException indicating a cyclic $ref reference",
+        "description": "A schema that references itself directly (or indirectly) should be detected as cyclic and result in a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Malformed custom meta\u2011schema URI in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$schema\\\":\\\"urn:custom:meta\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setCustomMetaSchemaUri(\"http://[bad]\"); } }"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that the custom meta\u2011schema URI is malformed",
+        "description": "When a user supplies an invalid URI via setCustomMetaSchemaUri, the factory must reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Null custom meta\u2011schema URI in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"$schema\\\":\\\"urn:custom:meta\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setCustomMetaSchemaUri(null); } }"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) indicating that custom meta\u2011schema URI must not be null",
+        "description": "The configuration should validate that a custom meta\u2011schema URI, if set, is non\u2011null."
+      }
+    ]
+  },
+  {
+    "group": "Invalid configuration values",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "SchemaLocation.of(\"classpath:/schemas/person-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setMaxDepth(-1); } }"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating that maxDepth must be positive",
+        "description": "SchemaValidatorsConfig should reject nonsensical values such as a negative maxDepth, throwing an IllegalArgumentException during schema creation."
+      }
+    ]
+  }
+]

@@ -1,0 +1,675 @@
+[
+  {
+    "group": "JsonSchemaFactory.create \u2013 basic forwarding and branch coverage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"object\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema version matches the default version (no exception)",
+        "description": "Happy\u2011path: all arguments are non\u2011null and the schema node describes a simple object. The call should be forwarded to doCreate and return a valid JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"string\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) because ValidationContext is required",
+        "description": "Branch where the first argument is null \u2013 doCreate validates the context and should abort with an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"integer\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) because SchemaLocation is required",
+        "description": "Branch where schemaLocation is null \u2013 the factory cannot resolve relative references and must reject the call."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"$ref\\\": \\\"#/definitions/foo\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that resolves the $ref to the definition (no exception)",
+        "description": "Branch that triggers reference resolution inside doCreate \u2013 the method must follow the $ref path and produce a schema that delegates to the referenced definition."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"array\\\", \\\"items\\\": { \\\"type\\\": \\\"boolean\\\" } }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema with an ItemsValidator for the nested type (no exception)",
+        "description": "Branch that creates a composite schema (array with items). The factory must recurse into the `items` node and build a child schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema representing an empty schema (accepts any JSON) (no exception)",
+        "description": "Branch where the schema node is empty \u2013 the factory should return a schema that imposes no constraints."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"string\\\", \\\"enum\\\": [\\\"a\\\", \\\"b\\\"] }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that contains an EnumValidator with two allowed values (no exception)",
+        "description": "Branch that combines `type` and `enum` keywords \u2013 the factory must create both validators and attach them to the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"object\\\", \\\"properties\\\": { \\\"id\\\": { \\\"type\\\": \\\"integer\\\" } }, \\\"required\\\": [\\\"id\\\"] }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema with PropertyValidators for `id` and a RequiredValidator (no exception)",
+        "description": "Branch that creates an object schema with properties and a required list \u2013 multiple internal validators must be instantiated."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"if\\\": { \\\"properties\\\": { \\\"type\\\": { \\\"const\\\": \\\"A\\\" } } }, \\\"then\\\": { \\\"required\\\": [\\\"a\\\"] }, \\\"else\\\": { \\\"required\\\": [\\\"b\\\"] } }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that contains an IfThenElseValidator (no exception)",
+        "description": "Branch that handles conditional subschemas (`if`/`then`/`else`). The factory must parse each branch and link them appropriately."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 null schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) because schemaNode is required",
+        "description": "The factory must reject a null JsonNode representing the schema definition. This exercises the argument\u2011validation branch that is not covered by the existing tests."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 non\u2011null parentSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/parent.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"string\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "parentSchema"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema whose getParentSchema() returns the supplied parentSchema",
+        "description": "Pass an already created JsonSchema as the parent. The resulting schema should keep a reference to its parent, allowing inheritance of configuration (e.g., $id, $ref resolution)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 non\u2011root evaluationPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.of(\"/properties/id\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"integer\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema (no exception) \u2013 the factory must correctly handle a non\u2011root evaluationPath when creating a subschema",
+        "description": "When a subschema is created for a property, the evaluationPath points to that property. The method must accept any JsonNodePath, not only ROOT."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 boolean true schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "BooleanNode.TRUE"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that always validates (no validators that can fail)",
+        "description": "A schema node that is the literal boolean true represents an always\u2011valid schema. The factory should create a JsonSchema that never produces validation errors."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 boolean false schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "BooleanNode.FALSE"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that always fails validation (e.g., contains an AlwaysInvalidValidator)",
+        "description": "A literal false schema must produce a JsonSchema that rejects any instance. This tests the branch that handles boolean schema nodes."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 $schema version detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"$schema\\\": \\\"http://json-schema.org/draft-07/schema#\\\", \\\"type\\\": \\\"number\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema whose meta\u2011schema version is Draft\u201107 (JsonMetaSchema.getVersion() == SpecVersion.VersionFlag.V7)",
+        "description": "The presence of a $schema keyword should cause the factory to load the corresponding meta\u2011schema. This verifies that version detection works for a non\u2011default draft."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 allOf composite schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"allOf\\\": [ { \\\"type\\\": \\\"string\\\" }, { \\\"maxLength\\\": 5 } ] }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema containing an AllOfValidator with two child schemas (string type + maxLength=5)",
+        "description": "The factory must recognise the allOf keyword, create sub\u2011schemas for each entry and combine them with an AllOfValidator."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 definitions without $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"definitions\\\": { \\\"positiveInteger\\\": { \\\"type\\\": \\\"integer\\\", \\\"minimum\\\": 0 } } }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema that registers the definition (accessible via $ref) but does not create any top\u2011level validators",
+        "description": "Even when no $ref is used, definitions must be stored in the schema's internal registry so that later references can resolve. This case ensures that the factory processes the definitions node correctly."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 NullNode schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "NullNode.getInstance()"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) because a NullNode does not represent a valid JSON Schema definition",
+        "description": "The factory should reject a schemaNode that is a Jackson NullNode \u2013 this triggers the argument\u2011validation branch that expects an object, array, or boolean schema node."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 unknown keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"unknownKeyword\\\": true }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException because the schema contains a keyword that is not recognised by the factory",
+        "description": "When the schema node includes a keyword that the factory does not know how to handle, it must fail fast with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 $ref with sibling keywords",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"$ref\\\": \\\"#/definitions/foo\\\", \\\"type\\\": \\\"string\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException because $ref must be the sole keyword in a schema object",
+        "description": "The JSON Schema spec forbids any other keywords alongside $ref. The factory should detect this and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 malformed $ref URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"$ref\\\": \\\"http://[invalid]/schema.json\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) caused by an invalid URI in the $ref value",
+        "description": "A $ref that cannot be parsed as a URI should cause the factory to abort with an exception rather than attempting resolution."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 invalid SchemaLocation URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"ht!tp://[bad]uri\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"type\\\": \\\"string\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or URISyntaxException wrapped) because the supplied schemaLocation string is not a valid URI",
+        "description": "SchemaLocation validates its URI during construction; an invalid URI should cause an exception before the factory logic runs."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.create \u2013 unknown $schema version",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "JsonNodePath.ROOT"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "objectMapper.readTree(\"{ \\\"$schema\\\": \\\"http://json-schema.org/draft-99/schema#\\\", \\\"type\\\": \\\"number\\\" }\")"
+          },
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException because the $schema URI does not map to any known draft version",
+        "description": "When the $schema keyword points to an unsupported draft, the factory should reject the schema with an IllegalArgumentException."
+      }
+    ]
+  }
+]

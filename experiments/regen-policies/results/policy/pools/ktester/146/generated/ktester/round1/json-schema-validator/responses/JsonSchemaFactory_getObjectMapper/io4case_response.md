@@ -1,0 +1,44 @@
+{
+    "tests": [
+        {
+            "group": "YAML format",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "inputFormat",
+                            "value": "YAML"
+                        }
+                    ],
+                    "expected": "ObjectMapper instance returned by getYamlMapper() (same reference as JsonSchemaFactory#getYamlMapper)",
+                    "description": "When InputFormat.YAML is supplied the method should take the second branch and return the YAML ObjectMapper. The returned instance must be identical (==) to the one produced by the private getYamlMapper() helper."
+                }
+            ]
+        },
+        {
+            "group": "Unsupported input format",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "inputFormat",
+                            "value": "null"
+                        }
+                    ],
+                    "expected": "IllegalArgumentException with message containing \"Unsupported input format null\"",
+                    "description": "Passing a null InputFormat should not match JSON or YAML branches; the method must throw IllegalArgumentException indicating the format is unsupported."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "inputFormat",
+                            "value": "CUSTOM"
+                        }
+                    ],
+                    "expected": "IllegalArgumentException with message containing \"Unsupported input format CUSTOM\"",
+                    "description": "If an enum constant other than JSON or YAML (e.g., a hypothetical CUSTOM value) is supplied, the method must fall through to the default case and throw IllegalArgumentException."
+                }
+            ]
+        }
+    ]
+}

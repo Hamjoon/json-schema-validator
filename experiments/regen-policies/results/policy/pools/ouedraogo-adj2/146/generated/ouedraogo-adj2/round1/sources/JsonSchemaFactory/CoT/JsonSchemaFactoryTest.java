@@ -1,0 +1,318 @@
+package com.networknt.schema;
+import com.networknt.schema.resource.InputStreamSource;
+import com.networknt.schema.resource.SchemaLoader;
+
+
+import static org.junit.Assert.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link JsonSchemaFactory}.
+ * The tests cover the public API, normal behaviour, edge cases and
+ * exception handling without any external I/O.
+ */
+public class JsonSchemaFactoryTest {
+
+    /** a minimal valid JSON schema used by many tests */
+    private static final String SIMPLE_SCHEMA = "{\"type\":\"object\"}";
+
+    /** a deliberately malformed JSON string */
+    private static final String BAD_JSON = "{";
+
+    /** default meta‑schema (draft‑04) used for most factories */
+    private static final JsonMetaSchema DEFAULT_META = JsonMetaSchema.getV4();
+
+    private JsonSchemaFactory factory;   // factory built with the default meta‑schema
+
+    @Before
+    public void setUp() {
+        // Build a factory that has at least one meta‑schema (V4) and a proper default IRI.
+        factory = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .metaSchema(DEFAULT_META)
+                .build();
+    }
+
+    /* --------------------------------------------------------------
+     *  1.  Basic happy‑path tests for public methods
+     * -------------------------------------------------------------- */
+
+    @Test
+    public void testGetSchemaLoaderNotNull() {
+        SchemaLoader loader = factory.getSchemaLoader();
+        assertNotNull(loader);
+    }
+
+    @Test
+    public void testStaticBuilderCreatesFactory() {
+        JsonSchemaFactory f = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .metaSchema(DEFAULT_META)
+                .build();
+        assertNotNull(f);
+    }
+
+    @Test
+    public void testGetInstanceWithVersionFlag() {
+        JsonSchemaFactory f = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+        assertEquals(JsonMetaSchema.getV4().getIri(), f.defaultMetaSchemaIri);
+    }
+
+    @Test
+    public void testGetInstanceWithCustomizerDisablesCache() {
+        JsonSchemaFactory f = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4,
+                b -> b.enableSchemaCache(false));
+        // use reflection to read the private field 'enableSchemaCache'
+        try {
+            java.lang.reflect.Field field = JsonSchemaFactory.class.getDeclaredField("enableSchemaCache");
+            field.setAccessible(true);
+            boolean cacheEnabled = field.getBoolean(f);
+            assertFalse(cacheEnabled);
+        } catch (Exception e) {
+            fail("Reflection failed: " + e);
+        }
+    }
+
+    @Test
+    public void testCheckVersionAllFlags() {
+        for (SpecVersion.VersionFlag flag : SpecVersion.VersionFlag.values()) {
+            JsonSchemaVersion version = JsonSchemaFactory.checkVersion(flag);
+            assertNotNull("Version should not be null for flag " + flag, version);
+            // The concrete class names follow the pattern VersionXxx
+            String className = version.getClass().getSimpleName();
+            assertTrue("Unexpected version class: " + className,
+                    className.startsWith("Version"));
+        }
+    }
+
+    @Test
+    public void testBuilderFromBlueprintCopiesValues() {
+        JsonSchemaFactory.Builder b = JsonSchemaFactory.builder(factory);
+        JsonSchemaFactory f2 = b.build();
+        assertEquals(factory.defaultMetaSchemaIri, f2.defaultMetaSchemaIri);
+    }
+
+    @Test
+    public void testGetSchemaFromString() {
+        JsonSchema schema = factory.getSchema(SIMPLE_SCHEMA);
+        assertNotNull(schema);
+        assertEquals("object", schema.getValidationContext().getMetaSchema().getKeywords().get("type").getClass().getSimpleName());
+    }
+
+    @Test
+    public void testGetSchemaWithExplicitFormat() {
+        JsonSchema schema = factory.getSchema(SIMPLE_SCHEMA, InputFormat.JSON, new SchemaValidatorsConfig());
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetSchemaFromInputStream() throws IOException {
+        try (InputStream is = new ByteArrayInputStream(SIMPLE_SCHEMA.getBytes())) {
+            JsonSchema schema = factory.getSchema(is, new SchemaValidatorsConfig());
+            assertNotNull(schema);
+        }
+    }
+
+    @Test
+    public void testGetSchemaFromInputStreamWithFormat() throws IOException {
+        try (InputStream is = new ByteArrayInputStream(SIMPLE_SCHEMA.getBytes())) {
+            JsonSchema schema = factory.getSchema(is, InputFormat.JSON, new SchemaValidatorsConfig());
+            assertNotNull(schema);
+        }
+    }
+
+    @Test
+    public void testGetSchemaWithUri() throws Exception {
+        // Use a stub loader that returns the simple schema for any IRI.
+        JsonSchemaFactory f = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .metaSchema(DEFAULT_META)
+                .schemaLoaders(b -> b.add(absoluteIri -> new InputStreamSource() {
+                    @Override
+                    public InputStream getInputStream() {
+                        return new ByteArrayInputStream(SIMPLE_SCHEMA.getBytes());
+                    }
+                }))
+                .build();
+
+        JsonSchema schema = f.getSchema(new URI("http://example.com/dummy.json"));
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetSchemaWithUriNodeAndConfig() throws Exception {
+        JsonNode node = new ObjectMapper().readTree(SIMPLE_SCHEMA);
+        JsonSchema schema = factory.getSchema(new URI("http://example.com/inline"), node, new SchemaValidatorsConfig());
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetSchemaWithLocationAndNode() {
+        SchemaLocation loc = SchemaLocation.of("http://example.com/loc");
+        JsonNode node = new ObjectMapper().createObjectNode().put("type", "object");
+        JsonSchema schema = factory.getSchema(loc, node);
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetSchemaFromJsonNode() {
+        JsonNode node = new ObjectMapper().createObjectNode().put("type", "object");
+        JsonSchema schema = factory.getSchema(node);
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetMetaSchemaKnownIri() {
+        JsonMetaSchema meta = factory.getMetaSchema(JsonMetaSchema.getV4().getIri(), new SchemaValidatorsConfig());
+        assertSame(JsonMetaSchema.getV4(), meta);
+    }
+
+    @Test
+    public void testGetYamlMapperFallback() {
+        ObjectMapper yaml = factory.getYamlMapper();
+        assertNotNull(yaml);
+        // The fallback is the singleton from YamlMapperFactory – we cannot assert its exact class,
+        // but we can assert it can read YAML.
+        assertDoesNotThrow(() -> yaml.readTree("---\nkey: value"));
+    }
+
+    @Test
+    public void testGetJsonMapperFallback() {
+        ObjectMapper json = factory.getJsonMapper();
+        assertNotNull(json);
+        assertDoesNotThrow(() -> json.readTree("{\"a\":1}"));
+    }
+
+    @Test
+    public void testReadTreeFromString() throws IOException {
+        JsonNode node = factory.readTree("{\"hello\":\"world\"}", InputFormat.JSON);
+        assertEquals("world", node.get("hello").asText());
+    }
+
+    @Test
+    public void testReadTreeFromInputStream() throws IOException {
+        try (InputStream is = new ByteArrayInputStream("{\"num\":42}".getBytes())) {
+            JsonNode node = factory.readTree(is, InputFormat.JSON);
+            assertEquals(42, node.get("num").asInt());
+        }
+    }
+
+    @Test
+    public void testGetObjectMapperSupportedFormats() {
+        ObjectMapper json = factory.getObjectMapper(InputFormat.JSON);
+        assertNotNull(json);
+        ObjectMapper yaml = factory.getObjectMapper(InputFormat.YAML);
+        assertNotNull(yaml);
+    }
+
+    /* --------------------------------------------------------------
+     *  2.  Edge‑case & exception tests
+     * -------------------------------------------------------------- */
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenDefaultMetaSchemaIriIsNull() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(null)
+                .metaSchema(DEFAULT_META)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenDefaultMetaSchemaIriIsEmpty() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri("   ")
+                .metaSchema(DEFAULT_META)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenNoMetaSchemasProvided() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .build(); // metaSchemas map is empty → IllegalArgumentException
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenDefaultIriNotPresentInMetaSchemas() {
+        // supply a different meta‑schema but keep default IRI pointing to V4 (which is missing)
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .metaSchema(JsonMetaSchema.getV6())
+                .build();
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetSchemaFromBadJsonThrowsException() {
+        factory.getSchema(BAD_JSON);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetObjectMapperUnsupportedFormat() {
+        // pass null – the method treats it as unsupported
+        factory.getObjectMapper(null);
+    }
+
+    @Test
+    public void testCustomMetaSchemaFactoryLoadsUnknownIri() {
+        final String customIri = "http://example.com/custom-meta";
+        JsonMetaSchemaFactory customFactory = (iri, fac, cfg) -> JsonMetaSchema.builder(iri).build();
+
+        JsonSchemaFactory f = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(customIri)
+                .metaSchema(JsonMetaSchema.builder(customIri).build())
+                .metaSchemaFactory(customFactory)
+                .build();
+
+        JsonMetaSchema loaded = f.getMetaSchema("http://example.com/unknown", new SchemaValidatorsConfig());
+        assertEquals("http://example.com/unknown", loaded.getIri());
+    }
+
+    @Test
+    public void testPreloadSwallowsUnresolvableRef() {
+        // schema with a $ref that points to a non‑existent location
+        String schemaWithBadRef = "{\"$ref\":\"http://nonexistent/doesnotexist.json\"}";
+        SchemaValidatorsConfig cfg = new SchemaValidatorsConfig();
+        cfg.setPreloadJsonSchema(true); // enable preload
+
+        // Use a stub loader that returns the schema itself (no external fetching)
+        JsonSchemaFactory f = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(DEFAULT_META.getIri())
+                .metaSchema(DEFAULT_META)
+                .schemaLoaders(b -> b.add(iri -> new InputStreamSource() {
+                    @Override
+                    public InputStream getInputStream() {
+                        return new ByteArrayInputStream(schemaWithBadRef.getBytes());
+                    }
+                }))
+                .build();
+
+        // The call must return a schema object without propagating the IOException
+        JsonSchema schema = f.getSchema(schemaWithBadRef, cfg);
+        assertNotNull(schema);
+    }
+
+    /* --------------------------------------------------------------
+     *  3.  Helper methods used by tests
+     * -------------------------------------------------------------- */
+
+    /** tiny helper to make the JUnit‑4 syntax a bit nicer */
+    private static void assertDoesNotThrow(Runnable r) {
+        try {
+            r.run();
+        } catch (Throwable t) {
+            fail("Unexpected exception: " + t);
+        }
+    }
+}

@@ -1,0 +1,392 @@
+[
+  {
+    "group": "Valid input \u2013 satisfies schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John Doe\" }"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "The schema requires a string property \"name\". Supplying a JSON object that contains a valid \"name\" field should pass validation with no errors."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property \u2013 should produce a validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ }"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message whose code is \"required\" and whose message mentions the missing property \"name\".",
+        "description": "The schema declares \"name\" as a required property. An empty object violates this rule, so the validator must return a validation message indicating the missing required field."
+      }
+    ]
+  },
+  {
+    "group": "Type mismatch \u2013 root node is not an object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "[1, 2, 3]"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a message with code \"type\" indicating that the instance type (array) does not match the expected type (object).",
+        "description": "The schema expects the root node to be an object. Providing a JSON array should trigger a type\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Null root node \u2013 defensive handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException (or returns a Set containing a single message with code \"null\" depending on implementation).",
+        "description": "Calling validate(JsonNode) with a null argument tests the method\u2019s null\u2011safety. The expected behavior is either an explicit NPE or a validation message indicating that the instance is null."
+      }
+    ]
+  },
+  {
+    "group": "Schema with no validators \u2013 always succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"any string\""
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "When the JsonSchema instance is created from an empty schema (e.g., `{}`) it has no validators. Any JSON value, including a plain string, should validate successfully."
+      }
+    ]
+  },
+  {
+    "group": "Enum validation \u2013 value not in enum",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"RED\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"enum\" stating that the value \"RED\" is not one of the allowed values [\"GREEN\",\"BLUE\"].",
+        "description": "The schema defines an enum of [\"GREEN\",\"BLUE\"]. Supplying a string not present in the enum should trigger an enum validation error."
+      }
+    ]
+  },
+  {
+    "group": "Multiple validation errors \u2013 missing required and type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "123"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing two messages: one with code \"type\" because the instance is a number but an object is expected, and another with code \"required\" mentioning the missing property \"name\" (if the type validator runs before required).",
+        "description": "The schema expects an object with a required string property \"name\". Providing a plain number should cause both a type error and a required\u2011property error, testing that the validator aggregates multiple failures."
+      }
+    ]
+  },
+  {
+    "group": "Boolean schema false \u2013 always fails",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"any\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a single message with code \"false\" (or a generic error) indicating that the schema is boolean false and therefore any instance is invalid.",
+        "description": "When the JsonSchema is created from the literal boolean false, validation must always fail regardless of the instance."
+      }
+    ]
+  },
+  {
+    "group": "Boolean schema true \u2013 always succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A schema that is the literal boolean true accepts any JSON value, including null, without producing validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Pattern validation \u2013 string does not match regex",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"abc123\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"pattern\" indicating that the value \"abc123\" does not match the required regular expression \"^[A-Z]+$\".",
+        "description": "The schema requires the string to consist only of uppercase letters. Supplying a mixed\u2011case alphanumeric string should trigger a pattern\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Number range \u2013 value out of bounds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "150"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"maximum\" stating that the value 150 exceeds the maximum allowed value 100.",
+        "description": "The schema defines a numeric maximum of 100. Providing a number larger than this limit should result in a maximum\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Array length \u2013 too few items",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "[1,2]"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"minItems\" indicating that the array has 2 items but the minimum required is 3.",
+        "description": "The schema requires an array with at least 3 items. Supplying an array with only 2 items should raise a minItems validation error."
+      }
+    ]
+  },
+  {
+    "group": "OneOf validation \u2013 none match",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"maybe\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"oneOf\" stating that the instance does not match any of the oneOf subschemas.",
+        "description": "The schema uses a oneOf with two alternatives (e.g., a string \"yes\" or a string \"no\"). Supplying a different string should cause a oneOf validation failure."
+      }
+    ]
+  },
+  {
+    "group": "AnyOf validation \u2013 at least one matches (positive case)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "42"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "The schema defines anyOf with a numeric schema (minimum 0) and a string schema (pattern \"^[a-z]+$\"). Providing a valid number satisfies one of the alternatives, so validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Not validation \u2013 value matches prohibited schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"forbidden\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"not\" indicating that the instance matches a schema that is explicitly prohibited.",
+        "description": "The schema contains a \"not\" clause that disallows the exact string \"forbidden\". Supplying that string should trigger a not\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Conditional validation \u2013 if true then then clause enforced",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"premium\", \"discount\": -5 }"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"minimum\" stating that the \"discount\" value -5 is less than the allowed minimum 0 (as required by the then\u2011schema).",
+        "description": "The schema uses an if/then construct: if \"type\" equals \"premium\" then \"discount\" must be >= 0. The instance satisfies the if condition but violates the then condition, leading to a minimum\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "AdditionalProperties false \u2013 extra property produces error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\", \"age\": 30 }"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"additionalProperties\" indicating that the property \"age\" is not allowed.",
+        "description": "The schema defines an object with a required property \"name\" and sets \"additionalProperties\": false. Supplying an extra property \"age\" should cause an additionalProperties validation error."
+      }
+    ]
+  },
+  {
+    "group": "Format validation \u2013 invalid email address",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"not-an-email\""
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing one message with code \"format\" stating that the value does not match the email format.",
+        "description": "The schema specifies \"format\": \"email\" for a string property. Providing a string that is not a valid email address should trigger a format\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor \u2013 self\u2011referential schema validates correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"node\": { \"node\": { \"value\": 5 } } }"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "The schema defines a recursive anchor \"$recursiveAnchor\": true and a property \"node\" that references the same schema. A nested structure respecting the schema should validate without stack overflow or errors."
+      }
+    ]
+  },
+  {
+    "group": "Internal $ref \u2013 resolves to definition correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"abc123\""
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "The schema contains a $ref to an internal definition that enforces a pattern \"^[a-z]{3}[0-9]{3}$\". The provided string matches the pattern, testing correct resolution of internal $ref."
+      }
+    ]
+  },
+  {
+    "group": "Relative $ref with $id \u2013 resolves base URI correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "42"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "The schema has an \"$id\": \"http://example.com/schemas/main.json\" and a property that $ref's \"./sub.json\". The referenced sub\u2011schema allows integers. Supplying an integer checks that relative $ref resolution using the base $id works."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref \u2013 unresolved reference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\" }"
+          }
+        ],
+        "expected": "JsonSchemaException (or ValidationException) with a message indicating that the $ref \"#/nonexistent\" could not be resolved.",
+        "description": "The schema contains a $ref that points to a definition that does not exist. When validate(JsonNode) is invoked, the resolver should throw an exception rather than silently ignore the missing reference."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported keyword \u2013 unknown keyword in schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"any\""
+          }
+        ],
+        "expected": "IllegalArgumentException with a message mentioning the unsupported keyword \"unknownKeyword\".",
+        "description": "A schema that includes a non\u2011standard keyword (e.g., \"unknownKeyword\": true) should cause the validator construction to fail, and validate(JsonNode) should propagate an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid format value \u2013 unknown format specifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"someValue\""
+          }
+        ],
+        "expected": "IllegalArgumentException with a message indicating that the format \"unknown-format\" is not supported.",
+        "description": "The schema declares a format that the library does not recognise. When validation runs, the library should raise an IllegalArgumentException rather than attempting to validate the value."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref without recursive anchor \u2013 leads to StackOverflowError",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"any\""
+          }
+        ],
+        "expected": "StackOverflowError (or IllegalStateException if the implementation detects the cycle and aborts).",
+        "description": "Two schemas reference each other via $ref but neither declares \"$recursiveAnchor\": true. The validator will recurse indefinitely, eventually throwing a StackOverflowError (or a guarded IllegalStateException if cycle detection is implemented)."
+      }
+    ]
+  },
+  {
+    "group": "Schema with malformed $id \u2013 URL decoding error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"test\""
+          }
+        ],
+        "expected": "UnsupportedEncodingException (wrapped in a RuntimeException) when the validator attempts to URL\u2011decode the malformed $id value.",
+        "description": "A schema that defines an \"$id\" containing characters that cannot be decoded with the default charset should cause URLDecoder.decode to throw UnsupportedEncodingException, which propagates during validation."
+      }
+    ]
+  }
+]

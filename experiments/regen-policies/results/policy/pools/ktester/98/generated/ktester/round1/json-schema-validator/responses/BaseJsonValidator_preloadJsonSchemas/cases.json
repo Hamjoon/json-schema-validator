@@ -1,0 +1,222 @@
+[
+  {
+    "group": "preloadJsonSchemas - normal operation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing three mock JsonSchema objects"
+          }
+        ],
+        "expected": "initializeValidators() is invoked exactly once on each of the three JsonSchema instances; method returns normally without exception",
+        "description": "Verifies that preloadJsonSchemas iterates over a non\u2011empty collection and calls initializeValidators() on every schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Empty list []"
+          }
+        ],
+        "expected": "Method returns normally; initializeValidators() is never called",
+        "description": "Ensures that an empty collection results in a no\u2011op \u2013 the loop body is never executed."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing a null element [null]"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to invoke initializeValidators() on a null reference",
+        "description": "Confirms that the method does not guard against null elements; a null schema leads to NPE."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown because the method tries to iterate over a null collection",
+        "description": "Validates that passing a null collection results in NPE (the method does not perform a null\u2011check)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List with one mock JsonSchema whose initializeValidators() throws RuntimeException"
+          }
+        ],
+        "expected": "RuntimeException propagates out of preloadJsonSchemas; no further schemas are processed",
+        "description": "Checks that exceptions thrown by a schema\u2019s initializeValidators() are not caught and abort processing."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - duplicate schema instances",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing the same mock JsonSchema instance twice"
+          }
+        ],
+        "expected": "initializeValidators() is invoked exactly two times on the single mock JsonSchema instance; method returns normally without exception",
+        "description": "Verifies that the method does not deduplicate collection elements \u2013 each occurrence, even if referring to the same object, triggers a separate call to initializeValidators()."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - collection type variations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Set containing three distinct mock JsonSchema objects"
+          }
+        ],
+        "expected": "initializeValidators() is invoked once on each of the three schemas; method returns normally; call order is unspecified because Set iteration order is undefined",
+        "description": "Ensures that the method works with a Set (any Collection implementation) and processes every element regardless of ordering."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Unmodifiable list (Collections.unmodifiableList) with two mock JsonSchema objects"
+          }
+        ],
+        "expected": "initializeValidators() is invoked once on each schema; method returns normally without attempting to modify the list",
+        "description": "Confirms that the method does not modify the supplied collection, allowing it to work with immutable collections."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - side\u2011effect verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List with three mock JsonSchema objects whose initializeValidators() increments a shared counter"
+          }
+        ],
+        "expected": "Shared counter value equals 3 after method execution; no exception is thrown",
+        "description": "Validates that any side\u2011effects performed inside initializeValidators() are propagated, i.e., the method simply invokes the callbacks."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - concurrent modification during iteration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "ArrayList with two mock JsonSchema objects; the first object's initializeValidators() adds a third mock schema to the same list"
+          }
+        ],
+        "expected": "ConcurrentModificationException is thrown and propagates out of preloadJsonSchemas",
+        "description": "Tests the method's behavior when a schema mutates the collection while it is being iterated \u2013 the standard for\u2011each loop should detect the structural change and raise CME."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - empty immutable collection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Collections.emptyList() (immutable empty collection)"
+          }
+        ],
+        "expected": "Method returns normally; initializeValidators() is never called",
+        "description": "Ensures that an immutable empty collection is treated the same as a regular empty list \u2013 the method performs a no\u2011op without throwing."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - iterator exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Custom Collection whose iterator() method throws IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException is propagated out of preloadJsonSchemas",
+        "description": "Verifies that if obtaining the iterator fails, the exception bubbles up and the method does not catch it."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - hasNext exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Custom Collection with iterator that throws RuntimeException when hasNext() is called"
+          }
+        ],
+        "expected": "RuntimeException is propagated out of preloadJsonSchemas",
+        "description": "Ensures that an exception thrown during the loop's hasNext() check is not swallowed."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - next exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "Custom Collection with iterator that throws IllegalArgumentException when next() is called"
+          }
+        ],
+        "expected": "IllegalArgumentException is propagated out of preloadJsonSchemas",
+        "description": "Checks that an exception thrown while retrieving the next element aborts the method and propagates."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - initializeValidators throws Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List containing one mock JsonSchema whose initializeValidators() throws AssertionError"
+          }
+        ],
+        "expected": "AssertionError is propagated out of preloadJsonSchemas",
+        "description": "Confirms that Errors (not just Exceptions) thrown by initializeValidators are not caught."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchemas - later schema throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemas",
+            "value": "List with two mock JsonSchema objects; first.initializeValidators() succeeds, second.initializeValidators() throws IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException is propagated after the first schema has been processed; the method does not continue to further schemas",
+        "description": "Validates that processing stops as soon as a later schema throws, and the exception propagates."
+      }
+    ]
+  }
+]

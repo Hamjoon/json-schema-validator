@@ -1,0 +1,197 @@
+[
+  {
+    "group": "collectAnnotations - basic delegation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true"
+          }
+        ],
+        "expected": "true",
+        "description": "When a non\u2011null ExecutionContext is provided and the validator\u2019s keyword is non\u2011null, the method should delegate to collectAnnotations(ExecutionContext, String) and return the boolean result of that call (expected true for the happy\u2011path mock)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          }
+        ],
+        "expected": "false",
+        "description": "If the supplied ExecutionContext is null the method should guard against NPE and return false without delegating."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - keyword handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true"
+          }
+        ],
+        "expected": "true",
+        "description": "Validator returns a non\u2011null keyword (e.g., \"type\"). The overload should treat it as a normal keyword and return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true"
+          }
+        ],
+        "expected": "false",
+        "description": "Validator\u2019s getKeyword() returns null. The method should detect the missing keyword and return false."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - annotation collection disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = false"
+          }
+        ],
+        "expected": "false",
+        "description": "When the ExecutionContext signals that annotation collection is disabled, the method must short\u2011circuit and return false regardless of the keyword."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - exception handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext that throws RuntimeException when getAnnotations() is called"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the underlying collectAnnotations(ExecutionContext, String) throws an exception, the wrapper method should propagate it (no swallow)."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - underlying false result",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true and getKeyword() = \"type\"; collectAnnotations(ExecutionContext, \"type\") stubbed to return false"
+          }
+        ],
+        "expected": "false",
+        "description": "When the ExecutionContext is valid and the validator provides a non\u2011null keyword, the wrapper should delegate to the overloaded collectAnnotations method and propagate its boolean result. The stubbed overload returns false, so the wrapper must also return false."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - empty keyword handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true"
+          }
+        ],
+        "expected": "false",
+        "description": "If the validator\u2019s getKeyword() returns an empty string (\"\"), the wrapper should treat it as a missing keyword and return false without delegating to the overload."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - executionContext with immutable annotations map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true; its annotations map is immutable (Collections.emptyMap())"
+          }
+        ],
+        "expected": "false",
+        "description": "Even though annotation collection is enabled, the underlying collectAnnotations(ExecutionContext, String) cannot add a new annotation because the map is immutable. The overload therefore returns false, and the wrapper must return false."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - executionContext throws checked exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where isCollectAnnotationsEnabled() throws IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If the ExecutionContext throws a checked (runtime) exception while the wrapper checks the collection flag, the exception should propagate unchanged; the method must not swallow it."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - getKeyword throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "A subclass of BaseJsonValidator overrides getKeyword() to throw a RuntimeException. The wrapper should not catch it and must let the exception propagate."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - isCollectAnnotationsEnabled throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where isCollectAnnotationsEnabled() throws NullPointerException"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the ExecutionContext throws a NullPointerException while the wrapper checks the collection flag, the exception must propagate unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where isCollectAnnotationsEnabled() throws IllegalArgumentException"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If isCollectAnnotationsEnabled() throws an IllegalArgumentException, the wrapper should not swallow it and should propagate the same exception."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations - underlying overload throws Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with collectAnnotationsEnabled = true; overload collectAnnotations(ExecutionContext, String) throws AssertionError"
+          }
+        ],
+        "expected": "AssertionError",
+        "description": "The overloaded collectAnnotations method throws an AssertionError (a subclass of java.lang.Error). The wrapper must let the Error propagate without conversion."
+      }
+    ]
+  }
+]

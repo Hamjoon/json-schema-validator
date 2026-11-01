@@ -1,0 +1,341 @@
+[
+  {
+    "group": "JsonSchema.validate(String, InputFormat, ExecutionContextCustomizer) - branch coverage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (no validation errors)",
+        "description": "Happy path \u2013 valid JSON string, JSON input format, no customizer. All schema validators run and return an empty error set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a parsing error message (e.g., \"Invalid JSON: Unexpected token\" )",
+        "description": "Malformed JSON triggers a parsing exception inside `deserialize`; the method should catch it and return a ValidationMessage describing the JSON syntax error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown with message containing \"input must not be null\"",
+        "description": "Branch where the `input` argument is null \u2013 the method validates arguments and throws IllegalArgumentException before any deserialization."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a parsing error (empty JSON document)",
+        "description": "Empty string is not a valid JSON document; `deserialize` fails and the method returns a parsing error message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown with message containing \"inputFormat must not be null\"",
+        "description": "Branch where `inputFormat` argument is null \u2013 method should validate and throw IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerEnableStrictMode"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a required\u2011property error for \"name\" (because customizer set strict mode)",
+        "description": "Custom ExecutionContextCustomizer modifies the ExecutionContext (e.g., enables strict mode) causing a required\u2011property validator to fire. Verifies that the customizer is applied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsRuntimeException"
+          }
+        ],
+        "expected": "RuntimeException is propagated (the same exception thrown by the customizer)",
+        "description": "Branch where the provided ExecutionContextCustomizer throws an unchecked exception; the method should not swallow it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22John%22%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (URL\u2011decoded JSON is valid)",
+        "description": "When InputFormat is URL_ENCODED, `deserialize` uses URLDecoder; valid URL\u2011encoded JSON should be decoded correctly and pass validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E0%A4%A"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "UnsupportedEncodingException is thrown (invalid percent\u2011encoding)",
+        "description": "Branch where URL decoding fails due to malformed percent\u2011encoding, causing `deserialize` to throw UnsupportedEncodingException which should be propagated."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.validate(String, InputFormat, ExecutionContextCustomizer) - additional cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (no validation errors)",
+        "description": "YAML input format \u2013 a valid YAML document that maps to the same JSON structure used in the happy\u2011path test. The method should deserialize the YAML correctly and return an empty error set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22John%22%2C%22age%22%3A%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a parsing error message (e.g., \"Invalid JSON: Unexpected token\")",
+        "description": "URL\u2011encoded string that decodes to malformed JSON (missing value for \"age\"). After URL decoding, `deserialize` should fail and the method must return a parsing\u2011error ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "[{\"name\":\"John\",\"age\":30}]"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains a type\u2011error message (expected object, found array)",
+        "description": "JSON array input \u2013 the schema (which expects a JSON object with required properties) receives an array. The validator should report a type\u2011mismatch error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerDisableStrictMode"
+          }
+        ],
+        "expected": "Set<ValidationMessage> is empty (no validation errors)",
+        "description": "Custom ExecutionContextCustomizer disables strict\u2011mode (or required\u2011property enforcement). The input lacks the required \"name\" property, but because strict mode is turned off the validator should not report an error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerEnableFailFast"
+          }
+        ],
+        "expected": "Set<ValidationMessage> contains exactly one message \u2013 the first validation error encountered (e.g., required\u2011property \"name\" missing)",
+        "description": "Custom ExecutionContextCustomizer enables fail\u2011fast mode. The JSON is missing the required \"name\" property and also has a type error for \"age\". With fail\u2011fast enabled the validator should stop after the first error, so the result set contains only that single message."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.validate(String, InputFormat, ExecutionContextCustomizer) - exception edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsAssertionError"
+          }
+        ],
+        "expected": "AssertionError is propagated (the same error thrown by the customizer)",
+        "description": "ExecutionContextCustomizer throws an AssertionError (subclass of Error). The validate method must not catch Errors, so the AssertionError should bubble up unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsIllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException is propagated (the same exception thrown by the customizer)",
+        "description": "ExecutionContextCustomizer throws a checked\u2011runtime exception (IllegalStateException). The method should let the exception propagate without wrapping."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsRuntimeException"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown with message containing \"input must not be null\"",
+        "description": "Even though the customizer would throw a RuntimeException, argument validation occurs first. The method must detect the null input and throw IllegalArgumentException before invoking the customizer."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown with message containing \"inputFormat must not be null\"",
+        "description": "Argument validation should also reject a null InputFormat even when the input string itself is valid."
+      }
+    ]
+  }
+]

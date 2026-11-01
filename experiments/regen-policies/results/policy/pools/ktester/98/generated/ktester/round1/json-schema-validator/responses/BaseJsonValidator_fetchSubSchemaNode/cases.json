@@ -1,0 +1,147 @@
+[
+  {
+    "group": "BaseJsonValidator.fetchSubSchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "null",
+        "description": "When the validator is constructed with suppressSubSchemaRetrieval = true, fetchSubSchemaNode must short\u2011circuit and return null without invoking obtainSubSchemaNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance",
+        "description": "When suppressSubSchemaRetrieval = false, fetchSubSchemaNode should delegate to the private static obtainSubSchemaNode method and return the resulting JsonSchema. The test verifies that the returned object is not null and is an instance of JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "null",
+        "description": "Edge case: suppressSubSchemaRetrieval = false but the underlying schemaNode is null. The private obtainSubSchemaNode implementation is expected to return null for a null schemaNode, so fetchSubSchemaNode should also return null. This case ensures the method correctly propagates the result of obtainSubSchemaNode."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.fetchSubSchemaNode.additional",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the supplied ValidationContext is null the method should immediately throw a NullPointerException because it is passed to the private static obtainSubSchemaNode method."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "null",
+        "description": "suppressSubSchemaRetrieval = false, but the schemaNode is a non\u2011object JsonNode (e.g., a textual node). The private obtainSubSchemaNode implementation treats such nodes as non\u2011schema and returns null, so fetchSubSchemaNode must also return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (JsonSchemaImpl)",
+        "description": "suppressSubSchemaRetrieval = false and the schemaNode contains a valid $ref that resolves to an actual schema. By mocking the static obtainSubSchemaNode method (using PowerMockito/Mockito) to return a specific JsonSchemaImpl instance, the test verifies that fetchSubSchemaNode returns exactly that instance, confirming proper delegation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "null",
+        "description": "Even when suppressSubSchemaRetrieval = true, the internal schemaNode is non\u2011null (e.g., an ObjectNode with a $ref). The method must still short\u2011circuit and return null, demonstrating that the flag overrides any possible schema resolution."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance",
+        "description": "suppressSubSchemaRetrieval = false and the schemaNode is a valid ObjectNode (no $ref). The obtainSubSchemaNode method creates a JsonSchemaImpl from the node. The test asserts that the returned schema is non\u2011null and that its getSchemaNode() equals the original schemaNode, confirming that the node is correctly wrapped."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "validationContext unchanged (no interactions)",
+        "description": "When suppressSubSchemaRetrieval = false, fetchSubSchemaNode should not mutate the supplied ValidationContext. Using a Mockito spy, the test verifies that no methods on the ValidationContext are invoked during the call."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.fetchSubSchemaNode.exceptions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When suppressSubSchemaRetrieval = false and the validator's schemaNode is an ArrayNode (JSON array), the private obtainSubSchemaNode method is expected to reject non\u2011object schema definitions and throw IllegalArgumentException. fetchSubSchemaNode must propagate this exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When suppressSubSchemaRetrieval = false and the validator's schemaNode is an ObjectNode that contains a $ref together with other schema keywords (e.g., \"type\"), obtainSubSchemaNode validates the rule that $ref must be the sole keyword and throws IllegalArgumentException. The test verifies that fetchSubSchemaNode does not swallow the exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext that throws RuntimeException on any method call"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the supplied ValidationContext is a spy/mock whose method (e.g., getSchemaMap) throws a RuntimeException, obtainSubSchemaNode will encounter this exception while trying to resolve references. fetchSubSchemaNode should let the RuntimeException bubble up."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "Mocked ValidationContext (no special behavior required)"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "When suppressSubSchemaRetrieval = false and the underlying schemaNode is syntactically valid but semantically invalid (e.g., contains an unknown keyword), obtainSubSchemaNode throws a JsonSchemaException (a runtime exception specific to the library). The test ensures fetchSubSchemaNode propagates this custom exception."
+      }
+    ]
+  }
+]

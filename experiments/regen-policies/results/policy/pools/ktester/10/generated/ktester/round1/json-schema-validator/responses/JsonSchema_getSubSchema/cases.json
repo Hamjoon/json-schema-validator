@@ -1,0 +1,239 @@
+[
+  {
+    "group": "Normal traversal - object property segment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['title']"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at '/title' of the root document",
+        "description": "The fragment points to an existing property. The loop finds a non\u2011null subSchemaNode on the first iteration, creates a new JsonSchema via the validation context and returns it."
+      }
+    ]
+  },
+  {
+    "group": "Normal traversal - multiple mixed segments (object + array index)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with segments ['properties', 'items', 0, 'type']"
+          }
+        ],
+        "expected": "JsonSchema instance representing the deepest sub\u2011schema located at '/properties/items/0/type'",
+        "description": "The fragment contains both string and numeric segments. Each iteration finds a non\u2011null node; when the segment is a Number the code appends an integer index to the SchemaLocation and EvaluationPath. The final sub\u2011schema is returned after the loop finishes."
+      }
+    ]
+  },
+  {
+    "group": "Fragment not found \u2013 fetchSubSchemaNode returns null \u2192 exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['nonexistent']"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"Unable to find subschema\" and the fragment string",
+        "description": "The fragment cannot be resolved in the current document (subSchemaNode is null). The method calls `document.findSchemaResourceRoot().fetchSubSchemaNode(...)` which returns null, causing the method to throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Fragment not found \u2013 fetchSubSchemaNode finds another document",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['external']"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at '/external' in the fetched external schema document",
+        "description": "The fragment is not present in the current document, so `fetchSubSchemaNode` returns a different JsonSchema (the external document). The method then recursively calls `found.getSubSchema(fragment)` which successfully resolves the fragment in that document and returns the resulting sub\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Segment is a Number (array index) \u2013 ensures numeric handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single numeric segment [2]"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at '/2' of the root array schema",
+        "description": "The only segment is a Number. The loop treats it as an index, appends the integer to the SchemaLocation and EvaluationPath, creates a new JsonSchema via the validation context and returns it."
+      }
+    ]
+  },
+  {
+    "group": "Empty fragment \u2013 returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with zero segments []"
+          }
+        ],
+        "expected": "null (the method returns null because the loop is never entered)",
+        "description": "When the supplied JsonNodePath contains no segments, the for\u2011loop is skipped, subSchema remains null and the method returns null. This tests the boundary condition of an empty pointer."
+      }
+    ]
+  },
+  {
+    "group": "Primitive node segment \u2013 returns JsonSchema wrapping primitive",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['default']"
+          }
+        ],
+        "expected": "JsonSchema instance whose underlying node is a TextNode with value \"default value\" (i.e., a primitive schema node)",
+        "description": "The fragment points to a property whose schema node is a primitive (e.g., a string constant). The method should still create a JsonSchema for that node; the test verifies that the returned schema wraps a primitive JsonNode rather than an object or array."
+      }
+    ]
+  },
+  {
+    "group": "Numeric segment on non\u2011array parent \u2013 fallback to external schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with segments ['properties', 'title', 0]"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at '/externalTitle' in the external document fetched by fetchSubSchemaNode",
+        "description": "The numeric segment (0) is applied to a parent node that is an object (\"title\"), so getNode(0) returns null. The method therefore falls back to document.findSchemaResourceRoot().fetchSubSchemaNode(...), which returns a different schema document containing the requested fragment. The test confirms that the returned schema originates from the external document."
+      }
+    ]
+  },
+  {
+    "group": "Large numeric index beyond array bounds \u2013 exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single numeric segment [999]"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"Unable to find subschema\" and the fragment string",
+        "description": "The fragment points to an array index that does not exist. getNode(999) returns null, fetchSubSchemaNode also returns null, causing the method to throw a JsonSchemaException. This validates proper error handling for out\u2011of\u2011range numeric segments."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011String/Number segment (Boolean) \u2013 treated as string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single Boolean segment [true]"
+          }
+        ],
+        "expected": "JsonSchema instance representing the sub\u2011schema located at '/true' of the root document",
+        "description": "When the segment is neither a Number nor a String (e.g., a Boolean), the code falls into the else\u2011branch and uses segment.toString() as the key. The test ensures that a Boolean segment is correctly converted to the string \"true\" and that the corresponding sub\u2011schema is returned."
+      }
+    ]
+  },
+  {
+    "group": "Null fragment argument \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (thrown when fragment.getNameCount() is invoked)",
+        "description": "The method is called with a null JsonNodePath. Accessing fragment.getNameCount() should cause a NullPointerException, verifying that the method does not silently accept null pointers."
+      }
+    ]
+  },
+  {
+    "group": "Null ValidationContext \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['title']"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "null (parent schema's validationContext is not set)"
+          }
+        ],
+        "expected": "NullPointerException (thrown when parent.getValidationContext().newSchema(...) is invoked)",
+        "description": "The root schema and its ancestors exist, but the ValidationContext of the current parent is null. When the method attempts to create a new sub\u2011schema via newSchema, a NullPointerException should be raised."
+      }
+    ]
+  },
+  {
+    "group": "Null document root \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['title']"
+          },
+          {
+            "parameter": "documentRoot",
+            "value": "null (findSchemaResourceRoot() returns null)"
+          }
+        ],
+        "expected": "NullPointerException (thrown when document.findSchemaResourceRoot() is accessed)",
+        "description": "Simulate a situation where findSchemaResourceRoot() returns null (e.g., malformed schema). The subsequent call to document.findSchemaResourceRoot().fetchSubSchemaNode(...) will cause a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported segment type \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single custom object segment [{\"type\":\"Unsupported\"}]"
+          }
+        ],
+        "expected": "IllegalArgumentException (thrown by parent.getNode(segment) for an unsupported segment type)",
+        "description": "The segment object is neither a String nor a Number. The implementation of getNode(Object) is expected to reject such types and throw IllegalArgumentException, which should propagate out of getSubSchema."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode throws JsonProcessingException \u2013 propagated exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath with a single string segment ['missing']"
+          },
+          {
+            "parameter": "fetchSubSchemaNodeBehavior",
+            "value": "throws JsonProcessingException"
+          }
+        ],
+        "expected": "JsonProcessingException (propagated from fetchSubSchemaNode)",
+        "description": "When the fragment cannot be resolved in the current document, the method calls document.findSchemaResourceRoot().fetchSubSchemaNode(...). If that method throws a JsonProcessingException, getSubSchema should not catch it, allowing the exception to bubble up."
+      }
+    ]
+  }
+]

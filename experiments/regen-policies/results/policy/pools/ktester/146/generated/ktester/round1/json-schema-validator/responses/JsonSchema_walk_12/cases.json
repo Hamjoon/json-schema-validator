@@ -1,0 +1,343 @@
+[
+  {
+    "group": "Validate true with default OutputFormat (collect messages)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set of ValidationMessage containing no errors (empty set)",
+        "description": "When validation is enabled and the node conforms to the schema, the walk method should return an empty set of validation messages via the collecting output format."
+      }
+    ]
+  },
+  {
+    "group": "Validate true with default OutputFormat (collect messages) \u2013 failing node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set of ValidationMessage containing at least one error describing the schema violation",
+        "description": "When validation is enabled and the node violates the schema, the walk method should return a non\u2011empty set of validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Validate false \u2013 no validation should be performed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "anyJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set of ValidationMessage is empty (no validation performed)",
+        "description": "When the validate flag is false, walk should bypass all validators and return an empty result regardless of node content."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContextCustomizer modifies the context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "baseExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", true)"
+          }
+        ],
+        "expected": "Set of ValidationMessage is empty and the ExecutionContext used inside walk contains attribute \"custom\" set to true",
+        "description": "The provided ExecutionContextCustomizer must be invoked before validation, allowing callers to enrich the context."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The walk method expects a non\u2011null ExecutionContext; passing null must result in NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A null JsonNode cannot be walked; the method should fail fast with NPE."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat that throws a RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Object>() { public Object format(Set<ValidationMessage> messages) { throw new IllegalStateException(\"format failure\"); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalStateException with message \"format failure\"",
+        "description": "If the supplied OutputFormat throws an exception while formatting the validation messages, the walk method should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer that throws an exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\"",
+        "description": "Any exception thrown by the ExecutionContextCustomizer must be propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat \u2013 should throw NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The walk method requires a non\u2011null OutputFormat; passing null must result in a NPE before any validation is performed."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref URI \u2013 should throw IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithMalformedRef"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When a schema contains a $ref with an invalid percent\u2011encoding (e.g., \"%ZZ\"), URLDecoder.decode throws an IllegalArgumentException. The walk method should propagate this as an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "UnsupportedEncodingException from $ref decoding \u2013 should propagate as IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithUnsupportedEncodingRef"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<Set<ValidationMessage>>()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If a $ref contains characters that cannot be decoded using the platform default charset, URLDecoder.decode may throw UnsupportedEncodingException wrapped in an IllegalArgumentException. The walk method must surface this as an IllegalArgumentException."
+      }
+    ]
+  }
+]

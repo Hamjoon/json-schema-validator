@@ -1,0 +1,271 @@
+[
+  {
+    "group": "jsonNodeReader is null \u2013 delegate to ObjectMapper",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"key\":\"value\"}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "JsonNode representing an object with a single field \"key\" equal to \"value\"",
+        "description": "When jsonNodeReader is null the method should obtain a JSON ObjectMapper via getObjectMapper(JSON) and parse the stream successfully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('key: value'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "JsonNode representing an object with a single field \"key\" equal to \"value\"",
+        "description": "When jsonNodeReader is null the method should obtain a YAML ObjectMapper via getObjectMapper(YAML) and parse the YAML stream successfully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream(''.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown (or JsonProcessingException wrapped as IOException) because the input stream is empty/invalid JSON",
+        "description": "Verify that parsing an empty or invalid JSON stream results in an IOException propagating from ObjectMapper.readTree."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "NullPointerException thrown by ObjectMapper.readTree",
+        "description": "When the InputStream argument is null the underlying ObjectMapper should throw NPE, which must propagate."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is provided \u2013 delegate to JsonNodeReader",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"a\":1}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "JsonNode returned by the mocked JsonNodeReader containing field \"a\" with numeric value 1",
+        "description": "When jsonNodeReader is non\u2011null the method must call jsonNodeReader.readTree(content, inputFormat) and return its result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('a: 1'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "JsonNode returned by the mocked JsonNodeReader representing the YAML content",
+        "description": "Same as above but with YAML format \u2013 ensures the format argument is passed through unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('invalid'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown by the mocked JsonNodeReader",
+        "description": "If the JsonNodeReader encounters malformed content it should throw IOException, which must propagate unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException or NullPointerException thrown by the mocked JsonNodeReader",
+        "description": "When the InputStream is null the JsonNodeReader implementation is expected to fail; the factory method must not swallow the exception."
+      }
+    ]
+  },
+  {
+    "group": "inputFormat null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"x\":1}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown by getObjectMapper when inputFormat is null",
+        "description": "When jsonNodeReader is null and the caller passes a null InputFormat, the factory should not silently accept it \u2013 the underlying getObjectMapper call is expected to raise an NPE (or a specific IllegalArgumentException). The exception must propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader throws unchecked exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"a\":true}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IllegalStateException thrown by the mocked JsonNodeReader propagates unchanged",
+        "description": "If a custom JsonNodeReader implementation throws an unchecked exception (e.g., IllegalStateException) while reading the stream, JsonSchemaFactory.readTree must not catch it; the exception should bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"nullNode\":null}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "null (the method returns the null value produced by JsonNodeReader)",
+        "description": "When a non\u2011null JsonNodeReader returns null (simulating a reader that decides the content cannot be parsed), JsonSchemaFactory.readTree should simply return null without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "format/content mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('key: value'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException (or JsonProcessingException) thrown because JSON mapper cannot parse YAML content",
+        "description": "Passing YAML text while requesting JSON parsing should cause the underlying ObjectMapper to fail and throw an IOException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"k\":\"v\"}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "JsonNode representing an object with field \"k\" equal to \"v\" (YAML parser accepts JSON as a subset)",
+        "description": "YAML parser in Jackson can parse valid JSON. This test verifies that when the format is YAML but the content is JSON, the method still succeeds and returns the correct JsonNode."
+      }
+    ]
+  },
+  {
+    "group": "input stream read error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new InputStream() {\n    @Override public int read() throws IOException { throw new IOException(\"forced read error\"); }\n}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown by ObjectMapper.readTree due to underlying stream read failure",
+        "description": "When the supplied InputStream throws an IOException during read, the factory method must let that exception propagate (it is not caught internally)."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader provided \u2013 null inputFormat handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new ByteArrayInputStream('{\"sample\":123}'.getBytes(StandardCharsets.UTF_8))"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown by the mocked JsonNodeReader because the inputFormat argument is null",
+        "description": "When jsonNodeReader is non\u2011null the factory method delegates directly to jsonNodeReader.readTree. Supplying a null InputFormat should cause the JsonNodeReader implementation to reject the argument and throw an NPE/IAE, which must propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader provided \u2013 input stream read error propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "new InputStream() {\n    @Override public int read() throws IOException { throw new IOException(\"forced read error\"); }\n}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown by the mocked JsonNodeReader due to underlying stream read failure",
+        "description": "If the supplied InputStream throws an IOException while the JsonNodeReader is reading, the JsonSchemaFactory.readTree method must let that IOException propagate (it does not catch it internally)."
+      }
+    ]
+  }
+]

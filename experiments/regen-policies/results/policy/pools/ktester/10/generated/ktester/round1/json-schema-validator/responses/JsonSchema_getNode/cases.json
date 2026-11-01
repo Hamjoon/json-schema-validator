@@ -1,0 +1,302 @@
+[
+  {
+    "group": "Number Index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": 0
+          }
+        ],
+        "expected": "JsonNode representing the element at index 0 of the schema node array (e.g., a text node \"arrayValue0\")",
+        "description": "When the argument is a Number, the method should treat it as an array index and return node.get(index). This covers the `instanceof Number` branch."
+      }
+    ]
+  },
+  {
+    "group": "Simple String Property (no special chars)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "simple"
+          }
+        ],
+        "expected": "JsonNode representing the field \"simple\" of the schema node (e.g., a text node \"value1\")",
+        "description": "String without '~' or '%' goes straight to node.get(unescaped). This covers the false path for both special\u2011character checks."
+      }
+    ]
+  },
+  {
+    "group": "Escaped Tilde (~1 \u2192 /)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a~1b"
+          }
+        ],
+        "expected": "JsonNode representing the field \"a/b\" of the schema node (e.g., a text node \"value2\")",
+        "description": "String contains '~', triggering the replacement `~1` \u2192 `/`. The second replacement (`~0`) does not apply. This covers the `if (unescaped.contains(\"~\"))` branch."
+      }
+    ]
+  },
+  {
+    "group": "Escaped Tilde Zero (~0 \u2192 ~)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a~0b"
+          }
+        ],
+        "expected": "JsonNode representing the field \"a~b\" of the schema node (e.g., a text node \"value3\")",
+        "description": "String contains '~', triggering the replacement `~0` \u2192 `~`. This also covers the `if (unescaped.contains(\"~\"))` branch."
+      }
+    ]
+  },
+  {
+    "group": "Percent\u2011Encoded Property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a%2Fb"
+          }
+        ],
+        "expected": "JsonNode representing the field \"a/b\" of the schema node (e.g., a text node \"value2\")",
+        "description": "String contains '%', causing URL decoding. This covers the `if (unescaped.contains(\"%\"))` branch."
+      }
+    ]
+  },
+  {
+    "group": "Combined Escaped Tilde and Percent Encoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a~1b%2Fc"
+          }
+        ],
+        "expected": "JsonNode representing the field \"a/b/c\" of the schema node (e.g., a text node \"value4\")",
+        "description": "String contains both '~' and '%'. First the '~' replacement yields \"a/b%2Fc\", then URL decoding yields \"a/b/c\". This case exercises both special\u2011character branches sequentially."
+      }
+    ]
+  },
+  {
+    "group": "Tilde Present but No Replacement Tokens",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "no~tilde"
+          }
+        ],
+        "expected": "JsonNode representing the field \"no~tilde\" of the schema node (or null if not present)",
+        "description": "String contains '~' but neither \"~1\" nor \"~0\". The replacement code runs but makes no changes, covering the true path of the '~' check without altering the key."
+      }
+    ]
+  },
+  {
+    "group": "Null Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling the method with a null argument causes a NPE when `propertyOrIndex.toString()` is invoked. This verifies the method\u2019s behaviour for invalid input."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011String Object with toString",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "Boolean.TRUE"
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"true\") \u2013 i.e., the child node whose field name is the string representation of the Boolean value",
+        "description": "The argument is not a Number, so the method falls back to the else\u2011branch, calls toString() on the Boolean, and looks up the resulting key \"true\" in the schema node."
+      }
+    ]
+  },
+  {
+    "group": "Double Number Index (truncation)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": 2.9
+          }
+        ],
+        "expected": "JsonNode returned by node.get(2) \u2013 the element at index 2 after the double is truncated to an int",
+        "description": "When a Number that is not an integral type is supplied, the method uses intValue(), which truncates the fractional part before indexing the array."
+      }
+    ]
+  },
+  {
+    "group": "Negative Number Index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": -1
+          }
+        ],
+        "expected": "null (no element at a negative index)",
+        "description": "A negative integer is passed; JsonNode.get(-1) returns null, verifying that the method does not perform bounds checking itself."
+      }
+    ]
+  },
+  {
+    "group": "Out\u2011of\u2011Bounds Index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": 999
+          }
+        ],
+        "expected": "null (index larger than the array size)",
+        "description": "The supplied index exceeds the size of the underlying array node; the method should simply forward the call to node.get(999) which yields null."
+      }
+    ]
+  },
+  {
+    "group": "Empty String Property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": ""
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"\") \u2013 typically null unless the schema explicitly contains an empty\u2011named field",
+        "description": "An empty string does not trigger any special\u2011character handling; it is passed unchanged to node.get(\"\")."
+      }
+    ]
+  },
+  {
+    "group": "Multiple Tilde Replacements in One String",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a~1b~0c"
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"a/b~c\") \u2013 after '~1' \u2192 '/' and '~0' \u2192 '~' replacements",
+        "description": "The string contains both \"~1\" and \"~0\" tokens. The method first replaces \"~1\" with '/', then \"~0\" with '~', yielding the key \"a/b~c\"."
+      }
+    ]
+  },
+  {
+    "group": "Percent Decoding Produces Tilde After Decoding (order test)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "a%7E1b"
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"a~1b\") \u2013 percent decoding occurs after the '~' check, so no further tilde\u2011replacement is applied",
+        "description": "The original string contains a percent\u2011encoded '~' (%7E). Because the method checks for '~' before decoding, the '~' token is not replaced; after decoding the string becomes \"a~1b\" and is used as\u2011is."
+      }
+    ]
+  },
+  {
+    "group": "String with Tilde but No Replacement Tokens and Percent Encoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "no~tilde%20space"
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"no~tilde space\") \u2013 '~' check runs (no token replacement) then percent decoding turns \"%20\" into a space",
+        "description": "The string contains a '~' character that does not form a replacement token, and also contains a percent\u2011encoded space. The method runs the '~' branch (making no changes) and then decodes \"%20\" to a space."
+      }
+    ]
+  },
+  {
+    "group": "Object with Custom toString Returning Escaped Pointer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "new Object(){ public String toString(){ return \"x~1y%2Fz\"; } }"
+          }
+        ],
+        "expected": "JsonNode returned by node.get(\"x/y/z\") \u2013 after applying both '~' replacement and percent decoding on the custom string",
+        "description": "An arbitrary object whose toString() yields a JSON\u2011pointer\u2011escaped string. The method should treat it like any other non\u2011Number, performing the '~' and '%' processing steps."
+      }
+    ]
+  },
+  {
+    "group": "Null Schema Node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "simple"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the JsonSchema instance returns null from getSchemaNode(), any attempt to call node.get(...) (whether for a Number or a String key) throws a NullPointerException. This test forces getSchemaNode() to return null (e.g., via a test subclass or mock) and supplies a normal string key."
+      }
+    ]
+  },
+  {
+    "group": "Number with Faulty intValue",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "new Number(){ public int intValue(){ throw new IllegalArgumentException(\"bad int\"); } public long longValue(){ return 0L; } public double doubleValue(){ return 0.0; } }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A custom Number implementation throws an exception from intValue(). The method casts the argument to Number and calls intValue(), so the exception propagates. This verifies that the method does not swallow such runtime exceptions."
+      }
+    ]
+  },
+  {
+    "group": "Object with Faulty toString",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "new Object(){ public String toString(){ throw new IllegalStateException(\"toString failed\"); } }"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "An object whose toString() method throws an exception. The method invokes propertyOrIndex.toString() for non\u2011Number arguments, so the exception is propagated. This tests the method's behaviour when the supplied object's string conversion is broken."
+      }
+    ]
+  }
+]

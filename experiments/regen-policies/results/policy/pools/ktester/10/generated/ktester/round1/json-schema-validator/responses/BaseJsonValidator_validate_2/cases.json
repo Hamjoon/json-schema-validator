@@ -1,0 +1,596 @@
+[
+  {
+    "group": "Null Checks",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "NullPointerException (executionContext must not be null)",
+        "description": "Validate that the method throws NPE when the ExecutionContext argument is null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "NullPointerException (node must not be null)",
+        "description": "Validate that the method throws NPE when the JsonNode argument is null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (format must not be null)",
+        "description": "Validate that the method throws NPE when the OutputFormat argument is null."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (no customizer applied)",
+        "description": "When the fourth parameter (executionCustomizer) is null, the validator should run with the default execution context and return the formatted result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockCustomizerThatAddsFlag"
+          }
+        ],
+        "expected": "formattedResult (customizer applied, flag set)",
+        "description": "When a non\u2011null ExecutionContextCustomizer is supplied, the method must invoke it before validation; the test verifies that the customizer\u2019s side\u2011effect (e.g., a flag in the context) is observed in the formatted output."
+      }
+    ]
+  },
+  {
+    "group": "Validation Success Path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeConformingToSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (no validation messages)",
+        "description": "When the supplied JsonNode satisfies the schema, the validator should produce an empty collection of ValidationMessage objects, which the OutputFormat turns into an empty list."
+      }
+    ]
+  },
+  {
+    "group": "Validation Failure Path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeViolatingSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "listContainingAtLeastOneMessage (validation error messages)",
+        "description": "When the JsonNode does not conform to the schema, the validator must collect ValidationMessage instances; the OutputFormat should return a list containing those messages."
+      }
+    ]
+  },
+  {
+    "group": "Suppress Sub\u2011Schema Retrieval Branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithSuppressTrue"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeRequiringSubSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (sub\u2011schema not fetched, validation proceeds with current schema only)",
+        "description": "If the validator instance was constructed with `suppressSubSchemaRetrieval = true`, the method must skip `fetchSubSchemaNode` and validate only against the current schema. The test confirms that no SubSchema\u2011related messages appear."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithSuppressFalse"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeRequiringSubSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (sub\u2011schema fetched and validation applied)",
+        "description": "When `suppressSubSchemaRetrieval = false`, the validator should call `fetchSubSchemaNode` and include any errors from the retrieved sub\u2011schema in the formatted output."
+      }
+    ]
+  },
+  {
+    "group": "ApplyDefaultsStrategy Branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithStrategyNone"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeMissingOptionalProperties"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (no defaults applied, missing optional properties remain absent)",
+        "description": "When the validator is created with `ApplyDefaultsStrategy.NONE`, the method must not modify the input node; the result should reflect the original node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithStrategyInsert"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeMissingOptionalProperties"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (defaults inserted into node before validation)",
+        "description": "With `ApplyDefaultsStrategy.INSERT`, the validator should add missing default values to the node prior to validation; the formatted output should indicate a successful validation after defaults are applied."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithDiscriminatorPropertyMatching"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (discriminator matched, no validation errors)",
+        "description": "When the schema contains a discriminator and the instance property value matches a defined mapping, `checkDiscriminatorMatch` should succeed and validation should produce no messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithDiscriminatorPropertyMismatching"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "listContainingDiscriminatorMismatchMessage",
+        "description": "If the discriminator property value does not correspond to any mapping, `checkDiscriminatorMatch` must add a ValidationMessage indicating the mismatch."
+      }
+    ]
+  },
+  {
+    "group": "Debug Logging",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithDebugEnabled"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "formattedResult (debug log emitted, validation passes)",
+        "description": "When the logger is set to DEBUG level, the static `debug` method should be invoked; the test verifies that the method still returns the correctly formatted result."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat Exception Propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatThatThrows"
+          }
+        ],
+        "expected": "RuntimeException (propagated from OutputFormat)",
+        "description": "If the supplied OutputFormat throws an exception while processing the ValidationMessage set, the validator must not swallow it; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "RuntimeException (customizer exception propagated)",
+        "description": "When a non\u2011null ExecutionContextCustomizer throws an exception, the overloaded `validate(..., null, customizer)` path must let the exception bubble up; this test invokes the four\u2011argument version directly via reflection."
+      }
+    ]
+  },
+  {
+    "group": "Number Equality Edge Cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithNaN"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (NaN compared using equals returns false, no false positive)",
+        "description": "The static `equals(double,double)` must treat NaN values correctly (NaN != NaN). Validation that relies on numeric equality should therefore not produce a spurious error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeWithPositiveZeroAndNegativeZero"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (0.0 equals -0.0)",
+        "description": "Verify that `equals` treats +0.0 and -0.0 as equal, matching JSON Schema numeric comparison semantics."
+      }
+    ]
+  },
+  {
+    "group": "Fetch Sub\u2011Schema Null Return",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithSuppressFalseAndNoSubSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeRequiringSubSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (no sub\u2011schema found, validator falls back to current schema only)",
+        "description": "When `suppressSubSchemaRetrieval` is false but `fetchSubSchemaNode` returns null, the validator should continue using the current schema without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "ApplyDefaultsStrategy with Null Node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithStrategyInsert"
+          },
+          {
+            "parameter": "node",
+            "value": "nullJsonNodeRepresentingMissingRoot"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "NullPointerException (node must not be null)",
+        "description": "Even when defaults insertion is enabled, a null JsonNode should still trigger the initial null\u2011check before any default logic is applied."
+      }
+    ]
+  },
+  {
+    "group": "Suppress Sub\u2011Schema Retrieval with Null Sub\u2011Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithSuppressTrue"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeRequiringSubSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (sub\u2011schema retrieval suppressed, validation succeeds)",
+        "description": "When suppression is true, the validator must not attempt to fetch a sub\u2011schema; the test confirms that validation proceeds without errors even though a sub\u2011schema would normally be required."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext Null Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithNullValidationContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormatReturningList"
+          }
+        ],
+        "expected": "emptyList (validator creates a default ValidationContext internally)",
+        "description": "If the `validationContext` field of the validator instance is null, the method should instantiate a default context and continue validation without NPE."
+      }
+    ]
+  },
+  {
+    "group": "SchemaNode Casting Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "ClassCastException (schemaNode is not an ObjectNode and is cast inside validate)",
+        "description": "The validator instance is constructed with a schemaNode that is a TextNode (or any non\u2011ObjectNode). When validate() attempts to treat the schemaNode as an ObjectNode, a ClassCastException must be thrown."
+      }
+    ]
+  },
+  {
+    "group": "Instance Node Type Validation Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWhenArrayExpected"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "IllegalArgumentException (node type does not match validator's expected type)",
+        "description": "A concrete subclass of BaseJsonValidator that validates an array (e.g., ItemsValidator) receives an ObjectNode. The validator should detect the type mismatch early and throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Missing Schema in ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithNullSchema"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "IllegalStateException (executionContext does not contain a schema to validate against)",
+        "description": "The ExecutionContext supplied to validate() has a null or missing root JsonSchema. The validator must detect this condition and throw IllegalStateException before any validation logic runs."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator Configuration Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextWithMalformedDiscriminator"
+          },
+          {
+            "parameter": "node",
+            "value": "jsonNodeMissingDiscriminatorProperty"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          }
+        ],
+        "expected": "IllegalArgumentException (discriminator property is missing or malformed)",
+        "description": "The schema contains a discriminator definition, but the discriminator object lacks the required \"propertyName\" field (or the mapping is null). When checkDiscriminatorMatch is invoked, it should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Nullifies Context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockCustomizerThatNullifiesContext"
+          }
+        ],
+        "expected": "NullPointerException (executionContext becomes null after customizer runs)",
+        "description": "A non\u2011null ExecutionContextCustomizer is supplied that sets the ExecutionContext reference to null (or clears its internal state). After the customizer is invoked, the validate method should encounter a null executionContext and throw NullPointerException."
+      }
+    ]
+  }
+]

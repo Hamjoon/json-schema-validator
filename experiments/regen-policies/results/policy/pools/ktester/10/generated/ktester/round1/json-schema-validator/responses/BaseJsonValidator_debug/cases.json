@@ -1,0 +1,232 @@
+[
+  {
+    "group": "BaseJsonValidator.debug method behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/a/b\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments sampleNode, rootNode, JsonNodePath.of(\"/a/b\")",
+        "description": "Standard case: all parameters are non\u2011null. Verify that the debug logger receives the correct formatted message and the three arguments."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/a\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments null, rootNode, JsonNodePath.of(\"/a\")",
+        "description": "Node argument is null. The method should still invoke logger.debug with a null placeholder for the first argument."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/b\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments sampleNode, null, JsonNodePath.of(\"/b\")",
+        "description": "RootNode argument is null. Verify that logger.debug receives a null for the second placeholder."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments sampleNode, rootNode, null",
+        "description": "InstanceLocation argument is null. The method should still call logger.debug with a null for the third placeholder."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments null, null, null",
+        "description": "All arguments are null. Ensure the method does not throw and still forwards the nulls to the logger."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.debug edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/a/b\")"
+          }
+        ],
+        "expected": "NullPointerException thrown",
+        "description": "Logger argument is null. The static method should raise a NullPointerException because it attempts to invoke logger.debug on a null reference."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments sampleNode, rootNode, JsonNodePath.of(\"\")",
+        "description": "InstanceLocation is an empty path (no leading slash). Verify that the logger receives the exact empty JsonNodePath object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "sampleNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "rootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments sampleNode, rootNode, JsonNodePath.of(\"/\")",
+        "description": "InstanceLocation represents the root of the JSON document. Ensure the logger receives the root path correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNodeWithFields"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNodeRoot"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/obj\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments objectNodeWithFields, objectNodeRoot, JsonNodePath.of(\"/obj\")",
+        "description": "Both node and rootNode are ObjectNode instances containing fields. The test confirms that the logger receives the actual node objects (not just their string representations)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mockLogger"
+          },
+          {
+            "parameter": "node",
+            "value": "arrayNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/arr\")"
+          }
+        ],
+        "expected": "logger.debug called once with format string \"validate( {}, {}, {})\" and arguments arrayNode, null, JsonNodePath.of(\"/arr\")",
+        "description": "Node is a JSON array while rootNode is null. This combination was not covered before and verifies that the method correctly forwards an array node to the logger."
+      }
+    ]
+  }
+]

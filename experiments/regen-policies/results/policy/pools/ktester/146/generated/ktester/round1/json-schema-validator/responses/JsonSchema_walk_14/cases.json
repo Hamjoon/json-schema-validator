@@ -1,0 +1,529 @@
+[
+  {
+    "group": "Valid JSON input, default execution context and customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "ValidationResult indicating successful validation (no errors)",
+        "description": "Standard happy\u2011path: a well\u2011formed JSON string is deserialized and walked with validation enabled. No customisation of the execution context is performed, so the result should contain an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input, custom execution context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext.builder().setVersion(VersionFlag.V201909).build()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: 30\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setConfig(new SchemaValidatorsConfig())"
+          }
+        ],
+        "expected": "ValidationResult with successful validation (no errors) and the custom config applied",
+        "description": "Ensures that the method correctly deserialises YAML input and that a non\u2011default ExecutionContext (with a specific spec version) is respected during walking."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":John}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws JsonParseException (or IOException) wrapped by ValidationException",
+        "description": "The JSON string is malformed (missing quotes around the value). The deserialize step should fail, causing the walk method to propagate the parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported encoding \u2013 deserialize throws UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"%E0%A4%A\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws UnsupportedEncodingException",
+        "description": "When the input format is URL_ENCODED and the string contains an illegal percent\u2011encoding, the internal URLDecoder throws UnsupportedEncodingException, which should be propagated."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag set to false \u2013 walk should skip validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":\\\"twenty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "ValidationResult with empty error set (validation skipped)",
+        "description": "Even though the JSON does not conform to the schema (age is a string), the validate flag is false, so walkAtNodeInternal should return a result without performing validation."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 should use default context internally",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"id\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "ValidationResult with successful validation (no errors)",
+        "description": "When a null ExecutionContext is supplied, the method is expected to create a default context (as per library contract) and proceed without throwing NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContextCustomizer \u2013 walk should proceed with default customisation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"type\\\":\\\"object\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult with successful validation (no errors)",
+        "description": "A null customizer should be handled gracefully; the walk method should invoke walkAtNodeInternal with a no\u2011op customiser and return a normal result."
+      }
+    ]
+  },
+  {
+    "group": "Empty JSON string \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws JsonParseException (or IOException) wrapped by ValidationException",
+        "description": "An empty string is not valid JSON; the deserialize step should fail and the walk method must propagate the parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "Null input string \u2013 handled gracefully",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) indicating that input may not be null",
+        "description": "Passing a null string to the method should cause an immediate failure before any deserialization occurs."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws RuntimeException \u2013 propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\" propagated to the caller",
+        "description": "If the customizer throws an unchecked exception, walk should not swallow it; the exception must bubble up."
+      }
+    ]
+  },
+  {
+    "group": "Fail\u2011fast configuration \u2013 stops after first validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext.builder().build()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":\\\"twenty\\\", \\\"extra\\\":123}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setConfig(new SchemaValidatorsConfig().setFailFast(true))"
+          }
+        ],
+        "expected": "ValidationResult containing exactly one ValidationMessage (the first error encountered)",
+        "description": "With failFast enabled via the custom config, validation should abort after the first schema violation, so only a single error is reported even though the JSON has multiple issues."
+      }
+    ]
+  },
+  {
+    "group": "Valid URL\u2011encoded input \u2013 successful validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"%7B%22name%22%3A%22John%22%7D\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "ValidationResult indicating successful validation (no errors)",
+        "description": "A correctly percent\u2011encoded JSON string should be decoded, deserialized and validated without errors."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false with custom ExecutionContext \u2013 validation still skipped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext.builder().setVersion(VersionFlag.V202012).build()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":\\\"twenty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "ValidationResult with empty error set (validation skipped) while the custom ExecutionContext is still used internally",
+        "description": "Even when a non\u2011default ExecutionContext (different spec version) is supplied, setting validate to false must cause walk to bypass all validators."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat \u2013 should raise IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating that inputFormat must not be null",
+        "description": "Passing a null InputFormat should be rejected by the method before deserialization, resulting in an immediate exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: thirty\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IOException (or JsonParseException) wrapped in ValidationException indicating YAML parsing error",
+        "description": "The YAML string is syntactically invalid (non\u2011numeric value for an integer field). Deserialization should fail and the exception must propagate."
+      }
+    ]
+  },
+  {
+    "group": "Malformed URL\u2011encoded input \u2013 IllegalArgumentException from URLDecoder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"%7B%22name%22%3A%22John\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating malformed percent\u2011encoding",
+        "description": "When the URL\u2011encoded string ends with an incomplete percent sequence, URLDecoder throws IllegalArgumentException. The walk method should let this exception bubble up."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws AssertionError \u2013 propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new AssertionError(\"customizer assertion failure\"); }"
+          }
+        ],
+        "expected": "AssertionError with message \"customizer assertion failure\" propagated to the caller",
+        "description": "If the customizer throws an Error (e.g., AssertionError), the walk method must not catch it; the error should propagate unchanged."
+      }
+    ]
+  }
+]

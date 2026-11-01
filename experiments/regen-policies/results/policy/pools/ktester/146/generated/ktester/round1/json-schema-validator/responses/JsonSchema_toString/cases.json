@@ -1,0 +1,142 @@
+[
+  {
+    "group": "Standard behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"\" : {\"type\":\"string\"}",
+        "description": "When the evaluation path is empty (root) and the schema node is a simple ObjectNode representing {\"type\":\"string\"}, toString() should return the path in quotes followed by a colon and the node's JSON string."
+      },
+      {
+        "input": [],
+        "expected": "\"/properties/name\" : {\"type\":\"string\",\"minLength\":1}",
+        "description": "When the evaluation path points to a nested property (\"/properties/name\") and the schema node is an ObjectNode with multiple attributes, toString() should correctly embed the full path and the node's JSON representation."
+      },
+      {
+        "input": [],
+        "expected": "\"/items[0]\" : [1,2,3]",
+        "description": "When the evaluation path contains special characters (array index syntax) and the schema node is an ArrayNode, toString() must still format the output as \"<path>\" : <nodeString>."
+      }
+    ]
+  },
+  {
+    "group": "Edge cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"null\" : {\"type\":\"null\"}",
+        "description": "If getEvaluationPath() unexpectedly returns null, the method concatenates the string \"null\" as the path. The test verifies that the method does not throw and returns the literal \"null\" for the path."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "If getSchemaNode() returns null, invoking toString() on the null reference should raise a NullPointerException. This case confirms the method's failure mode when the schema node is missing."
+      }
+    ]
+  },
+  {
+    "group": "Additional standard behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/array[10]/item\" : 42",
+        "description": "When the evaluation path points to a deep array element and the schema node is a numeric JsonNode (42), toString() should embed the numeric value without extra quotes."
+      },
+      {
+        "input": [],
+        "expected": "\"/unicode/\u2603\" : true",
+        "description": "When the evaluation path contains a Unicode character and the schema node is a Boolean JsonNode (true), the method should correctly render the path and the boolean literal."
+      },
+      {
+        "input": [],
+        "expected": "\"\" : {}",
+        "description": "Root evaluation path (empty string) with an empty ObjectNode should produce an empty JSON object after the colon."
+      },
+      {
+        "input": [],
+        "expected": "\"/emptyArray\" : []",
+        "description": "A non\u2011root path with an empty ArrayNode should be rendered as an empty JSON array."
+      },
+      {
+        "input": [],
+        "expected": "\"/nested/object\" : {\"inner\":{\"type\":\"integer\"}}",
+        "description": "A nested object path with a schema node that itself contains a nested object should preserve the full JSON structure in the output."
+      },
+      {
+        "input": [],
+        "expected": "\"/quote\\\"test\" : \"value\"",
+        "description": "Path containing a double\u2011quote character and a TextNode schema node. The method must keep the outer quoting while correctly escaping the inner quote."
+      },
+      {
+        "input": [],
+        "expected": "\"/space test\" : null",
+        "description": "Path with a space character and a NullNode schema node. The output should display the literal JSON null."
+      },
+      {
+        "input": [],
+        "expected": "\"/largePath/segment1/segment2/segment3/segment4\" : {\"type\":\"object\"}",
+        "description": "Very long evaluation path combined with a simple object schema node, verifying that concatenation works for long strings."
+      }
+    ]
+  },
+  {
+    "group": "Additional edge cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"null\" : null",
+        "description": "Both getEvaluationPath() and getSchemaNode() return null. The method concatenates the string \"null\" for the path and then calls toString() on a null node, which results in a NullPointerException. This case captures the double\u2011null scenario and expects the same NPE as when only the schema node is null."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "When getEvaluationPath() returns a non\u2011null value but getSchemaNode() returns null, invoking toString() on the null node throws NullPointerException. This mirrors the existing edge case but isolates the null schema node."
+      },
+      {
+        "input": [],
+        "expected": "\"/weird/\\n\\t\" : {\"type\":\"string\"}",
+        "description": "Evaluation path contains escaped characters (newline and tab). The method should include the raw characters inside the quoted path, producing a string with visible escape sequences."
+      }
+    ]
+  },
+  {
+    "group": "EvaluationPathException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "When getEvaluationPath() throws an IllegalStateException (simulated via a subclass or mock), toString() should propagate the exception without catching it."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "When getEvaluationPath() internally dereferences a null field and throws a NullPointerException, the exception should bubble up from toString()."
+      }
+    ]
+  },
+  {
+    "group": "SchemaNodeRetrievalException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalArgumentException",
+        "description": "When getSchemaNode() itself throws an IllegalArgumentException (e.g., due to an invalid internal state), toString() should not catch it and the exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "SchemaNodeToStringException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.RuntimeException",
+        "description": "When the JsonNode returned by getSchemaNode() overrides toString() and throws a RuntimeException, toString() of JsonSchema should propagate that RuntimeException."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.UnsupportedOperationException",
+        "description": "When the JsonNode's toString() implementation throws an UnsupportedOperationException, the exception should be propagated by JsonSchema.toString()."
+      }
+    ]
+  }
+]

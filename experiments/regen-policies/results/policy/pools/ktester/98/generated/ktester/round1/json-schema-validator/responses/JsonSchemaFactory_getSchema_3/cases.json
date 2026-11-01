@@ -1,0 +1,297 @@
+[
+  {
+    "group": "Valid Schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"string\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema is the default (Draft\u201107). The schema should validate a JSON string successfully.",
+        "description": "Pass a minimal valid JSON Schema (type string) without an explicit $schema. The factory should create a JsonSchema using the default meta\u2011schema (Draft\u201107) and return a usable JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\", \"type\": \"integer\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema URI is \"http://json-schema.org/draft-04/schema#\" (Draft\u201104). The schema should accept integer values and reject non\u2011integers.",
+        "description": "Provide a schema that explicitly declares Draft\u201104 via $schema. The factory must recognise the $schema keyword, load the corresponding meta\u2011schema and return a JsonSchema bound to Draft\u201104."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"http://example.com/person\", \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema is the default (Draft\u201107) and whose schema location is set to the provided $id URI.",
+        "description": "Supply a schema that contains an $id field. The factory should keep the $id as the schema location while still using the default meta\u2011schema because no $schema keyword is present."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance representing an empty schema (always valid). The meta\u2011schema should be the default (Draft\u201107).",
+        "description": "Pass an empty JSON object. The factory must still return a valid JsonSchema object that imposes no constraints."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown because the jsonNode argument is null.",
+        "description": "Calling getSchema(null) should fail fast, as the method expects a non\u2011null JsonNode to build a schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "[ 1, 2, 3 ]"
+          }
+        ],
+        "expected": "JsonSchemaException (or similar) indicating that the root node must be an object, not an array.",
+        "description": "Supply a JSON array as the schema root. The factory should detect the invalid root type and raise an appropriate exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://unknown-schema.org/unknown#\", \"type\": \"string\" }"
+          }
+        ],
+        "expected": "JsonSchemaException (or fallback to default) because the $schema URI cannot be resolved to a known meta\u2011schema.",
+        "description": "Provide a $schema value that does not correspond to any built\u2011in meta\u2011schema. The factory should either throw an exception or fall back to the default meta\u2011schema; the test asserts the expected failure mode."
+      }
+    ]
+  },
+  {
+    "group": "Boolean Schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "true"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance that always validates any JSON instance successfully (boolean schema true).",
+        "description": "Pass a boolean true as the schema root. According to the JSON\u2011Schema specification a boolean true represents a schema that matches everything. The factory should return a JsonSchema that never produces validation errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance that always fails validation (boolean schema false).",
+        "description": "Pass a boolean false as the schema root. This represents a schema that matches no instance. The factory should create a JsonSchema that reports a validation error for any input."
+      }
+    ]
+  },
+  {
+    "group": "Advanced Meta\u2011schema Versions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-06/schema#\", \"type\": \"boolean\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema URI is \"http://json-schema.org/draft-06/schema#\" (Draft\u201106). The schema validates boolean values.",
+        "description": "Supply a schema that explicitly requests Draft\u201106 via $schema. The factory must recognise the URI, load the Draft\u201106 meta\u2011schema and bind the resulting JsonSchema to it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"https://json-schema.org/draft/2019-09/schema\", \"type\": \"null\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema URI is \"https://json-schema.org/draft/2019-09/schema\" (Draft\u20112019\u201109). The schema validates null values.",
+        "description": "Provide a schema that targets the newer Draft\u20112019\u201109 meta\u2011schema. The factory should correctly resolve this URI and create a JsonSchema using that meta\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"https://json-schema.org/draft/2020-12/schema\", \"type\": \"array\", \"items\": { \"type\": \"integer\" } }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema URI is \"https://json-schema.org/draft/2020-12/schema\" (Draft\u20112020\u201112). The schema validates arrays of integers.",
+        "description": "Test the factory with the most recent Draft\u20112020\u201112 meta\u2011schema. The expected behavior is that the factory loads this meta\u2011schema and returns a JsonSchema bound to it."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref and $id",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"http://example.com/root\", \"$defs\": { \"positiveInt\": { \"type\": \"integer\", \"minimum\": 1 } }, \"$ref\": \"#/$defs/positiveInt\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose meta\u2011schema is the default (Draft\u201107) and that resolves the internal $ref successfully; validation of the integer 5 succeeds, validation of 0 fails.",
+        "description": "Create a schema that defines an internal definition via $defs and references it with $ref. The factory must build a JsonSchema capable of resolving the reference. The test asserts that the resulting schema behaves as expected for valid and invalid instances."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Root Types (non\u2011object, non\u2011boolean)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "\"just a string\""
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the root node must be an object, array, or boolean schema, not a JSON string.",
+        "description": "Pass a JSON string as the schema root. The factory should reject this as an invalid schema representation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "12345"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the root node must be an object, array, or boolean schema, not a numeric literal.",
+        "description": "Pass a JSON number as the schema root. The method must fail with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Empty or Null $schema Values",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"\", \"type\": \"string\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance that falls back to the default meta\u2011schema (Draft\u201107) because the $schema value is empty.",
+        "description": "Provide an empty string for $schema. The factory should treat it as unspecified and use the default meta\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": null, \"type\": \"string\" }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance that falls back to the default meta\u2011schema (Draft\u201107) because the $schema value is null.",
+        "description": "Supply a null $schema value. The factory must ignore the null and default to Draft\u201107."
+      }
+    ]
+  },
+  {
+    "group": "Schema with Unknown Keywords",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"unknownKeyword\": { \"foo\": \"bar\" }, \"properties\": { \"id\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance that successfully parses the schema, ignoring the unknownKeyword, and validates objects with a string \"id\" property.",
+        "description": "Include a custom, unknown keyword in the schema. The factory should not fail; it must ignore unknown keywords per the specification and still produce a usable JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $id URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"ht!tp://[invalid]\", \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) indicating that the $id value is not a valid URI and cannot be parsed.",
+        "description": "Pass a schema with a malformed $id URI. The factory should detect the invalid URI during schema location creation and throw an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Unresolvable External $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$ref\": \"http://example.com/nonexistent-schema.json\" }"
+          }
+        ],
+        "expected": "JsonSchemaException (or SchemaNotFoundException) because the external schema referenced by $ref cannot be loaded.",
+        "description": "Supply a $ref that points to an external URI that is not available in the classpath or reachable. Schema loading should fail and raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref Detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"http://example.com/circular\", \"$defs\": { \"A\": { \"$ref\": \"#/$defs/B\" }, \"B\": { \"$ref\": \"#/$defs/A\" } }, \"$ref\": \"#/$defs/A\" }"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalStateException) indicating a circular reference was detected while resolving $ref.",
+        "description": "Create a schema where definitions reference each other in a loop. The factory must detect the circular reference during schema construction and throw an exception."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $schema Value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"not a uri\", \"type\": \"string\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) because the $schema value is not a syntactically valid URI.",
+        "description": "Provide a $schema keyword with a string that is not a URI. The factory should reject the value and fail fast."
+      }
+    ]
+  },
+  {
+    "group": "$ref to Non\u2011Schema Node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"title\": \"MySchema\", \"$ref\": \"#/title\" }"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the $ref target is not a schema node.",
+        "description": "Reference a JSON pointer that resolves to a primitive value (the title string) rather than a schema object. The factory should raise an exception because $ref must point to a schema."
+      }
+    ]
+  }
+]

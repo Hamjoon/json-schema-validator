@@ -1,0 +1,242 @@
+[
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 both internal builders are null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via Builder with metaSchemas empty, defaultMetaSchemaIri = \"http://example.com/meta\", jsonMapper = new ObjectMapper(), yamlMapper = new ObjectMapper(), jsonNodeReader = null, schemaLoadersBuilder = null, schemaMappersBuilder = null"
+          }
+        ],
+        "expected": "Returned Builder has metaSchemas equal to blueprint.metaSchemas, defaultMetaSchemaIri equal to \"http://example.com/meta\", jsonMapper and yamlMapper equal to the ones supplied, jsonNodeReader == null, and both schemaLoadersBuilder and schemaMappersBuilder remain null.",
+        "description": "When the blueprint does not contain custom SchemaLoaders or SchemaMappers, the static builder method should copy the simple fields and leave the internal builder references untouched (null)."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 only schemaLoadersBuilder is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via Builder with a non\u2011null schemaLoadersBuilder (configured with a dummy loader) and null schemaMappersBuilder"
+          }
+        ],
+        "expected": "Returned Builder has the same metaSchemas, defaultMetaSchemaIri, jsonMapper, yamlMapper and jsonNodeReader as the blueprint; schemaLoadersBuilder is a new SchemaLoaders.Builder that contains the blueprint's loader (i.e., not null); schemaMappersBuilder remains null.",
+        "description": "The first if\u2011branch should be taken, copying the blueprint's SchemaLoaders builder via SchemaLoaders.builder().with(...). The second if\u2011branch must be skipped because schemaMappersBuilder is null."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 only schemaMappersBuilder is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via Builder with a non\u2011null schemaMappersBuilder (configured with a dummy mapper) and null schemaLoadersBuilder"
+          }
+        ],
+        "expected": "Returned Builder copies all simple fields; schemaMappersBuilder is a new SchemaMappers.Builder that contains the blueprint's mapper (i.e., not null); schemaLoadersBuilder remains null.",
+        "description": "The second if\u2011branch should be executed while the first is skipped, ensuring only the SchemaMappers builder is transferred."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 both internal builders are non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via Builder with both schemaLoadersBuilder and schemaMappersBuilder set (each configured with a dummy implementation)"
+          }
+        ],
+        "expected": "Returned Builder copies all simple fields; both schemaLoadersBuilder and schemaMappersBuilder are non\u2011null and correspond to new builders created by SchemaLoaders.builder().with(blueprint.schemaLoadersBuilder) and SchemaMappers.builder().with(blueprint.schemaMappersBuilder).",
+        "description": "Both if\u2011branches should be taken, confirming that the method correctly clones both internal builders from the blueprint."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 copy of non\u2011empty metaSchemas and immutability",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with two JsonMetaSchema objects (iri \"http://example.com/meta1\" and \"http://example.com/meta2\"), defaultMetaSchemaIri = \"http://example.com/default\", jsonMapper = new ObjectMapper(), yamlMapper = new ObjectMapper(), jsonNodeReader = null, schemaLoadersBuilder = null, schemaMappersBuilder = null"
+          }
+        ],
+        "expected": "Returned Builder contains a metaSchemas map with two entries whose keys are the normalized IRIs of the supplied meta\u2011schemas (same as the original IRIs) and the same JsonMetaSchema instances; modifications to the Builder's metaSchemas (e.g., removing an entry) do not affect the blueprint's metaSchemas collection.",
+        "description": "Verify that a non\u2011empty metaSchemas collection is copied correctly and that the copy is independent of the original blueprint."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 null defaultMetaSchemaIri handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with defaultMetaSchemaIri explicitly set to null, all other fields populated with non\u2011null values"
+          }
+        ],
+        "expected": "Returned Builder has defaultMetaSchemaIri == null while all other simple fields (jsonMapper, yamlMapper, jsonNodeReader, metaSchemas) are copied from the blueprint.",
+        "description": "Ensure that a null defaultMetaSchemaIri is preserved in the new Builder rather than being replaced by a default value."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 copy of jsonNodeReader when present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with jsonNodeReader = JsonNodeReader.builder().locationAware().build(), jsonMapper = new ObjectMapper(), yamlMapper = new ObjectMapper(), defaultMetaSchemaIri = \"http://example.com/meta\""
+          }
+        ],
+        "expected": "Returned Builder has jsonNodeReader equal to the instance supplied in the blueprint; jsonMapper and yamlMapper are also copied but are ignored for reading because jsonNodeReader takes precedence.",
+        "description": "Confirm that when a JsonNodeReader is set on the blueprint it is copied verbatim to the new Builder."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 copy of yamlMapper when jsonMapper is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with jsonMapper = null, yamlMapper = new ObjectMapper(), jsonNodeReader = null, defaultMetaSchemaIri = \"http://example.com/meta\""
+          }
+        ],
+        "expected": "Returned Builder has yamlMapper equal to the supplied ObjectMapper and jsonMapper == null.",
+        "description": "Validate that a null jsonMapper does not prevent the yamlMapper from being copied."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 metaSchema IRI normalization during copy",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with a JsonMetaSchema whose iri is \"http://example.com/meta/\" (trailing slash). The Builder's metaSchemas map therefore stores the normalized key \"http://example.com/meta\"."
+          }
+        ],
+        "expected": "Returned Builder's metaSchemas map contains a single entry keyed by the normalized IRI \"http://example.com/meta\" and the associated JsonMetaSchema instance, demonstrating that normalizeMetaSchemaUri is applied during copying.",
+        "description": "Check that the static builder method normalizes meta\u2011schema IRIs when copying the metaSchemas collection."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 both internal builders non\u2011null with custom configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder where schemaLoadersBuilder has a custom loader added via .addLoader(\"custom\", (uri) -> new DefaultSchemaLoader()), and schemaMappersBuilder has a custom mapper added via .addMapper(\"custom\", (node) -> node); all other fields are default."
+          }
+        ],
+        "expected": "Returned Builder has schemaLoadersBuilder != null containing the custom loader named \"custom\" and schemaMappersBuilder != null containing the custom mapper named \"custom\"; both builders are new instances (different identity) but replicate the custom configurations from the blueprint.",
+        "description": "Ensure that when both internal builders are present, their custom configurations are cloned correctly, not just the builder objects."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 null blueprint parameter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null blueprint should cause a NullPointerException because the method dereferences the argument immediately."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with null metaSchemas map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory created via Builder with metaSchemas = null, other fields non\u2011null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the blueprint's internal metaSchemas map is null, the call to blueprint.metaSchemas.values() throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with metaSchemas containing null entry",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder where metaSchemas map contains a null JsonMetaSchema value"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "During builder().metaSchemas(blueprint.metaSchemas.values()) the iteration reaches a null element, causing a NullPointerException when the Builder's metaSchema(JsonMetaSchema) method tries to call jsonMetaSchema.getIri()."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with metaSchema having null IRI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with a JsonMetaSchema whose getIri() returns null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The Builder copies meta\u2011schemas by normalizing the IRI; a null IRI leads to a NullPointerException inside normalizeMetaSchemaUri."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with faulty schemaLoadersBuilder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with a custom SchemaLoaders.Builder subclass that overrides with(...) to throw IllegalArgumentException"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the blueprint's schemaLoadersBuilder is non\u2011null, the method invokes SchemaLoaders.builder().with(blueprint.schemaLoadersBuilder). If the overridden with method throws, the exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with faulty schemaMappersBuilder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory built via Builder with a custom SchemaMappers.Builder subclass that overrides with(...) to throw IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "Analogous to the previous case, but for the schemaMappersBuilder branch; an exception thrown by the overridden with method should be propagated."
+      }
+    ]
+  }
+]

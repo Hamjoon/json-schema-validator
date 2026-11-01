@@ -1,0 +1,324 @@
+[
+  {
+    "group": "Valid JSON input \u2013 no customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<> (empty) \u2013 the JSON is valid against the schema, no ValidationMessage objects are returned.",
+        "description": "A well\u2011formed JSON document with the default JSON InputFormat and a null ExecutionContextCustomizer should be deserialized successfully and pass validation, exercising the happy\u2011path branch where no exception is thrown and no customizer is applied."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input \u2013 with customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  age:\n    type: integer"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerAddsFlag"
+          }
+        ],
+        "expected": "Set<> (empty) \u2013 the YAML is correctly deserialized, the customizer runs (adds a flag to the ExecutionContext), and validation succeeds.",
+        "description": "Provides a YAML document to trigger the branch that selects the YAML deserializer. The supplied ExecutionContextCustomizer (represented by the placeholder `customizerAddsFlag`) is invoked, allowing verification that the customizer hook is exercised without affecting validation outcome."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException \u2013 the method should reject a null input string before attempting deserialization.",
+        "description": "Ensures the branch that checks for a null `input` argument is covered, expecting an IllegalArgumentException to be thrown."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported/invalid JSON \u2013 deserialization error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{invalidJson: true unquoted}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with message containing 'invalid JSON' \u2013 the deserialization step throws JsonProcessingException which is caught and turned into a validation error.",
+        "description": "Triggers the branch where `deserialize` fails (malformed JSON). The method should capture the exception and return a ValidationMessage describing the parsing problem."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat \u2013 fallback to JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<> (empty) \u2013 when InputFormat is null, the implementation defaults to JSON deserialization and validation succeeds.",
+        "description": "Covers the branch that handles a null `inputFormat` argument, verifying that the method defaults to JSON parsing and proceeds without error."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContextCustomizer that disables a validator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"}},\"required\":[\"id\"]}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerDisablesRequiredValidator"
+          }
+        ],
+        "expected": "Set<> (empty) \u2013 the customizer disables the required\u2011field validator, so the missing required property does not produce a ValidationMessage.",
+        "description": "Tests the branch where the supplied `ExecutionContextCustomizer` mutates the ExecutionContext (e.g., disables the required validator). The validation result should reflect the customized context."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property \u2013 validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"}},\"required\":[\"id\"]}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage whose message includes \"required\" \u2013 the instance JSON is empty, the schema requires property 'id', so validation fails.",
+        "description": "Validates that when the instance JSON does not contain a required property, the method returns a non\u2011empty ValidationMessage set indicating the missing required field."
+      }
+    ]
+  },
+  {
+    "group": "Type mismatch \u2013 validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"age\":{\"type\":\"integer\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage whose message includes \"type\" or \"integer\" \u2013 the property 'age' is a string (default value) while the schema expects an integer, causing a type validation failure.",
+        "description": "Ensures that a type mismatch between the instance value and the schema definition is reported as a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string \u2013 deserialization error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with text mentioning \"empty\" or \"no content\" \u2013 the deserializer cannot parse an empty string and reports a parsing problem.",
+        "description": "Covers the branch where the provided input string is empty; the method should treat this as a deserialization failure and return an appropriate ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Malformed YAML input \u2013 deserialization error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  name: {type: string"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage whose message contains \"YAML\" or \"parsing\" \u2013 the YAML is syntactically incorrect, causing deserialization to fail.",
+        "description": "Triggers the YAML deserialization path with malformed YAML to verify that parsing errors are captured and reported as ValidationMessages."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat with customizer \u2013 customizer execution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"flag\":{\"type\":\"boolean\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerAddsFlag"
+          }
+        ],
+        "expected": "Set<> (empty) \u2013 with a null InputFormat the method defaults to JSON parsing, the customizer runs (adds a flag to the ExecutionContext), and validation succeeds.",
+        "description": "Verifies that when InputFormat is null the method falls back to JSON deserialization *and* still invokes the provided ExecutionContextCustomizer."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat \u2013 throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException \u2013 the provided InputFormat is not supported by the method and should cause an immediate IllegalArgumentException before any deserialization occurs.",
+        "description": "Passes an InputFormat value that the implementation does not recognize (e.g., XML). The method is expected to validate the format argument early and throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Malformed percent\u2011encoding in input \u2013 throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E0%ZZ"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException \u2013 URLDecoder.decode is invoked on the input string and the malformed percent\u2011encoding causes an IllegalArgumentException to be thrown.",
+        "description": "Provides a string containing invalid URL\u2011encoded characters. The deserialization step attempts to URL\u2011decode the input, which should raise IllegalArgumentException due to the malformed sequence."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws RuntimeException \u2013 propagates exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsRuntime"
+          }
+        ],
+        "expected": "RuntimeException \u2013 the supplied ExecutionContextCustomizer throws a RuntimeException during customization, which should propagate out of the validate method.",
+        "description": "Supplies a custom ExecutionContextCustomizer implementation that deliberately throws a RuntimeException. The test verifies that the validate method does not swallow the exception and lets it propagate to the caller."
+      }
+    ]
+  }
+]

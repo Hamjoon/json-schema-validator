@@ -1,0 +1,329 @@
+package com.networknt.schema;
+import com.networknt.schema.uri.URIFactory;
+import com.networknt.schema.urn.URNFactory;
+
+
+import static org.junit.Assert.*;
+
+import java.util.Collections;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.ValidationContext.DiscriminatorContext;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link AnyOfValidator}.
+ * <p>
+ * The tests cover:
+ * <ul>
+ *   <li>basic successful validation (one subschema matches)</li>
+ *   <li>failure when no subschema matches</li>
+ *   <li>type‑mismatch short‑circuit (type validator present and node type does not match)</li>
+ *   <li>OpenAPI‑3 discriminator path – match found, no errors</li>
+ *   <li>OpenAPI‑3 discriminator path – match found but subschema errors</li>
+ *   <li>OpenAPI‑3 discriminator path – no match found</li>
+ *   <li>walk‑without‑validation logic</li>
+ * </ul>
+ * All objects are created via the public constructors / factory methods
+ * supplied by the library – no mocking or subclassing of library
+ * abstractions is performed.
+ */
+public class AnyOfValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private ValidationContext validationContext;
+    private ExecutionContext executionContext;
+    private JsonNodePath rootPath;
+    private SchemaLocation rootLocation;
+
+    @Before
+    public void setUp() {
+        // Minimal configuration – the config object controls the
+        // open‑api‑3 discriminator flag.  All other flags are left at
+        // their defaults.
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+        config.setOpenAPI3StyleDiscriminators(false);
+        validationContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                JsonMetaSchema.getV7(),
+                new JsonSchemaFactory(),
+                config);
+
+        executionContext = new ExecutionContext();
+        executionContext.setValidatorState(new ValidatorState());
+
+        rootLocation = SchemaLocation.DOCUMENT;
+        rootPath = new JsonNodePath(JsonNodePath.PathType.ROOT);
+    }
+
+    /**
+     * Helper – builds a {@link JsonSchema} from a raw JSON string.
+     */
+    private JsonSchema schemaFromJson(String json) {
+        JsonNode node = MAPPER.readTree(json);
+        return validationContext.newSchema(rootLocation, rootPath, node, null);
+    }
+
+    /**
+     * 1️⃣  Basic success – at least one subschema validates.
+     *
+     * anyOf: [ { "type":"string" }, { "type":"number" } ]
+     *
+     * The instance is a string, therefore the first subschema matches.
+     */
+    @Test
+    public void validate_WhenOneSubschemaMatches_ShouldReturnNoErrors() throws Exception {
+        String schemaJson = "{ \"anyOf\": [ { \"type\": \"string\" }, { \"type\": \"number\" } ] }";
+        JsonNode schemaNode = MAPPER.readTree(schemaJson).get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                schemaNode,
+                null,
+                validationContext);
+
+        JsonNode instance = MAPPER.readTree("\"hello\""); // a JSON string
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance, // rootNode = instance for this simple test
+                rootPath.append("anyOf"));
+
+        assertTrue("Expected no validation errors", errors.isEmpty());
+    }
+
+    /**
+     * 2️⃣  Failure – none of the subschemas validate.
+     *
+     * anyOf: [ { "type":"string", "minLength":5 }, { "type":"number", "minimum":10 } ]
+     *
+     * The instance is a short string ("abc") – fails first subschema,
+     * and also not a number – fails second subschema.
+     */
+    @Test
+    public void validate_WhenNoSubschemaMatches_ShouldReturnErrors() throws Exception {
+        String schemaJson = "{ \"anyOf\": [ "
+                + "{ \"type\":\"string\", \"minLength\":5 }, "
+                + "{ \"type\":\"number\", \"minimum\":10 } ] }";
+        JsonNode schemaNode = MAPPER.readTree(schemaJson).get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                schemaNode,
+                null,
+                validationContext);
+
+        JsonNode instance = MAPPER.readTree("\"abc\""); // length 3 < 5
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"));
+
+        assertFalse("Expected validation errors", errors.isEmpty());
+        // At least one error must be of type "type" (string length) or "minimum"
+        boolean containsStringError = errors.stream()
+                .anyMatch(v -> v.getType().equals("type"));
+        assertTrue("Should contain a type‑validation error", containsStringError);
+    }
+
+    /**
+     * 3️⃣  Type‑validator short‑circuit.
+     *
+     * anyOf: [ { "type":"integer" }, { "type":"string" } ]
+     *
+     * The instance is a boolean.  Both subschemas have a TypeValidator,
+     * the node type does not match either, therefore the validator must
+     * add the type‑validator errors and skip deeper validation.
+     */
+    @Test
+    public void validate_WhenNodeTypeDoesNotMatchAnySubschema_ShouldReportTypeErrorsOnly() throws Exception {
+        String schemaJson = "{ \"anyOf\": [ { \"type\":\"integer\" }, { \"type\":\"string\" } ] }";
+        JsonNode schemaNode = MAPPER.readTree(schemaJson).get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                schemaNode,
+                null,
+                validationContext);
+
+        JsonNode instance = MAPPER.readTree("true"); // boolean
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"));
+
+        assertFalse(errors.isEmpty());
+        // Both subschemas report a type‑mismatch error – the type code is "type"
+        long typeErrorCount = errors.stream()
+                .filter(v -> v.getType().equals("type"))
+                .count();
+        assertEquals("Expected exactly two type errors", 2, typeErrorCount);
+    }
+
+    /**
+     * 4️⃣  OpenAPI‑3 discriminator – match found, subschema passes.
+     *
+     * Config flag enabled, discriminator property selects the first subschema.
+     * The validator must clear all errors and return an empty set.
+     */
+    @Test
+    public void validate_WithOpenAPIDiscriminator_MatchFoundAndValid_ShouldReturnNoErrors() throws Exception {
+        // enable the OpenAPI‑3 discriminator flag
+        validationContext.getConfig().setOpenAPI3StyleDiscriminators(true);
+
+        // schema:
+        // {
+        //   "anyOf": [
+        //     { "type":"object", "properties":{ "type":{ "const":"A" } } },
+        //     { "type":"object", "properties":{ "type":{ "const":"B" } } }
+        //   ],
+        //   "discriminator": { "propertyName":"type" }
+        // }
+        String schemaJson = "{"
+                + "\"anyOf\":["
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"A\"}}},"
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"B\"}}}"
+                + "],"
+                + "\"discriminator\":{ \"propertyName\":\"type\" }"
+                + "}";
+        JsonNode fullSchema = MAPPER.readTree(schemaJson);
+        JsonNode anyOfNode = fullSchema.get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                anyOfNode,
+                null,
+                validationContext);
+
+        // instance selects the first subschema via discriminator
+        JsonNode instance = MAPPER.readTree("{\"type\":\"A\",\"value\":1}");
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"));
+
+        assertTrue("Expected no errors when discriminator match is valid", errors.isEmpty());
+    }
+
+    /**
+     * 5️⃣  OpenAPI‑3 discriminator – match found but subschema has errors.
+     *
+     * The discriminator selects the second subschema, but that subschema
+     * requires a property "requiredProp" that is missing.
+     */
+    @Test
+    public void validate_WithOpenAPIDiscriminator_MatchFoundButInvalid_ShouldReturnDiscriminatorRemark() throws Exception {
+        validationContext.getConfig().setOpenAPI3StyleDiscriminators(true);
+
+        // schema with required property in second alternative
+        String schemaJson = "{"
+                + "\"anyOf\":["
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"A\"}}},"
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"B\"},\"requiredProp\":{}},\"required\":[\"requiredProp\"]}"
+                + "],"
+                + "\"discriminator\":{ \"propertyName\":\"type\" }"
+                + "}";
+        JsonNode fullSchema = MAPPER.readTree(schemaJson);
+        JsonNode anyOfNode = fullSchema.get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                anyOfNode,
+                null,
+                validationContext);
+
+        // instance selects B but omits requiredProp
+        JsonNode instance = MAPPER.readTree("{\"type\":\"B\"}");
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"));
+
+        assertFalse(errors.isEmpty());
+        // The validator adds the special remark when discriminator matched but subschema errors exist
+        boolean hasRemark = errors.stream()
+                .anyMatch(v -> {
+                    Object[] args = v.getArguments();
+                    return args != null && args.length == 1 && AnyOfValidator.DISCRIMINATOR_REMARK.equals(args[0]);
+                });
+        assertTrue("Expected discriminator remark in errors", hasRemark);
+    }
+
+    /**
+     * 6️⃣  OpenAPI‑3 discriminator – no match found.
+     *
+     * The discriminator property value does not correspond to any alternative.
+     * The validator must return a single error explaining that no alternative
+     * could be chosen based on the discriminator.
+     */
+    @Test
+    public void validate_WithOpenAPIDiscriminator_NoMatchFound_ShouldReturnNoAlternativeError() throws Exception {
+        validationContext.getConfig().setOpenAPI3StyleDiscriminators(true);
+
+        String schemaJson = "{"
+                + "\"anyOf\":["
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"A\"}}},"
+                + "  {\"type\":\"object\",\"properties\":{\"type\":{\"const\":\"B\"}}}"
+                + "],"
+                + "\"discriminator\":{ \"propertyName\":\"type\" }"
+                + "}";
+        JsonNode fullSchema = MAPPER.readTree(schemaJson);
+        JsonNode anyOfNode = fullSchema.get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                anyOfNode,
+                null,
+                validationContext);
+
+        // instance with discriminator value that does not exist
+        JsonNode instance = MAPPER.readTree("{\"type\":\"C\"}");
+        Set<ValidationMessage> errors = validator.validate(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"));
+
+        assertEquals("Expected exactly one error when no discriminator match", 1, errors.size());
+        ValidationMessage msg = errors.iterator().next();
+        assertTrue(msg.getMessage().contains("based on the provided discriminator"));
+    }
+
+    /**
+     * 7️⃣  walk() when shouldValidateSchema == false.
+     *
+     * The validator must delegate walk to each subschema without performing
+     * validation and must return an empty set.
+     */
+    @Test
+    public void walk_WhenShouldValidateFalse_ShouldDelegateAndReturnEmptySet() throws Exception {
+        String schemaJson = "{ \"anyOf\": [ { \"type\":\"string\" }, { \"type\":\"number\" } ] }";
+        JsonNode anyOfNode = MAPPER.readTree(schemaJson).get("anyOf");
+        AnyOfValidator validator = new AnyOfValidator(
+                rootLocation.append("anyOf"),
+                rootPath.append("anyOf"),
+                anyOfNode,
+                null,
+                validationContext);
+
+        JsonNode instance = MAPPER.readTree("\"sample\"");
+        Set<ValidationMessage> result = validator.walk(
+                executionContext,
+                instance,
+                instance,
+                rootPath.append("anyOf"),
+                false);
+
+        assertTrue("walk with shouldValidateSchema=false must return empty set", result.isEmpty());
+    }
+}

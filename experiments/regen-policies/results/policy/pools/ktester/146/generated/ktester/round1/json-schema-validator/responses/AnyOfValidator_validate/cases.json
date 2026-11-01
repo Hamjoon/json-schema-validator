@@ -1,0 +1,510 @@
+[
+  {
+    "group": "anyOf validation succeeds (short\u2011circuit off)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"hello\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"hello\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 the instance satisfies at least one subschema, validator does not short\u2011circuit, walk flag = false",
+        "description": "The AnyOfValidator should iterate over all subschemas, find the first that validates successfully, but because short\u2011circuit is disabled it continues checking the rest; the final result is still an empty error set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\", \"value\": 5 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"integer\", \"value\": 5 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 second subschema validates, validator still evaluates remaining subschemas because short\u2011circuit is off, final set stays empty",
+        "description": "Ensures that when the first subschema fails but a later one passes, the validator still returns success even without short\u2011circuiting."
+      }
+    ]
+  },
+  {
+    "group": "anyOf validation succeeds (short\u2011circuit on)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"short\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"short\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 validator stops after the first matching subschema because canShortCircuit() returns true",
+        "description": "Verifies that when short\u2011circuiting is allowed the validator exits early after a successful subschema, skipping the remaining checks."
+      }
+    ]
+  },
+  {
+    "group": "anyOf validation fails (all subschemas reject)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (any configuration)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"boolean\", \"value\": true }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"boolean\", \"value\": true }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing at least one message per subschema \u2013 because none of the anyOf alternatives validate, the validator aggregates all errors",
+        "description": "Checks that when the instance does not satisfy any subschema, the validator returns a non\u2011empty error set that includes messages from each failed subschema."
+      }
+    ]
+  },
+  {
+    "group": "null or missing instance node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 validator treats null as absent and, according to JSON\u2011Schema spec, anyOf is ignored for missing nodes (unless required)",
+        "description": "Ensures that a null instance does not cause a NullPointerException and results in a successful validation when the node is absent."
+      }
+    ]
+  },
+  {
+    "group": "walk flag true (deep validation)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\", \"inner\": { \"type\": \"string\", \"value\": \"deep\" } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"inner\": { \"type\": \"string\", \"value\": \"deep\" } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 validator is invoked with walk=true, causing it to traverse child nodes; all child subschemas validate, so result is empty",
+        "description": "Validates that the overloaded protected validate method correctly propagates the walk flag and performs deep validation without adding extra errors."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 malformed schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"test\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"test\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "throws SchemaException (or a RuntimeException) \u2013 the AnyOfValidator is constructed with a malformed anyOf array (e.g., null element), causing validation to fail with an exception",
+        "description": "Confirms that the validator does not swallow internal errors; a malformed schema should surface as an exception."
+      }
+    ]
+  },
+  {
+    "group": "anyOf validation succeeds with short\u2011circuit on after first failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\", \"value\": 42 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"integer\", \"value\": 42 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 first subschema (type: string) fails, second subschema (type: integer, minimum: 0) succeeds, validator short\u2011circuits after the successful second subschema, so remaining subschemas are not evaluated.",
+        "description": "When short\u2011circuiting is enabled the validator must continue iterating after a failure until a subschema validates, then stop immediately. This test confirms that only the necessary subschemas are evaluated."
+      }
+    ]
+  },
+  {
+    "group": "anyOf with empty array (always fails)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (any configuration)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"anything\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"anything\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a single message indicating that anyOf failed because the anyOf array is empty.",
+        "description": "According to the JSON\u2011Schema specification an anyOf keyword with an empty array cannot be satisfied, therefore validation must always produce an error regardless of the instance."
+      }
+    ]
+  },
+  {
+    "group": "anyOf with a single subschema \u2013 passing instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"number\", \"value\": 3.14 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"number\", \"value\": 3.14 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 the single subschema (type: number, multipleOf: 0.01) validates successfully, so anyOf succeeds.",
+        "description": "A single\u2011element anyOf should behave exactly like that element. This test verifies the happy path when the instance satisfies the sole subschema."
+      }
+    ]
+  },
+  {
+    "group": "anyOf with a single subschema \u2013 failing instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"number\", \"value\": -5 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"number\", \"value\": -5 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing the validation error(s) produced by the single subschema (e.g., minimum: 0 violation).",
+        "description": "When anyOf contains only one subschema, a failing instance must return the errors of that subschema. This test ensures proper error propagation."
+      }
+    ]
+  },
+  {
+    "group": "anyOf validation with array instance and mixed subschemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "[ \"a\", \"b\", \"c\" ]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "[ \"a\", \"b\", \"c\" ]"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 the anyOf array contains two subschemas: (1) type: array, minItems: 2 and (2) type: string, enum: [\"x\",\"y\"]. The instance matches the first subschema, causing short\u2011circuit success.",
+        "description": "Validates that AnyOf correctly evaluates array\u2011type subschemas and short\u2011circuits after the first matching array subschema, ignoring later non\u2011array alternatives."
+      }
+    ]
+  },
+  {
+    "group": "anyOf validation where rootNode differs from node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"inner\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"outer\": { \"type\": \"string\", \"value\": \"inner\" } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$.outer\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 the validator uses the supplied node for validation but keeps the original rootNode for $ref resolution; since the node satisfies one of the anyOf alternatives, validation succeeds.",
+        "description": "Ensures that the validator correctly handles the case where the instance node is a child of the root document, preserving proper $ref and $id handling."
+      }
+    ]
+  },
+  {
+    "group": "walk flag true with short\u2011circuit enabled (deep validation)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (short\u2011circuit enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"object\", \"inner\": { \"type\": \"integer\", \"value\": 7 } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"object\", \"inner\": { \"type\": \"integer\", \"value\": 7 } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> \u2013 the protected validate method is called with walk=true; the validator traverses into the nested integer node, finds a matching subschema, short\u2011circuits, and returns no errors.",
+        "description": "Combines deep traversal (walk flag) with short\u2011circuit behavior to verify that the validator stops further recursion once a matching subschema is found."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"test\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"test\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The validator should reject a null ExecutionContext and throw a NullPointerException before any schema processing occurs."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 null instanceLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"integer\", \"value\": 10 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"integer\", \"value\": 10 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the JsonNodePath argument is null the validator cannot compute the instance location and must raise an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 anyOf array contains null element",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (anyOf contains null element)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"boolean\", \"value\": true }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"boolean\", \"value\": true }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the anyOf keyword is defined with an array that includes a null entry, iteration over the subschemas will hit a null reference and the validator should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 anyOf array contains non\u2011schema element",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext (anyOf contains primitive element)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"string\", \"value\": \"abc\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"type\": \"string\", \"value\": \"abc\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "When the anyOf array holds a JSON primitive (e.g., a number) instead of a schema object, the validator will attempt to cast it to a JsonSchema and should raise a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "exception handling \u2013 rootNode null while node non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"type\": \"array\", \"value\": [1,2,3] }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "new JsonNodePath(\"$\")"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The validator relies on the rootNode for $ref resolution; passing a null rootNode while the instance node is present should cause a NullPointerException."
+      }
+    ]
+  }
+]

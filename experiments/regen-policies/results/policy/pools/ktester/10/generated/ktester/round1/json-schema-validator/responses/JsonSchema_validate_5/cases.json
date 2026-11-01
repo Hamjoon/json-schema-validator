@@ -1,0 +1,309 @@
+[
+  {
+    "group": "Normal Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> that returns the list of messages"
+          }
+        ],
+        "expected": "Empty list [] (no validation errors)",
+        "description": "Valid JSON that satisfies the schema; validate should return an empty list of ValidationMessage via the provided OutputFormat."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> that returns the list of messages"
+          }
+        ],
+        "expected": "List containing a ValidationMessage about missing required property \"name\"",
+        "description": "JSON missing a required property; the schema\u2019s required\u2011validator should add a ValidationMessage which is returned by the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Null Input Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> (standard list collector)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling validate with a null JSON node should immediately throw NullPointerException regardless of the OutputFormat."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling validate with a null OutputFormat should throw NullPointerException even when the JSON node is valid."
+      }
+    ]
+  },
+  {
+    "group": "Different OutputFormat Implementations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<Set<ValidationMessage>> that collects messages into a Set"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage about missing required property \"name\"",
+        "description": "Using a Set\u2011based OutputFormat should still return the correct validation message for a missing required property."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"name\":\"John\",\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<String> that serialises messages to a JSON string"
+          }
+        ],
+        "expected": "\"[{'message':'instance type is not integer','path':'/age'}]\"",
+        "description": "When the schema expects an integer for \"age\" but receives a string, a custom String\u2011based OutputFormat should return a JSON\u2011encoded string of the ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<Object> that throws RuntimeException during format.apply"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the OutputFormat implementation throws an exception while processing, the validate method should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "Type Validator Scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"age\":25}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "Empty list []",
+        "description": "Schema defines \"age\" as integer type; providing a correct integer value should produce no validation messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"age\":\"25\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "List containing a ValidationMessage about type mismatch for property \"age\"",
+        "description": "When the instance type does not match the schema\u2019s type validator (string instead of integer), a type\u2011mismatch ValidationMessage must be returned."
+      }
+    ]
+  },
+  {
+    "group": "$ref Resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"address\":{\"city\":\"NY\",\"zip\":10001}}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "Empty list []",
+        "description": "Schema contains a $ref to an external address schema; a valid address object should resolve the reference and produce no errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"address\":{\"city\":123,\"zip\":\"10001\"}}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "List with two ValidationMessages: one for type mismatch on \"city\", one for type mismatch on \"zip\"",
+        "description": "Invalid types inside a $ref\u2011referenced subschema should be reported correctly after reference resolution."
+      }
+    ]
+  },
+  {
+    "group": "Recursive Anchor Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON {\"node\":{\"node\":{\"node\":null}}}"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "Empty list []",
+        "description": "Schema uses a recursive anchor to allow nested \"node\" objects; a finite depth instance should validate without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing a deeply nested structure that exceeds the recursion limit (e.g., 1000 levels of \"node\")"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>>"
+          }
+        ],
+        "expected": "List containing a ValidationMessage indicating recursion depth exceeded or stack overflow protection triggered",
+        "description": "When the instance depth exceeds the library\u2019s safe recursion limit, validation should stop and emit a message rather than cause a StackOverflowError."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref Resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing any valid JSON (e.g., {\"dummy\":1})"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> that simply returns the list"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "The schema associated with the JsonSchema instance contains a $ref that points to a non\u2011existent or malformed external schema file. During validation the library attempts to resolve the reference and throws a JsonSchemaException. The test verifies that the exception propagates out of validate(JsonNode, OutputFormat<T>)."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported Keyword Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing any JSON (e.g., {\"foo\":\"bar\"})"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<Set<ValidationMessage>> that collects messages into a Set"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "The loaded schema contains an unknown/unsupported keyword (e.g., \"unknownKeyword\": true). When the validator factory tries to create a validator for this keyword it throws a JsonSchemaException. The test ensures that validate propagates this exception."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat Throws Checked Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing JSON that passes validation (e.g., {\"name\":\"John\"})"
+          },
+          {
+            "parameter": "format",
+            "value": "Custom OutputFormat<T> whose apply method throws java.io.IOException"
+          }
+        ],
+        "expected": "RuntimeException (cause: IOException)",
+        "description": "Even though the JSON instance is valid, the provided OutputFormat throws a checked IOException while processing the validation messages. The validate method should not swallow the exception; it must propagate it wrapped in a RuntimeException (as the method signature does not allow checked exceptions)."
+      }
+    ]
+  },
+  {
+    "group": "Schema Not Initialized",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing any JSON (e.g., {\"any\":true})"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> that returns the list"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "A JsonSchema instance is created via the protected constructor or reflection without invoking the internal initialization (validators are null). Calling validate on such an un\u2011initialized schema should throw IllegalStateException indicating that the schema has not been prepared for validation."
+      }
+    ]
+  },
+  {
+    "group": "Recursive Anchor StackOverflow Protection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing a JSON structure that exceeds the library's internal recursion limit (e.g., 5000 nested objects with a \"node\" property)"
+          },
+          {
+            "parameter": "format",
+            "value": "OutputFormat<List<ValidationMessage>> that returns the list"
+          }
+        ],
+        "expected": "StackOverflowError",
+        "description": "When the instance depth goes beyond the safe recursion threshold the validator deliberately throws a StackOverflowError (instead of converting it to a ValidationMessage). The test confirms that this error is not caught inside validate and propagates to the caller."
+      }
+    ]
+  }
+]

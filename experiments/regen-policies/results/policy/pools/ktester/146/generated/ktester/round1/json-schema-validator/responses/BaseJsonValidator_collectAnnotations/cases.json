@@ -1,0 +1,227 @@
+[
+  {
+    "group": "Null ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          }
+        ],
+        "expected": "false",
+        "description": "When the supplied ExecutionContext is null the method should safely handle it and return false without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Annotations collection disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = false }"
+          }
+        ],
+        "expected": "false",
+        "description": "If the ExecutionContext indicates that annotation collection is disabled (e.g., `isCollectAnnotations()` returns false), the method must skip any annotation logic and return false."
+      }
+    ]
+  },
+  {
+    "group": "Keyword is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true }"
+          }
+        ],
+        "expected": "false",
+        "description": "When the validator\u2019s keyword (returned by `getKeyword()`) is null the method cannot decide which annotation to store, therefore it should return false."
+      }
+    ]
+  },
+  {
+    "group": "Known keyword \u2013 annotation stored successfully",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, annotations = [] }"
+          }
+        ],
+        "expected": "true",
+        "description": "For a non\u2011null ExecutionContext with collection enabled and a known keyword (e.g., \"type\"), the validator should create a JsonNodeAnnotation, add it to the context and return true."
+      }
+    ]
+  },
+  {
+    "group": "Unknown keyword \u2013 no annotation stored",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, annotations = [] }"
+          }
+        ],
+        "expected": "false",
+        "description": "When the keyword is not recognised by the internal switch/case (e.g., \"unknownKeyword\"), the method must skip annotation creation and return false."
+      }
+    ]
+  },
+  {
+    "group": "Exception during annotation customization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, customizerThrows = true }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the consumer passed to `putAnnotation` throws an exception, the method should propagate it (or wrap it) rather than swallowing it, allowing the test to verify exception handling."
+      }
+    ]
+  },
+  {
+    "group": "Known keyword \u2013 minimum annotation stored",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, schemaNode = { \"minimum\": 5 }, keyword = \"minimum\" }"
+          }
+        ],
+        "expected": "true",
+        "description": "When the validator\u2019s keyword is a known numeric keyword (\"minimum\") and the schema node contains the corresponding value, the method should create a JsonNodeAnnotation, add it to the context and return true."
+      }
+    ]
+  },
+  {
+    "group": "Keyword present but schemaNode missing expected value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, schemaNode = { }, keyword = \"type\" }"
+          }
+        ],
+        "expected": "false",
+        "description": "The keyword is recognised (\"type\") but the schema node does not contain a \"type\" property; the validator cannot build a meaningful annotation and therefore returns false."
+      }
+    ]
+  },
+  {
+    "group": "Empty keyword string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, keyword = \"\" }"
+          }
+        ],
+        "expected": "false",
+        "description": "An empty string returned by getKeyword() should be treated as an unknown keyword, causing the method to skip annotation creation and return false."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext with pre\u2011existing annotations (no duplication)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, annotations = [ { \"keyword\": \"type\" } ], keyword = \"type\" }"
+          }
+        ],
+        "expected": "true",
+        "description": "Even if the context already holds an annotation for the same keyword, collectAnnotations should still add a new annotation (or safely ignore duplication) and return true without throwing."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext with null annotations list (should initialise)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, annotations = null, keyword = \"type\" }"
+          }
+        ],
+        "expected": "true",
+        "description": "When the ExecutionContext\u2019s annotation collection is enabled but its internal list is null, collectAnnotations must initialise the list, store the new annotation and return true."
+      }
+    ]
+  },
+  {
+    "group": "SuppressSubSchemaRetrieval true \u2013 annotation still collected",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, suppressSubSchemaRetrieval = true, keyword = \"format\", schemaNode = { \"format\": \"email\" } }"
+          }
+        ],
+        "expected": "true",
+        "description": "The validator\u2019s `suppressSubSchemaRetrieval` flag does not affect annotation collection; with a known keyword (\"format\") the method should still create the annotation and return true."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, schemaNode = null, keyword = \"type\" }"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the validator's `schemaNode` field is null, the internal call to `schemaNode.has(\"type\")` (or similar) triggers a NullPointerException. The method should not swallow this error."
+      }
+    ]
+  },
+  {
+    "group": "Null instance node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, instanceNode = null, keyword = \"type\" }"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the `ExecutionContext` returns a null instance node (the JSON node being validated), any attempt to read its location or value inside `collectAnnotations` results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Unmodifiable annotations list",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContextMock { collectAnnotations = true, annotations = Collections.unmodifiableList(new ArrayList<>()), keyword = \"type\" }"
+          }
+        ],
+        "expected": "UnsupportedOperationException",
+        "description": "When the context provides an immutable annotations collection, `putAnnotation` tries to add a new `JsonNodeAnnotation` and the underlying `add` call throws UnsupportedOperationException."
+      }
+    ]
+  }
+]

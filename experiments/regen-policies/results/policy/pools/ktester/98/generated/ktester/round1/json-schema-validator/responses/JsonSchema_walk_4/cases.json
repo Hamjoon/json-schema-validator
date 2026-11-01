@@ -1,0 +1,508 @@
+[
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 valid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John Doe\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "An empty Set \u2013 no validation messages because the instance conforms to the schema.",
+        "description": "The schema expects a required string property \"name\". The supplied node satisfies the schema, so walk should invoke the underlying validator and return an empty collection when validation is turned on."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 invalid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": 123 }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing at least one ValidationMessage indicating a type error for property \"name\".",
+        "description": "The schema requires \"name\" to be a string, but the node provides a numeric value. With validation enabled, walk must run the type validator and return the corresponding validation message(s)."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation disabled (false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": 123 }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "An empty Set \u2013 no validation messages because validation was skipped.",
+        "description": "When the validate flag is false, walk must bypass all validators and return an empty result regardless of the node content."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 null JsonNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The implementation expects a non\u2011null JsonNode. Supplying null should cause a NullPointerException before any validation logic is executed."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 null OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating that outputFormat must not be null",
+        "description": "The method should guard against a null OutputFormat because it is required to produce a result. The expected behaviour is to throw an exception immediately."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 node is an array (schema expects object)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[ { \"name\": \"Alice\" } ]"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage about the instance type mismatch (expected OBJECT, found ARRAY).",
+        "description": "The schema is defined for an object with a required property \"name\". Providing an array should trigger the type validator and produce an appropriate error message."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 schema with recursive anchor (isRecursiveAnchor = true)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"self\": { \"$ref\": \"#\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set without infinite recursion \u2013 validation completes successfully (or contains only expected messages for the concrete instance).",
+        "description": "When the schema contains a recursive anchor, walk must detect and handle recursion correctly, avoiding a StackOverflowError. The test verifies that the method returns a finite result."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage indicating that required property \"name\" is missing.",
+        "description": "The schema declares \"name\" as required. Supplying an empty object should cause the required\u2011property validator to emit a message when validation is enabled."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 additionalProperties false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\", \"age\": 30 }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that property \"age\" is not allowed (additionalProperties = false).",
+        "description": "The schema defines only the property \"name\" and sets \"additionalProperties\": false. An extra property should be flagged by the additional\u2011properties validator."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 enum violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\", \"status\": \"unknown\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that value \"unknown\" is not one of the allowed enum values [\"active\",\"inactive\"].",
+        "description": "The schema adds an enum constraint on property \"status\". Providing a value outside the enum should produce an enum\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 pattern mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\", \"email\": \"not-an-email\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that string \"not-an-email\" does not match the regex pattern \"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Za-z]{2,}$\" for property \"email\".",
+        "description": "The schema defines a regex pattern for an email address. Supplying a non\u2011matching string should trigger the pattern validator."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 numeric range violation (minimum)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"age\": -5 }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that numeric value -5 is less than the allowed minimum 0 for property \"age\".",
+        "description": "The schema specifies a minimum of 0 for the numeric property \"age\". Providing a negative number should be reported by the numeric\u2011range validator."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 validation enabled (true) \u2013 array length violation (minItems)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"tags\": [] }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that array \"tags\" has fewer items (0) than the required minimum of 1.",
+        "description": "The schema defines \"tags\" as an array with \"minItems\": 1. An empty array should be flagged by the array\u2011size validator."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 $ref to external schema \u2013 valid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"address\": { \"street\": \"Main St\", \"zip\": \"12345\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "An empty Set \u2013 the referenced address schema validates the supplied address object successfully.",
+        "description": "The main schema contains a \"$ref\": \"address-schema.json#\". The provided address object conforms to the external schema, so no validation messages are expected."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 $ref to external schema \u2013 invalid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"address\": { \"street\": 100, \"zip\": \"12\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing at least two ValidationMessages: one for type mismatch on \"street\" (expected string, found integer) and one for pattern/minLength violation on \"zip\" (value \"12\" does not satisfy the zip\u2011code pattern).",
+        "description": "The referenced external schema expects \"street\" to be a string and \"zip\" to match a five\u2011digit pattern. Supplying an integer and a too\u2011short zip should generate appropriate messages."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 $ref with URL\u2011encoded fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"self\": { \"$ref\": \"#/properties%2Fname\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "An empty Set \u2013 the URL\u2011decoded fragment resolves to the \"name\" property schema, which validates the supplied string value.",
+        "description": "The $ref contains an URL\u2011encoded JSON\u2011Pointer. The walk method must decode it correctly before locating the target schema."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 boolean schema true (accept any instance)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "12345"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "An empty Set \u2013 a schema defined as the boolean literal true accepts any JSON value without producing messages.",
+        "description": "When the root schema is the boolean true, walk should short\u2011circuit validation and return an empty result irrespective of the instance."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 boolean schema false (reject any instance)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"any value\""
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a single ValidationMessage indicating that the instance is invalid because the schema is false.",
+        "description": "A schema defined as the boolean false must cause every instance to be considered invalid, resulting in a generic validation error."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 instance type mismatch (scalar vs object)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"just a string\""
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "A Set containing a ValidationMessage that the instance type is STRING but the schema expects OBJECT.",
+        "description": "The schema is defined for an object with required property \"name\". Supplying a plain string should trigger the type validator."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 outputFormat throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John Doe\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "FaultyOutputFormat (throws IllegalStateException on collect)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException (or any RuntimeException) propagated from the OutputFormat implementation",
+        "description": "A custom OutputFormat is supplied whose collect method deliberately throws an IllegalStateException. The walk method should not swallow this exception; it must propagate it to the caller."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 $ref to non\u2011existent fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"self\": { \"$ref\": \"#/nonexistent\" } }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the $ref fragment could not be resolved",
+        "description": "The schema contains a $ref that points to a JSON\u2011Pointer that does not exist in the current schema. The walk method must detect the unresolved reference and throw an exception rather than returning a normal result."
+      }
+    ]
+  },
+  {
+    "group": "walk \u2013 schema with unsupported keyword causing IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"unknown\": \"value\" }"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "CollectingOutputFormat<Set<ValidationMessage>>"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException (or JsonSchemaException) stating that an unknown validator/keyword was encountered",
+        "description": "A schema is constructed that contains an unknown keyword (e.g., \"x\u2011unknownKeyword\": true). When walk processes this schema it should fail fast with an IllegalStateException because it cannot map the unknown keyword to a validator."
+      }
+    ]
+  }
+]

@@ -1,0 +1,206 @@
+[
+  {
+    "group": "walk(JsonNode, boolean) - basic flag handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\", \"age\": 30 }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "When validate flag is true the schema should be applied to a valid JSON object. Expect a successful ValidationResult with no error messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\", \"age\": 30 }"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "When validate flag is false the schema should skip validation and directly return a successful ValidationResult regardless of the node content."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains \"required\" for property \"age\"",
+        "description": "Schema requires property \"age\" (type integer). When validate=true and the node lacks this required property, walk should return a failed ValidationResult with an appropriate required\u2011property message."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"age\": \"thirty\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains \"type\" for property \"age\"",
+        "description": "Schema defines \"age\" as integer. When validate=true and the node provides a string, walk should fail and report a type\u2011mismatch ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation false with missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "Even though the node is missing the required \"age\" property, validate=false tells walk to skip schema validation, so it should return a successful result with no messages."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with array matching schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[1, 2, 3]"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "Schema is defined as {\"type\":\"array\",\"items\":{\"type\":\"integer\"}}. A JSON array of integers satisfies the schema, so walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with array containing invalid item",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[1, \"two\", 3]"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains \"type\" for index 1",
+        "description": "Same array schema as above, but the second element is a string. walk should fail and report a type\u2011mismatch for the offending index."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains \"null\" or \"type\"",
+        "description": "When the schema expects an object (or array) but the supplied node is JSON null, walk with validate=true should produce a failed result indicating the null value is not allowed."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation false with null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "Even though the node is null and the schema would reject it, validate=false bypasses validation, resulting in a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - validation true with empty object and no required fields",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage",
+        "description": "Schema defines optional properties only (e.g., {\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}). An empty object satisfies the schema, so walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - null JsonNode argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a Java null reference for the JsonNode should cause the method to throw NullPointerException before any validation logic is executed."
+      }
+    ]
+  }
+]

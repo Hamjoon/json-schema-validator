@@ -1,0 +1,198 @@
+```java
+package com.networknt.schema;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Unit tests for {@link JsonSchema#validate(String, InputFormat, OutputFormat, Consumer)} and
+ * the simpler {@link JsonSchema#validate(String)} overloads.
+ *
+ * The original tests used Mockito for mocking; to keep the project self‑contained
+ * we replace those mocks with tiny hand‑rolled implementations.
+ */
+class JsonSchema_validate_14_Test {
+
+    /** Instance of {@link JsonSchema} used in the tests. */
+    private JsonSchema schema;
+
+    /** Simple JSON schema that accepts any object. */
+    private static final String SIMPLE_SCHEMA = "{\"type\":\"object\"}";
+
+    /** Simple JSON document that conforms to {@link #SIMPLE_SCHEMA}. */
+    private static final String VALID_INPUT = "{}";
+
+    @BeforeEach
+    void setupBeforeEach() {
+        // Build a JsonSchema instance using the public factory API.
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        this.schema = factory.getSchema(SIMPLE_SCHEMA);
+    }
+
+    /**
+     * A tiny {@link Consumer} implementation that records whether it has been
+     * invoked and stores the {@link ExecutionContext} it received.
+     */
+    private static final class RecordingConsumer implements Consumer<ExecutionContext> {
+        boolean invoked = false;
+        ExecutionContext receivedContext = null;
+
+        @Override
+        public void accept(ExecutionContext ctx) {
+            this.invoked = true;
+            this.receivedContext = ctx;
+        }
+    }
+
+    /**
+     * Verifies that the {@code Consumer<ExecutionContext>} passed to the
+     * {@code validate(String, InputFormat, OutputFormat, Consumer)} method
+     * is invoked exactly once.
+     */
+    @Test
+    void validate_shouldInvokeConsumerWithExecutionContext() {
+        // Arrange
+        RecordingConsumer consumer = new RecordingConsumer();
+
+        // Act
+        JsonNode result = schema.validate(VALID_INPUT, InputFormat.JSON, OutputFormat.JSON, consumer);
+
+        // Assert
+        assertNotNull(result, "The validation should return a non‑null JsonNode result.");
+        assertTrue(consumer.invoked, "The consumer must have been invoked.");
+        assertNotNull(consumer.receivedContext, "The consumer should have received an ExecutionContext.");
+    }
+
+    /**
+     * A well‑formed JSON document that conforms to the schema should result in
+     * an empty set of validation messages.
+     */
+    @Test
+    void validateValidJsonString_returnsEmptySet() {
+        // Act
+        Set<ValidationMessage> messages = schema.validate("{\"name\":\"John\",\"age\":30}");
+
+        // Assert
+        assertTrue(messages.isEmpty(), "Expected no validation messages for a valid JSON document.");
+    }
+
+    /**
+     * A JSON document that violates the schema (age is a string instead of a number)
+     * should produce a non‑empty set of validation messages.
+     */
+    @Test
+    void validateInvalidJsonString_returnsNonEmptySet() {
+        // Act
+        Set<ValidationMessage> messages = schema.validate("{\"name\":\"John\",\"age\":\"thirty\"}");
+
+        // Assert
+        assertFalse(messages.isEmpty(), "Expected validation messages for an invalid JSON document.");
+    }
+
+    /**
+     * An empty string cannot be parsed as JSON and should cause a
+     * {@link JsonProcessingException} to be thrown.
+     */
+    @Test
+    void validateEmptyString_throwsJsonProcessingException() {
+        // Act & Assert
+        assertThrows(JsonProcessingException.class,
+                () -> schema.validate("", InputFormat.JSON, OutputFormat.JSON, ctx -> { }),
+                "Deserialising an empty string should throw JsonProcessingException.");
+    }
+
+    /**
+     * Passing a {@code null} input string should result in a
+     * {@link NullPointerException} before any validation occurs.
+     */
+    @Test
+    void validateNullInput_throwsNullPointerException() {
+        // Act & Assert
+        assertThrows(NullPointerException.class,
+                () -> schema.validate(null, InputFormat.JSON, OutputFormat.JSON, ctx -> { }),
+                "A null input string should cause NullPointerException.");
+    }
+
+    /**
+     * The consumer should be able to mutate the {@link ExecutionContext}
+     * (e.g., setting a custom attribute). Validation should still succeed and
+     * return an empty set.
+     */
+    @Test
+    void validateWithCustomizerModifiesContext() {
+        // Arrange
+        Consumer<ExecutionContext> customiser = ctx -> ctx.setAttribute("custom", Boolean.TRUE);
+
+        // Act
+        Set<ValidationMessage> messages = schema.validate("{\"name\":\"John\"}", InputFormat.JSON, OutputFormat.JSON, customiser);
+
+        // Since we used the JSON output format, the result is a JsonNode.
+        // To check that validation succeeded we simply ensure no exception was thrown
+        // and that the returned JsonNode is not null.
+        assertNotNull(messages, "Result should not be null.");
+
+        // Unfortunately the JSON output format does not give us direct access to the
+        // ExecutionContext, but we can verify that the custom attribute was set
+        // by re‑invoking validation with a consumer that captures the context.
+        RecordingConsumer capture = new RecordingConsumer();
+        schema.validate("{\"name\":\"John\"}", InputFormat.JSON, OutputFormat.JSON, capture);
+        assertEquals(Boolean.TRUE, capture.receivedContext.getAttribute("custom"),
+                "The custom attribute should be present and set to true.");
+    }
+
+    /**
+     * If the consumer throws a {@link RuntimeException}, the exception should
+     * propagate out of the {@code validate} method.
+     */
+    @Test
+    void validateCustomizerThrowsRuntimeException_propagatesException() {
+        // Arrange
+        Consumer<ExecutionContext> failingCustomizer = ctx -> {
+            throw new RuntimeException("custom failure");
+        };
+
+        // Act & Assert
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> schema.validate("{\"name\":\"John\"}", InputFormat.JSON, OutputFormat.JSON, failingCustomizer),
+                "Exception thrown by the customiser should propagate.");
+        assertEquals("custom failure", ex.getMessage(),
+                "Exception message should match the one thrown by the customiser.");
+    }
+
+    /**
+     * A valid YAML document should be correctly deserialized and validated,
+     * resulting in an empty set of validation messages.
+     */
+    @Test
+    void validateYamlInputFormat_returnsEmptySet() {
+        // Arrange
+        String yaml = "name: John\nage: 30";
+
+        // Act
+        Set<ValidationMessage> messages = schema.validate(yaml, InputFormat.YAML);
+
+        // Assert
+        assertTrue(messages.isEmpty(), "Valid YAML input should produce an empty validation set.");
+    }
+
+    /**
+     * Passing a {@code null} {@link InputFormat} should cause a
+     * {@link NullPointerException} before any deserialization or validation occurs.
+     */
+    @Test
+    void validateNullInputFormat_throwsNullPointerException() {
+        // Act & Assert
+        assertThrows(NullPointerException.class,
+                () -> schema.validate("{\"name\":\"John\"}", null, OutputFormat.JSON, ctx -> { }),
+                "A null InputFormat should cause NullPointerException.");
+    }
+}
+```

@@ -1,0 +1,280 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - basic behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose root node matches the supplied JSON schema",
+        "description": "Valid JSON schema string with default (null) configuration should be parsed and a JsonSchema object returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setFailFast(true)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose ValidationContext is configured with failFast=true",
+        "description": "Valid JSON schema string together with a custom SchemaValidatorsConfig (failFast enabled) should be honoured by the created schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a null schema string must result in an IllegalArgumentException (the factory cannot resolve a null location)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "An empty schema string is not a valid location; the method should reject it with an IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"unknown\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException (or JsonProcessingException) indicating schema parsing failure",
+        "description": "A malformed JSON schema (unknown type) should cause a parsing/validation exception during schema creation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "http://example.com/schemas/person.json"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance loaded from the remote URI (loader invoked)",
+        "description": "When the schema string is an absolute URI, the factory must resolve it via the SchemaLoader and return the corresponding JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "http://json-schema.org/draft-07/schema#"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema representing the Draft\u201107 meta\u2011schema",
+        "description": "A known meta\u2011schema identifier should be recognised and the factory should return the built\u2011in meta\u2011schema object."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - format handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"type: object\\nproperties:\\n  name:\\n    type: string\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException (or JsonSchemaException) because the default InputFormat.JSON cannot parse YAML content",
+        "description": "A schema supplied in YAML format should cause a parsing exception when the factory assumes JSON input."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - configuration propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setTypeLoose(true)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema whose ValidationContext reports typeLoose=true",
+        "description": "When the config enables type\u2011loose mode, the created schema must carry that flag in its ValidationContext."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"date\": { \"type\": \"string\", \"format\": \"date-time\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setValidateFormats(false)"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema whose ValidationContext has validateFormats=false (format validators are omitted)",
+        "description": "Disabling format validation via the config should result in a schema that does not enforce the \"date-time\" format."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema equivalent to calling the method with a null config (default behavior)",
+        "description": "Providing a freshly\u2011instantiated config with default values must behave the same as passing null."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - resource resolution edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"classpath:/schemas/person.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema loaded from the classpath resource (loader invoked)",
+        "description": "A schema string that refers to a classpath resource should be resolved by the SchemaLoader and result in a valid JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"file:/tmp/example-schema.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema loaded from the file URI (loader invoked)",
+        "description": "A schema string expressed as a file URI must be resolved via the loader and produce a schema instance."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - whitespace tolerance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"   { \\\"type\\\": \\\"object\\\", \\\"properties\\\": { \\\"name\\\": { \\\"type\\\": \\\"string\\\" } } }   \\n\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance parsed successfully after trimming whitespace",
+        "description": "Leading/trailing whitespace and newline characters around a valid JSON schema string should be ignored and not cause an error."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - $ref resolution failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"address\": { \"$ref\": \"#/nonexistent\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating unresolved $ref",
+        "description": "A schema containing a $ref that cannot be resolved should cause schema loading to fail with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - caching behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"http://example.com/schemas/cached.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance; subsequent call with the same URI returns the same object (identity equality)",
+        "description": "When the same absolute URI is requested twice, the factory should return the cached JsonSchema instance rather than creating a new one."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - malformed JSON syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } "
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException (or JsonSchemaException) due to invalid JSON syntax",
+        "description": "A schema string that is syntactically invalid JSON (missing closing braces) should cause a parsing exception."
+      }
+    ]
+  }
+]

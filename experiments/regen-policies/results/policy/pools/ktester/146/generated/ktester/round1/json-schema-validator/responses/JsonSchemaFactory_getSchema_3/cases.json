@@ -1,0 +1,462 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - basic scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema version matches the default (e.g., Draft\u20117). The schema should contain a property named \"name\" of type string.",
+        "description": "Pass a well\u2011formed JSON schema node. The method should create and return a JsonSchema object without throwing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing an empty schema (no constraints).",
+        "description": "Pass an empty JSON object. The factory should still return a valid JsonSchema instance (an empty schema)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Pass a null JsonNode reference. The implementation forwards the argument to newJsonSchema which expects a non\u2011null node, so a NullPointerException should be thrown."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "[ { \"type\": \"string\" }, { \"type\": \"number\" } ]"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing an array schema (type \"array\") with items schema derived from the first element.",
+        "description": "Pass a JsonNode that is a JSON array. The factory should still create a JsonSchema object; the exact internal representation depends on the library but the call must succeed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-07/schema#\", \"type\": \"string\" }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is Draft\u201107 (as indicated by the $schema keyword).",
+        "description": "Provide a schema node that explicitly declares its meta\u2011schema via the $schema keyword. The factory should honour the declared version when constructing the JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - boolean schema literals",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "true"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing a schema that always validates (boolean true schema).",
+        "description": "Pass a JsonNode that is the JSON literal `true`. According to the JSON Schema spec this represents a schema that always passes validation. The factory should return a valid JsonSchema object without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "false"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing a schema that never validates (boolean false schema).",
+        "description": "Pass a JsonNode that is the JSON literal `false`. This represents a schema that always fails validation. The method must still create a JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - unsupported primitive root",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "123"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Pass a JsonNode that is a numeric literal. JSON Schema documents must be objects (or boolean literals). The factory should reject this with a JsonSchemaException (or IllegalArgumentException) indicating an invalid schema type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "\"string\""
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Pass a JsonNode that is a string literal. The method should throw a JsonSchemaException because a schema cannot be a plain string."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - unknown $schema version",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\", \"type\": \"object\" }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Provide a schema node that declares an unsupported meta\u2011schema version (draft\u201104). The factory should detect the unknown version and throw an IllegalArgumentException (or a JsonSchemaException) rather than silently defaulting."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - schema with $id and internal $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"#root\", \"definitions\": { \"name\": { \"type\": \"string\" } }, \"$ref\": \"#/definitions/name\" }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose root resolves to a string type via internal $ref.",
+        "description": "Pass a schema that defines an internal definition and references it with $ref. Even though resolution requires a base URI, the factory should still return a JsonSchema object (resolution may be deferred)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - explicit type null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"null\" }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance with type constraint \"null\".",
+        "description": "Pass a schema that explicitly allows only null values. The method should create a JsonSchema reflecting this constraint."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - empty enum array",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"enum\": [] }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing an always\u2011invalid schema (empty enum).",
+        "description": "Provide a schema with an empty `enum`. According to the spec this schema can never be satisfied; the factory should still return a JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - unknown keyword tolerance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"unknownKeyword\": 42 }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that ignores the unknown keyword.",
+        "description": "Pass a schema containing a non\u2011standard keyword. The factory should ignore unknown keywords (per spec) and still produce a valid JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid $id format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"$id\": \"http://example .com\", \"type\": \"object\"}"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Provide a schema with an $id containing an invalid URI (space in host). The factory should detect the malformed $id and throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid $ref format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"$ref\": \"http://example .com#/def\"}"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Provide a schema with a $ref containing an invalid URI (space in host). The factory should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid type keyword value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"type\": \"invalidtype\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema with a 'type' keyword having an unsupported type string. The factory should reject it with JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"type\": [\"string\", \"invalidtype\"]}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'type' is an array containing an invalid type. The factory should throw JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid required keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"required\": \"name\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'required' is a string instead of an array. The factory should throw JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"required\": [123, true]}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'required' array contains non\u2011string items. The factory should throw JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid properties keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"properties\": \"notAnObject\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'properties' is not an object. The factory should reject it with JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid definitions keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"definitions\": []}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'definitions' is an array instead of an object. Expect JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - malformed $schema URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"$schema\": \"http://example .com/draft-07/schema#\"}"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Provide a $schema value that is not a valid URI (contains space). Expect IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid numeric constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"minimum\": \"abc\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'minimum' is a non\u2011numeric value. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"multipleOf\": 0}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'multipleOf' is zero (must be >\u202f0). Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"maxLength\": -5}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'maxLength' is negative. Expect JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid additionalProperties",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"additionalProperties\": 123}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'additionalProperties' is a number instead of a boolean or schema object. Expect JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid patternProperties",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"patternProperties\": \"notAnObject\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'patternProperties' is not an object. Expect JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid dependencies",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"dependencies\": []}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'dependencies' is an array instead of an object. Expect JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid combinator keywords",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"allOf\": {\"type\": \"string\"}}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'allOf' is an object instead of an array. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"anyOf\": \"string\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'anyOf' is a string instead of an array. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"oneOf\": 123}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'oneOf' is a number instead of an array. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"not\": []}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'not' is an array instead of an object. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"if\": []}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'if' is an array instead of an object. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"then\": \"string\"}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'then' is a string instead of an object. Expect JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{\"else\": 123}"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "Provide a schema where 'else' is a number instead of an object. Expect JsonSchemaException."
+      }
+    ]
+  }
+]

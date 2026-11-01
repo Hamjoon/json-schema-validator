@@ -1,0 +1,92 @@
+[
+  {
+    "group": "findAncestor - no parent (root schema)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Returns the same instance (the root schema itself)",
+        "description": "A JsonSchema instance whose parent schema is null should return itself when findAncestor() is invoked. This exercises the false branch of the `if (this.getParentSchema() != null)` condition."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - single level parent",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Returns the direct parent schema instance",
+        "description": "Create a child JsonSchema whose parent is a root schema (parent.getParentSchema() == null). Calling findAncestor() on the child should traverse one level and return the parent, covering the true branch of the `if` and the subsequent return of the ancestor."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - multi\u2011level parent chain",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Returns the top\u2011most ancestor (root schema) instance",
+        "description": "Construct a chain of three schemas: leaf \u2192 middle \u2192 root, where only the root has a null parent. Invoking findAncestor() on the leaf triggers recursive calls through the true branch multiple times and ultimately returns the root schema."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - self\u2011referencing parent (cycle detection)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Throws StackOverflowError",
+        "description": "Force a cycle by setting a schema's parent to itself. The method will repeatedly call findAncestor() on the same instance, eventually causing a StackOverflowError. This validates that the method does not guard against cyclic parent references."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - deep hierarchy (10 levels)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Returns the top\u2011most ancestor (root schema) instance after traversing ten levels",
+        "description": "Create a chain of ten JsonSchema objects where each schema's parent points to the previous one, and the first (root) schema has a null parent. Invoking findAncestor() on the deepest leaf should recursively climb ten levels and return the root schema, confirming the method works for deep recursion without stack overflow."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - idempotent call",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Subsequent calls return the same root instance",
+        "description": "Using a multi\u2011level schema chain (e.g., leaf \u2192 middle \u2192 root), call findAncestor() on the leaf twice. Both calls should return the identical root schema instance, demonstrating that the method is pure and does not alter internal state."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - indirect cycle detection",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Throws StackOverflowError",
+        "description": "Construct three schemas A, B, C where A.parent = B, B.parent = C, and C.parent = A, forming an indirect cycle. Invoking findAncestor() on any schema in the cycle should cause infinite recursion and eventually throw a StackOverflowError, confirming that the method does not guard against non\u2011self cycles."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - no side\u2011effects on parent reference",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Parent reference remains unchanged after findAncestor() execution",
+        "description": "Create a child schema with a known parent schema. After calling findAncestor() on the child, verify that child.getParentSchema() still returns the original parent instance (i.e., the method does not modify the parent link)."
+      }
+    ]
+  },
+  {
+    "group": "findAncestor - exception propagation from parent",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException thrown by parent schema is propagated",
+        "description": "Create a parent JsonSchema subclass whose findAncestor() method throws an IllegalArgumentException. Set this object as the child schema's parent. Invoking findAncestor() on the child should result in the IllegalArgumentException being thrown, confirming that the method does not catch exceptions from the recursive call."
+      }
+    ]
+  }
+]

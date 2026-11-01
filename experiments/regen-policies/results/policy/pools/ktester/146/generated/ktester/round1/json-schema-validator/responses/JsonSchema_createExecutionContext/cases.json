@@ -1,0 +1,112 @@
+[
+  {
+    "group": "createExecutionContext without customizer",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned whose ExecutionConfig copies locale, formatAssertionsEnabled and failFast flags from the SchemaValidatorsConfig. Since getExecutionContextCustomizer() returns null, no customizer method is invoked.",
+        "description": "Validate that createExecutionContext copies the default execution configuration values from the ValidationContext's SchemaValidatorsConfig and returns a fresh ExecutionContext when no ExecutionContextCustomizer is configured."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext with customizer",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext is returned with the same copied ExecutionConfig values as above, and the provided ExecutionContextCustomizer's customize method is invoked exactly once with the newly created ExecutionContext and the current ValidationContext.",
+        "description": "Validate that when the SchemaValidatorsConfig provides a non\u2011null ExecutionContextCustomizer, createExecutionContext still copies the config values correctly and then calls the customizer to allow further modifications of the ExecutionContext."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext copies locale",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext returned contains an ExecutionConfig whose locale exactly matches the locale set in the SchemaValidatorsConfig (e.g., Locale.FRANCE). All other config values are also copied, but the focus of this test is the locale field.",
+        "description": "Verify that when the SchemaValidatorsConfig has a specific non\u2011default Locale, createExecutionContext copies that locale into the new ExecutionConfig."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext copies formatAssertionsEnabled flag",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext returned contains an ExecutionConfig with formatAssertionsEnabled set to false when the SchemaValidatorsConfig has formatAssertionsEnabled set to false (and likewise true when true).",
+        "description": "Confirm that the boolean flag formatAssertionsEnabled is transferred unchanged from SchemaValidatorsConfig to ExecutionConfig."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext copies failFast flag",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ExecutionContext returned contains an ExecutionConfig whose failFast flag equals the value defined in SchemaValidatorsConfig (tested with true and false).",
+        "description": "Ensure that the failFast setting is correctly propagated to the ExecutionConfig."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext returns new instance each call",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Two successive calls to createExecutionContext on the same JsonSchema instance produce two distinct ExecutionContext objects (different object references).",
+        "description": "Validate that createExecutionContext does not cache or reuse ExecutionContext instances; each invocation yields a fresh object."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext customizer modifies ExecutionConfig",
+    "cases": [
+      {
+        "input": [],
+        "expected": "When a non\u2011null ExecutionContextCustomizer is supplied, its customize method can change the ExecutionConfig (e.g., set a different locale). After createExecutionContext returns, the ExecutionContext reflects those modifications.",
+        "description": "Test that the customizer is invoked after the default config copy and that any changes it makes to the ExecutionContext are retained."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext customizer receives correct ValidationContext",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The ValidationContext instance passed to the customizer's customize method is the same instance that JsonSchema holds (validationContext). No new ValidationContext is created.",
+        "description": "Ensure that the customizer receives the original ValidationContext associated with the JsonSchema, allowing it to inspect or use the same context."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext when validationContext is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The JsonSchema instance has its internal validationContext field set to null. Invoking createExecutionContext() should throw a NullPointerException because the method tries to call validationContext.getConfig()."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext when config is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The ValidationContext returns null from getConfig(). Calling createExecutionContext() must raise a NullPointerException when the method attempts to access methods on the null config object."
+      }
+    ]
+  },
+  {
+    "group": "createExecutionContext when customizer throws runtime exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "A non\u2011null ExecutionContextCustomizer is provided via SchemaValidatorsConfig. Its customize(...) method deliberately throws a RuntimeException. The exception should propagate out of createExecutionContext() without being caught."
+      }
+    ]
+  }
+]

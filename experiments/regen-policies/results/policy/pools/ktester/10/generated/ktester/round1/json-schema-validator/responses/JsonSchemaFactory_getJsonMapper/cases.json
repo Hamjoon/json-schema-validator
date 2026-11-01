@@ -1,0 +1,52 @@
+[
+  {
+    "group": "JsonSchemaFactory#getJsonMapper - jsonMapper is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonMapper",
+            "value": "new ObjectMapper()"
+          }
+        ],
+        "expected": "returns the same ObjectMapper instance that was injected",
+        "description": "Create a JsonSchemaFactory instance with a non\u2011null ObjectMapper (using reflection to set the private final field). The call to getJsonMapper() must return that exact instance, exercising the true branch of the ternary operator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonMapper",
+            "value": "new ObjectMapper()"
+          }
+        ],
+        "expected": "subsequent calls return the same injected instance",
+        "description": "Invoke getJsonMapper() twice on the same factory instance. Both calls should return the same injected ObjectMapper, confirming that the method does not create a new mapper each time."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory#getJsonMapper - jsonMapper is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns a non\u2011null ObjectMapper instance provided by JsonMapperFactory.getInstance()",
+        "description": "Create a JsonSchemaFactory using the public builder (or default constructor) without injecting an ObjectMapper, so the private field remains null. Calling getJsonMapper() should invoke the false branch of the ternary operator and return the singleton ObjectMapper from JsonMapperFactory. The test asserts that the result is not null and is an instance of com.fasterxml.jackson.databind.ObjectMapper."
+      },
+      {
+        "input": [],
+        "expected": "subsequent calls return the same ObjectMapper instance from JsonMapperFactory",
+        "description": "Using the same factory instance as the previous case, invoke getJsonMapper() twice. Both calls must return the exact same ObjectMapper reference (==), confirming that the method does not create a new mapper on each invocation when the internal jsonMapper field is null."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory#getJsonMapper - JsonMapperFactory throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException propagated from JsonMapperFactory.getInstance()",
+        "description": "Mock the static method JsonMapperFactory.getInstance() to throw IllegalStateException. Create a JsonSchemaFactory instance where the internal jsonMapper field remains null (e.g., via the public builder). Invoking getJsonMapper() must not catch the exception; it should be re\u2011thrown, confirming that the method propagates any runtime exception originating from JsonMapperFactory."
+      }
+    ]
+  }
+]

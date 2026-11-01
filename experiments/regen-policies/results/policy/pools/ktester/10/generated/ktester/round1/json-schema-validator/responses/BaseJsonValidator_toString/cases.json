@@ -1,0 +1,122 @@
+[
+  {
+    "group": "BaseJsonValidator.toString",
+    "cases": [
+      {
+        "input": [],
+        "expected": "leaf",
+        "description": "Normal case \u2013 the evaluation path contains several elements ['root','child','leaf']; toString() should return the last element 'leaf' (getName(-1))."
+      },
+      {
+        "input": [],
+        "expected": "only",
+        "description": "Single\u2011element path \u2013 when the evaluation path consists of a single name ['only'], getName(-1) returns that name, so toString() should return 'only'."
+      },
+      {
+        "input": [],
+        "expected": null,
+        "description": "Empty path \u2013 a JsonNodePath that holds no names returns null (or an empty string) for getName(-1). The test verifies that toString() propagates this null result."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "Null evaluation path \u2013 if getEvaluationPath() returns null, toString() will throw a NullPointerException. The test asserts that this exception is thrown."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.IndexOutOfBoundsException",
+        "description": "Path implementation throws IndexOutOfBoundsException for getName(-1) when the internal list is empty. The test confirms that toString() does not swallow the exception and propagates it."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 special characters in last path element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "!@#$%^&*()_+-=[]{}|;':\",.<>/?",
+        "description": "The evaluation path contains several elements and the last element includes a variety of special characters. toString() should return the exact last element without alteration."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 whitespace\u2011only last element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "   ",
+        "description": "The evaluation path ends with a name that consists solely of spaces. toString() must return those spaces unchanged, proving it does not trim the result."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 mixed null and valid elements",
+    "cases": [
+      {
+        "input": [],
+        "expected": "finalNode",
+        "description": "The evaluation path contains a null element before the final one (e.g., [\"root\", null, \"finalNode\"]). toString() should ignore the null earlier element and return the last valid name."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 custom JsonNodePath throws IllegalStateException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "A subclass of JsonNodePath is injected that deliberately throws IllegalStateException when getName(-1) is called. toString() must propagate this unchecked exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 evaluation path returns empty string",
+    "cases": [
+      {
+        "input": [],
+        "expected": "",
+        "description": "The evaluation path\u2019s last element is an empty string (e.g., [\"root\", \"\"]). toString() should return the empty string exactly, confirming that null and empty string are distinguished."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 getEvaluationPath throws IllegalStateException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "A subclass of BaseJsonValidator overrides getEvaluationPath() to throw IllegalStateException. The toString() method should propagate this unchecked exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 getEvaluationPath throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.RuntimeException",
+        "description": "A subclass of BaseJsonValidator overrides getEvaluationPath() to throw a generic RuntimeException. The test verifies that toString() does not catch the exception and it propagates."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 getName throws UnsupportedOperationException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.UnsupportedOperationException",
+        "description": "A custom JsonNodePath implementation is returned by getEvaluationPath() where getName(-1) deliberately throws UnsupportedOperationException. The toString() method should propagate this exception."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.toString \u2013 getName throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalArgumentException",
+        "description": "A custom JsonNodePath implementation is returned by getEvaluationPath() where getName(-1) validates the index and throws IllegalArgumentException for negative values. The test ensures toString() propagates the exception."
+      }
+    ]
+  }
+]

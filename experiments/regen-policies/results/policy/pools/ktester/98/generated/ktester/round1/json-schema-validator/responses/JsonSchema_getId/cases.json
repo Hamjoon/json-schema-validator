@@ -1,0 +1,137 @@
+[
+  {
+    "group": "JsonSchema.getId",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema\""
+          }
+        ],
+        "expected": "\"http://example.com/schema\"",
+        "description": "Typical non\u2011empty URI identifier \u2013 getId() should return the exact value supplied to the constructor."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"\""
+          }
+        ],
+        "expected": "\"\"",
+        "description": "Empty string identifier \u2013 verifies that getId() correctly returns an empty string without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "null"
+          }
+        ],
+        "expected": "null",
+        "description": "Null identifier \u2013 ensures that when the JsonSchema is created with a null id, getId() returns null as specified."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"   \""
+          }
+        ],
+        "expected": "\"   \"",
+        "description": "Identifier consisting only of whitespace characters \u2013 getId() should return the exact whitespace string without trimming."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"urn:example:12345\""
+          }
+        ],
+        "expected": "\"urn:example:12345\"",
+        "description": "URN style identifier \u2013 verifies that getId() correctly returns a non\u2011URL identifier."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema#section\""
+          }
+        ],
+        "expected": "\"http://example.com/schema#section\"",
+        "description": "URI containing a fragment component \u2013 ensures the fragment is preserved in the returned id."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://\u4f8b\u5b50.\u6d4b\u8bd5/\u6a21\u5f0f\""
+          }
+        ],
+        "expected": "\"http://\u4f8b\u5b50.\u6d4b\u8bd5/\u6a21\u5f0f\"",
+        "description": "Identifier with Unicode characters \u2013 checks that getId() returns the Unicode string unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema?query=param%20value\""
+          }
+        ],
+        "expected": "\"http://example.com/schema?query=param%20value\"",
+        "description": "URI containing percent\u2011encoded characters \u2013 validates that the encoded value is returned verbatim."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"%s\""
+          }
+        ],
+        "expected": "\"%s\"",
+        "description": "Identifier that looks like a format placeholder \u2013 confirms that getId() does not interpret or alter placeholder syntax."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"\" + \"a\".repeat(5000)"
+          }
+        ],
+        "expected": "\"\" + \"a\".repeat(5000)",
+        "description": "Very long identifier (5,000 characters) \u2013 tests that getId() can handle large strings without truncation or performance issues."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema\\n\""
+          }
+        ],
+        "expected": "\"http://example.com/schema\\n\"",
+        "description": "Identifier ending with a newline character \u2013 ensures newline is preserved in the returned value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema\\t\""
+          }
+        ],
+        "expected": "\"http://example.com/schema\\t\"",
+        "description": "Identifier ending with a tab character \u2013 verifies that tab characters are retained."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/schema?param=1&param=2\""
+          }
+        ],
+        "expected": "\"http://example.com/schema?param=1&param=2\"",
+        "description": "URI with repeated query parameters \u2013 checks that the entire query string is returned unchanged."
+      }
+    ]
+  }
+]

@@ -1,0 +1,78 @@
+{
+    "tests": [
+        {
+            "group": "JsonSchema.getRequiredValidator() - required keyword present",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaJson",
+                            "value": "{ \"type\": \"object\", \"required\": [\"name\"] }"
+                        }
+                    ],
+                    "expected": "non‑null RequiredValidator instance",
+                    "description": "A schema that defines a required property list should cause the JsonSchema instance to create and store a RequiredValidator. After the schema is parsed (via JsonSchemaFactory) the call to getRequiredValidator() must return a non‑null object of type RequiredValidator."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaJson",
+                            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+                        }
+                    ],
+                    "expected": "null",
+                    "description": "A schema without a \"required\" keyword (but with other validators such as a type validator) must leave the requiredValidator field unset. After initialization getRequiredValidator() should still return null."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchema.getRequiredValidator() - required validator identity",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaJson",
+                            "value": "{ \"type\": \"object\", \"required\": [\"id\"] }"
+                        }
+                    ],
+                    "expected": "same instance on repeated calls",
+                    "description": "Calling getRequiredValidator() multiple times on the same JsonSchema must return the exact same RequiredValidator object (i.e., the method does not create a new instance on each call)."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchema.getRequiredValidator() - $ref handling",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "referencedSchemaJson",
+                            "value": "{ \"type\": \"object\", \"required\": [\"code\"] }"
+                        },
+                        {
+                            "parameter": "referringSchemaJson",
+                            "value": "{ \"$ref\": \"#/components/schemas/RefSchema\" , \"components\": { \"schemas\": { \"RefSchema\": { \"type\": \"object\", \"required\": [\"code\"] } } } }"
+                        }
+                    ],
+                    "expected": "referenced schema returns non‑null RequiredValidator, referring schema returns null",
+                    "description": "When a schema contains a $ref that points to another schema which defines required properties, the RequiredValidator is created only for the resolved (referenced) JsonSchema instance. The JsonSchema that only holds the $ref should not have a requiredValidator of its own."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchema.getRequiredValidator() - required keyword with empty array",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaJson",
+                            "value": "{ \"type\": \"object\", \"required\": [] }"
+                        }
+                    ],
+                    "expected": "non‑null RequiredValidator instance",
+                    "description": "An explicit but empty \"required\" array still triggers the creation of a RequiredValidator (it will simply validate that no properties are required). The getter must therefore return a non‑null validator."
+                }
+            ]
+        }
+    ]
+}

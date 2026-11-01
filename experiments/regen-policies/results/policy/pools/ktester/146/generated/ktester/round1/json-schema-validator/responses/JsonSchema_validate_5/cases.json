@@ -1,0 +1,472 @@
+[
+  {
+    "group": "Successful validation \u2013 empty schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {} (empty JSON object)"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat that gathers ValidationMessage objects into a List"
+          }
+        ],
+        "expected": "An empty List (no ValidationMessage) is returned by the OutputFormat",
+        "description": "When the schema has no validators (e.g., an empty schema) the validate method should complete without adding any ValidationMessage to the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Validation with type error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":\"twenty\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"type\" and path \"/age\"",
+        "description": "The schema defines \"age\" as an integer. Supplying a string should trigger the TypeValidator branch and a corresponding ValidationMessage should be added to the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Validation with custom validator failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"minLength\" for path \"/name\"",
+        "description": "A custom LengthValidator (or MinLengthValidator) is attached to the schema. An empty string violates the minLength constraint, exercising the branch where a validator adds a ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Null rootNode argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown before any validation occurs",
+        "description": "The validate method should guard against a null rootNode and throw an appropriate exception, covering the null\u2011check branch."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown because OutputFormat is required",
+        "description": "A null OutputFormat must be rejected, exercising the branch that validates the format argument."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer is null (default path)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"status\":true}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "Empty List \u2013 validation succeeds; the internal ExecutionContext is created with default settings",
+        "description": "The public validate(JsonNode, OutputFormat) forwards to the three\u2011argument overload with a null ExecutionContextCustomizer. This test ensures that the null customizer branch does not cause a failure."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing a recursive structure that references itself via $recursiveAnchor"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "Empty List \u2013 no ValidationMessage, confirming that the recursive\u2011anchor branch correctly avoids infinite loops",
+        "description": "When the schema is marked as a recursive anchor, the validator must detect and handle recursion. This case forces the branch that checks `isRecursiveAnchor()`."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"$ref\":\"#/definitions/person\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing ValidationMessages defined in the referenced schema (e.g., missing required property \"name\")",
+        "description": "The method must resolve a $ref and delegate validation to the referenced JsonSchema. This test covers the branch that calls `getRefSchema()` / `fromRef()`."
+      }
+    ]
+  },
+  {
+    "group": "Schema with multiple validators \u2013 mixed success/failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"id\":1,\"email\":\"invalid-email\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage for the email format error, but no message for the valid integer id",
+        "description": "The schema contains an integer validator for `id` and a pattern validator for `email`. Only the email validator should fail, exercising the loop that iterates over validators and adds messages conditionally."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"required\" and path \"\" (root) because the schema requires property \"name\" which is absent",
+        "description": "The schema declares a required property \"name\". Supplying JSON that lacks this property should trigger the required\u2011property branch and produce a ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Disallowed additional property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"id\":1,\"extra\":\"value\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"additionalProperties\" and path \"/extra\"",
+        "description": "The schema sets \"additionalProperties\": false. An unexpected property \"extra\" should be reported by the additional\u2011properties validator."
+      }
+    ]
+  },
+  {
+    "group": "Enum constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"status\":\"UNKNOWN\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"enum\" and path \"/status\"",
+        "description": "The schema defines an enum [\"ACTIVE\",\"INACTIVE\"]. Providing a value outside the enum exercises the enum\u2011validation branch."
+      }
+    ]
+  },
+  {
+    "group": "Numeric boundary validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"score\":-1}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"minimum\" and path \"/score\" because the schema sets \"minimum\":0",
+        "description": "The schema specifies a minimum of 0 for the numeric property \"score\". Supplying -1 should trigger the minimum validator."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"score\":100}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "Empty List \u2013 the value equals the exclusiveMaximum boundary (if exclusiveMaximum is 100) and therefore passes",
+        "description": "The schema defines \"exclusiveMaximum\":100. Providing exactly 100 should be accepted, testing the exclusiveMaximum branch."
+      }
+    ]
+  },
+  {
+    "group": "Array items validation failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [{\"email\":\"bad\"},{\"email\":\"good@example.com\"}]"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"format\" and path \"/0/email\" because the first array element violates the email format",
+        "description": "The schema defines an array of objects where each object\u2019s \"email\" must match the email format. The first element fails, exercising the validator that iterates over array items."
+      }
+    ]
+  },
+  {
+    "group": "oneOf validator failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"value\":5}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"oneOf\" and path \"\" because the instance does not satisfy any of the subschemas in the oneOf array",
+        "description": "The schema contains a oneOf with two subschemas (e.g., integer >=10 and string pattern). Supplying a value that matches none triggers the oneOf failure branch."
+      }
+    ]
+  },
+  {
+    "group": "Conditional validator failure (if/then/else)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"type\":\"A\",\"code\":123}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"minimum\" and path \"/code\" because the \"then\" schema requires \"code\" >=200 when \"type\" is \"A\"",
+        "description": "The schema uses an if/then clause: if \"type\" == \"A\" then \"code\" must be >=200. Supplying 123 violates the then\u2011branch, testing the conditional validation path."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "ThrowingOutputFormat (throws RuntimeException on any call to addMessage)"
+          }
+        ],
+        "expected": "RuntimeException thrown from the OutputFormat, propagated out of validate method",
+        "description": "A custom OutputFormat that throws an exception when a ValidationMessage is added ensures that validate does not swallow the exception and propagates it to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Root node type mismatch (array vs object)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing []"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"type\" and path \"\" because the schema expects an object but the instance is an array",
+        "description": "The schema\u2019s top\u2011level type is \"object\". Supplying an array triggers the type\u2011validator branch for the root node."
+      }
+    ]
+  },
+  {
+    "group": "PatternProperties validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"prop_1\":\"value\",\"invalid\":\"value\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "List containing a ValidationMessage with messageId \"patternProperties\" and path \"/invalid\" because property name does not match the allowed pattern \"^prop_.*$\"",
+        "description": "The schema defines \"patternProperties\" with a regex that only allows property names starting with \"prop_\". An unexpected property name should be flagged."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref syntax \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"$ref\":\"invalid#ref\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the $ref value cannot be parsed as a valid JSON Pointer",
+        "description": "The schema contains a $ref with an illegal fragment. The validate method should attempt to resolve the reference, detect the malformed pointer, and throw an IllegalArgumentException rather than silently ignoring it."
+      }
+    ]
+  },
+  {
+    "group": "Custom validator throws unchecked exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"trigger\":\"error\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "RuntimeException (or subclass) propagated out of validate",
+        "description": "A schema is configured with a user\u2011defined JsonValidator that deliberately throws a RuntimeException when its validate method is invoked. The validate(JsonNode, OutputFormat) method must not catch this exception; it should bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "RuntimeException thrown from the ExecutionContextCustomizer and propagated by validate",
+        "description": "When the three\u2011argument overload is invoked via the public validate method, a null customizer is normally used. This test forces the path where a non\u2011null ExecutionContextCustomizer is supplied and its accept method throws an exception. The exception must propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws IOException during message addition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "IOExceptionThrowingOutputFormat (throws IOException on addMessage)"
+          }
+        ],
+        "expected": "IOException propagated out of validate",
+        "description": "A custom OutputFormat implementation throws an IOException when the validator tries to add a ValidationMessage. The validate method should not swallow the checked exception; it must be declared or wrapped and re\u2011thrown."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref without $recursiveAnchor leads to recursion limit exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"$ref\":\"#/definitions/self\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          }
+        ],
+        "expected": "IllegalStateException (or JsonSchemaException) indicating recursion depth exceeded",
+        "description": "The schema defines a $ref that points to itself and does not declare a $recursiveAnchor. During validation the implementation should detect the potential infinite loop and abort with a clear exception rather than causing a StackOverflowError."
+      }
+    ]
+  }
+]

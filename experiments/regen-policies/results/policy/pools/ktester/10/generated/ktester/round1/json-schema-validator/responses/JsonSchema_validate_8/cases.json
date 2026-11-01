@@ -1,0 +1,650 @@
+[
+  {
+    "group": "Null Parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Both `format` and `executionCustomizer` are null. The method should fail fast with NPE because a non\u2011null OutputFormat is required."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "DummyOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "`rootNode` is null while a valid OutputFormat is supplied. The method must validate its arguments and throw NPE."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "`format` is null while other arguments are valid. The method should reject a null OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Successful Validation \u2013 No Errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode",
+            "note": "e.g. {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing empty Set<ValidationMessage>",
+        "description": "A JSON document that conforms to the schema. The method should return a successful output (empty validation messages) when no customizer is supplied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setFailFast(true)"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing empty Set<ValidationMessage>",
+        "description": "Same valid input but with a customizer that sets fail\u2011fast mode. Because there are no errors, the result is still empty."
+      }
+    ]
+  },
+  {
+    "group": "Validation Errors \u2013 Branches in Walk/Keyword Listeners",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNode",
+            "note": "e.g. {\"age\":\"not-a-number\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing at least one ValidationMessage",
+        "description": "Document violates a type constraint. The method should walk the schema, collect the error and return it via the OutputFormat."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNodeMissingRequired"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setFailFast(true)"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing exactly one ValidationMessage (first error only)",
+        "description": "When fail\u2011fast is enabled via the customizer, validation should stop after the first error, exercising the `if (executionContext.isFailFast()) break;` branch."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer \u2013 Null vs Consumer vs Interface",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result with default ExecutionContext (no custom flags)",
+        "description": "No customizer \u2013 verifies that the method creates a default ExecutionContext."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "new DummyExecutionContextCustomizer()"
+          }
+        ],
+        "expected": "CollectingOutputFormat result where ExecutionContext has `setValidateAll(true)` applied",
+        "description": "Custom implementation of `ExecutionContextCustomizer` that flips a flag, testing the branch that checks `instanceof ExecutionContextCustomizer` and invokes `customize`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setValidateAll(true)"
+          }
+        ],
+        "expected": "CollectingOutputFormat result where ExecutionContext has `validateAll` true",
+        "description": "Lambda customizer (Consumer) path \u2013 the method overload that accepts `Consumer<ExecutionContext>` should be exercised."
+      }
+    ]
+  },
+  {
+    "group": "Recursive Anchor Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "jsonNodeReferencingRecursiveAnchor"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result with no StackOverflowError",
+        "description": "Schema contains `$recursiveAnchor: true`. The method must detect recursion and avoid infinite loops, exercising the `if (schema.isRecursiveAnchor())` branch."
+      }
+    ]
+  },
+  {
+    "group": "Keyword Walk Listener Runner \u2013 Null vs Non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result; keywordWalkListenerRunner stays null",
+        "description": "When the schema does not define any walk listeners, `keywordWalkListenerRunner` remains null \u2013 the branch `if (keywordWalkListenerRunner != null)` is false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setWalkListenerRunner(new DefaultKeywordWalkListenerRunner())"
+          }
+        ],
+        "expected": "CollectingOutputFormat result; walk listener runner invoked",
+        "description": "Customizer injects a non\u2011null `WalkListenerRunner`. The method should take the non\u2011null path and invoke it, covering the `if (keywordWalkListenerRunner != null)` true branch."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat Exception Propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode",
+            "note": "e.g. {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "ExceptionThrowingOutputFormat.INSTANCE",
+            "note": "OutputFormat that throws RuntimeException when apply() is called"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "When the supplied OutputFormat throws an exception during result creation, the validate method must let the exception propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat Generic Return",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode",
+            "note": "conforms to the schema"
+          },
+          {
+            "parameter": "format",
+            "value": "ErrorCountOutputFormat.INSTANCE",
+            "note": "OutputFormat<Integer> that returns the number of validation messages"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "0",
+        "description": "A custom OutputFormat that converts the Set<ValidationMessage> into an Integer count. For a valid document the method should return 0."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNodeMissingRequired",
+            "note": "e.g. {} missing required property"
+          },
+          {
+            "parameter": "format",
+            "value": "ErrorCountOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "1",
+        "description": "The same OutputFormat should return the exact number of validation errors (1 in this case)."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Throws Exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new IllegalStateException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If the provided ExecutionContextCustomizer throws an exception, validate must propagate that exception without swallowing it."
+      }
+    ]
+  },
+  {
+    "group": "Schema $ref Resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "refValidJsonNode",
+            "note": "e.g. {\"id\":1,\"name\":\"Alice\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing empty Set<ValidationMessage>",
+        "description": "The schema contains a $ref to an external definition. The validator must resolve the reference and validate the instance successfully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "refInvalidJsonNode",
+            "note": "e.g. {\"id\":\"not-an-int\",\"name\":\"Bob\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing at least one ValidationMessage",
+        "description": "When the $ref target schema is violated, validation errors must be reported correctly."
+      }
+    ]
+  },
+  {
+    "group": "Array Node Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validArrayNode",
+            "note": "[1,2,3]"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing empty Set<ValidationMessage>",
+        "description": "Schema expects an array of integers. A correct array should validate with no errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidArrayNode",
+            "note": "[1,\"two\",3]"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing at least one ValidationMessage",
+        "description": "An array containing a non\u2011integer element violates the schema; the validator must report the type error."
+      }
+    ]
+  },
+  {
+    "group": "KeywordWalkListenerRunner Pre\u2011set in Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result; WalkListenerRunner invoked (its side\u2011effect recorded)",
+        "description": "The JsonSchema instance already has `keywordWalkListenerRunner` set to a mock runner that records invocation. The method should use this runner without needing a customizer."
+      }
+    ]
+  },
+  {
+    "group": "Multiple Customizer Flags \u2013 FailFast Overrides ValidateAll",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNodeMultipleErrors",
+            "note": "{\"age\":\"string\",\"name\":null}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { ctx.setValidateAll(true); ctx.setFailFast(true); }"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing exactly one ValidationMessage",
+        "description": "When both `validateAll` and `failFast` are true, failFast takes precedence and validation stops after the first error."
+      }
+    ]
+  },
+  {
+    "group": "Empty Object with Required Property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "emptyObjectNode",
+            "note": "{}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "CollectingOutputFormat result containing exactly one ValidationMessage about missing required property",
+        "description": "Schema defines a required property `name`. An empty object should trigger a single required\u2011property validation error."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $id Percent Encoding \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema associated with the JsonSchema instance contains an `$id` value with malformed percent\u2011encoding (e.g. \"http://example.com/schema%ZZ\"). During validation the method attempts to URL\u2011decode the `$id`, which triggers `IllegalArgumentException`. The test verifies that the exception propagates unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setValidateAll(true)"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Same malformed `$id` scenario but with a customizer that sets a flag. The customizer should be applied before the `$id` decoding step, and the resulting `IllegalArgumentException` must still be thrown."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref URI \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "refValidJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema contains a `$ref` whose value is not a valid URI (e.g. \"#/definitions/Invalid%GRef\"). When the validator resolves the reference it calls `URLDecoder.decode`, which throws `IllegalArgumentException`. The test ensures the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Schema Definition \u2013 IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "The schema JSON node has duplicate keys (e.g., two \"type\" properties). The `JsonSchema.from` method detects this inconsistency and throws `IllegalStateException`. The test validates that the `validate` method propagates this exception."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat Returns Null \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "NullReturningOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A custom `OutputFormat` implementation deliberately returns `null` from its `apply` method. The `validate` method expects a non\u2011null result and therefore throws `NullPointerException`. This case confirms that the null\u2011return contract is enforced."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer Throws Checked Exception \u2013 RuntimeException Wrapper",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat.INSTANCE"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new java.io.IOException(\"IO failure in customizer\"); }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "The customizer throws a checked `IOException`. Because `validate` does not declare checked exceptions, the implementation wraps it in a `RuntimeException`. The test asserts that a `RuntimeException` (with the original cause) is propagated."
+      }
+    ]
+  }
+]

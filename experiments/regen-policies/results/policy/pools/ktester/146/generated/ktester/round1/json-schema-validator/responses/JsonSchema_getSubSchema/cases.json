@@ -1,0 +1,175 @@
+[
+  {
+    "group": "Successful navigation \u2013 array index segment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/items/0\""
+          }
+        ],
+        "expected": "JsonSchema instance representing the schema node at path /items/0 (the first element of the \"items\" array). The returned schema's getSchemaLocation().getFragment() should be \"#/items/0\".",
+        "description": "The fragment points to an array element. The parent node is an array, the segment is a Number, so the branch `if ((segment instanceof Number) && parentNode.isArray())` is exercised. The method should create a sub\u2011schema for the array element and return it."
+      }
+    ]
+  },
+  {
+    "group": "Successful navigation \u2013 object property segment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/properties/name\""
+          }
+        ],
+        "expected": "JsonSchema instance whose schema node is the object under \"properties\" \u2192 \"name\". The returned schema's getSchemaLocation().getFragment() should be \"#/properties/name\" and evaluationPath should be \"#/properties/name\".",
+        "description": "The fragment points to a child property of an object. The segment is a String and parent node is an ObjectNode, therefore the branch handling object property segments is exercised. A sub\u2011schema is created for the property and returned."
+      }
+    ]
+  },
+  {
+    "group": "Successful navigation \u2013 $id resolution before final segment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/definitions/address/properties/street\""
+          }
+        ],
+        "expected": "JsonSchema instance representing the schema node at \"/definitions/address/properties/street\". Because the intermediate node \"/definitions/address\" contains an \"$id\" (e.g., \"http://example.com/address\"), a new sub\u2011schema is created at that point (x == 1) and the later segment \"street\" is resolved relative to the new lexical context. The final schemaLocation fragment should be \"#/definitions/address/properties/street\".",
+        "description": "The fragment traverses through an object that defines a new $id. The code path where `id != null` triggers creation of a new sub\u2011schema before reaching the last segment, testing the lexical context handling."
+      }
+    ]
+  },
+  {
+    "group": "Segment is numeric but parent node is NOT an array",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/properties/0\""
+          }
+        ],
+        "expected": "JsonSchema instance for the property named \"0\" under \"properties\". The numeric segment is treated as a String because parentNode.isArray() is false, so the `else` branch is taken. The schemaLocation fragment should be \"#/properties/0\".",
+        "description": "Tests the case where the segment is a Number object but the current parent node is an ObjectNode. The method must not use the array\u2011index handling branch."
+      }
+    ]
+  },
+  {
+    "group": "Fragment not found \u2013 fallback to external schema resource returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/nonexistent/path\""
+          }
+        ],
+        "expected": "InvalidSchemaRefException thrown with ValidationMessage type REF and code \"internal.unresolvedRef\". The instanceLocation in the message should match the current schemaLocation fragment at the point of failure.",
+        "description": "The fragment cannot be resolved in the current document. `getNode` returns null, triggering the fallback logic. The document's `findSchemaResourceRoot().fetchSubSchemaNode` also returns null, so the method throws an InvalidSchemaRefException. This covers the error\u2011handling branch."
+      }
+    ]
+  },
+  {
+    "group": "Fragment not found \u2013 external schema resource resolves successfully",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/external/ref\""
+          }
+        ],
+        "expected": "JsonSchema instance obtained from the external schema resource. Its schemaLocation fragment should reflect the resolved external pointer (e.g., \"#/external/ref\").",
+        "description": "When the fragment is not present in the current document, `fetchSubSchemaNode` returns a non\u2011null JsonSchema that itself can resolve the fragment. The method returns the result of `found.getSubSchema(fragment)`. This tests the successful fallback path."
+      }
+    ]
+  },
+  {
+    "group": "Last segment without $id \u2013 sub\u2011schema created only at final step",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/properties/age\""
+          }
+        ],
+        "expected": "JsonSchema instance for the \"age\" property. Since the intermediate node \"/properties\" has no $id and is not the last segment, no sub\u2011schema is created at that step; a sub\u2011schema is created only when x == nameCount\u20111. The returned schemaLocation fragment should be \"#/properties/age\".",
+        "description": "Ensures that when `id` is null for an intermediate segment, the condition `(id != null) || (x == nameCount-1)` prevents premature sub\u2011schema creation, and the sub\u2011schema is only instantiated at the final segment."
+      }
+    ]
+  },
+  {
+    "group": "nullFragment_throwsNullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the supplied JsonNodePath is null, the method attempts to call fragment.getNameCount() and fragment.getElement(x), which results in a NullPointerException. This verifies that the method does not guard against a null argument."
+      }
+    ]
+  },
+  {
+    "group": "unsupportedSegmentType_throwsIllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/properties/active\" where the segment at index 1 is a Boolean true (e.g., fragment.getElement(1) returns Boolean.TRUE)"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The getNode(parentNode, segment) implementation is expected to reject non\u2011String/Number segment types and throw IllegalArgumentException. By providing a Boolean segment, the branch `JsonNode subSchemaNode = getNode(parentNode, segment);` triggers the exception, which should propagate out of getSubSchema."
+      }
+    ]
+  },
+  {
+    "group": "nullValidationContext_throwsNullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/properties/name\""
+          },
+          {
+            "parameter": "validationContext",
+            "value": "null (the JsonSchema instance is constructed with a null ValidationContext)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the schema's ValidationContext is null, the call `parent.getValidationContext().resolveSchemaId(subSchemaNode)` results in a NullPointerException. This case ensures that the method does not internally check for a null ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNodeThrowsRuntimeException_propagates",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath representing pointer \"/nonexistent\" (fragment not present in the current document)"
+          },
+          {
+            "parameter": "fetchSubSchemaNodeBehavior",
+            "value": "throws IllegalStateException(\"fetch failed\")"
+          }
+        ],
+        "expected": "IllegalStateException with message \"fetch failed\"",
+        "description": "When the fragment cannot be resolved, the method falls back to `document.findSchemaResourceRoot().fetchSubSchemaNode(this.validationContext)`. If that call throws a runtime exception (e.g., IllegalStateException), the exception should propagate unchanged, bypassing the InvalidSchemaRefException logic."
+      }
+    ]
+  }
+]

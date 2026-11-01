@@ -1,0 +1,487 @@
+[
+  {
+    "group": "JsonSchema.from - normal usage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose getValidationContext() returns the supplied ValidationContext and isRecursiveAnchor() is false",
+        "description": "Verify that the factory method creates a JsonSchema object when all required arguments are provided and the suppress flag is false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"file:/tmp/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"#\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(...)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; subsequent call to getSubSchema(anyPath) must return null because sub\u2011schema retrieval is suppressed",
+        "description": "When suppressSubSchemaRetrieval is true the created schema should not attempt to resolve sub\u2011schemas; this is verified by calling getSubSchema on a known fragment and expecting null."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - null ValidationContext handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; calling getValidationContext() on it returns null",
+        "description": "Verify that the factory method tolerates a null ValidationContext and stores it unchanged."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - null SchemaLocation handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; getId() returns null because no location was supplied",
+        "description": "Ensure that a null SchemaLocation does not cause a failure and that the schema\u2019s identifier is null."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - null JsonNodePath handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; no exception is thrown during construction",
+        "description": "Validate that a null evaluationPath is accepted (the path is only used for error reporting) and does not break object creation."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - null schemaNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The constructor expects a non\u2011null JsonNode representing the schema; passing null should raise NPE."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - schemaNode as an array node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; the instance can be used in validation without error",
+        "description": "Confirm that the factory method works when the supplied schema node is an array (e.g., a schema defined as a JSON array)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - schemaNode as a boolean node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.booleanNode(true)"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; the instance can be used in validation without error",
+        "description": "Validate that a primitive schema node (boolean) does not prevent object creation."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - parent supplied, suppress flag false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/parent\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"#parent\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), new SchemaLocation(\"http://example.com/root\"), new JsonNodePath(\"$\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; findAncestor() on the child returns the supplied parent schema",
+        "description": "When a parent schema is provided, the newly created schema should retain a reference to it; this is verified via findAncestor()."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - parent supplied, suppress flag true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/child\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"#child\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "new JsonSchema(new ValidationContext(), new SchemaLocation(\"http://example.com/root\"), new JsonNodePath(\"$\"), JsonNodeFactory.instance.objectNode(), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; calling getSubSchema(new JsonNodePath(\"#/any\")) on the child returns null because sub\u2011schema retrieval is suppressed",
+        "description": "Even when a parent is present, setting suppressSubSchemaRetrieval to true must prevent the child from resolving any sub\u2011schemas."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - schemaNode as numeric node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.numberNode(42)"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "throws IllegalArgumentException",
+        "description": "A numeric JsonNode is not a valid JSON Schema representation; the factory method should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - schemaNode as string node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.textNode(\"not a schema\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "throws IllegalArgumentException",
+        "description": "A text JsonNode cannot be interpreted as a JSON Schema; the constructor should raise IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - schemaNode as missing node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"http://example.com/schema\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.missingNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "throws IllegalArgumentException",
+        "description": "A missing node indicates that no schema definition was supplied; the factory should fail with IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.from - invalid SchemaLocation URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"ht!tp://[invalid-uri]\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "throws IllegalArgumentException",
+        "description": "SchemaLocation constructor validates the URI; providing a malformed URI should cause IllegalArgumentException during the call to JsonSchema.from."
+      }
+    ]
+  }
+]

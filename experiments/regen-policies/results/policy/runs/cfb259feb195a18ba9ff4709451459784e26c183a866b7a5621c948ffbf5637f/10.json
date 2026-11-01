@@ -1,0 +1,78 @@
+{
+  "index": 10,
+  "sha": "7f1ec11b7a4b391577595e0d31d5825548c9a64f",
+  "status": "evaluated",
+  "imported": true,
+  "methods": [
+    {
+      "class": "com.networknt.schema.JsonWalkApplyDefaultsTest",
+      "method": "testApplyDefaults3",
+      "kind": "parameterized",
+      "file": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java|com.networknt.schema.JsonWalkApplyDefaultsTest|testApplyDefaults3",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonWalkApplyDefaultsTest#testApplyDefaults3(boolean)"
+      ],
+      "baseline_states": [
+        "pass"
+      ]
+    },
+    {
+      "class": "com.networknt.schema.JsonWalkApplyDefaultsTest",
+      "method": "testApplyDefaults2",
+      "kind": "plain",
+      "file": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java|com.networknt.schema.JsonWalkApplyDefaultsTest|testApplyDefaults2",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonWalkApplyDefaultsTest#testApplyDefaults2()"
+      ],
+      "baseline_states": [
+        "pass"
+      ]
+    },
+    {
+      "class": "com.networknt.schema.JsonWalkApplyDefaultsTest",
+      "method": "testApplyDefaults1",
+      "kind": "plain",
+      "file": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java|com.networknt.schema.JsonWalkApplyDefaultsTest|testApplyDefaults1",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonWalkApplyDefaultsTest#testApplyDefaults1()"
+      ],
+      "baseline_states": [
+        "pass"
+      ]
+    },
+    {
+      "class": "com.networknt.schema.JsonWalkApplyDefaultsTest",
+      "method": "testApplyDefaults0",
+      "kind": "parameterized",
+      "file": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/JsonWalkApplyDefaultsTest.java|com.networknt.schema.JsonWalkApplyDefaultsTest|testApplyDefaults0",
+      "state": "fail",
+      "message": " Expected: iterable with items [\"$.outer.mixedObject.intValue_missing: is missing but it is required\", \"$.outer.mixedObject.intValue_missingButError: is missing but it is required\", \"$.outer.mixedObject.intValue_null: null found, integer expected\", \"$.outer.goodArray[1]: null found, string expected\", \"$.outer.badArray[1]: null found, string expected\", \"$.outer.reference.stringValue_missing: is missing but it is required\"] in any order      but: not matched: \"$.outer.mixedObject: required property 'intValue_missing' not found\"",
+      "flaky": false,
+      "initial_state": "fail",
+      "selector": [
+        "com.networknt.schema.JsonWalkApplyDefaultsTest#testApplyDefaults0(java.lang.String)"
+      ],
+      "baseline_states": [
+        "fail"
+      ],
+      "retry_state": "fail",
+      "retry_message": " Expected: iterable with items [\"$.outer.mixedObject.intValue_missing: is missing but it is required\", \"$.outer.mixedObject.intValue_missingButError: is missing but it is required\", \"$.outer.mixedObject.intValue_null: null found, integer expected\", \"$.outer.goodArray[1]: null found, string expected\", \"$.outer.badArray[1]: null found, string expected\", \"$.outer.reference.stringValue_missing: is missing but it is required\"] in any order      but: not matched: \"$.outer.mixedObject: required property 'intValue_missing' not found\""
+    }
+  ]
+}

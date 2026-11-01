@@ -1,0 +1,92 @@
+[
+  {
+    "group": "evaluationParentSchema is non\u2011null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the JsonSchema instance that was set as evaluationParentSchema (MockSchemaA)",
+        "description": "When the protected field `evaluationParentSchema` is assigned a non\u2011null JsonSchema, `getEvaluationParentSchema()` must return that exact instance without delegating to `getParentSchema()`."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the JsonSchema instance provided by getParentSchema() (MockSchemaB)",
+        "description": "When `evaluationParentSchema` is null, the method should fall back to `getParentSchema()`. The test subclass overrides `getParentSchema()` to return a known mock schema and verifies that this value is returned."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema null and parent schema null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "When the protected field `evaluationParentSchema` is null **and** the overridden `getParentSchema()` returns null, `getEvaluationParentSchema()` should return null rather than throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema non\u2011null prevents parent schema call",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the JsonSchema instance set as evaluationParentSchema (MockSchemaC) and does NOT invoke getParentSchema()",
+        "description": "Even if `getParentSchema()` would return a different schema (MockSchemaD), the method must short\u2011circuit and return the non\u2011null `evaluationParentSchema`. A spy on the subclass verifies that `getParentSchema()` is never called."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema set after construction",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the JsonSchema instance that was later assigned to evaluationParentSchema (MockSchemaE)",
+        "description": "The validator is instantiated with `evaluationParentSchema` initially null. After construction the field is set via a protected setter (or reflection). Subsequent call to `getEvaluationParentSchema()` must return the newly assigned schema, demonstrating that the method always reads the current field value."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema null and getParentSchema throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException with message \"parent schema failure\"",
+        "description": "When the protected field `evaluationParentSchema` is null and the overridden `getParentSchema()` deliberately throws a RuntimeException, `getEvaluationParentSchema()` must propagate that exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema non\u2011null and getParentSchema throws RuntimeException (exception not propagated)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the JsonSchema instance set as evaluationParentSchema (MockSchemaX) without throwing",
+        "description": "Even if the overridden `getParentSchema()` throws a RuntimeException, the method should short\u2011circuit because `evaluationParentSchema` is non\u2011null, thus no exception is propagated and the stored schema is returned."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema null and getParentSchema throws NullPointerException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When `evaluationParentSchema` is null and `getParentSchema()` is overridden to throw a NullPointerException, the call to `getEvaluationParentSchema()` must let that NullPointerException bubble up."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchema null and getParentSchema throws custom checked exception wrapped in RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException caused by IllegalStateException",
+        "description": "If `getParentSchema()` throws a checked exception that is wrapped in a RuntimeException (e.g., IllegalStateException), the wrapper should be propagated unchanged by `getEvaluationParentSchema()`."
+      }
+    ]
+  }
+]

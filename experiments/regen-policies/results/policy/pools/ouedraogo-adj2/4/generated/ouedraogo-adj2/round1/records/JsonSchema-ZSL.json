@@ -1,0 +1,58 @@
+{
+  "class_name": "JsonSchema",
+  "technique": "ZSL",
+  "status": "ok",
+  "attempts": 1,
+  "calls": [
+    {
+      "timestamp": "2026-10-29T21:05:25.490854+00:00",
+      "latency": 14.573,
+      "status": "ok",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "provider": "Sail Research",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_reported": "openai/gpt-oss-120b",
+      "request_id": "gen-1793307925-tVSd8PyR9C394HDIsdNX",
+      "usage": {
+        "prompt_tokens": 7869,
+        "completion_tokens": 2752,
+        "total_tokens": 10621,
+        "cost": 0.00157102,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00157102,
+          "upstream_inference_prompt_cost": 0.00047022,
+          "upstream_inference_completions_cost": 0.0011008
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 868,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "error_type": null,
+      "prompt_sha256": "e7e9b48497429a826a978938c786850b4ea2dff9d31d3ac22014e6b379624963",
+      "response_sha256": "7aee4f9d72d5871618bdd038587795c1b7637d1823522ed2f4fd290211587403"
+    }
+  ],
+  "extraction": {
+    "msr_detected": true,
+    "csr_v2": true,
+    "class_name": "JsonSchemaTest",
+    "package": "com.networknt.schema",
+    "fqcn": "com.networknt.schema.JsonSchemaTest",
+    "csr_success": null,
+    "selection": "markers",
+    "marker_pair": true,
+    "braces_balanced": true,
+    "html_detected": false
+  },
+  "file": "generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java"
+}

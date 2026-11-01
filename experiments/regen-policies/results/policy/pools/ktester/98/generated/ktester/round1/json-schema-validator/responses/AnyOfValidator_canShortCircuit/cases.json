@@ -1,0 +1,87 @@
+[
+  {
+    "group": "AnyOfValidator.canShortCircuit",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(annotationCollectionEnabled = true)"
+          }
+        ],
+        "expected": false,
+        "description": "When the ExecutionConfig reports annotation collection is enabled, canShortCircuit should return false (no short\u2011circuiting)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(annotationCollectionEnabled = false)"
+          }
+        ],
+        "expected": true,
+        "description": "When the ExecutionConfig reports annotation collection is disabled, canShortCircuit should return true (short\u2011circuiting is allowed)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null ExecutionContext should result in a NullPointerException because the method dereferences the argument without null\u2011check."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(getExecutionConfig() returns null)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When ExecutionContext.getExecutionConfig() returns null the method dereferences it, causing a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(isAnnotationCollectionEnabled() throws IllegalStateException)"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If ExecutionConfig.isAnnotationCollectionEnabled() throws an unchecked exception, canShortCircuit should propagate that exception unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "spyExecutionContext(with ExecutionConfig returning true and a counter to verify single call)"
+          }
+        ],
+        "expected": false,
+        "description": "When annotation collection is enabled (true) the method must return false; the test also verifies that ExecutionContext.getExecutionConfig() and isAnnotationCollectionEnabled() are each invoked exactly once (no extra processing)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(getExecutionConfig() throws IllegalStateException)"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When ExecutionContext.getExecutionConfig() throws an unchecked exception (IllegalStateException), canShortCircuit should propagate that exception without handling it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(getExecutionConfig() throws NullPointerException)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When ExecutionContext.getExecutionConfig() itself throws a NullPointerException, the method should not catch it and the exception should propagate to the caller."
+      }
+    ]
+  }
+]

@@ -1,0 +1,592 @@
+[
+  {
+    "group": "Successful creation of JsonSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null JsonNode (e.g., ObjectNode)"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "All required arguments are non\u2011null and suppressSubSchemaRetrieval is false \u2013 the factory method should return a properly constructed JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null JsonNode (e.g., ObjectNode)"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "Same as the previous case but with suppressSubSchemaRetrieval set to true \u2013 the flag should be stored in the created object without affecting construction."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": null
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": null
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null JsonNode (e.g., ObjectNode)"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "schemaLocation, evaluationPath and parent are optional in the current implementation \u2013 the method should still succeed and create a JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "Failure due to null mandatory parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": null
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null JsonNode"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "validationContext is required for the constructor; passing null should cause a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": null
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "schemaNode represents the JSON schema definition; a null value should trigger a NullPointerException during construction."
+      }
+    ]
+  },
+  {
+    "group": "Mixed optional nulls with suppressSubSchemaRetrieval true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": null
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null ObjectNode"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "Only validationContext, evaluationPath and schemaNode are provided; schemaLocation and parent are null while the suppress flag is true. The factory should still create a JsonSchema instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": null
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null ObjectNode"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "evaluationPath is null while all other required arguments are present and suppress flag is true. The method should handle the missing evaluationPath gracefully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": null
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": null
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null ObjectNode"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "Both schemaLocation and evaluationPath are null, parent is supplied, and suppress flag is true. The creation should still succeed."
+      }
+    ]
+  },
+  {
+    "group": "Creation with various JsonNode implementations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked ArrayNode (empty array)"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "The schemaNode is an ArrayNode instead of the usual ObjectNode. The factory method should accept any non\u2011null JsonNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked BooleanNode (true)"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "The schemaNode is a BooleanNode. Even though a boolean schema is unusual, the method only requires a non\u2011null JsonNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked TextNode (\"example\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "The schemaNode is a TextNode containing a string. The method should still construct a JsonSchema instance without error."
+      }
+    ]
+  },
+  {
+    "group": "Creation with parent null and suppress flag variations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null ObjectNode"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "Parent schema is omitted (null) while all other arguments are present and suppress flag is false. The factory should still succeed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked non\u2011null ObjectNode"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": true
+          }
+        ],
+        "expected": "instance of JsonSchema returned (no exception)",
+        "description": "Parent schema is null and suppressSubSchemaRetrieval is true. The method must handle a missing parent regardless of the flag."
+      }
+    ]
+  },
+  {
+    "group": "Failure due to malformed $ref causing UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked ObjectNode containing { \"$ref\": \"http://example.com/invalid%ZZschema.json\" }"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "UnsupportedEncodingException",
+        "description": "The schemaNode contains a $ref with an invalid percent\u2011encoding sequence. During construction the $ref is URL\u2011decoded, which throws UnsupportedEncodingException."
+      }
+    ]
+  },
+  {
+    "group": "Failure due to $ref referencing non\u2011existent schema causing IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked ObjectNode containing { \"$ref\": \"http://nonexistent.example.com/schema.json\" }"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "IOException",
+        "description": "The $ref points to an external URI that cannot be resolved. The constructor attempts to load the referenced schema and propagates the resulting IOException."
+      }
+    ]
+  },
+  {
+    "group": "Failure due to invalid schema node type causing IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked IntNode (numeric value 123) \u2013 a primitive node that cannot represent a schema object"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The constructor expects the schemaNode to be an ObjectNode, ArrayNode or a BooleanNode representing a valid JSON\u2011Schema. Supplying a scalar numeric node triggers an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Failure due to circular reference detection causing JsonSchemaException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked ObjectNode containing { \"$ref\": \"#\" } \u2013 a self\u2011referencing schema"
+          },
+          {
+            "parameter": "parent",
+            "value": "mocked parent JsonSchema instance (which also contains the same $ref)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "A schema that directly or indirectly references itself creates a circular reference. The constructor detects this condition and throws a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Failure when suppressSubSchemaRetrieval is false but parent is null and schema contains $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "mocked ValidationContext instance"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "mocked SchemaLocation instance"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "mocked JsonNodePath instance"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "mocked ObjectNode containing { \"$ref\": \"#/definitions/foo\" } \u2013 requires parent for resolution"
+          },
+          {
+            "parameter": "parent",
+            "value": null
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": false
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When a $ref needs to be resolved against a parent schema but the parent argument is null, the constructor cannot resolve the reference and throws IllegalStateException."
+      }
+    ]
+  }
+]

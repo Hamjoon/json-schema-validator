@@ -1,0 +1,173 @@
+[
+  {
+    "group": "Cache disabled - direct mapping",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation1"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigA"
+          }
+        ],
+        "expected": "returns the JsonSchema instance produced by getMappedSchema (no caching performed)",
+        "description": "When enableSchemaCache is false the method must bypass the cache completely and delegate to getMappedSchema. The returned object should be exactly what getMappedSchema returns."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - cache miss, mapper returns non\u2011null schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation2"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigB"
+          }
+        ],
+        "expected": "returns the result of cachedSchema.withConfig(mockConfigB) and stores cachedSchema in the internal cache",
+        "description": "With enableSchemaCache true and an empty cache, loadSchema should call getMappedSchema, put the returned schema into the cache, and finally return the schema after applying withConfig."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - cache miss, mapper returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation3"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigC"
+          }
+        ],
+        "expected": "returns null and does not modify the cache",
+        "description": "When enableSchemaCache is true but getMappedSchema returns null, loadSchema must propagate the null result without inserting anything into the cache."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - cache hit",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocation4"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigD"
+          }
+        ],
+        "expected": "returns the cached JsonSchema instance after invoking withConfig(mockConfigD); getMappedSchema is never called",
+        "description": "If a schema is already present in the cache, loadSchema must return the cached value (after applying withConfig) and must not call getMappedSchema again."
+      }
+    ]
+  },
+  {
+    "group": "Cache disabled - null config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocationNullConfig"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "returns the JsonSchema instance produced by getMappedSchema when config is null (no caching performed)",
+        "description": "When enableSchemaCache is false and the supplied SchemaValidatorsConfig is null, loadSchema must delegate directly to getMappedSchema passing the null config and return whatever getMappedSchema returns."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - null config, cache miss",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocationNullConfigMiss"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "calls getMappedSchema, stores the non\u2011null schema in the cache, invokes withConfig(null) on the cached schema and returns the result",
+        "description": "With enableSchemaCache true, an empty cache and a null config, loadSchema should obtain a schema via getMappedSchema, cache it, call withConfig(null) on the cached schema and return the value returned by withConfig."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - null schemaUri",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigX"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "Passing a null SchemaLocation should cause a NullPointerException because the method accesses the map with the key without a null\u2011check."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - cache hit with withConfig returning new instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocationHitWithConfig"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigY"
+          }
+        ],
+        "expected": "returns the JsonSchema instance produced by cachedSchema.withConfig(mockConfigY) (a different instance than the cached one)",
+        "description": "When a schema is already cached, loadSchema must call withConfig on the cached schema and return the object that withConfig returns, even if that object is a new instance."
+      }
+    ]
+  },
+  {
+    "group": "Cache enabled - cache miss, getMappedSchema throws runtime exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "mockSchemaLocationException"
+          },
+          {
+            "parameter": "config",
+            "value": "mockConfigZ"
+          }
+        ],
+        "expected": "propagates the RuntimeException thrown by getMappedSchema",
+        "description": "If getMappedSchema throws a RuntimeException during a cache\u2011miss scenario, loadSchema must not swallow the exception; it should propagate it to the caller."
+      }
+    ]
+  }
+]

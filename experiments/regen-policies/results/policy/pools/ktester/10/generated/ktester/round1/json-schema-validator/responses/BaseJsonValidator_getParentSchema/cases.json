@@ -1,0 +1,52 @@
+[
+  {
+    "group": "Parent Schema Retrieval",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "When the validator is instantiated without a parent schema, getParentSchema() should return null."
+      },
+      {
+        "input": [],
+        "expected": "mockParentSchema",
+        "description": "When a mock JsonSchema is assigned to the protected parentSchema field, getParentSchema() must return the same mock instance (reference equality)."
+      },
+      {
+        "input": [],
+        "expected": "realParentSchema",
+        "description": "When a real JsonSchema object (created via JsonSchemaFactory) is set as the parent schema, getParentSchema() should return that exact instance."
+      }
+    ]
+  },
+  {
+    "group": "Parent Schema Retrieval Edge Cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "After a non\u2011null parent schema is assigned (e.g., a mock), the protected `parentSchema` field is reset to `null` via reflection; `getParentSchema()` must then return `null`."
+      },
+      {
+        "input": [],
+        "expected": "selfReference",
+        "description": "When the validator's own `JsonSchema` instance (the schema being validated) is assigned as its `parentSchema`, `getParentSchema()` should return that same instance, confirming self\u2011reference handling."
+      },
+      {
+        "input": [],
+        "expected": "proxyInstance",
+        "description": "A dynamic proxy that implements `JsonSchema` is set as `parentSchema`. `getParentSchema()` must return the proxy object, demonstrating that proxy instances are returned unchanged."
+      },
+      {
+        "input": [],
+        "expected": "customSubclass",
+        "description": "A custom subclass of `JsonSchema` (e.g., `MyJsonSchema extends JsonSchema`) is assigned to `parentSchema`. The method should return this subclass instance, verifying polymorphic return values."
+      },
+      {
+        "input": [],
+        "expected": "differentThreadInstance",
+        "description": "The `parentSchema` field is set in one thread and `getParentSchema()` is called from another thread without synchronization. The method should still return the assigned instance, confirming that no thread\u2011local caching interferes with the simple getter."
+      }
+    ]
+  }
+]

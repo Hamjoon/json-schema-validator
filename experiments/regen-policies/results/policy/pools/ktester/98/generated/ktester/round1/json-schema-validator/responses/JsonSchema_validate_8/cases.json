@@ -1,0 +1,342 @@
+[
+  {
+    "group": "Successful validation \u2013 schema matches",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":30,\"name\":\"Alice\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "An empty List (no validation messages)",
+        "description": "When the JSON instance conforms to the schema, the validator should produce no ValidationMessage objects. The custom OutputFormat collects the messages into a List, which is expected to be empty."
+      }
+    ]
+  },
+  {
+    "group": "Validation failures \u2013 schema violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":\"thirty\",\"name\":null}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "A List containing at least two ValidationMessage objects (type mismatch for 'age' and null value for required 'name')",
+        "description": "The JSON instance violates the schema (wrong type for 'age' and missing required 'name'). The validator must return the collected validation messages via the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Null rootNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null JsonNode should cause the method to throw a NullPointerException before any validation is performed."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":25}"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the OutputFormat argument is null the method must fail fast with a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Consumer throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":20}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "Consumer that throws IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException propagated to the caller",
+        "description": "When the provided Consumer throws an unchecked exception, the validate method must not swallow it; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Consumer is invoked (side\u2011effect verification)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":40}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "Consumer that sets a flag on the ExecutionContext"
+          }
+        ],
+        "expected": "Flag on ExecutionContext is true after validation",
+        "description": "The Consumer supplied to the method should be executed exactly once. The test uses a mutable flag (e.g., AtomicBoolean) that the Consumer sets; after validation the flag must be true, confirming the Consumer was called."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object rootNode (array) \u2013 type mismatch handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "[{\"age\":30}]"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "A List containing at least one ValidationMessage indicating that the instance is not an object (type mismatch)",
+        "description": "The schema expects an object with properties; providing a JSON array should trigger a type\u2011mismatch validation message. The custom OutputFormat should collect that message."
+      }
+    ]
+  },
+  {
+    "group": "Empty object \u2013 required property violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "A List containing two ValidationMessage objects (missing required 'age' and missing required 'name')",
+        "description": "When the instance is an empty object, the validator must report each required property that is absent."
+      }
+    ]
+  },
+  {
+    "group": "Additional properties not allowed \u2013 unexpected field detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":30,\"name\":\"Bob\",\"extra\":\"value\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "A List containing one ValidationMessage indicating that property 'extra' is not allowed",
+        "description": "Assuming the schema has \"additionalProperties\": false, an unexpected property should be reported as a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Null Consumer handling \u2013 fail\u2011fast behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":25,\"name\":\"Eve\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the Consumer argument is null the method should throw a NullPointerException before performing any validation."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat \u2013 returns transformed result",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":30,\"name\":\"Alice\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CountingOutputFormat (returns Integer \u2013 number of messages)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "Integer value 0",
+        "description": "A custom OutputFormat that counts validation messages should receive an empty list for a valid instance and therefore return 0."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":\"thirty\",\"name\":null}"
+          },
+          {
+            "parameter": "format",
+            "value": "CountingOutputFormat (returns Integer \u2013 number of messages)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "Integer value >= 2",
+        "description": "When the instance violates the schema, the CountingOutputFormat should return the number of validation messages (at least two in this case)."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws unchecked exception \u2013 propagation test",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":30,\"name\":\"Alice\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "ExceptionThrowingOutputFormat (throws IllegalArgumentException)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "IllegalArgumentException propagated to the caller",
+        "description": "If the OutputFormat implementation throws an unchecked exception while processing the validation messages, the validate method must not catch it; the exception should propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext customization \u2013 fail\u2011fast mode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"age\":\"thirty\",\"name\":\"Bob\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "Consumer that sets ExecutionContext.setFailFast(true)"
+          }
+        ],
+        "expected": "A List containing exactly one ValidationMessage (validation stops after first error)",
+        "description": "When the Consumer configures the ExecutionContext to fail fast, the validator should stop after the first detected error, resulting in a single ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Unresolved $ref handling \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "format",
+            "value": "CollectingOutputFormat (returns List<ValidationMessage>)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op Consumer"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The JsonSchema instance is constructed from a schema JSON that contains a $ref pointing to a non\u2011existent definition. When validate(JsonNode, OutputFormat<T>, Consumer<ExecutionContext>) is invoked, the resolver should detect the missing reference and throw an IllegalArgumentException. The test verifies that the exception is propagated to the caller."
+      }
+    ]
+  }
+]

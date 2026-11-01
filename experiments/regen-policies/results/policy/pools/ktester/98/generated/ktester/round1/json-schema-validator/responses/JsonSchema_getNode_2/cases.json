@@ -1,0 +1,399 @@
+[
+  {
+    "group": "Object node \u2013 existing property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "name"
+          }
+        ],
+        "expected": "\"John\"",
+        "description": "When the node is an ObjectNode and the property string exists, getNode should return the corresponding child JsonNode containing the value \"John\"."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "age"
+          }
+        ],
+        "expected": "30",
+        "description": "When the node is an ObjectNode and the property string exists, getNode should return the numeric child JsonNode (30)."
+      }
+    ]
+  },
+  {
+    "group": "Object node \u2013 non\u2011existing property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "address"
+          }
+        ],
+        "expected": null,
+        "description": "If the property does not exist in the ObjectNode, getNode should return null."
+      }
+    ]
+  },
+  {
+    "group": "Array node \u2013 valid index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[\"apple\",\"banana\",\"cherry\"]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 1
+          }
+        ],
+        "expected": "\"banana\"",
+        "description": "When the node is an ArrayNode and the index is within bounds, getNode should return the element at that index."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[10,20,30]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 0
+          }
+        ],
+        "expected": "10",
+        "description": "Array index 0 should return the first numeric element."
+      }
+    ]
+  },
+  {
+    "group": "Array node \u2013 out\u2011of\u2011bounds index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[\"a\",\"b\"]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 5
+          }
+        ],
+        "expected": null,
+        "description": "If the index is greater than the last element, getNode should return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": -1
+          }
+        ],
+        "expected": null,
+        "description": "Negative indexes are considered out of bounds and should result in null."
+      }
+    ]
+  },
+  {
+    "group": "Invalid propertyOrIndex type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"key\":\"value\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a Boolean as propertyOrIndex is not supported; JsonNodes.get should throw IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[1,2,3]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 3.14
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a non\u2011integer number as index should cause IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Null node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "any"
+          }
+        ],
+        "expected": null,
+        "description": "If the supplied JsonNode is null, getNode should safely return null rather than throwing NPE."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 0
+          }
+        ],
+        "expected": null,
+        "description": "Null node with numeric index also returns null."
+      }
+    ]
+  },
+  {
+    "group": "Object node \u2013 numeric index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"a\":1,\"b\":2}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 0
+          }
+        ],
+        "expected": null,
+        "description": "When the node is an ObjectNode and the propertyOrIndex is an Integer, getNode should return null because numeric indexes are not applicable to objects."
+      }
+    ]
+  },
+  {
+    "group": "Array node \u2013 string index",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[\"x\",\"y\"]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "1"
+          }
+        ],
+        "expected": null,
+        "description": "When the node is an ArrayNode and the propertyOrIndex is a String, getNode should return null because string keys are not valid indexes for arrays."
+      }
+    ]
+  },
+  {
+    "group": "Scalar node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "\"plain text\""
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "any"
+          }
+        ],
+        "expected": null,
+        "description": "If the supplied JsonNode is a scalar (text) value, any propertyOrIndex should result in null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "42"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 0
+          }
+        ],
+        "expected": null,
+        "description": "If the supplied JsonNode is a numeric scalar, getNode should return null regardless of the propertyOrIndex."
+      }
+    ]
+  },
+  {
+    "group": "Null propertyOrIndex",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"k\":\"v\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": null
+          }
+        ],
+        "expected": null,
+        "description": "A null propertyOrIndex should be treated as absent and cause getNode to return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[\"a\"]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": null
+          }
+        ],
+        "expected": null,
+        "description": "When propertyOrIndex is null and the node is an array, getNode should return null."
+      }
+    ]
+  },
+  {
+    "group": "Empty string property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"\":\"empty\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": ""
+          }
+        ],
+        "expected": "\"empty\"",
+        "description": "An empty string is a valid property name; getNode should retrieve the associated value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": ""
+          }
+        ],
+        "expected": null,
+        "description": "If the empty string property does not exist in the object, getNode should return null."
+      }
+    ]
+  },
+  {
+    "group": "Large index out of range",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "[0,1]"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 2147483647
+          }
+        ],
+        "expected": null,
+        "description": "An index far beyond the array size should be considered out\u2011of\u2011bounds and return null."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported propertyOrIndex type \u2013 Character",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"c\":\"value\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "c"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a Character (represented here as a single\u2011character String) is not a supported type for propertyOrIndex; JsonNodes.get should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported propertyOrIndex type \u2013 Byte",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"b\":10}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": 5
+          }
+        ],
+        "expected": null,
+        "description": "Even though the numeric value fits in a byte, JsonNodes.get treats it as an Integer index; when the node is an object, the result should be null (not an exception)."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported propertyOrIndex type \u2013 Long",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "{\"key\":\"value\"}"
+          },
+          {
+            "parameter": "propertyOrIndex",
+            "value": "1234567890123L"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a java.lang.Long as propertyOrIndex is not supported; JsonNodes.get should throw IllegalArgumentException."
+      }
+    ]
+  }
+]

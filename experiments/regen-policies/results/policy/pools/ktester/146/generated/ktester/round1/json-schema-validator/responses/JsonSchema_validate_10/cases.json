@@ -1,0 +1,370 @@
+[
+  {
+    "group": "Valid JSON input without customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Empty Set<ValidationMessage> (no validation errors)",
+        "description": "A well\u2011formed JSON document is supplied. The method should deserialize the string, run the validators and return an empty validation set because the default schema accepts the document. No execution customizer is provided."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a parsing error message (e.g., \"Invalid JSON syntax\")",
+        "description": "The JSON string is malformed (missing closing brace). The method should catch the parsing exception and return a validation message describing the syntax error."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the supplied input string is null the method is expected to throw an IllegalArgumentException before attempting deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a parsing error (empty content)",
+        "description": "An empty string cannot be parsed as JSON; the method should return a validation message indicating that the input is empty or not a valid JSON document."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNSUPPORTED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "UnsupportedOperationException",
+        "description": "If an InputFormat that the implementation does not support is passed, the method should throw an UnsupportedOperationException (or similar) before deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Execution customizer modifies context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"testFlag\", true)"
+          }
+        ],
+        "expected": "Empty Set<ValidationMessage> and ctx.getAttribute(\"testFlag\") == true",
+        "description": "A non\u2011null consumer is provided that sets a custom attribute in the ExecutionContext. The method must invoke the consumer before validation and the attribute should be present after the call."
+      }
+    ]
+  },
+  {
+    "group": "Execution customizer throws runtime exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\"",
+        "description": "When the supplied consumer throws an unchecked exception, the method should propagate that exception and not swallow it."
+      }
+    ]
+  },
+  {
+    "group": "YAML input format (valid document)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 25"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Empty Set<ValidationMessage>",
+        "description": "The method must correctly deserialize a well\u2011formed YAML document when InputFormat.YAML is supplied and return no validation errors."
+      }
+    ]
+  },
+  {
+    "group": "YAML input format (invalid document)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: [unclosed"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a YAML parsing error",
+        "description": "A malformed YAML string should cause the deserialization step to fail, and the method should return a validation message describing the parsing problem."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException or NullPointerException",
+        "description": "The method should reject a null InputFormat before attempting deserialization, because the format is required to know how to parse the string."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"   \\t\\n\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a parsing error (e.g., \"No content to map due to end-of-input\")",
+        "description": "A string that contains only whitespace is not valid JSON. The method must attempt deserialization, fail, and return a validation message describing the empty content."
+      }
+    ]
+  },
+  {
+    "group": "Schema constraint violation \u2013 missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a message like \"required property 'name' not found\"",
+        "description": "The JsonSchema instance is built from a schema that declares a required property \"name\". Supplying JSON without that property should cause the validator to return a ValidationMessage indicating the missing required field."
+      }
+    ]
+  },
+  {
+    "group": "Schema constraint violation with execution customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"customizerInvoked\", true)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> containing a required\u2011property error and ctx.getAttribute(\"customizerInvoked\") == true",
+        "description": "Even when validation fails because the JSON does not satisfy the schema, the supplied Consumer must still be executed. The test verifies that the custom attribute is set while the validation set contains the expected schema\u2011violation message."
+      }
+    ]
+  },
+  {
+    "group": "JSON input with UTF\u20118 BOM prefix",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\\uFEFF{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Empty Set<ValidationMessage>",
+        "description": "A UTF\u20118 Byte Order Mark (BOM) at the beginning of the JSON string should be ignored by the deserializer. The method must successfully parse the document and return no validation errors."
+      }
+    ]
+  },
+  {
+    "group": "Execution customizer throws checked exception wrapped in RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { try { ctx.setAttribute(\"x\", 1); } catch (Exception e) { throw new RuntimeException(e); } }"
+          }
+        ],
+        "expected": "RuntimeException (the original exception is propagated)",
+        "description": "If the consumer catches a checked exception and re\u2011throws it as a RuntimeException, the validate method must let that RuntimeException bubble up unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Malformed URL\u2011encoded input (percent\u2011encoding error)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%ZZ"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (message indicates malformed % encoding)",
+        "description": "When the InputFormat is URL_ENCODED the method first decodes the string using URLDecoder. A percent\u2011sequence that is not followed by two hexadecimal digits (e.g., \"%ZZ\") causes URLDecoder to throw IllegalArgumentException. The validate method must let this exception propagate."
+      }
+    ]
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "group": "findLexicalRoot - basic scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because it already has a non\u2011null id",
+        "description": "The schema itself has an id (getId() != null). The while loop condition fails immediately, so the method should return the original instance."
+      },
+      {
+        "input": [],
+        "expected": "returns the original JsonSchema instance because it has no id and no parent (getParentSchema() returns null)",
+        "description": "The schema has a null id and getParentSchema() returns null. The loop enters once, hits the break statement, and returns the original instance."
+      },
+      {
+        "input": [],
+        "expected": "returns the top\u2011most ancestor that possesses a non\u2011null id",
+        "description": "A chain of three schemas is created: child \u2192 parent \u2192 root. Only the root schema has a non\u2011null id. The method should walk up the chain and return the root schema."
+      },
+      {
+        "input": [],
+        "expected": "returns the highest ancestor in the chain (the one whose parent is null) because none of the ancestors have an id",
+        "description": "A chain of three schemas is created where every schema's getId() returns null. The loop will traverse until getParentSchema() is null, then break and return that highest ancestor."
+      },
+      {
+        "input": [],
+        "expected": "returns the first ancestor (not necessarily the top) that has a non\u2011null id",
+        "description": "A chain of four schemas is created: child \u2192 level1 \u2192 level2 \u2192 root. level2 has a non\u2011null id, while root's id is null. The method should stop at level2 and return it."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot - immediate parent has id",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the immediate parent schema because the child has a null id and the parent\u2019s id is non\u2011null",
+        "description": "Create a child JsonSchema with getId() == null and set its parent to a schema whose getId() returns a non\u2011null value. The method should stop at the first ancestor with a non\u2011null id and return that parent."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot - empty string id is treated as non\u2011null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the original JsonSchema instance because its id is an empty string (non\u2011null)",
+        "description": "Instantiate a JsonSchema whose getId() returns \"\" (empty string). The while condition checks for null only, so the method should not enter the loop and should return the same instance."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot - first encountered id in a deep chain",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the first ancestor (level2) that has a non\u2011null id, even though higher ancestors also have ids",
+        "description": "Build a chain of five schemas: child \u2192 level1 \u2192 level2 \u2192 level3 \u2192 root. level2.getId() returns \"id2\", level3.getId() returns \"id3\", root.getId() returns null, and the lower two have null ids. The method should walk up until it finds level2 and return it."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot - self\u2011referential parent with non\u2011null id",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the original instance because its id is non\u2011null, avoiding an infinite loop despite getParentSchema() returning itself",
+        "description": "Create a JsonSchema whose getParentSchema() returns the same instance (self\u2011reference) and whose getId() returns a non\u2011null value. Since the loop condition fails immediately, the method returns the original instance safely."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot - chain where only middle ancestor has id and others are null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the middle ancestor that possesses the non\u2011null id",
+        "description": "Construct a three\u2011level chain: child (id null) \u2192 middle (id \"mid\") \u2192 top (id null). The method should stop at the middle schema because it is the first ancestor with a non\u2011null id."
+      }
+    ]
+  }
+]

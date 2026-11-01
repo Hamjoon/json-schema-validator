@@ -1,0 +1,327 @@
+[
+  {
+    "group": "Basic walk \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"name\":\"John\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 no validation messages",
+        "description": "When validation is turned on and the JSON instance conforms to the schema (a simple object with a required string property), walk should return a successful ValidationResult."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"age\":30})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure() containing a message about missing required property 'name'",
+        "description": "When validation is on but the instance is missing a required property, walk must collect a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Basic walk \u2013 validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"age\":30})"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 no validation messages (validation is skipped)",
+        "description": "When the `validate` flag is false, walk must not perform any schema validation, even if the instance is invalid."
+      }
+    ]
+  },
+  {
+    "group": "Null arguments handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"name\":\"John\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The method should fail fast when a null ExecutionContext is supplied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The method should fail fast when a null JsonNode is supplied."
+      }
+    ]
+  },
+  {
+    "group": "Different JSON node types",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "arrayNode([1,2,3])"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 array conforms to schema (type array, items integer)",
+        "description": "Walk must correctly handle an array node and validate each element against the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "textNode(\"plain string\")"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure() containing a type\u2011mismatch message",
+        "description": "When the instance is a primitive value that does not match the expected type, walk should report a type\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"self\":{}})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 recursion resolved without stack overflow",
+        "description": "Schema defines a `$recursiveAnchor` and the instance contains a self\u2011reference; walk must follow the anchor and finish successfully."
+      }
+    ]
+  },
+  {
+    "group": "Schema resource root flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"id\":\"http://example.com/schema\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 schema recognized as resource root, no extra resolution performed",
+        "description": "When `isSchemaResourceRoot()` returns true, walk should treat the schema as a top\u2011level resource and avoid unnecessary ancestor look\u2011ups."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext().setFailFast(true)"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"age\":30})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure() \u2013 contains a single message about missing required property 'name' and stops after first error because failFast is true",
+        "description": "When the ExecutionContext is configured with failFast, walk should abort after the first validation error instead of collecting all possible errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext().setCollectAnnotations(true)"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"name\":\"John\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 includes annotation messages (e.g., \"default applied\") if schema defines defaults",
+        "description": "When the ExecutionContext is set to collect annotations, walk should still succeed but the resulting ValidationResult must contain annotation messages generated by the validator."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"$ref\":\"http://[\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException \u2013 malformed URI in $ref causes parsing failure",
+        "description": "When the instance contains a `$ref` with an invalid URI, the walk method should throw an IllegalArgumentException while trying to resolve the reference."
+      }
+    ]
+  },
+  {
+    "group": "Missing node type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "MissingNode.getInstance()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException \u2013 MissingNode cannot be processed as a regular JSON value",
+        "description": "Passing a `MissingNode` (Jackson's representation of a non\u2011existent node) should cause the walk method to reject the input with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Uninitialized validators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"name\":\"John\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalStateException \u2013 schema validators have not been initialized before walking",
+        "description": "If a `JsonSchema` instance is created but `initializeValidators()` is never called, invoking `walk` should fail with an IllegalStateException because the internal validator list is null."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref without recursive anchor",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "objectNode({\"self\":{\"$ref\":\"#\"}})"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "StackOverflowError \u2013 infinite recursion when resolving a circular $ref without a $recursiveAnchor",
+        "description": "A schema that references itself via `$ref` but does not declare `$recursiveAnchor` should cause the walk method to recurse indefinitely, eventually throwing a StackOverflowError."
+      }
+    ]
+  }
+]

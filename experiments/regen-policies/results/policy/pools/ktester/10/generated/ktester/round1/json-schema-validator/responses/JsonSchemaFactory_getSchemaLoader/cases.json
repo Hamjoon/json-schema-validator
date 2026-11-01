@@ -1,0 +1,52 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchemaLoader",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same non\u2011null SchemaLoader instance that was injected into the factory",
+        "description": "Create a JsonSchemaFactory (via its Builder or reflection) with a mock SchemaLoader, invoke getSchemaLoader() and verify that the returned object is the exact instance that was supplied."
+      },
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Using reflection, set the private final field `schemaLoader` of a JsonSchemaFactory instance to null, then call getSchemaLoader() and confirm that it returns null. This checks the method\u2019s behaviour when the internal field is not initialised."
+      },
+      {
+        "input": [],
+        "expected": "the same SchemaLoader instance on subsequent calls",
+        "description": "Call getSchemaLoader() twice on the same JsonSchemaFactory and assert that both calls return the identical object (reference equality). This ensures the method does not create a new instance on each invocation."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchemaLoader - default instance",
+    "cases": [
+      {
+        "input": [],
+        "expected": "a non\u2011null object of type com.networknt.schema.SchemaLoader",
+        "description": "Create a JsonSchemaFactory using the default builder (no custom SchemaLoader supplied). Call getSchemaLoader() and verify that it returns a non\u2011null instance whose runtime type implements SchemaLoader. This confirms that the factory provides a sensible default loader when none is injected."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchemaLoader - unchanged after schema retrieval",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same SchemaLoader instance that was originally returned",
+        "description": "Obtain a JsonSchemaFactory via the default builder, store the reference returned by getSchemaLoader(), then invoke a typical factory method such as getSchema(\"{\\\"type\\\":\\\"string\\\"}\") which parses a simple schema. After the call, invoke getSchemaLoader() again and assert that the returned reference is identical (==) to the one captured before the schema retrieval. This ensures that other factory operations do not replace or recreate the loader."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchemaLoader - thread\u2011safety",
+    "cases": [
+      {
+        "input": [],
+        "expected": "all concurrently\u2011executed calls return the identical SchemaLoader reference",
+        "description": "Create a JsonSchemaFactory (default builder). Start N (e.g., 10) threads that each invoke getSchemaLoader() and store the result in a thread\u2011local variable. After all threads complete, verify that every stored reference is == to the reference obtained in the main thread before starting the workers. This validates that getSchemaLoader() is safe to call from multiple threads and does not produce distinct loader instances."
+      }
+    ]
+  }
+]

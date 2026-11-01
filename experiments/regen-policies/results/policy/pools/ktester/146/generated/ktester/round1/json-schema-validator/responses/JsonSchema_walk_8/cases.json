@@ -1,0 +1,623 @@
+[
+  {
+    "group": "Valid JSON input with validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage returned",
+        "description": "A well\u2011formed JSON string is supplied, the format is JSON, validation is turned on and no customizer is provided. The method should deserialize the string, walk the schema and return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON input with validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == true and no validation performed (internal flag should skip validators)",
+        "description": "When the `validate` flag is false the schema walk should still succeed but must not execute any validators. The result should indicate success."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{invalidJson: true,"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains deserialization error",
+        "description": "The supplied string is not a valid JSON document. The `deserialize` step should throw an exception which is caught and translated into a failed ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating unsupported InputFormat",
+        "description": "If the `inputFormat` argument is null (or a value not supported by the implementation) the method should fail fast with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Consumer customizer modifies ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer that sets ExecutionContext.setCustomFlag(true)"
+          }
+        ],
+        "expected": "ValidationResult.success == true and ExecutionContext.customFlag == true after walk",
+        "description": "A non\u2011null Consumer should be invoked with the freshly created ExecutionContext before walking the schema. The test verifies that the consumer is called and can affect the context."
+      }
+    ]
+  },
+  {
+    "group": "Null consumer (no customisation)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == true and ExecutionContext remains unchanged",
+        "description": "When the consumer argument is null the method must skip the customisation step without throwing NPE."
+      }
+    ]
+  },
+  {
+    "group": "YAML input format with valid content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage returned",
+        "description": "The method must correctly deserialize YAML when the format is YAML, then walk the schema and succeed."
+      }
+    ]
+  },
+  {
+    "group": "Deserialization throws UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E0%A4%A"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains UnsupportedEncodingException information",
+        "description": "If URLDecoder fails during deserialization (e.g., malformed percent\u2011encoding), the method should capture the exception and return a failed ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Empty JSON input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains deserialization error (empty input)",
+        "description": "An empty string is supplied for a JSON format. Deserialization should fail, producing a failed ValidationResult with an appropriate error message."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace JSON input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"   \\n\\t  \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains deserialization error (whitespace only)",
+        "description": "A JSON string that contains only whitespace should be treated as invalid JSON, causing deserialization to fail."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: [30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains deserialization error (YAML syntax)",
+        "description": "YAML input with a syntax error should trigger a deserialization exception, which must be reported as a failed ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating that input string must not be null",
+        "description": "Passing a null reference for the JSON/YAML string should cause the method to fail fast with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat value (e.g., XML)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "<root><name>John</name></root>"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating unsupported InputFormat",
+        "description": "If an InputFormat that the library does not handle (e.g., XML) is supplied, the method should throw an IllegalArgumentException before any processing."
+      }
+    ]
+  },
+  {
+    "group": "Consumer throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer that throws RuntimeException(\"customizer failure\")"
+          }
+        ],
+        "expected": "RuntimeException propagated (test should expect the exception)",
+        "description": "When the supplied Consumer throws a RuntimeException, the walk method must not swallow it; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Validation fails due to schema constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains 'required property name' (or similar)",
+        "description": "The schema (assumed to require a \"name\" property) is violated by the provided JSON. The walk should perform validation and return a failed result with the appropriate message."
+      }
+    ]
+  },
+  {
+    "group": "URL\u2011encoded JSON input decoded correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22John%22%2C%22age%22%3A30%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage returned",
+        "description": "A JSON string that is URL\u2011encoded should be correctly decoded by the deserialization step and validated successfully."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011null Consumer that does not modify context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer that reads ExecutionContext but makes no changes"
+          }
+        ],
+        "expected": "ValidationResult.success == true and ExecutionContext remains in default state",
+        "description": "A Consumer is supplied that accesses the ExecutionContext without mutating it. The walk should succeed and the context should stay unchanged."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution failure \u2013 missing external schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException thrown indicating unresolved $ref",
+        "description": "The JsonSchema instance is loaded with a schema that contains a $ref to an external schema file that does not exist. When walk is invoked, the $ref resolution fails and a JsonSchemaException is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Recursive schema detection \u2013 infinite recursion",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException thrown indicating recursive reference",
+        "description": "The JsonSchema instance contains a recursive $ref without a proper $recursiveAnchor, leading to infinite recursion detection. The walk method should detect this and throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema definition \u2013 unknown keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating unknown schema keyword",
+        "description": "The JsonSchema instance is constructed with a schema containing an unknown keyword (e.g., \"unknownKeyword\": true) while strict mode is enabled. The walk method should detect the invalid schema definition and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported schema version \u2013 unknown $schema value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating unsupported schema version",
+        "description": "The JsonSchema instance is loaded with a schema that declares an unsupported $schema version (e.g., \"http://json-schema.org/draft-04/schema#\"). The walk method should fail fast with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Custom validator throws unchecked exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException thrown from custom validator",
+        "description": "The JsonSchema instance includes a custom validator (registered via SchemaValidatorsConfig) that throws a RuntimeException during validation. When walk is called with validation enabled, the exception should propagate."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer introduces invalid state causing IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer that sets ExecutionContext's schema version to null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown due to invalid ExecutionContext configuration",
+        "description": "A Consumer is provided that modifies the ExecutionContext in an invalid way (e.g., setting the schema version to null). When walk proceeds, the invalid configuration leads to an IllegalArgumentException."
+      }
+    ]
+  }
+]

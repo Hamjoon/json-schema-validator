@@ -1,0 +1,145 @@
+[
+  {
+    "group": "getInstance without customizer \u2013 null version flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": null
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance that uses the library's default SpecVersion (currently V7). No exception is thrown.",
+        "description": "When the version flag is null the method should fall back to the default schema version and still return a usable factory."
+      }
+    ]
+  },
+  {
+    "group": "getInstance without customizer \u2013 explicit version flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V4"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance configured for Draft\u201104 (VersionFlag.V4). The factory should be able to load a Draft\u201104 meta\u2011schema (e.g., getMetaSchema(\"http://json-schema.org/draft-04/schema#\") returns a non\u2011null JsonMetaSchema).",
+        "description": "Pass a concrete version flag (V4) and verify that the returned factory is set up for that version."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V6"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance configured for Draft\u201106 (VersionFlag.V6). The factory should be able to load a Draft\u201106 meta\u2011schema (e.g., getMetaSchema(\"http://json-schema.org/draft-06/schema#\") returns a non\u2011null JsonMetaSchema).",
+        "description": "Pass a concrete version flag (V6) and verify that the returned factory is set up for that version."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V7"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance configured for Draft\u201107 (VersionFlag.V7). The factory should be able to load a Draft\u201107 meta\u2011schema (e.g., getMetaSchema(\"http://json-schema.org/draft-07/schema#\") returns a non\u2011null JsonMetaSchema).",
+        "description": "Pass a concrete version flag (V7) and verify that the returned factory is set up for that version."
+      }
+    ]
+  },
+  {
+    "group": "getInstance with customizer \u2013 indirect branch verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V7"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance where a customizer supplied via the overloaded getInstance(VersionFlag, Consumer) has been applied. For example, if the customizer sets a custom URI loader, the resulting factory should use that loader (verified by calling factory.getSchemaLoader() and checking the custom behaviour).",
+        "description": "Although the focal method itself does not receive a customizer, it delegates to the two\u2011argument overload. This test invokes the overload with a non\u2011null customizer to ensure the branch that applies the customizer is exercised."
+      }
+    ]
+  },
+  {
+    "group": "getInstance without customizer \u2013 newer draft versions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V2019_09"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance configured for Draft\u20112019\u201109 (VersionFlag.V2019_09). Calling factory.getMetaSchema(\"https://json-schema.org/draft/2019-09/schema#\") returns a non\u2011null JsonMetaSchema whose version matches V2019_09.",
+        "description": "Verify that the factory correctly recognises the 2019\u201109 draft flag and can load its meta\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V2020_12"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance configured for Draft\u20112020\u201112 (VersionFlag.V2020_12). Calling factory.getMetaSchema(\"https://json-schema.org/draft/2020-12/schema#\") returns a non\u2011null JsonMetaSchema whose version matches V2020_12.",
+        "description": "Verify that the factory correctly recognises the 2020\u201112 draft flag and can load its meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "getInstance caching behavior \u2013 same version returns same instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V6"
+          }
+        ],
+        "expected": "Two consecutive calls to JsonSchemaFactory.getInstance(VersionFlag.V6) return the *exact same* object reference (instance). No new objects are created, confirming internal caching.",
+        "description": "Ensures that the factory caches instances per version flag and re\u2011uses them."
+      }
+    ]
+  },
+  {
+    "group": "getInstance caching behavior \u2013 different versions return different instances",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "firstVersionFlag",
+            "value": "V4"
+          },
+          {
+            "parameter": "secondVersionFlag",
+            "value": "V7"
+          }
+        ],
+        "expected": "The objects returned by JsonSchemaFactory.getInstance(V4) and JsonSchemaFactory.getInstance(V7) are not the same reference (they are distinct instances).",
+        "description": "Confirms that caching is scoped to the version flag and does not mistakenly return a single shared instance for all versions."
+      }
+    ]
+  },
+  {
+    "group": "getInstance overload with null customizer \u2013 indirect branch verification",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "A non\u2011null JsonSchemaFactory instance identical to the one returned by the single\u2011argument overload. No customisation occurs and no exception is thrown.",
+        "description": "Calls the two\u2011argument overload with a null Consumer to verify that the method correctly forwards to the single\u2011argument path without applying any customisation."
+      }
+    ]
+  }
+]

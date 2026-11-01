@@ -1,0 +1,298 @@
+[
+  {
+    "group": "walk(String, InputFormat, boolean, ExecutionContextCustomizer) - Branch Coverage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the input string is null",
+        "description": "Verify that the method validates the mandatory `input` argument and throws an exception when it is null (covers the null\u2011check branch)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the inputFormat is null",
+        "description": "Check that a missing `InputFormat` argument is rejected (covers the null\u2011check branch for the format)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "invalid json"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a parsing error message",
+        "description": "When deserialization fails (malformed JSON) the method should return a ValidationResult indicating failure (covers the exception\u2011handling branch inside `deserialize`)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and no ValidationMessage entries",
+        "description": "When `validate` flag is false the schema walk should skip validation and return a successful result (covers the `if (validate)` branch)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThatAddsFlag"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and the ExecutionContext contains the custom flag set by the customizer",
+        "description": "Provide a non\u2011null `ExecutionContextCustomizer` that mutates the context (e.g., sets a custom attribute). The test verifies that the customizer is invoked (covers the branch where a customizer is present)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true (assuming the YAML input is valid for the schema)",
+        "description": "Exercise the path where a different `InputFormat` (YAML) is supplied and validation succeeds (covers the format\u2011specific deserialization branch)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThatThrowsRuntimeException"
+          }
+        ],
+        "expected": "RuntimeException propagated from the ExecutionContextCustomizer",
+        "description": "When the customizer itself throws an exception, the method should let the exception bubble up (covers the try\u2011catch / propagation branch)."
+      }
+    ]
+  },
+  {
+    "group": "walk(String, InputFormat, boolean, ExecutionContextCustomizer) - Additional Edge & Interaction Cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a parsing error message indicating empty input",
+        "description": "Empty string should be treated as invalid JSON; the method must return a ValidationResult reflecting the deserialization failure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "   "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a parsing error message indicating whitespace\u2011only input",
+        "description": "Whitespace\u2011only input is not valid JSON; the method should capture the parsing exception and report it in the ValidationResult."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"unknownKeyword\":123}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and at least one ValidationMessage about an unrecognized keyword",
+        "description": "A schema containing an unknown keyword should trigger schema validation errors; the method must return those messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerAddsFlag"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and the ExecutionContext contains attribute customFlag=true",
+        "description": "Even when validation is disabled, the ExecutionContextCustomizer must still be invoked; this verifies that customizer side\u2011effects are applied irrespective of the validate flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"$id\":\"#root\",\"$defs\":{\"node\":{\"type\":\"object\",\"properties\":{\"next\":{\"$ref\":\"#/$defs/node\"}}}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and no ValidationMessage entries (recursive $ref resolved without infinite recursion)",
+        "description": "Schema contains a recursive $ref (self\u2011reference). The walk method should handle recursive anchors correctly and finish without stack overflow or validation errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"age\":{\"type\":\"integer\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowsIllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException propagated from the ExecutionContextCustomizer",
+        "description": "When the customizer throws a different runtime exception (IllegalStateException), the walk method must let it propagate unchanged."
+      }
+    ]
+  }
+]

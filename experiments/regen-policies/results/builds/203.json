@@ -1,0 +1,67 @@
+{
+  "index": 203,
+  "sha": "f26327c64430a93ee2765c7877e9fd377a958bd2",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/203",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 4.256,
+      "log": "results/builds/logs/203-1.txt"
+    }
+  ],
+  "input_sha256": "7d904ffd3b14f221ef203ba37612caf0a62b9c308d00c0c3916f4a35e206c85e",
+  "pom_sha256": "d5ca52440ef61c92cf02b254aa5fcf0d326b4c69ff4457e7468ee0f2fb8e308e",
+  "classpath": "work/classpaths/d5ca52440ef61c92cf02b254aa5fcf0d326b4c69ff4457e7468ee0f2fb8e308e.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/203",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.725,
+      "log": "results/builds/logs/classpath-203/go-offline-7ff7ccf63ed546c8a2af393512b2bb9c/1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-U",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/203",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 3.139,
+      "log": "results/builds/logs/classpath-203/go-offline-7ff7ccf63ed546c8a2af393512b2bb9c/2.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/regen-policies/work/classpaths/d5ca52440ef61c92cf02b254aa5fcf0d326b4c69ff4457e7468ee0f2fb8e308e-6bbf540a5eb54deea532a5dbeffecc05.tmp"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/203",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 1.105,
+      "log": "results/builds/logs/classpath-203/build-classpath-7d092567e80d42d3a5b78b52a11cbf10/1.txt"
+    }
+  ]
+}

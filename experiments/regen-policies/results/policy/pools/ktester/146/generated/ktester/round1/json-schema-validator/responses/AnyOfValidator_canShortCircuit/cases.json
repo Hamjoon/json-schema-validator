@@ -1,0 +1,107 @@
+[
+  {
+    "group": "AnyOfValidator.canShortCircuit(ExecutionContext)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_annotationEnabledTrue"
+          }
+        ],
+        "expected": "false",
+        "description": "When the ExecutionConfig reports annotationCollectionEnabled = true, the method should return false (no short\u2011circuit)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_annotationEnabledFalse"
+          }
+        ],
+        "expected": "true",
+        "description": "When the ExecutionConfig reports annotationCollectionEnabled = false, the method should return true (short\u2011circuit is allowed)."
+      }
+    ]
+  },
+  {
+    "group": "AnyOfValidator.canShortCircuit(ExecutionContext) - edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null ExecutionContext should cause a NullPointerException because the method dereferences executionContext."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_nullConfig"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When ExecutionContext.getExecutionConfig() returns null, the method attempts to call isAnnotationCollectionEnabled() on a null reference, resulting in a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_annotationEnabledThrows"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If ExecutionConfig.isAnnotationCollectionEnabled() throws a RuntimeException, the method propagates that exception without handling it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_annotationEnabledTrue_multipleCalls"
+          }
+        ],
+        "expected": "false",
+        "description": "Even if isAnnotationCollectionEnabled() is called multiple times (e.g., via a spy), the result remains false when the flag is true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_annotationEnabledFalse_multipleCalls"
+          }
+        ],
+        "expected": "true",
+        "description": "Even if isAnnotationCollectionEnabled() is called multiple times, the result remains true when the flag is false."
+      }
+    ]
+  },
+  {
+    "group": "AnyOfValidator.canShortCircuit(ExecutionContext) - getExecutionConfig exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_getConfigThrowsRuntime"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "When ExecutionContext.getExecutionConfig() throws a RuntimeException, the method should propagate that RuntimeException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext_getConfigThrowsNPE"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When ExecutionContext.getExecutionConfig() throws a NullPointerException, the method should propagate that NullPointerException."
+      }
+    ]
+  }
+]

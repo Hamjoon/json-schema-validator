@@ -1,0 +1,287 @@
+[
+  {
+    "group": "loadMetaSchema \u2013 custom JsonMetaSchemaFactory present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns the JsonMetaSchema instance that the injected JsonMetaSchemaFactory mock returns from getMetaSchema(iri, factory, config).",
+        "description": "Verifies that when the JsonSchemaFactory has a non\u2011null metaSchemaFactory, loadMetaSchema delegates to that factory and returns the exact object supplied by the mock."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 fallback to DefaultJsonMetaSchemaFactory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/default-meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns the JsonMetaSchema instance obtained from DefaultJsonMetaSchemaFactory.getInstance().getMetaSchema(iri, factory, config).",
+        "description": "Ensures that when the JsonSchemaFactory is constructed without a custom metaSchemaFactory (i.e., metaSchemaFactory == null), loadMetaSchema falls back to the default singleton factory and returns its result."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 null IRI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws NullPointerException (or propagates the exception thrown by the underlying MetaSchemaFactory).",
+        "description": "Checks the method\u2019s behaviour when a null IRI is supplied; the method itself does not guard against null, so the call should result in a NPE from the delegated factory."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 null SchemaValidatorsConfig handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns the JsonMetaSchema instance from the selected factory (custom or default) with a null config argument.",
+        "description": "Validates that a null SchemaValidatorsConfig does not cause loadMetaSchema to fail; the null is simply passed through to the underlying factory."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 empty IRI string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns the JsonMetaSchema instance supplied by the selected factory (custom or default) for the empty IRI; no exception is thrown because the method does not validate the IRI format.",
+        "description": "Ensures that an empty string is treated as a legitimate IRI argument and is simply forwarded to the underlying MetaSchemaFactory, which may return a default meta\u2011schema or null depending on its implementation."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 IRI containing only whitespace",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"   \""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns whatever JsonMetaSchema instance the underlying factory provides for the whitespace IRI; the method does not trim or validate the string.",
+        "description": "Verifies that whitespace is not stripped and is passed unchanged to the factory, confirming that loadMetaSchema does not perform any pre\u2011processing of the IRI argument."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 custom factory returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/null-meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns null (the exact value returned by the injected JsonMetaSchemaFactory mock).",
+        "description": "Checks that loadMetaSchema forwards the result of the custom factory without additional null\u2011checking; when the mock is programmed to return null, the method should also return null."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 custom factory throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/bad-meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws the RuntimeException propagated from the injected JsonMetaSchemaFactory mock.",
+        "description": "Validates that loadMetaSchema does not catch exceptions from the underlying factory; an exception thrown by the mock (e.g., IllegalArgumentException) should bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 non\u2011null config with custom settings",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/custom-config-meta\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setTypeLoose(true); } }"
+          }
+        ],
+        "expected": "Returns the JsonMetaSchema instance from the selected factory; the custom config object is passed unchanged, allowing the factory to honour its settings.",
+        "description": "Ensures that a populated SchemaValidatorsConfig (e.g., with typeLoose = true) is correctly forwarded to the MetaSchemaFactory and does not cause any side\u2011effects within loadMetaSchema itself."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 default factory throws IllegalArgumentException for malformed IRI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"not-a-valid-uri\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException propagated from DefaultJsonMetaSchemaFactory.getInstance().getMetaSchema",
+        "description": "When the JsonSchemaFactory has no custom metaSchemaFactory, the fallback default factory validates the IRI format and throws IllegalArgumentException for a malformed IRI. The method should not catch it."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 default factory throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/runtime-error\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws RuntimeException (e.g., IllegalStateException) propagated from DefaultJsonMetaSchemaFactory",
+        "description": "Simulates a situation where the default factory encounters an unexpected condition and throws a RuntimeException. The loadMetaSchema method must let the exception bubble up."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 default factory returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/null-default\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns null (the value returned by DefaultJsonMetaSchemaFactory.getInstance().getMetaSchema)",
+        "description": "Ensures that loadMetaSchema does not perform a null\u2011check on the result of the default factory; if the factory returns null, the method returns null as\u2011is."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 custom factory throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/illegal-arg\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException propagated from the injected JsonMetaSchemaFactory mock",
+        "description": "The custom JsonMetaSchemaFactory is programmed to reject the supplied IRI by throwing IllegalArgumentException. loadMetaSchema must not swallow the exception."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 custom factory throws NullPointerException due to null config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/null-config\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException propagated from the custom JsonMetaSchemaFactory mock",
+        "description": "Even though loadMetaSchema forwards a null config, the custom factory may dereference it and throw NPE. The method should let the exception propagate."
+      }
+    ]
+  },
+  {
+    "group": "loadMetaSchema \u2013 custom factory throws Error (AssertionError)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "iri",
+            "value": "\"http://example.com/assertion-error\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws AssertionError propagated from the injected JsonMetaSchemaFactory mock",
+        "description": "Verifies that loadMetaSchema does not catch Errors; an AssertionError thrown by the custom factory should bubble up unchanged."
+      }
+    ]
+  }
+]

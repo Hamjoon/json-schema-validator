@@ -1,0 +1,35 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:49: error: RecordingLogger is not abstract and does not override abstract method error(Marker,String,Throwable) in Logger
+    private static final class RecordingLogger implements Logger {
+                         ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:128: error: cannot find symbol
+                /* messageSource */ DefaultMessageSource.getInstance(),
+                                    ^
+  symbol:   variable DefaultMessageSource
+  location: class MinimalJsonSchema
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:384: error: cannot find symbol
+        assertEquals(1, execContext.getAnnotations().size());
+                                                    ^
+  symbol:   method size()
+  location: class JsonNodeAnnotations
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:385: error: cannot find symbol
+        JsonNodeAnnotation stored = execContext.getAnnotations().iterator().next();
+        ^
+  symbol:   class JsonNodeAnnotation
+  location: class BaseJsonValidatorTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:385: error: cannot find symbol
+        JsonNodeAnnotation stored = execContext.getAnnotations().iterator().next();
+                                                                ^
+  symbol:   method iterator()
+  location: class JsonNodeAnnotations
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:416: error: cannot inherit from final TestValidator
+        TestValidator suppressingValidator = new TestValidator(
+                                                 ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java:449: error: cannot find symbol
+        execConfig.getExecutionConfig().setDebugEnabled(true); // assuming getter/setter exists
+                  ^
+  symbol:   method getExecutionConfig()
+  location: variable execConfig of type ExecutionConfig
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/ToT/BaseJsonValidatorTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+7 errors

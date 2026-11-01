@@ -1,0 +1,483 @@
+Imagine three different experts in software testing who are tasked with developing comprehensive JUnit 4 test cases for the following Java class. All experts will propose one test cases for each method, share it with the group, and then proceed to the next step. If any expert realizes they're wrong at any point, they leave.
+The Java class is:
+/*
+ * Copyright (c) 2016 Network New Technologies Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.networknt.schema;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.networknt.schema.utils.SetView;
+
+/**
+ * {@link JsonValidator} for oneOf.
+ */
+public class OneOfValidator extends BaseJsonValidator {
+    private static final Logger logger = LoggerFactory.getLogger(OneOfValidator.class);
+
+    private final List<JsonSchema> schemas;
+
+    private Boolean canShortCircuit = null;
+
+    public OneOfValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ValidationContext validationContext) {
+        super(schemaLocation, evaluationPath, schemaNode, parentSchema, ValidatorTypeCode.ONE_OF, validationContext);
+        if (!schemaNode.isArray()) {
+            JsonType nodeType = TypeFactory.getValueNodeType(schemaNode, this.validationContext.getConfig());
+            throw new JsonSchemaException(message().instanceNode(schemaNode)
+                    .instanceLocation(schemaLocation.getFragment())
+                    .messageKey("type")
+                    .arguments(nodeType.toString(), "array")
+                    .build());
+        }
+        int size = schemaNode.size();
+        this.schemas = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            JsonNode childNode = schemaNode.get(i);
+            this.schemas.add(validationContext.newSchema( schemaLocation.append(i), evaluationPath.append(i), childNode, parentSchema));
+        }
+    }
+
+    @Override
+    public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode,
+            JsonNodePath instanceLocation) {
+        return validate(executionContext, node, rootNode, instanceLocation, false);
+    }
+
+    protected Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode,
+            JsonNodePath instanceLocation, boolean walk) {
+        Set<ValidationMessage> errors = null;
+
+        debug(logger, executionContext, node, rootNode, instanceLocation);
+        int numberOfValidSchema = 0;
+        int index = 0;
+        SetView<ValidationMessage> childErrors = null;
+        List<String> indexes = null;
+
+        // Save flag as nested schema evaluation shouldn't trigger fail fast
+        boolean failFast = executionContext.isFailFast();
+        try {
+            DiscriminatorValidator discriminator = null;
+            if (this.validationContext.getConfig().isDiscriminatorKeywordEnabled()) {
+                DiscriminatorContext discriminatorContext = new DiscriminatorContext();
+                executionContext.enterDiscriminatorContext(discriminatorContext, instanceLocation);
+
+                // check if discriminator present
+                discriminator = (DiscriminatorValidator) this.getParentSchema().getValidators().stream()
+                        .filter(v -> "discriminator".equals(v.getKeyword())).findFirst().orElse(null);
+                if (discriminator != null) {
+                    // this is just to make the discriminator context active
+                    discriminatorContext.registerDiscriminator(discriminator.getSchemaLocation(),
+                            (ObjectNode) discriminator.getSchemaNode());
+                }
+            }
+            executionContext.setFailFast(false);
+            for (JsonSchema schema : this.schemas) {
+                Set<ValidationMessage> schemaErrors = Collections.emptySet();
+                if (!walk) {
+                    schemaErrors = schema.validate(executionContext, node, rootNode, instanceLocation);
+                } else {
+                    schemaErrors = schema.walk(executionContext, node, rootNode, instanceLocation,
+                            true);
+                }
+
+                // check if any validation errors have occurred
+                if (schemaErrors.isEmpty()) {
+                    numberOfValidSchema++;
+                    if (indexes == null) {
+                        indexes = new ArrayList<>();
+                    }
+                    indexes.add(Integer.toString(index));
+                }
+                
+                if (numberOfValidSchema > 1 && canShortCircuit()) {
+                    // short-circuit
+                    // note that the short circuit means that only 2 valid schemas are reported even if could be more
+                    break;
+                }
+                
+                if (this.validationContext.getConfig().isDiscriminatorKeywordEnabled()) {
+                    // The discriminator will cause all messages other than the one with the
+                    // matching discriminator to be discarded. Note that the discriminator cannot
+                    // affect the actual validation result.
+                    if (discriminator != null && !discriminator.getPropertyName().isEmpty()) {
+                        JsonNode discriminatorPropertyNode = node.get(discriminator.getPropertyName());
+                        if (discriminatorPropertyNode != null) {
+                            String discriminatorPropertyValue = discriminatorPropertyNode.asText();
+                            discriminatorPropertyValue = discriminator.getMapping().getOrDefault(discriminatorPropertyValue,
+                                    discriminatorPropertyValue);
+                            JsonNode refNode = schema.getSchemaNode().get("$ref");
+                            if (refNode != null) {
+                                String ref = refNode.asText();
+                                if (ref.equals(discriminatorPropertyValue) || ref.endsWith("/" + discriminatorPropertyValue)) {
+                                    executionContext.getCurrentDiscriminatorContext().markMatch();
+                                }
+                            }
+                        } else {
+                            // See issue 436 where the condition was relaxed to not cause an assertion
+                            // due to missing discriminator property value
+                            // Also see BaseJsonValidator#checkDiscriminatorMatch 
+                            executionContext.getCurrentDiscriminatorContext().markIgnore();
+                        }
+                    }
+                    DiscriminatorContext currentDiscriminatorContext = executionContext.getCurrentDiscriminatorContext();
+                    if (currentDiscriminatorContext.isDiscriminatorMatchFound() && childErrors == null) {
+                        // Note that the match is set if found and not reset so checking if childErrors
+                        // found is null triggers on the correct schema
+                        childErrors = new SetView<>();
+                        childErrors.union(schemaErrors);
+                    } else if (currentDiscriminatorContext.isDiscriminatorIgnore()
+                            || !currentDiscriminatorContext.isActive()) {
+                        // This is the normal handling when discriminators aren't enabled
+                        if (childErrors == null) {
+                            childErrors = new SetView<>();
+                        }
+                        childErrors.union(schemaErrors);
+                    }
+                } else if (!schemaErrors.isEmpty() && reportChildErrors(executionContext)) {
+                    // This is the normal handling when discriminators aren't enabled
+                    if (childErrors == null) {
+                        childErrors = new SetView<>();
+                    }
+                    childErrors.union(schemaErrors);
+                }
+                index++;
+            }
+
+            if (this.validationContext.getConfig().isDiscriminatorKeywordEnabled()
+                    && (discriminator != null || executionContext.getCurrentDiscriminatorContext().isActive())
+                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorMatchFound()
+                    && !executionContext.getCurrentDiscriminatorContext().isDiscriminatorIgnore()) {
+                errors = Collections.singleton(message().instanceNode(node).instanceLocation(instanceLocation)
+                        .locale(executionContext.getExecutionConfig().getLocale())
+                        .arguments(
+                                "based on the provided discriminator. No alternative could be chosen based on the discriminator property")
+                        .build());
+            }
+        } finally {
+            // Restore flag
+            executionContext.setFailFast(failFast);
+
+            if (this.validationContext.getConfig().isDiscriminatorKeywordEnabled()) {
+                executionContext.leaveDiscriminatorContextImmediately(instanceLocation);
+            }
+        }
+
+        // ensure there is always an "OneOf" error reported if number of valid schemas
+        // is not equal to 1.
+        // errors will only not be null in the discriminator case where no match is found
+        if (numberOfValidSchema != 1 && errors == null) {
+            ValidationMessage message = message().instanceNode(node).instanceLocation(instanceLocation)
+                    .messageKey(numberOfValidSchema > 1 ? "oneOf.indexes" : "oneOf")
+                    .locale(executionContext.getExecutionConfig().getLocale())
+                    .failFast(executionContext.isFailFast())
+                    .arguments(Integer.toString(numberOfValidSchema), numberOfValidSchema > 1 ? String.join(", ", indexes) : "").build();
+            if (childErrors != null) {
+                errors = new SetView<ValidationMessage>().union(Collections.singleton(message)).union(childErrors);
+            } else {
+                errors = Collections.singleton(message);
+            }
+        }
+        return errors != null ? errors : Collections.emptySet();
+    }
+
+    /**
+     * Determines if child errors should be reported.
+     * 
+     * @param executionContext the execution context
+     * @return true if child errors should be reported
+     */
+    protected boolean reportChildErrors(ExecutionContext executionContext) {
+        // check the original flag if it's going to fail fast anyway
+        // no point aggregating all the errors
+        return !executionContext.getExecutionConfig().isFailFast();
+    }
+    
+    protected boolean canShortCircuit() {
+        if (this.canShortCircuit == null) {
+            boolean canShortCircuit = true;
+            for (JsonValidator validator : getEvaluationParentSchema().getValidators()) {
+                if ("unevaluatedProperties".equals(validator.getKeyword())
+                        || "unevaluatedItems".equals(validator.getKeyword())) {
+                    canShortCircuit = false;
+                }
+            }
+            this.canShortCircuit = canShortCircuit;
+        }
+        return this.canShortCircuit;
+    }
+
+    @Override
+    public Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema) {
+        HashSet<ValidationMessage> validationMessages = new LinkedHashSet<>();
+        if (shouldValidateSchema && node != null) {
+            validationMessages.addAll(validate(executionContext, node, rootNode, instanceLocation, true));
+        } else {
+            for (JsonSchema schema : this.schemas) {
+                schema.walk(executionContext, node, rootNode, instanceLocation, false);
+            }
+        }
+        return validationMessages;
+    }
+
+    @Override
+    public void preloadJsonSchema() {
+        for (JsonSchema schema: this.schemas) {
+            schema.initializeValidators();
+        }
+        canShortCircuit(); // cache the flag
+    }
+}
+
+
+Use only classes, constructors and methods that appear in the class source above or in the dependency signatures below. Do not use APIs from other versions of this library. Construct real objects through the constructors or factory methods shown instead of mocking; do not mock or subclass abstract classes or interfaces of this library.
+
+// public API of com.networknt.schema.BaseJsonValidator
+public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {
+  public BaseJsonValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ValidatorTypeCode validatorType, ValidationContext validationContext);
+  public BaseJsonValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ErrorMessageType errorMessageType, Keyword keyword, ValidationContext validationContext, boolean suppressSubSchemaRetrieval);
+  protected BaseJsonValidator(boolean suppressSubSchemaRetrieval, JsonNode schemaNode, ValidationContext validationContext, ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonSchema evaluationParentSchema, Map<String, String> errorMessage);
+  protected static boolean equals(double n1, double n2);
+  public static void debug(Logger logger, ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation);
+  protected static void checkDiscriminatorMatch(DiscriminatorContext currentDiscriminatorContext, ObjectNode discriminator, String discriminatorPropertyValue, JsonSchema jsonSchema);
+  protected static void registerAndMergeDiscriminator(DiscriminatorContext currentDiscriminatorContext, ObjectNode discriminator, JsonSchema schema, JsonNodePath instanceLocation);
+  public SchemaLocation getSchemaLocation();
+  public JsonNodePath getEvaluationPath();
+  public String getKeyword();
+  public JsonNode getSchemaNode();
+  public JsonSchema getParentSchema();
+  public JsonSchema getEvaluationParentSchema();
+  protected JsonSchema fetchSubSchemaNode(ValidationContext validationContext);
+  public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node);
+  protected String getNodeFieldType();
+  protected void preloadJsonSchemas(Collection<JsonSchema> schemas);
+  protected JsonNodePath atRoot();
+  public String toString();
+  protected boolean hasAdjacentKeywordInEvaluationPath(String keyword);
+  protected MessageSourceValidationMessage.Builder message();
+  protected boolean collectAnnotations(ExecutionContext executionContext);
+  protected boolean collectAnnotations(ExecutionContext executionContext, String keyword);
+  protected void putAnnotation(ExecutionContext executionContext, Consumer<JsonNodeAnnotation.Builder> customizer);
+}
+
+// public API of com.networknt.schema.ValidationMessageHandler
+public abstract class ValidationMessageHandler {
+  protected ValidationMessageHandler(ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath);
+  protected ValidationMessageHandler(ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonSchema evaluationParentSchema, Map<String, String> errorMessage);
+  protected MessageSourceValidationMessage.Builder message();
+  protected ErrorMessageType getErrorMessageType();
+  protected Map<String, String> getErrorMessage(String errorMessageKeyword, JsonNode schemaNode, String keyword);
+  protected JsonNode getMessageNode(String errorMessageKeyword, JsonNode schemaNode, JsonSchema parentSchema, String pname);
+}
+
+// public API of com.networknt.schema.JsonValidator
+public interface JsonValidator extends JsonSchemaWalker {
+   Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation);
+  default void preloadJsonSchema() throws JsonSchemaException;
+  default Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema);
+   SchemaLocation getSchemaLocation();
+   JsonNodePath getEvaluationPath();
+   String getKeyword();
+}
+
+// public API of com.networknt.schema.walk.JsonSchemaWalker
+public interface JsonSchemaWalker {
+   Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema);
+}
+
+// public API of com.networknt.schema.SchemaLocation
+public class SchemaLocation {
+  public static final SchemaLocation DOCUMENT;
+  public SchemaLocation(AbsoluteIri absoluteIri, JsonNodePath fragment);
+  public SchemaLocation(AbsoluteIri absoluteIri);
+  public AbsoluteIri getAbsoluteIri();
+  public JsonNodePath getFragment();
+  public SchemaLocation append(String token);
+  public SchemaLocation append(int index);
+  public static SchemaLocation of(String iri);
+  public SchemaLocation resolve(String absoluteIriReferenceOrFragment);
+  public static String resolve(SchemaLocation schemaLocation, String absoluteIriReferenceOrFragment);
+  public static Builder builder();
+  public String toString();
+  public int hashCode();
+  public boolean equals(Object obj);
+}
+
+// public API of com.networknt.schema.JsonNodePath
+public class JsonNodePath implements Comparable<JsonNodePath> {
+  public JsonNodePath(PathType type);
+  public JsonNodePath getParent();
+  public JsonNodePath append(String token);
+  public JsonNodePath append(int index);
+  public PathType getPathType();
+  public String getName(int index);
+  public Object getElement(int index);
+  public int getNameCount();
+  public boolean startsWith(JsonNodePath other);
+  public boolean contains(String segment);
+  public String toString();
+  public int hashCode();
+  public boolean equals(Object obj);
+  public int compareTo(JsonNodePath other);
+}
+
+// public API of com.networknt.schema.JsonSchema
+public class JsonSchema extends BaseJsonValidator {
+  protected JsonSchema(List<JsonValidator> validators, boolean validatorsLoaded, boolean recursiveAnchor, TypeValidator typeValidator, String id, boolean suppressSubSchemaRetrieval, JsonNode schemaNode, ValidationContext validationContext, ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonSchema evaluationParentSchema, Map<String, String> errorMessage);
+  public JsonSchema fromRef(JsonSchema refEvaluationParentSchema, JsonNodePath refEvaluationPath);
+  public JsonSchema withConfig(SchemaValidatorsConfig config);
+  public ValidationContext getValidationContext();
+  public JsonNode getRefSchemaNode(String ref);
+  public JsonSchema getRefSchema(JsonNodePath fragment);
+  public JsonSchema getSubSchema(JsonNodePath fragment);
+  protected JsonNode getNode(Object propertyOrIndex);
+  protected JsonNode getNode(JsonNode node, Object propertyOrIndex);
+  public JsonSchema findLexicalRoot();
+  public JsonSchema findSchemaResourceRoot();
+  public boolean isSchemaResourceRoot();
+  public String getId();
+  public JsonSchema findAncestor();
+  public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode jsonNode, JsonNode rootNode, JsonNodePath instanceLocation);
+  public Set<ValidationMessage> validate(JsonNode rootNode);
+  public Set<ValidationMessage> validate(JsonNode rootNode, ExecutionContextCustomizer executionCustomizer);
+  public Set<ValidationMessage> validate(JsonNode rootNode, Consumer<ExecutionContext> executionCustomizer);
+  public <T> T validate(JsonNode rootNode, OutputFormat<T> format);
+  public <T> T validate(JsonNode rootNode, OutputFormat<T> format, ExecutionContextCustomizer executionCustomizer);
+  public <T> T validate(JsonNode rootNode, OutputFormat<T> format, Consumer<ExecutionContext> executionCustomizer);
+  public Set<ValidationMessage> validate(String input, InputFormat inputFormat);
+  public Set<ValidationMessage> validate(String input, InputFormat inputFormat, ExecutionContextCustomizer executionCustomizer);
+  public Set<ValidationMessage> validate(String input, InputFormat inputFormat, Consumer<ExecutionContext> executionCustomizer);
+  public <T> T validate(String input, InputFormat inputFormat, OutputFormat<T> format);
+  public <T> T validate(String input, InputFormat inputFormat, OutputFormat<T> format, ExecutionContextCustomizer executionCustomizer);
+  public <T> T validate(String input, InputFormat inputFormat, OutputFormat<T> format, Consumer<ExecutionContext> executionCustomizer);
+  public <T> T validate(ExecutionContext executionContext, JsonNode node, OutputFormat<T> format);
+  public <T> T validate(ExecutionContext executionContext, JsonNode node, OutputFormat<T> format, ExecutionContextCustomizer executionCustomizer);
+  public ValidationResult validateAndCollect(ExecutionContext executionContext, JsonNode node);
+  public ValidationResult validateAndCollect(JsonNode node);
+  public ValidationResult walk(ExecutionContext executionContext, JsonNode node, boolean validate, ExecutionContextCustomizer executionCustomizer);
+  public <T> T walk(ExecutionContext executionContext, JsonNode node, OutputFormat<T> outputFormat, boolean validate, ExecutionContextCustomizer executionCustomizer);
+  public ValidationResult walk(ExecutionContext executionContext, JsonNode node, boolean validate, Consumer<ExecutionContext> executionCustomizer);
+  public <T> T walk(ExecutionContext executionContext, JsonNode node, OutputFormat<T> outputFormat, boolean validate, Consumer<ExecutionContext> executionCustomizer);
+  public ValidationResult walk(ExecutionContext executionContext, JsonNode node, boolean validate);
+  public ValidationResult walk(ExecutionContext executionContext, String input, InputFormat inputFormat, boolean validate);
+  public <T> T walk(ExecutionContext executionContext, String input, InputFormat inputFormat, OutputFormat<T> outputFormat, boolean validate);
+  public ValidationResult walk(ExecutionContext executionContext, String input, InputFormat inputFormat, boolean validate, ExecutionContextCustomizer executionCustomizer);
+  public <T> T walk(ExecutionContext executionContext, String input, InputFormat inputFormat, OutputFormat<T> outputFormat, boolean validate, ExecutionContextCustomizer executionCustomizer);
+  public ValidationResult walk(JsonNode node, boolean validate);
+  public <T> T walk(JsonNode node, OutputFormat<T> outputFormat, boolean validate);
+  public ValidationResult walk(String input, InputFormat inputFormat, boolean validate);
+  public ValidationResult walk(String input, InputFormat inputFormat, boolean validate, ExecutionContextCustomizer executionCustomizer);
+  public ValidationResult walk(String input, InputFormat inputFormat, boolean validate, Consumer<ExecutionContext> executionCustomizer);
+  public ValidationResult walkAtNode(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean validate);
+  public Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema);
+  public String toString();
+  public boolean hasTypeValidator();
+  public TypeValidator getTypeValidator();
+  public List<JsonValidator> getValidators();
+  public void initializeValidators();
+  public boolean isRecursiveAnchor();
+  public ExecutionContext createExecutionContext();
+}
+
+// public API of com.networknt.schema.ValidationContext
+public class ValidationContext {
+  public ValidationContext(JsonMetaSchema metaSchema, JsonSchemaFactory jsonSchemaFactory, SchemaValidatorsConfig config);
+  public ValidationContext(JsonMetaSchema metaSchema, JsonSchemaFactory jsonSchemaFactory, SchemaValidatorsConfig config, ConcurrentMap<String, JsonSchema> schemaReferences, ConcurrentMap<String, JsonSchema> schemaResources, ConcurrentMap<String, JsonSchema> dynamicAnchors);
+  public JsonSchema newSchema(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema);
+  public JsonValidator newValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, String keyword, JsonNode schemaNode, JsonSchema parentSchema);
+  public String resolveSchemaId(JsonNode schemaNode);
+  public JsonSchemaFactory getJsonSchemaFactory();
+  public SchemaValidatorsConfig getConfig();
+  public ConcurrentMap<String, JsonSchema> getSchemaReferences();
+  public ConcurrentMap<String, JsonSchema> getSchemaResources();
+  public ConcurrentMap<String, JsonSchema> getDynamicAnchors();
+  public JsonMetaSchema getMetaSchema();
+  public Optional<VersionFlag> activeDialect();
+}
+
+// public API of com.networknt.schema.ExecutionContext
+public class ExecutionContext {
+  public ExecutionContext();
+  public ExecutionContext(CollectorContext collectorContext);
+  public ExecutionContext(ExecutionConfig executionConfig);
+  public ExecutionContext(ExecutionConfig executionConfig, CollectorContext collectorContext);
+  public CollectorContext getCollectorContext();
+  public void setCollectorContext(CollectorContext collectorContext);
+  public ExecutionConfig getExecutionConfig();
+  public void setExecutionConfig(ExecutionConfig executionConfig);
+  public JsonNodeAnnotations getAnnotations();
+  public JsonNodeResults getResults();
+  public boolean isFailFast();
+  public void setFailFast(boolean failFast);
+  public DiscriminatorContext getCurrentDiscriminatorContext();
+  public void enterDiscriminatorContext(DiscriminatorContext ctx, JsonNodePath instanceLocation);
+  public void leaveDiscriminatorContextImmediately(JsonNodePath instanceLocation);
+}
+
+// public API of com.networknt.schema.ValidationMessage
+public class ValidationMessage {
+  public String getCode();
+  public JsonNodePath getInstanceLocation();
+  public JsonNodePath getEvaluationPath();
+  public SchemaLocation getSchemaLocation();
+  public JsonNode getInstanceNode();
+  public JsonNode getSchemaNode();
+  public String getProperty();
+  public Object[] getArguments();
+  public Map<String, Object> getDetails();
+  public String getMessage();
+  public String getMessageKey();
+  public boolean isValid();
+  public String getError();
+  public String toString();
+  public boolean equals(Object o);
+  public int hashCode();
+  public String getType();
+  public static Builder builder();
+}
+
+// public API of com.networknt.schema.utils.SetView
+public class SetView<E> implements Set<E> {
+  public SetView<E> union(Set<E> set);
+  public int size();
+  public boolean isEmpty();
+  public boolean contains(Object o);
+  public Iterator<E> iterator();
+  public Object[] toArray();
+  public <T> T[] toArray(T[] a);
+  public boolean containsAll(Collection<?> c);
+  public boolean add(E e);
+  public boolean remove(Object o);
+  public boolean addAll(Collection<? extends E> coll);
+  public boolean removeAll(Collection<?> coll);
+  public boolean retainAll(Collection<?> coll);
+  public void clear();
+  public int hashCode();
+  public boolean equals(Object obj);
+  public String toString();
+}
+
+
+At the end they must propose one complete (including typical use cases, edge cases, and error scenarios) JUnit 4 test file (OneOfValidatorTest.java) for the given Java class. The complete JUnit test file must start with ###Test START## and finish with ###Test END##

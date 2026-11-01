@@ -1,0 +1,535 @@
+[
+  {
+    "group": "Null Parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException",
+        "description": "Both arguments are null \u2013 the method should reject null rootNode (or executionCustomizer) and raise a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "executionContext -> {}"
+          }
+        ],
+        "expected": "Throws NullPointerException",
+        "description": "rootNode is null while a valid customizer is supplied \u2013 the method must still throw NPE because the JSON instance to validate is missing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException",
+        "description": "ExecutionContextCustomizer is null \u2013 the method should validate the presence of the customizer and throw NPE."
+      }
+    ]
+  },
+  {
+    "group": "Valid Schema Validation (no validation errors)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\", \"age\": 30 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage)",
+        "description": "A JSON document that conforms to the schema \u2013 the validator should return an empty set of ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"id\": \"12345\", \"active\": true }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", \"value\")"
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage)",
+        "description": "Customizer mutates the ExecutionContext but does not affect validation outcome; still should return an empty set."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Schema Validation (validation errors)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": 123, \"age\": \"thirty\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing at least two ValidationMessage objects (type mismatch for 'name' and 'age')",
+        "description": "JSON violates type constraints \u2013 the validator must report validation messages for each offending property."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for missing required property 'name'",
+        "description": "Empty object fails required\u2011property validation; the returned set should contain a single message describing the missing field."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext Effects",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"Alice\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setFailFast(true)"
+          }
+        ],
+        "expected": "Set containing only the first ValidationMessage encountered (fail\u2011fast mode)",
+        "description": "When the customizer enables fail\u2011fast, validation should stop after the first error; the result set size must be 1."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"Bob\", \"age\": -5 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"allowNegative\", false)"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for 'age' being negative",
+        "description": "Customizer adds a flag that the validator reads to reject negative numbers; the resulting set should contain the appropriate message."
+      }
+    ]
+  },
+  {
+    "group": "Boundary Numeric Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"value\": 0 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (value equals minimum inclusive)",
+        "description": "Schema defines a numeric property \"value\" with minimum = 0 (inclusive) and maximum = 100 (inclusive). The instance uses the lower boundary value 0, which should be accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"value\": 100 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (value equals maximum inclusive)",
+        "description": "Same schema as above; the instance uses the upper boundary value 100, which should also be accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"value\": -0.0001 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for 'value' below minimum",
+        "description": "Instance value is just below the minimum (0). The validator must report a single validation error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"value\": 100.01 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for 'value' above maximum",
+        "description": "Instance value is just above the maximum (100). The validator must report a single validation error."
+      }
+    ]
+  },
+  {
+    "group": "Enum and Pattern Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"status\": \"ACTIVE\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (status matches allowed enum)",
+        "description": "Schema defines \"status\" with enum [\"ACTIVE\", \"INACTIVE\", \"PENDING\"]. The instance supplies a valid enum value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"status\": \"UNKNOWN\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for enum mismatch on 'status'",
+        "description": "Instance supplies a value not present in the enum list; validator must emit an error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"email\": \"john.doe@example.com\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (email matches regex pattern)",
+        "description": "Schema defines \"email\" with a regex pattern for a typical email address. The instance matches the pattern."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"email\": \"invalid-email@@example..com\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for pattern mismatch on 'email'",
+        "description": "Instance email does not satisfy the regex pattern; validator must report a pattern error."
+      }
+    ]
+  },
+  {
+    "group": "Array Constraints",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"tags\": [\"red\", \"green\", \"blue\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (array length within min/max and items valid)",
+        "description": "Schema defines \"tags\" as an array with minItems = 1, maxItems = 5, and each item must be a string matching the enum [\"red\",\"green\",\"blue\",\"yellow\"]. The instance satisfies all constraints."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"tags\": [] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for 'tags' array below minItems",
+        "description": "Array is empty while schema requires at least one item."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"tags\": [\"red\", \"purple\"] }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for enum mismatch on second array element",
+        "description": "Second element \"purple\" is not part of the allowed enum; validator must report an error for that element."
+      }
+    ]
+  },
+  {
+    "group": "AdditionalProperties and $ref Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"person\": { \"name\": \"Sam\", \"age\": 40 } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (valid $ref to Person schema, no extra properties)",
+        "description": "Root schema contains a property \"person\" that $ref's an external \"Person\" schema (with required name and age). Instance conforms exactly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"person\": { \"name\": \"Sam\", \"age\": 40, \"extra\": \"value\" } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for disallowed additional property 'extra'",
+        "description": "Person schema sets \"additionalProperties\": false. The instance adds an unexpected property, which should be flagged."
+      }
+    ]
+  },
+  {
+    "group": "Locale / MessageSource Customization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"age\": -1 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setLocale(java.util.Locale.FRENCH)"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with French language text",
+        "description": "The schema requires \"age\" to be >= 0. By setting the locale to French via the customizer, the returned ValidationMessage should be localized (e.g., \"doit \u00eatre sup\u00e9rieur ou \u00e9gal \u00e0 0\")."
+      }
+    ]
+  },
+  {
+    "group": "Recursive Anchor Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"node\": { \"node\": { \"value\": \"leaf\" } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty Set (recursive anchor resolves correctly)",
+        "description": "Schema defines a recursive anchor \"$recursiveAnchor\": true and a property \"node\" that references the same schema. The deeply nested instance should validate without stack overflow."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"node\": { \"node\": { \"value\": 123 } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage for type mismatch on 'value'",
+        "description": "Same recursive schema, but the deepest \"value\" is a number while schema expects a string. Validator must report the type error."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext Attribute Ignored",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"Eva\", \"age\": 28 }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"unusedFlag\", true)"
+          }
+        ],
+        "expected": "Empty Set (no validation errors)",
+        "description": "Custom attribute \"unusedFlag\" is not consulted by any validator. Validation should behave exactly as if no attribute were set."
+      }
+    ]
+  },
+  {
+    "group": "Customizer Exception Propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"name\", \"Test\")"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"custom error\"); }"
+          }
+        ],
+        "expected": "Throws RuntimeException with message \"custom error\"",
+        "description": "The customizer lambda throws a RuntimeException; the validate method should not catch it and must propagate the exception to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref Decoding Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (from URLDecoder.decode) due to malformed percent\u2011encoding in $ref",
+        "description": "The schema contains a $ref value like \"%ZZ\" which is not a valid percent\u2011encoded string. When validate() attempts to resolve the reference it calls URLDecoder.decode, which throws IllegalArgumentException. The method should surface this exception."
+      }
+    ]
+  },
+  {
+    "group": "Unresolvable $ref Leads to JsonSchemaException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"refProp\": {} }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or subclass) indicating that the referenced schema could not be found",
+        "description": "The schema contains a $ref pointing to a non\u2011existent definition (e.g., \"#/definitions/Unknown\"). Validation attempts to resolve it and should raise a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref Without Recursive Anchor",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"self\": {} }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws StackOverflowError or JsonSchemaException indicating infinite $ref recursion",
+        "description": "The schema defines two subschemas that reference each other via $ref but does not set \"$recursiveAnchor\": true. Validation should detect the recursion and either throw a StackOverflowError or a JsonSchemaException describing the problem."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Validator Type Configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"field\": \"value\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Throws IllegalStateException (or IllegalArgumentException) because the schema specifies an unknown validator type",
+        "description": "The schema contains a validator entry with an unsupported \"type\" value (e.g., \"unknownType\"). When the validator factory attempts to instantiate it, an IllegalStateException should be thrown."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer Sets Null Attribute Key",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"Alice\" }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(null, \"value\")"
+          }
+        ],
+        "expected": "Throws NullPointerException",
+        "description": "The customizer attempts to store an attribute with a null key, which the ExecutionContext implementation rejects by throwing NullPointerException. The validate method should let this exception propagate."
+      }
+    ]
+  }
+]

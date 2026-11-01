@@ -1,0 +1,174 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation, JsonNode, SchemaValidatorsConfig)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/example-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) whose meta\u2011schema matches the supplied schemaUri",
+        "description": "Happy\u2011path: all arguments are non\u2011null and refer to a valid schema; the method should forward the parameters to newJsonSchema and return a usable JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "schemaUri is null \u2013 the factory cannot resolve a location, so the method is expected to throw NPE (or propagate the same exception from newJsonSchema)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/example-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) that uses an empty ObjectNode as the schema source",
+        "description": "jsonNode is null \u2013 the implementation should treat a missing JsonNode as an empty schema (ObjectNode) and still create a JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/example-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) with default SchemaValidatorsConfig applied",
+        "description": "config is null \u2013 the factory should fall back to its default configuration when none is supplied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "All parameters are null \u2013 the method cannot operate and must raise an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/non\u2011existent.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "SchemaLoadingException (or IOException) indicating that the schema resource cannot be found",
+        "description": "The supplied SchemaLocation points to a resource that does not exist; newJsonSchema should attempt to load it and propagate the loading failure."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation, JsonNode, SchemaValidatorsConfig) - exception scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"ftp://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The supplied SchemaLocation uses an unsupported URI scheme (ftp). JsonSchemaFactory should reject it and throw IllegalArgumentException before attempting to load the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/example-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"[\\\"not\\\",\\\"an\\\",\\\"object\\\"]\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "jsonNode is a JSON array rather than an object. The factory expects the root of a JSON Schema to be an object node; it should raise IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schema/example-schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"http://invalid-meta-schema.org/draft-07/schema#\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "SchemaLoadingException",
+        "description": "The schema contains a $schema reference that points to a non\u2011existent or unsupported meta\u2011schema URI. During creation the factory attempts to load the meta\u2011schema and should propagate a SchemaLoadingException."
+      }
+    ]
+  }
+]

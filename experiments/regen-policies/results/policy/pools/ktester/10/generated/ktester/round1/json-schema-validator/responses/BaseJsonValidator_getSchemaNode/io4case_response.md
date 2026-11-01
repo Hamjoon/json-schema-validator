@@ -1,0 +1,44 @@
+{
+  "testCases": [
+    {
+      "group": "BaseJsonValidator#getSchemaNode - node type variations",
+      "cases": [
+        {
+          "input": [],
+          "expected": "the same non‑null JsonNode instance of type ObjectNode (e.g., {\"type\":\"integer\",\"minimum\":0})",
+          "description": "Create a concrete subclass of BaseJsonValidator (e.g., TestValidator) whose constructor forwards the supplied JsonNode to the super‑class. Pass an ObjectNode with multiple fields as the schemaNode. After construction, invoke getSchemaNode() and verify that the returned reference is exactly the same object (identity equality) and that its runtime type is ObjectNode."
+        },
+        {
+          "input": [],
+          "expected": "the same non‑null JsonNode instance of type ArrayNode (e.g., [\"string\", 5, true])",
+          "description": "Instantiate TestValidator with an ArrayNode representing a schema that is an array (e.g., a \"anyOf\" array). Call getSchemaNode() and assert that the returned reference is the identical ArrayNode instance supplied to the constructor."
+        },
+        {
+          "input": [],
+          "expected": "the same non‑null JsonNode instance of type BooleanNode (true)",
+          "description": "Instantiate TestValidator with a BooleanNode (e.g., JsonNodeFactory.instance.booleanNode(true)). Verify that getSchemaNode() returns the exact same BooleanNode instance."
+        },
+        {
+          "input": [],
+          "expected": "the same non‑null JsonNode instance of type NumericNode (e.g., 42)",
+          "description": "Instantiate TestValidator with a NumericNode (e.g., JsonNodeFactory.instance.numberNode(42)). Ensure getSchemaNode() returns the identical NumericNode instance."
+        },
+        {
+          "input": [],
+          "expected": "the same non‑null JsonNode instance of type TextNode (e.g., \"example\")",
+          "description": "Instantiate TestValidator with a TextNode (e.g., JsonNodeFactory.instance.textNode(\"example\")). Verify that getSchemaNode() returns the same TextNode reference."
+        }
+      ]
+    },
+    {
+      "group": "BaseJsonValidator#getSchemaNode - external mutation visibility",
+      "cases": [
+        {
+          "input": [],
+          "expected": "the same JsonNode instance reflecting external modifications (e.g., added field after construction)",
+          "description": "Create a mutable ObjectNode, pass it to TestValidator, then modify the ObjectNode (e.g., add a new field) after the validator has been constructed. Call getSchemaNode() and confirm that the returned node reflects the mutation, proving that getSchemaNode() returns the original reference without defensive copying."
+        }
+      ]
+    }
+  ]
+}

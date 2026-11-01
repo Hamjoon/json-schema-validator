@@ -1,0 +1,438 @@
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.Set;
+
+/**
+ * JUnit‑4 test suite for {@link JsonSchema}.  The tests are written in the same
+ * package as {@code JsonSchema} so that the package‑private static factory method
+ * {@code JsonSchema.from(...)} can be used when a direct construction through the
+ * public API is not possible.
+ *
+ * The suite follows the steps requested in the prompt:
+ *
+ * <ol>
+ *   <li>List all public methods (see the comment block at the top of the file).</li>
+ *   <li>Provide a basic test for each method that exercises the normal behaviour.</li>
+ *   <li>Identify edge‑cases / exception paths and add dedicated tests.</li>
+ *   <li>Combine everything into a single JUnit‑4 test class.</li>
+ * </ol>
+ *
+ * The tests use the real library classes (no mocking) and keep the
+ * configuration as simple as possible – a plain {@link JsonSchemaFactory}
+ * with the default {@link SchemaValidatorsConfig}.
+ */
+public class JsonSchemaTest {
+
+    /* ---------------------------------------------------------------------- */
+    /*  1. Public methods of JsonSchema (extracted from the source)          */
+    /* ---------------------------------------------------------------------- */
+    //
+    // public JsonSchema fromRef(JsonSchema refEvaluationParentSchema,
+    //                           JsonNodePath refEvaluationPath)
+    // public JsonSchema withConfig(SchemaValidatorsConfig config)
+    // public ValidationContext getValidationContext()
+    // public JsonNode getRefSchemaNode(String ref)
+    // public JsonSchema getRefSchema(JsonNodePath fragment)
+    // public JsonSchema getSubSchema(JsonNodePath fragment)
+    // public JsonSchema findLexicalRoot()
+    // public JsonSchema findSchemaResourceRoot()
+    // public boolean isSchemaResourceRoot()
+    // public String getId()
+    // public JsonSchema findAncestor()
+    // public Set<ValidationMessage> validate(ExecutionContext executionContext,
+    //                                        JsonNode jsonNode,
+    //                                        JsonNode rootNode,
+    //                                        JsonNodePath instanceLocation)
+    // public Set<ValidationMessage> validate(JsonNode rootNode)
+    // public Set<ValidationMessage> validate(JsonNode rootNode,
+    //                                        ExecutionContextCustomizer executionCustomizer)
+    // public Set<ValidationMessage> validate(JsonNode rootNode,
+    //                                        Consumer<ExecutionContext> executionCustomizer)
+    // public <T> T validate(JsonNode rootNode, OutputFormat<T> format)
+    // public <T> T validate(JsonNode rootNode,
+    //                       OutputFormat<T> format,
+    //                       ExecutionContextCustomizer executionCustomizer)
+    // public <T> T validate(JsonNode rootNode,
+    //                       OutputFormat<T> format,
+    //                       Consumer<ExecutionContext> executionCustomizer)
+    // public Set<ValidationMessage> validate(String input, InputFormat inputFormat)
+    // public Set<ValidationMessage> validate(String input,
+    //                                        InputFormat inputFormat,
+    //                                        ExecutionContextCustomizer executionCustomizer)
+    // public Set<ValidationMessage> validate(String input,
+    //                                        InputFormat inputFormat,
+    //                                        Consumer<ExecutionContext> executionCustomizer)
+    // public <T> T validate(String input,
+    //                     InputFormat inputFormat,
+    //                     OutputFormat<T> format)
+    // public <T> T validate(String input,
+    //                     InputFormat inputFormat,
+    //                     OutputFormat<T> format,
+    //                     ExecutionContextCustomizer executionCustomizer)
+    // public <T> T validate(String input,
+    //                     InputFormat inputFormat,
+    //                     OutputFormat<T> format,
+    //                     Consumer<ExecutionContext> executionCustomizer)
+    // public <T> T validate(ExecutionContext executionContext,
+    //                     JsonNode node,
+    //                     OutputFormat<T> format)
+    // public <T> T validate(ExecutionContext executionContext,
+    //                     JsonNode node,
+    //                     OutputFormat<T> format,
+    //                     ExecutionContextCustomizer executionCustomizer)
+    // public ValidationResult validateAndCollect(ExecutionContext executionContext,
+    //                                            JsonNode node)                // deprecated
+    // public ValidationResult validateAndCollect(ExecutionContext executionContext,
+    //                                            JsonNode jsonNode,
+    //                                            JsonNode rootNode,
+    //                                            JsonNodePath instanceLocation) // deprecated
+    // public ValidationResult validateAndCollect(JsonNode node)                // deprecated
+    // public ValidationResult walk(ExecutionContext executionContext,
+    //                               JsonNode node,
+    //                               boolean validate,
+    //                               ExecutionContextCustomizer executionCustomizer)
+    // public <T> T walk(ExecutionContext executionContext,
+    //                   JsonNode node,
+    //                   OutputFormat<T> outputFormat,
+    //                   boolean validate,
+    //                   ExecutionContextCustomizer executionCustomizer)
+    // public ValidationResult walk(ExecutionContext executionContext,
+    //                               JsonNode node,
+    //                               boolean validate,
+    //                               Consumer<ExecutionContext> executionCustomizer)
+    // public <T> T walk(ExecutionContext executionContext,
+    //                   JsonNode node,
+    //                   OutputFormat<T> outputFormat,
+    //                   boolean validate,
+    //                   Consumer<ExecutionContext> executionCustomizer)
+    // public ValidationResult walk(ExecutionContext executionContext,
+    //                               JsonNode node,
+    //                               boolean validate)
+    // public ValidationResult walk(ExecutionContext executionContext,
+    //                               String input,
+    //                               InputFormat inputFormat,
+    //                               boolean validate)
+    // public <T> T walk(ExecutionContext executionContext,
+    //                   String input,
+    //                   InputFormat inputFormat,
+    //                   OutputFormat<T> outputFormat,
+    //                   boolean validate)
+    // public ValidationResult walk(ExecutionContext executionContext,
+    //                               String input,
+    //                               InputFormat inputFormat,
+    //                               boolean validate,
+    //                               ExecutionContextCustomizer executionCustomizer)
+    // public <T> T walk(ExecutionContext executionContext,
+    //                   String input,
+    //                   InputFormat inputFormat,
+    //                   OutputFormat<T> outputFormat,
+    //                   boolean validate,
+    //                   ExecutionContextCustomizer executionCustomizer)
+    // public ValidationResult walk(JsonNode node, boolean validate)
+    // public <T> T walk(JsonNode node,
+    //                   OutputFormat<T> outputFormat,
+    //                   boolean validate)
+    // public ValidationResult walk(String input,
+    //                               InputFormat inputFormat,
+    //                               boolean validate)
+    // public ValidationResult walk(String input,
+    //                               InputFormat inputFormat,
+    //                               boolean validate,
+    //                               ExecutionContextCustomizer executionCustomizer)
+    // public ValidationResult walk(String input,
+    //                               InputFormat inputFormat,
+    //                               boolean validate,
+    //                               Consumer<ExecutionContext> executionCustomizer)
+    // public ValidationResult walkAtNode(ExecutionContext executionContext,
+    //                                   JsonNode node,
+    //                                   JsonNode rootNode,
+    //                                   JsonNodePath instanceLocation,
+    //                                   boolean validate)
+    // public List<JsonValidator> getValidators()
+    // public boolean hasTypeValidator()
+    // public TypeValidator getTypeValidator()
+    // public void initializeValidators()
+    // public boolean isRecursiveAnchor()
+    // public ExecutionContext createExecutionContext()
+    // public String toString()
+    // ---------------------------------------------------------------------- */
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /**
+     * Helper – creates a simple {@link JsonSchema} from a JSON string using the
+     * factory with the default configuration.
+     */
+    private JsonSchema loadSchema(String json) {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V4);
+        return factory.getSchema(json);
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*  Basic functionality tests                                            */
+    /* ---------------------------------------------------------------------- */
+
+    @Test
+    public void testValidateSimpleObject() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        JsonNode data = MAPPER.createObjectNode(); // empty object – valid
+        Set<ValidationMessage> errors = schema.validate(data);
+        Assert.assertTrue("Empty object should be valid", errors.isEmpty());
+    }
+
+    @Test
+    public void testValidateInvalidType() {
+        JsonSchema schema = loadSchema("{\"type\":\"string\"}");
+        JsonNode data = MAPPER.createObjectNode(); // object, not string
+        Set<ValidationMessage> errors = schema.validate(data);
+        Assert.assertFalse("Object should not satisfy string type", errors.isEmpty());
+    }
+
+    @Test
+    public void testValidateWithExecutionContextCustomizer() {
+        JsonSchema schema = loadSchema("{\"type\":\"number\"}");
+        JsonNode data = MAPPER.readTree("123");
+        ExecutionContextCustomizer customizer = (ec, vc) -> ec.setFailFast(true);
+        Set<ValidationMessage> errors = schema.validate(data, customizer);
+        Assert.assertTrue(errors.isEmpty());
+        // verify that the customizer was applied (failFast true does not affect success)
+        Assert.assertTrue(schema.createExecutionContext().isFailFast() == false);
+    }
+
+    @Test
+    public void testValidateStringInput() {
+        JsonSchema schema = loadSchema("{\"type\":\"boolean\"}");
+        Set<ValidationMessage> errors = schema.validate("true", InputFormat.JSON);
+        Assert.assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void testValidateStringInputInvalid() {
+        JsonSchema schema = loadSchema("{\"type\":\"boolean\"}");
+        Set<ValidationMessage> errors = schema.validate("123", InputFormat.JSON);
+        Assert.assertFalse(errors.isEmpty());
+    }
+
+    @Test
+    public void testValidateWithOutputFormat() {
+        JsonSchema schema = loadSchema("{\"type\":\"null\"}");
+        OutputFormat<Set<ValidationMessage>> format = OutputFormat.DEFAULT;
+        Set<ValidationMessage> result = schema.validate(MAPPER.readTree("null"), format);
+        Assert.assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testFromRefCreatesNewSchema() {
+        JsonSchema parent = loadSchema("{\"type\":\"object\"}");
+        JsonNodePath path = new JsonNodePath(PathType.JSON_POINTER).append("properties");
+        JsonSchema child = parent.fromRef(parent, path);
+        Assert.assertNotSame("fromRef should create a new instance", parent, child);
+        Assert.assertEquals("Evaluation path must be the one supplied", path, child.getEvaluationPath());
+    }
+
+    @Test
+    public void testWithConfigReturnsSameWhenUnchanged() {
+        JsonSchema schema = loadSchema("{\"type\":\"string\"}");
+        SchemaValidatorsConfig cfg = schema.getValidationContext().getConfig();
+        JsonSchema result = schema.withConfig(cfg);
+        Assert.assertSame("Unchanged config should return the same instance", schema, result);
+    }
+
+    @Test
+    public void testWithConfigReturnsNewWhenChanged() {
+        JsonSchema schema = loadSchema("{\"type\":\"string\"}");
+        SchemaValidatorsConfig newCfg = new SchemaValidatorsConfig();
+        newCfg.setFailFast(!schema.getValidationContext().getConfig().isFailFast());
+        JsonSchema result = schema.withConfig(newCfg);
+        Assert.assertNotSame("Changed config should return a new instance", schema, result);
+    }
+
+    @Test
+    public void testGetIdWhenNoIdDefined() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        // No $id – the id is derived from the absolute IRI of the schema location
+        String id = schema.getId();
+        Assert.assertNotNull("Id should be non‑null even when $id is absent", id);
+    }
+
+    @Test
+    public void testIsSchemaResourceRoot() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        Assert.assertTrue("Root schema must be a resource root", schema.isSchemaResourceRoot());
+    }
+
+    @Test
+    public void testFindLexicalRoot() {
+        JsonSchema root = loadSchema("{\"type\":\"object\"}");
+        JsonSchema child = root.fromRef(root, new JsonNodePath(PathType.JSON_POINTER).append("properties"));
+        JsonSchema lexicalRoot = child.findLexicalRoot();
+        Assert.assertSame("Lexical root of a child without $id should be the topmost ancestor", root, lexicalRoot);
+    }
+
+    @Test
+    public void testInitializeValidators() {
+        JsonSchema schema = loadSchema("{\"type\":\"string\"}");
+        // validatorsLoaded is false initially – we cannot access it directly,
+        // but calling initializeValidators must not throw and must make subsequent calls safe.
+        schema.initializeValidators();
+        // after initialization the schema should still validate correctly
+        Set<ValidationMessage> errors = schema.validate(MAPPER.readTree("\"hello\""));
+        Assert.assertTrue(errors.isEmpty());
+    }
+
+    @Test
+    public void testIsRecursiveAnchorDefault() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        Assert.assertFalse("Recursive anchor should be false by default", schema.isRecursiveAnchor());
+    }
+
+    @Test
+    public void testCreateExecutionContextRespectsConfig() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        ExecutionContext ctx = schema.createExecutionContext();
+        Assert.assertNotNull("ExecutionContext must be created", ctx);
+        // The default config does not enable fail‑fast – we verify the flag is honoured.
+        Assert.assertEquals(schema.getValidationContext().getConfig().isFailFast(),
+                ctx.isFailFast());
+    }
+
+    @Test
+    public void testGetRefSchemaNodeExistingPointer() {
+        JsonSchema schema = loadSchema("{\"properties\":{\"name\":{\"type\":\"string\"}}}");
+        JsonNode node = schema.getRefSchemaNode("#/properties/name");
+        Assert.assertNotNull("Node for existing JSON‑Pointer must be returned", node);
+        Assert.assertEquals("string", node.get("type").asText());
+    }
+
+    @Test
+    public void testGetRefSchemaNodeMissingPointerReturnsNull() {
+        JsonSchema schema = loadSchema("{\"properties\":{\"age\":{\"type\":\"integer\"}}}");
+        JsonNode node = schema.getRefSchemaNode("#/properties/name");
+        Assert.assertNull("Missing pointer should result in null", node);
+    }
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetRefSchemaUnknownAnchorThrows() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        // Use a fragment that is not a JSON‑Pointer (treated as an anchor)
+        JsonNodePath fragment = new JsonNodePath(PathType.JSON_POINTER).append("nonexistent");
+        schema.getRefSchema(fragment); // should throw
+    }
+
+    @Test
+    public void testGetSubSchemaValidPointer() {
+        JsonSchema schema = loadSchema("{\"properties\":{\"id\":{\"type\":\"integer\"}}}");
+        JsonNodePath fragment = new JsonNodePath(PathType.JSON_POINTER).append("properties").append("id");
+        JsonSchema sub = schema.getSubSchema(fragment);
+        Assert.assertNotNull("Sub‑schema for a valid pointer must be returned", sub);
+        Assert.assertTrue("Sub‑schema should have a type validator", sub.hasTypeValidator());
+    }
+
+    @Test
+    public void testFindAncestorOnRootReturnsSelf() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        JsonSchema ancestor = schema.findAncestor();
+        Assert.assertSame("Root's ancestor is itself", schema, ancestor);
+    }
+
+    @Test
+    public void testWalkValidObject() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        JsonNode data = MAPPER.createObjectNode();
+        ValidationResult result = schema.walk(data, true);
+        Assert.assertTrue("Walk should succeed without errors", result.getValidationMessages().isEmpty());
+    }
+
+    @Test
+    public void testWalkInvalidStringAgainstObjectSchema() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        JsonNode data = MAPPER.readTree("\"not an object\"");
+        ValidationResult result = schema.walk(data, true);
+        Assert.assertFalse("Walk should report errors for type mismatch", result.getValidationMessages().isEmpty());
+    }
+
+    @Test
+    public void testWalkStringInput() {
+        JsonSchema schema = loadSchema("{\"type\":\"array\"}");
+        ValidationResult result = schema.walk("[1,2,3]", InputFormat.JSON, true);
+        Assert.assertTrue("Array string input should be valid", result.getValidationMessages().isEmpty());
+    }
+
+    @Test
+    public void testWalkStringInputInvalid() {
+        JsonSchema schema = loadSchema("{\"type\":\"array\"}");
+        ValidationResult result = schema.walk("{\"not\":\"array\"}", InputFormat.JSON, true);
+        Assert.assertFalse("Object string input should be invalid for array schema", result.getValidationMessages().isEmpty());
+    }
+
+    @Test
+    public void testToStringContainsEvaluationPathAndSchemaNode() {
+        JsonSchema schema = loadSchema("{\"type\":\"null\"}");
+        String str = schema.toString();
+        Assert.assertTrue("toString must contain evaluation path", str.contains(schema.getEvaluationPath().toString()));
+        Assert.assertTrue("toString must contain the raw schema node", str.contains("\"type\":\"null\""));
+    }
+
+    /* ---------------------------------------------------------------------- */
+    /*  Edge‑case tests (exception handling, null handling, etc.)            */
+    /* ---------------------------------------------------------------------- */
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDeserializeInvalidJsonThrows() {
+        JsonSchema schema = loadSchema("{\"type\":\"object\"}");
+        // The private deserialize method cannot be called directly; instead we trigger it via the public validate(String, InputFormat)
+        // with malformed JSON.
+        schema.validate("{invalid json", InputFormat.JSON);
+    }
+
+    @Test
+    public void testGetRefSchemaNodeWithIdPrefixStripping() {
+        // Schema with an explicit $id
+        String json = "{ \"$id\":\"http://example.com/base#\", \"properties\":{\"p\":{\"type\":\"string\"}} }";
+        JsonSchema schema = loadSchema(json);
+        // Ref that contains the full IRI – the method should strip the $id part.
+        JsonNode node = schema.getRefSchemaNode("http://example.com/base#/properties/p");
+        Assert.assertNotNull("Node should be resolved after stripping $id", node);
+        Assert.assertEquals("string", node.get("type").asText());
+    }
+
+    @Test
+    public void testGetRefSchemaNodeUrlDecodedPointer() throws Exception {
+        JsonSchema schema = loadSchema("{\"properties\":{\"a b\":{\"type\":\"string\"}}}");
+        // Space encoded as %20
+        JsonNode node = schema.getRefSchemaNode("#/properties/a%20b");
+        Assert.assertNotNull(node);
+        Assert.assertEquals("string", node.get("type").asText());
+    }
+
+    @Test
+    public void testGetValidatorsIsUnmodifiable() {
+        JsonSchema schema = loadSchema("{\"type\":\"boolean\"}");
+        List<JsonValidator> validators = schema.getValidators();
+        try {
+            validators.add(null);
+            Assert.fail("Returned validators list must be unmodifiable");
+        } catch (UnsupportedOperationException expected) {
+            // expected
+        }
+    }
+
+    @Test
+    public void testHasTypeValidatorTrueWhenPresent() {
+        JsonSchema schema = loadSchema("{\"type\":\"string\"}");
+        Assert.assertTrue("Schema with explicit type must report having a TypeValidator", schema.hasTypeValidator());
+    }
+
+    @Test
+    public void testHasTypeValidatorFalseWhenAbsent() {
+        JsonSchema schema = loadSchema("{\"properties\":{\"x\":{\"type\":\"integer\"}}}");
+        Assert.assertFalse("Schema without top‑level type must report no TypeValidator", schema.hasTypeValidator());
+    }
+}

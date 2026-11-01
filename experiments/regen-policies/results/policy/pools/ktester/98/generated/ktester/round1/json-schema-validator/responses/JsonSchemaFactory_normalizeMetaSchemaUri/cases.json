@@ -1,0 +1,237 @@
+[
+  {
+    "group": "KnownVersionFlag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-07/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-07/schema#",
+        "description": "The supplied id exactly matches a known VersionFlag identifier (draft\u201107). The method should detect it in the first loop, set `found` to true and return the original id unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-04/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-04/schema#",
+        "description": "The supplied id matches the VersionFlag identifier for draft\u201104. Even though the string also contains the generic \"draft\" pattern, the method should stop after the first loop and return the original id."
+      }
+    ]
+  },
+  {
+    "group": "UnnormalizedDraftURIs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-07/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-07/schema#",
+        "description": "When the id does not match any VersionFlag (simulated by using a value that is not in the enum) but contains the substring \"/draft-07/\", the method should normalise it to the constant `SchemaId.V7`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "https://json-schema.org/draft/2019-09/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft/2019-09/schema#",
+        "description": "Unnormalized $schema containing \"/draft/2019-09/\" should be normalised to `SchemaId.V201909`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft/2020-12/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft/2020-12/schema#",
+        "description": "Unnormalized $schema containing \"/draft/2020-12/\" should be normalised to `SchemaId.V202012`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-04/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-04/schema#",
+        "description": "Unnormalized $schema containing \"/draft-04/\" should be normalised to `SchemaId.V4`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-06/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-06/schema#",
+        "description": "Unnormalized $schema containing \"/draft-06/\" should be normalised to `SchemaId.V6`."
+      }
+    ]
+  },
+  {
+    "group": "NoNormalization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-99/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-99/schema#",
+        "description": "The id contains the generic \"://json-schema.org/draft\" pattern but none of the specific draft substrings; the method should leave the id unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "urn:example:custom-schema"
+          }
+        ],
+        "expected": "urn:example:custom-schema",
+        "description": "The id does not contain the \"json-schema.org/draft\" marker at all; the method should return the original id unchanged."
+      }
+    ]
+  },
+  {
+    "group": "NullInput",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null reference should cause a NullPointerException when the method attempts to call `contains` on the argument."
+      }
+    ]
+  },
+  {
+    "group": "EmptyString",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": ""
+          }
+        ],
+        "expected": "",
+        "description": "An empty string does not match any known VersionFlag and does not contain the draft marker, so the method should return it unchanged."
+      }
+    ]
+  },
+  {
+    "group": "MultipleDraftSubstrings",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-07/draft-04/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-07/schema#",
+        "description": "The id contains both \"/draft-07/\" and \"/draft-04/\". Because the method checks for \"/draft-07/\" first, it should normalise to `SchemaId.V7`."
+      }
+    ]
+  },
+  {
+    "group": "OverlappingDraftPatterns",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft/2019-09/draft-04/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft/2019-09/schema#",
+        "description": "Both \"/draft/2019-09/\" and \"/draft-04/\" are present; the earlier check for 2019\u201109 wins, so the result should be `SchemaId.V201909`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft/2020-12/draft-07/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-07/schema#",
+        "description": "Even though \"/draft/2020-12/\" appears first, the method checks for \"/draft-07/\" before it, so the id normalises to `SchemaId.V7`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-04/draft-06/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-04/schema#",
+        "description": "Both \"/draft-04/\" and \"/draft-06/\" are present; the check for \"/draft-04/\" occurs before \"/draft-06/\", resulting in `SchemaId.V4`."
+      }
+    ]
+  },
+  {
+    "group": "NonMatchingDraftPattern",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft07/schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft07/schema#",
+        "description": "The substring \"/draft-07/\" is missing the separating slash, so the method should not treat it as an unnormalised draft URI and must return the original id."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://json-schema.org/draft-07schema#"
+          }
+        ],
+        "expected": "http://json-schema.org/draft-07schema#",
+        "description": "The pattern does not contain the required \"/draft-07/\" segment; therefore no normalisation occurs."
+      }
+    ]
+  },
+  {
+    "group": "CaseSensitivity",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "http://JSON-SCHEMA.ORG/draft-07/schema#"
+          }
+        ],
+        "expected": "http://JSON-SCHEMA.ORG/draft-07/schema#",
+        "description": "The check for the marker \"://json-schema.org/draft\" is case\u2011sensitive; a different case prevents detection, so the id stays unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "HTTP://json-schema.org/draft-07/schema#"
+          }
+        ],
+        "expected": "HTTP://json-schema.org/draft-07/schema#",
+        "description": "Upper\u2011case scheme part breaks the case\u2011sensitive substring search, resulting in no normalisation."
+      }
+    ]
+  }
+]

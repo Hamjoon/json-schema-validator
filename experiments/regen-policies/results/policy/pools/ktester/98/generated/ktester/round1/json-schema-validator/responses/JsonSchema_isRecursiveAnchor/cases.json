@@ -1,0 +1,173 @@
+[
+  {
+    "group": "JsonSchema.isRecursiveAnchor() basic behavior",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "A freshly constructed JsonSchema should have its private boolean `recursiveAnchor` defaulted to false, so `isRecursiveAnchor()` must return false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "setRecursiveAnchor",
+            "value": true
+          }
+        ],
+        "expected": true,
+        "description": "Using reflection to set the private field `recursiveAnchor` to true should cause `isRecursiveAnchor()` to return true, confirming the getter reflects the field value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "setRecursiveAnchor",
+            "value": false
+          }
+        ],
+        "expected": false,
+        "description": "After the field has been toggled back to false via reflection, `isRecursiveAnchor()` must again return false, proving the getter does not cache a previous value."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isRecursiveAnchor() with $recursiveAnchor true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$recursiveAnchor\": true }"
+          }
+        ],
+        "expected": true,
+        "description": "When a schema node contains the \"$recursiveAnchor\": true keyword, the factory method `JsonSchema.from(...)` must set the internal `recursiveAnchor` flag to true, therefore `isRecursiveAnchor()` should return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"object\", \"$recursiveAnchor\": true, \"properties\": { \"id\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": true,
+        "description": "A more complex schema that still declares `$recursiveAnchor: true` should propagate the flag to the resulting `JsonSchema` instance."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isRecursiveAnchor() with $recursiveAnchor false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$recursiveAnchor\": false }"
+          }
+        ],
+        "expected": false,
+        "description": "Explicitly setting `$recursiveAnchor` to false must leave the internal flag false; `isRecursiveAnchor()` should therefore return false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"array\", \"$recursiveAnchor\": false, \"items\": { \"type\": \"integer\" } }"
+          }
+        ],
+        "expected": false,
+        "description": "Even in a non\u2011object schema, an explicit false value for `$recursiveAnchor` must be respected."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isRecursiveAnchor() without $recursiveAnchor keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"type\": \"string\" }"
+          }
+        ],
+        "expected": false,
+        "description": "If the schema does not contain the `$recursiveAnchor` keyword, the default value of the flag must remain false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"allOf\": [ { \"type\": \"number\" }, { \"type\": \"null\" } ] }"
+          }
+        ],
+        "expected": false,
+        "description": "A schema composed with `allOf` but lacking `$recursiveAnchor` should still report false."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isRecursiveAnchor() inheritance edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentSchemaJson",
+            "value": "{ \"$recursiveAnchor\": true }"
+          },
+          {
+            "parameter": "childPointer",
+            "value": "/properties/child"
+          },
+          {
+            "parameter": "childSchemaJson",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": false,
+        "description": "A child schema obtained via `getSubSchema` (or similar) that does **not** declare `$recursiveAnchor` must have its own flag set to false, proving that the flag is not automatically inherited from the parent."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentSchemaJson",
+            "value": "{ \"$recursiveAnchor\": true }"
+          },
+          {
+            "parameter": "childPointer",
+            "value": "/properties/child"
+          },
+          {
+            "parameter": "childSchemaJson",
+            "value": "{ \"$recursiveAnchor\": true, \"type\": \"object\" }"
+          }
+        ],
+        "expected": true,
+        "description": "If the child schema explicitly defines `$recursiveAnchor: true`, its own flag must be true regardless of the parent\u2019s flag."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isRecursiveAnchor() malformed $recursiveAnchor value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$recursiveAnchor\": \"yes\" }"
+          }
+        ],
+        "expected": false,
+        "description": "When `$recursiveAnchor` is present but not a boolean (e.g., a string), the parser should ignore it and keep the flag false rather than throwing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaJson",
+            "value": "{ \"$recursiveAnchor\": null }"
+          }
+        ],
+        "expected": false,
+        "description": "A null value for `$recursiveAnchor` must be treated as absent/false, resulting in `isRecursiveAnchor()` returning false."
+      }
+    ]
+  }
+]

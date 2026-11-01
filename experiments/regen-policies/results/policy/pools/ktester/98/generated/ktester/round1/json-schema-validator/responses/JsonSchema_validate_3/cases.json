@@ -1,0 +1,526 @@
+[
+  {
+    "group": "Null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When both parameters are null the method should throw NPE because the root JSON node is required."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the JSON node is null but a customizer is supplied the method must still reject the call with NPE."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A null customizer is allowed; the method should behave as if no customizer was provided and return an empty validation result for a valid empty object."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer effects",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"a\":1}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> consumer.setAttribute(\"skip\", true)"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When the customizer sets a flag that the validator checks (e.g., \"skip\"), the validator should bypass further validation and return an empty set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"a\":1}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> { throw new IllegalStateException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "If the customizer itself throws an exception, the validate method must propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation (no errors)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A JSON document that satisfies the schema (e.g., required fields, correct types) should produce an empty validation message set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing []"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "An empty array that conforms to an \"array\" type schema should also return an empty set."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure (error messages)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'type' and path '/age'",
+        "description": "When a property has an invalid type (string instead of integer) the validator must return a ValidationMessage describing the type error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'required' and path ''",
+        "description": "When required properties are missing the validator must return a required\u2011field ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"extra\":true}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'additionalProperties' and path ''",
+        "description": "When additionalProperties is false and an unexpected property is present, a corresponding ValidationMessage must be produced."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"self\":{}}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "If the schema contains a recursive anchor (isRecursiveAnchor() == true) and the instance resolves correctly, validation should succeed without infinite recursion."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"self\":{ \"self\": {\"self\":{} } } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'maxDepth' (or similar) if implementation limits recursion",
+        "description": "When the recursive anchor leads to a depth that exceeds the validator\u2019s recursion limit, an appropriate ValidationMessage must be returned."
+      }
+    ]
+  },
+  {
+    "group": "Schema resource root flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"id\":\"http://example.com/schema\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When the schema is marked as a resource root (isSchemaResourceRoot() == true) the validator should treat $id resolution accordingly and still validate successfully."
+      }
+    ]
+  },
+  {
+    "group": "Root node type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [1,2,3]"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'type' and path ''",
+        "description": "The schema expects an object at the root, but an array is supplied; validation should report a type error at the root path."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "StringNode representing \"just a string\""
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'type' and path ''",
+        "description": "When the root JSON node is a primitive string while the schema requires an object, a type ValidationMessage must be returned."
+      }
+    ]
+  },
+  {
+    "group": "Pattern validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"email\":\"not-an-email\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'format' and path '/email'",
+        "description": "The schema defines a regex/pattern for the \"email\" property; providing a non\u2011matching value should yield a format ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"email\":\"john@example.com\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A correctly formatted email satisfies the pattern constraint, resulting in no validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Enum validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"status\":\"UNKNOWN\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'enum' and path '/status'",
+        "description": "The \"status\" property is limited to a set of allowed enum values; an out\u2011of\u2011range value must generate an enum ValidationMessage."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"status\":\"ACTIVE\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A value that belongs to the defined enum list passes validation without errors."
+      }
+    ]
+  },
+  {
+    "group": "OneOf validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"value\":123}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The schema uses oneOf to allow either a numeric or a string representation; providing a number satisfies one branch, so validation succeeds."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"value\":true}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'oneOf' and path '/value'",
+        "description": "A boolean does not match any of the oneOf alternatives (number or string), therefore a oneOf ValidationMessage should be produced."
+      }
+    ]
+  },
+  {
+    "group": "Array items validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [\"a\", \"b\", \"c\"]"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "The schema requires an array of strings; an array where every element is a string validates without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [\"a\", 2, \"c\"]"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'type' and path '/1'",
+        "description": "The second element is an integer while the schema expects strings; a type ValidationMessage should be reported at the offending index."
+      }
+    ]
+  },
+  {
+    "group": "Null customizer with non\u2011empty valid object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"Alice\",\"age\":25}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "A null executionCustomizer should be treated as a no\u2011op; a valid object must still produce an empty validation result."
+      }
+    ]
+  },
+  {
+    "group": "Custom exception propagation (different exception type)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"a\":1}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> { throw new RuntimeException(\"unexpected\"); }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the customizer throws a RuntimeException (not IllegalStateException), the validate method must propagate it unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Deep nesting exceeding max depth without recursive anchor",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"level1\":{\"level2\":{\"level3\":{\"level4\":{\"level5\":{}}}}}}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "Set containing ValidationMessage with type 'maxDepth' (or similar)",
+        "description": "When the instance depth exceeds the validator's configured maximum depth and the schema does not use a recursive anchor, validation should stop and report a maxDepth ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "UnsupportedEncodingException",
+        "description": "The schema contains a $ref with an invalid percent\u2011encoding (e.g., \"%ZZ\"). When validate() attempts to resolve the reference it calls URLDecoder.decode, which throws UnsupportedEncodingException. The method must propagate this exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid schema definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema node defines an unknown type value (e.g., \"type\": \"unknownType\"). During validator initialization JsonSchema should detect the illegal type and throw IllegalArgumentException before any validation occurs."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "UnsupportedOperationException",
+        "description": "The schema includes a custom keyword that the library does not recognise (e.g., \"fooValidator\": true). While building the validator list JsonSchema throws UnsupportedOperationException, which must be propagated by validate()."
+      }
+    ]
+  },
+  {
+    "group": "Infinite recursion without recursive anchor",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> {}"
+          }
+        ],
+        "expected": "StackOverflowError",
+        "description": "The schema contains a circular $ref chain that does not involve a recursive anchor. When validate() follows the references it recurses indefinitely, eventually causing a StackOverflowError. The method should let this error surface."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer throws checked exception wrapped in RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"a\":1}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "consumer -> { try { throw new java.io.IOException(\"io fail\"); } catch (Exception e) { throw new RuntimeException(e); } }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "The customizer throws a checked exception (IOException) which is wrapped in a RuntimeException. validate() must propagate the RuntimeException unchanged."
+      }
+    ]
+  }
+]

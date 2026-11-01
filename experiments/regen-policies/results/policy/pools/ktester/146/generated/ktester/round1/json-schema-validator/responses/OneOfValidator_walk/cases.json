@@ -1,0 +1,374 @@
+[
+  {
+    "group": "Validate when shouldValidateSchema is true and node is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Set containing the ValidationMessage(s) returned by the overridden validate method (e.g., [{\"type\":\"oneOf\",\"path\":\"$\",\"message\":\"oneOf validation failed\"}])",
+        "description": "When shouldValidateSchema is true and the instance node is not null, walk should invoke the protected validate(...) method with walk=true and return the messages produced by that call."
+      }
+    ]
+  },
+  {
+    "group": "Delegate to child schemas when shouldValidateSchema is false (node non\u2011null)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage added by OneOfValidator) and verify that each child JsonSchema in the schemas list receives a walk call with shouldValidateSchema=false",
+        "description": "When shouldValidateSchema is false, walk must skip its own validation and forward the call to every child schema with shouldValidateSchema set to false."
+      }
+    ]
+  },
+  {
+    "group": "Delegate to child schemas when shouldValidateSchema is true but node is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Empty Set and verify that each child JsonSchema in the schemas list receives a walk call with shouldValidateSchema=false",
+        "description": "Even though shouldValidateSchema is true, the node is null, so the condition fails and walk must delegate to child schemas, just like the else\u2011branch."
+      }
+    ]
+  },
+  {
+    "group": "No child schemas \u2013 else branch returns empty set",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set (no ValidationMessage and no child schema walk invoked)",
+        "description": "When the schemas list is empty and the else\u2011branch is taken, walk should simply return an empty LinkedHashSet."
+      }
+    ]
+  },
+  {
+    "group": "Delegate to child schemas when shouldValidateSchema is false and node is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set; each child JsonSchema in the schemas list receives a walk call with shouldValidateSchema=false (node is null)",
+        "description": "When shouldValidateSchema is false the validator must skip its own validation regardless of node value and delegate to every child schema, passing shouldValidateSchema=false. The returned set remains empty because OneOfValidator never adds messages in the else\u2011branch."
+      }
+    ]
+  },
+  {
+    "group": "Do not invoke child schemas when shouldValidateSchema is true and node is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Set containing the ValidationMessage(s) returned by validate(..., true); verify that no child JsonSchema.walk(...) is invoked",
+        "description": "When both shouldValidateSchema is true and node is non\u2011null, OneOfValidator must execute its own validation path and must NOT forward the call to its child schemas. The result set is exactly what the protected validate method returns."
+      }
+    ]
+  },
+  {
+    "group": "Validate returns empty set when shouldValidateSchema is true and node is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "Empty Set (validate method returns an empty Set); child schemas are not called",
+        "description": "Even when validation is performed, the protected validate method may legitimately return no messages (e.g., the instance satisfies oneOf). walk must forward that empty Set unchanged and must not invoke child schemas."
+      }
+    ]
+  },
+  {
+    "group": "Multiple child schemas receive walk call with shouldValidateSchema false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "Empty Set; verify that each of the three child JsonSchema instances receives exactly one walk call with shouldValidateSchema=false",
+        "description": "When shouldValidateSchema is false, OneOfValidator must iterate over its entire schemas list, calling walk on every child schema with the same node/root/instanceLocation but with shouldValidateSchema set to false. The validator itself adds no messages."
+      }
+    ]
+  },
+  {
+    "group": "Null schemas list triggers NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The OneOfValidator instance is constructed with its internal `schemas` field set to null. When `shouldValidateSchema` is false (or true with a null node) the method takes the else\u2011branch and attempts to iterate over `schemas`, causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null child schema in schemas list triggers NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The validator's `schemas` list contains a null element (e.g., `[null, mockSchema]`). During the else\u2011branch iteration the code calls `schema.walk(...)` on the null entry, which throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "validate method propagates RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "A subclass of OneOfValidator overrides the protected `validate(...)` method to throw a RuntimeException (e.g., new RuntimeException(\"validation failed\")). When `shouldValidateSchema` is true and `node` is non\u2011null, `walk` calls `validate(..., true)`. The exception should propagate out of `walk` unchanged."
+      }
+    ]
+  },
+  {
+    "group": "child schema walk propagates RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "mockNonNullNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mockRootNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mockInstanceLocation"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "One of the child `JsonSchema` objects in the validator's `schemas` list is a mock that throws a RuntimeException when its `walk` method is invoked. Because `shouldValidateSchema` is false, `OneOfValidator.walk` delegates to each child schema. The exception from the child should bubble up and be the result of the call."
+      }
+    ]
+  }
+]

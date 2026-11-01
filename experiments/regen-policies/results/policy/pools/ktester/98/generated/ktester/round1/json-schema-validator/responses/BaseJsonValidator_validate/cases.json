@@ -1,0 +1,314 @@
+[
+  {
+    "group": "Null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException because the method dereferences the node argument before delegating.",
+        "description": "Validate should not accept a null JsonNode; the first line of the method (or the overloaded version) will attempt to use the node and therefore a NPE is expected."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          }
+        ],
+        "expected": "Throws NullPointerException because the executionContext is required for annotation collection and message handling.",
+        "description": "Even when a valid JsonNode is supplied, a null ExecutionContext must cause a failure as the method passes the context to internal helpers."
+      }
+    ]
+  },
+  {
+    "group": "Root handling \u2013 atRoot true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"sample\")"
+          }
+        ],
+        "expected": "Returns the Set<ValidationMessage> produced by the overloaded validate(executionContext, node, rootNode, true) call. In the test subclass the overloaded method is stubbed to return a set containing a single message \"root\u2011true\".",
+        "description": "When atRoot() returns true the delegate call should receive the same node as both instance and root, and the boolean flag true. The test verifies that the returned set matches the stubbed value."
+      }
+    ]
+  },
+  {
+    "group": "Root handling \u2013 atRoot false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"field\", 1)"
+          }
+        ],
+        "expected": "Returns the Set<ValidationMessage> produced by the overloaded validate(executionContext, node, rootNode, false) call. In the test subclass the overloaded method is stubbed to return a set containing a single message \"root\u2011false\".",
+        "description": "When atRoot() returns false the delegate call should receive the same node as both instance and root, but the boolean flag false. The test confirms that the flag is correctly propagated by checking the stubbed return value."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          }
+        ],
+        "expected": "RuntimeException with message \"forced\u2011error\" is thrown and not swallowed.",
+        "description": "The overloaded validate method in the test subclass is programmed to throw a RuntimeException for a specific input. The top\u2011level validate method must propagate this exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Annotation collection branch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"annotated\", true)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by overloaded method plus an additional annotation captured via collectAnnotations(true). The test subclass overrides collectAnnotations to return true, indicating that annotation collection succeeded.",
+        "description": "validate() internally calls collectAnnotations(executionContext) before delegating. By overriding the method to return true we verify that the path where annotation collection succeeds is exercised."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"annotated\", false)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by overloaded method without any annotation side\u2011effects because collectAnnotations returns false.",
+        "description": "When collectAnnotations returns false the validator skips annotation handling. This case ensures the branch where annotation collection is disabled is covered."
+      }
+    ]
+  },
+  {
+    "group": "Delegation with various JsonNode types",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"any string\")"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by the overloaded validate method (stubbed to contain a single message \"text\u2011node\"). The top\u2011level validate must forward the call unchanged for a text node.",
+        "description": "Verify that a plain text JsonNode is delegated correctly regardless of its type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.numberNode(42)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by the overloaded validate method (stubbed to contain a single message \"number\u2011node\").",
+        "description": "Validate that a numeric JsonNode (int) is passed through the delegation chain without alteration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.booleanNode(true)"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by the overloaded validate method (stubbed to contain a single message \"boolean\u2011node\").",
+        "description": "Check that a boolean JsonNode is handled the same way as other primitive nodes."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.arrayNode()"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by the overloaded validate method (stubbed to contain a single message \"empty\u2011array\").",
+        "description": "Ensure that an empty array node is delegated correctly."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().set(\"inner\", JsonNodeFactory.instance.textNode(\"value\"))"
+          }
+        ],
+        "expected": "Set<ValidationMessage> returned by the overloaded validate method (stubbed to contain a single message \"object\u2011with\u2011inner\").",
+        "description": "Confirm that a complex object node (with nested fields) is passed unchanged to the overloaded validator."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          }
+        ],
+        "expected": "Throws NullPointerException because the validator's schemaNode field is null and the method dereferences it while processing the node.",
+        "description": "Create a concrete subclass of BaseJsonValidator that does not initialise the protected `schemaNode` field (leaves it null). Calling validate should hit a NPE when the implementation tries to inspect the schema definition."
+      }
+    ]
+  },
+  {
+    "group": "Null validationContext handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.textNode(\"test\")"
+          }
+        ],
+        "expected": "Throws NullPointerException because the validator's validationContext field is null and the method attempts to use it (e.g., to fetch a sub\u2011schema).",
+        "description": "Instantiate a subclass of BaseJsonValidator where the protected `validationContext` is deliberately set to null. The call to `validate` will invoke `fetchSubSchemaNode(validationContext)` leading to a NPE."
+      }
+    ]
+  },
+  {
+    "group": "collectAnnotations exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"annot\", true)"
+          }
+        ],
+        "expected": "Throws IllegalStateException with message \"annotation\u2011failure\" and the exception is not swallowed by the top\u2011level validate method.",
+        "description": "Override `collectAnnotations(ExecutionContext)` in a test subclass to throw an IllegalStateException. The top\u2011level `validate` must propagate this exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "atRoot exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          }
+        ],
+        "expected": "Throws RuntimeException with message \"atRoot\u2011failed\" and the exception bubbles up to the caller.",
+        "description": "Create a subclass that overrides `atRoot()` to throw a RuntimeException. The wrapper `validate` method should not catch it, so the test expects the exception to be propagated."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator mismatch exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"type\", \"unknown\")"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException with message containing \"discriminator property value does not match any schema\".",
+        "description": "Configure the validator's `schemaNode` to contain a `discriminator` object that expects a property value that is not present in the supplied JSON instance. The internal call to `checkDiscriminatorMatch` should detect the mismatch and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "registerAndMergeDiscriminator duplicate registration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"type\", \"A\")"
+          }
+        ],
+        "expected": "Throws IllegalStateException with message \"Discriminator already registered for property 'type'\".",
+        "description": "In a test subclass, invoke `registerAndMergeDiscriminator` twice with the same discriminator property during validation. The second registration should trigger an IllegalStateException according to the library contract."
+      }
+    ]
+  }
+]

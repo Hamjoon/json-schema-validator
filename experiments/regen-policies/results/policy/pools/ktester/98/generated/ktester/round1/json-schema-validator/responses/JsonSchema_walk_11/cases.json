@@ -1,0 +1,467 @@
+[
+  {
+    "group": "Normal operation \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"name\", \"John\")"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(ValidationResult r) { return \"OK\"; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", true)"
+          }
+        ],
+        "expected": "\"OK\"",
+        "description": "Walk the schema with a valid JSON node, validation turned on, a simple OutputFormat that returns a constant string and a customizer that mutates the ExecutionContext. The method should return the value produced by the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Normal operation \u2013 validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"age\", 30)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Integer>() { public Integer apply(ValidationResult r) { return r.getMessages().size(); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "0",
+        "description": "When validation is disabled the walk should skip validator execution and produce an empty ValidationResult, therefore the OutputFormat returns 0 messages."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 should be created internally",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"id\", 1)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Boolean>() { public Boolean apply(ValidationResult r) { return true; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "true",
+        "description": "If the supplied ExecutionContext is null the method must create a fresh context internally and continue processing. The OutputFormat returns true, confirming successful execution."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode \u2013 illegal argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(ValidationResult r) { return \"\"; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing a null JsonNode should cause the method to throw IllegalArgumentException (or NullPointerException depending on implementation)."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat \u2013 illegal argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode()"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A null OutputFormat cannot be used to produce a result, so the method should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer is invoked",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"flag\", true)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(ValidationResult r) { return r.getMessages().isEmpty() ? \"OK\" : \"FAIL\"; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"visited\", true)"
+          }
+        ],
+        "expected": "\"OK\"",
+        "description": "The provided Consumer should be called exactly once. The test verifies that after walk returns, the ExecutionContext contains the attribute set by the customizer."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer throws exception \u2013 propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode()"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(ValidationResult r) { return \"unused\"; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the Consumer throws an exception, walk should let the exception bubble up. The test expects a RuntimeException with the original message."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 messages present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"age\", \"twenty\")"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Integer>() { public Integer apply(ValidationResult r) { return r.getMessages().size(); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "1",
+        "description": "Schema requires an integer for property \"age\". Providing a string causes a validation error. The OutputFormat returns the number of validation messages, which should be 1."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws RuntimeException \u2013 propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"name\", \"John\")"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(ValidationResult r) { throw new RuntimeException(\"format failure\"); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "When the OutputFormat throws a RuntimeException, walk should let the exception bubble up unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Empty schema \u2013 no validators, validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode()"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Integer>() { public Integer apply(ValidationResult r) { return r.getMessages().size(); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "0",
+        "description": "An empty schema (\"{}\") defines no constraints, therefore even with validation enabled the ValidationResult contains zero messages."
+      }
+    ]
+  },
+  {
+    "group": "Array node validation \u2013 type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.arrayNode().add(1).add(2)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Integer>() { public Integer apply(ValidationResult r) { return r.getMessages().size(); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "1",
+        "description": "Schema expects an array of strings (items.type = \"string\"). Supplying an array of numbers triggers a validation error; the OutputFormat reports a single message."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext pre\u2011existing attributes preserved",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ctxWithExistingAttr"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"valid\", true)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Boolean>() { public Boolean apply(ValidationResult r) { ExecutionContext ctx = (ExecutionContext) r.getContext(); return Boolean.TRUE.equals(ctx.getAttribute(\"existing\")) && Boolean.TRUE.equals(ctx.getAttribute(\"new\")); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"new\", true)"
+          }
+        ],
+        "expected": "true",
+        "description": "The supplied ExecutionContext already contains attribute \"existing\" = \"value\". The customizer adds a new attribute \"new\" = true. The OutputFormat checks that both attributes are present, confirming that the original attributes are preserved."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext with non\u2011null customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"flag\", true)"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Boolean>() { public Boolean apply(ValidationResult r) { ExecutionContext ctx = (ExecutionContext) r.getContext(); return Boolean.TRUE.equals(ctx.getAttribute(\"custom\")); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", true)"
+          }
+        ],
+        "expected": "true",
+        "description": "When the supplied ExecutionContext is null, walk must create a fresh context and then invoke the provided Consumer. The OutputFormat confirms that the attribute set by the customizer exists."
+      }
+    ]
+  },
+  {
+    "group": "Validation disabled with customizer invoked",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode().put(\"any\", \"value\")"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Boolean>() { public Boolean apply(ValidationResult r) { ExecutionContext ctx = (ExecutionContext) r.getContext(); return Boolean.TRUE.equals(ctx.getAttribute(\"visited\")); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"visited\", true)"
+          }
+        ],
+        "expected": "true",
+        "description": "Even when validation is disabled, the Consumer should still be executed. The OutputFormat reads the attribute set by the customizer and returns true."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNodeFactory.objectNode()"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Object>() { public Object apply(ValidationResult r) { return null; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "null",
+        "description": "If the OutputFormat's apply method returns null, walk should propagate that null result without alteration."
+      }
+    ]
+  }
+]

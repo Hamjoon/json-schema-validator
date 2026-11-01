@@ -1,0 +1,240 @@
+[
+  {
+    "group": "canShortCircuit_initialEvaluation",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When `canShortCircuit` is null and the parent schema's validators list does **not** contain any validator with keyword \"unevaluatedProperties\" or \"unevaluatedItems\", the method should compute and return `true`."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` is null and the parent schema's validators list contains a validator whose `getKeyword()` returns \"unevaluatedProperties\", the method should compute and return `false`."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` is null and the parent schema's validators list contains a validator whose `getKeyword()` returns \"unevaluatedItems\", the method should compute and return `false`."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` is null and the parent schema's validators list contains both \"unevaluatedProperties\" and \"unevaluatedItems\" keywords, the method should compute and return `false` (the first match already forces the flag to false)."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_cachedValue",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When `canShortCircuit` has already been cached as `true`, the method should return `true` without re\u2011evaluating the parent schema's validators."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` has already been cached as `false`, the method should return `false` without re\u2011evaluating the parent schema's validators."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_emptyValidatorList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[]"
+          }
+        ],
+        "expected": true,
+        "description": "When the parent schema's validator list is empty, the method should compute and return `true` because no disallowed keywords are present."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_nonTargetValidators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"type\", \"minimum\", \"maxLength\"]"
+          }
+        ],
+        "expected": true,
+        "description": "When the validator list contains only keywords unrelated to `unevaluatedProperties` or `unevaluatedItems`, the method should return `true`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"type\", \"unevaluatedProperties\", \"maximum\"]"
+          }
+        ],
+        "expected": false,
+        "description": "When the list contains a mix of unrelated keywords and one `unevaluatedProperties` keyword, the presence of the disallowed keyword forces the result to `false`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"unevaluatedItems\", \"format\", \"pattern\"]"
+          }
+        ],
+        "expected": false,
+        "description": "When the list contains a mix of unrelated keywords and one `unevaluatedItems` keyword, the method should return `false`."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_duplicateDisallowedKeywords",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"unevaluatedProperties\", \"unevaluatedProperties\", \"unevaluatedItems\"]"
+          }
+        ],
+        "expected": false,
+        "description": "Even if the disallowed keywords appear multiple times, the method should still return `false` after the first match."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_cachingBehaviorAfterFirstCall",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"type\", \"minimum\"]"
+          },
+          {
+            "parameter": "preSetCanShortCircuit",
+            "value": "null"
+          }
+        ],
+        "expected": true,
+        "description": "First invocation computes `true` (no disallowed keywords) and caches it; a subsequent call should return the cached `true` without re\u2011examining the validator list."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"unevaluatedItems\", \"type\"]"
+          },
+          {
+            "parameter": "preSetCanShortCircuit",
+            "value": "null"
+          }
+        ],
+        "expected": false,
+        "description": "First invocation computes `false` because a disallowed keyword is present and caches it; a second call must return the cached `false` without re\u2011checking the list."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"type\", \"minimum\"]"
+          },
+          {
+            "parameter": "preSetCanShortCircuit",
+            "value": "true"
+          }
+        ],
+        "expected": true,
+        "description": "When `canShortCircuit` is already cached as `true`, the method should immediately return `true` and must not invoke `getKeyword()` on any validator (the test can verify this by using a mock that throws if called)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "parentValidators",
+            "value": "[\"unevaluatedProperties\", \"type\"]"
+          },
+          {
+            "parameter": "preSetCanShortCircuit",
+            "value": "false"
+          }
+        ],
+        "expected": false,
+        "description": "When `canShortCircuit` is already cached as `false`, the method should immediately return `false` without evaluating the validator list."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_nullParentSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When `getEvaluationParentSchema()` returns null, the method attempts to call `getValidators()` on a null reference, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_nullValidatorsList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentSchema",
+            "value": "mock"
+          },
+          {
+            "parameter": "validatorsList",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the parent schema's `getValidators()` method returns null, the enhanced for\u2011loop tries to iterate over a null collection, causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_nullValidatorInList",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentSchema",
+            "value": "mock"
+          },
+          {
+            "parameter": "validatorsList",
+            "value": "[null]"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the validators list contains a null element, the loop dereferences the null `validator` to call `getKeyword()`, which throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit_validatorKeywordThrows",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "parentSchema",
+            "value": "mock"
+          },
+          {
+            "parameter": "validatorsList",
+            "value": "[validatorThatThrows]"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If a validator's `getKeyword()` method itself throws a RuntimeException, the exception propagates out of `canShortCircuit()`."
+      }
+    ]
+  }
+]

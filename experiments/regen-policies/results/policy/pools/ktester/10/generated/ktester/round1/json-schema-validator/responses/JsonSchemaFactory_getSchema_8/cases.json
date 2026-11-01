@@ -1,0 +1,385 @@
+[
+  {
+    "group": "Null Parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException thrown because jsonNode is null",
+        "description": "Verify that getSchema throws a NullPointerException when both arguments are null. The method delegates to newJsonSchema which expects a non\u2011null schema node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "NullPointerException thrown because jsonNode is null",
+        "description": "When only the JsonNode argument is null the factory should reject the call regardless of a provided configuration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "emptyObjectNode"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) with default configuration applied",
+        "description": "If the configuration argument is null the factory must fall back to its internal default SchemaValidatorsConfig while still creating a schema from the supplied empty JSON object."
+      }
+    ]
+  },
+  {
+    "group": "Valid Parameters \u2013 Simple Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose internal schemaNode equals the supplied node and whose validators config equals defaultConfig",
+        "description": "Happy\u2011path test: a minimal valid JSON schema and a default configuration should produce a usable JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "customConfig { \"typeLoose\": true }"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) with customConfig applied (e.g., typeLoose flag true) and containing the complex schema structure",
+        "description": "Ensures that a non\u2011default SchemaValidatorsConfig is correctly propagated to the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Edge Cases \u2013 Special JsonNode Types",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode (JsonNode representing JSON null)"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose internal schemaNode is a NullNode",
+        "description": "A JSON schema that is the literal `null` is still a valid schema according to the specification; the factory should accept a NullNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "arrayNode [ { \"type\": \"string\" }, { \"type\": \"number\" } ]"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) with an array schema node",
+        "description": "Validate that the factory can handle a top\u2011level array node (used for schema combinators like anyOf) without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Configuration Isolation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "configA { \"typeLoose\": false }"
+          }
+        ],
+        "expected": "JsonSchema instance whose effective config has typeLoose = false",
+        "description": "Confirm that the config supplied to getSchema is not altered internally; the resulting schema must reflect the exact settings of configA."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "configB { \"typeLoose\": true }"
+          }
+        ],
+        "expected": "JsonSchema instance whose effective config has typeLoose = true",
+        "description": "Same as previous case but with a different flag value, ensuring the factory does not cache or reuse a previous configuration."
+      }
+    ]
+  },
+  {
+    "group": "Boolean Schema Nodes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "booleanNode (JsonNode representing JSON literal true)"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose internal schemaNode is a BooleanNode representing true",
+        "description": "A JSON Schema can be the boolean literal true which means any instance is valid. The factory should accept a BooleanNode and return a JsonSchema without throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "booleanNode (JsonNode representing JSON literal false)"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose internal schemaNode is a BooleanNode representing false",
+        "description": "A JSON Schema can be the boolean literal false which means no instance is valid. The factory should accept a BooleanNode and return a JsonSchema without throwing."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011Object/Array/Null/Boolean Nodes \u2013 TextNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "textNode (JsonNode representing a JSON string \"some text\")"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose internal schemaNode is a TextNode",
+        "description": "Although a TextNode is not a valid schema according to the spec, the factory method does not perform validation at creation time; it should still wrap the node in a JsonSchema object."
+      }
+    ]
+  },
+  {
+    "group": "Config Null with Non\u2011Empty Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"integer\", \"minimum\": 0 }"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) created with internal default SchemaValidatorsConfig and the supplied integer schema",
+        "description": "When the configuration argument is null the factory must fall back to its internal default configuration while still correctly handling a non\u2011empty schema node."
+      }
+    ]
+  },
+  {
+    "group": "Custom Config with Multiple Flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\", \"format\": \"email\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "customConfig { \"typeLoose\": true, \"format\": \"skip\", \"failFast\": true }"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose effective config has typeLoose=true, format validation disabled, and failFast=true",
+        "description": "Ensures that a complex SchemaValidatorsConfig with several flags is fully propagated to the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Shared Config Isolation Across Calls",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "sharedConfig { \"typeLoose\": false }"
+          }
+        ],
+        "expected": "First JsonSchema instance reflects typeLoose=false; second call with same config after first call still reflects typeLoose=false (no mutation)",
+        "description": "Pass the same SchemaValidatorsConfig instance to two successive getSchema calls and verify that the factory does not mutate the config between calls."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"number\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "sharedConfig { \"typeLoose\": false }"
+          }
+        ],
+        "expected": "Second JsonSchema instance also reflects typeLoose=false",
+        "description": "Continuation of the previous scenario: the second schema creation must see the unchanged configuration."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $schema Identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"$schema\": \"http://json-schema.org/draft-07/schema#\", \"type\": \"array\", \"items\": { \"type\": \"string\" } }"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchema instance (non\u2011null) whose meta\u2011schema is Draft\u201107 (as indicated by $schema) and whose internal schemaNode matches the supplied node",
+        "description": "When the supplied schema contains a $schema keyword, the factory should load the corresponding meta\u2011schema and associate it with the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "MissingNode as Schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "missingNode (Jackson MissingNode instance)"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "NullPointerException thrown because the factory attempts to treat a MissingNode as a concrete schema node",
+        "description": "When the supplied JsonNode is a MissingNode (represents a non\u2011existent value), newJsonSchema cannot determine a schema location and throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported $schema Identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"$schema\": \"http://example.com/unknown/schema#\", \"type\": \"object\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the $schema URI does not map to a known meta\u2011schema",
+        "description": "The factory should reject schemas that declare an unknown meta\u2011schema identifier, raising an IllegalArgumentException during meta\u2011schema loading."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $schema URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"$schema\": \"ht!tp://[malformed]\", \"type\": \"array\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IllegalArgumentException (or URISyntaxException wrapped in IllegalArgumentException) thrown because the $schema value is not a valid URI",
+        "description": "A malformed URI in the $schema keyword should cause the factory to fail while trying to resolve the meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "SchemaValidatorsConfig with Null Internal Map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "validSchemaNode { \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "configWithNullMap (SchemaValidatorsConfig whose internal map field is explicitly set to null)"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the factory expects a non\u2011null configuration map when propagating flags",
+        "description": "If a custom SchemaValidatorsConfig instance has its internal map cleared (null), the factory should detect the invalid state and raise an exception rather than proceeding with a null map."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode with Non\u2011Null Config (explicit check)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": "customConfig { \"typeLoose\": true }"
+          }
+        ],
+        "expected": "NullPointerException thrown because jsonNode is null irrespective of a provided configuration",
+        "description": "Even when a non\u2011null configuration is supplied, a null JsonNode must cause an NPE; this case verifies that the config does not mask the null\u2011node check."
+      }
+    ]
+  }
+]

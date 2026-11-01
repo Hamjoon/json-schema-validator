@@ -1,0 +1,83 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:139: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaIri, rebuilt.defaultMetaSchemaIri);
+                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:139: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaIri, rebuilt.defaultMetaSchemaIri);
+                                                          ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:144: error: cannot find symbol
+        SchemaLoader loader = factory.getSchemaLoader();
+        ^
+  symbol:   class SchemaLoader
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:164: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.createObjectNode());
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:173: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.createObjectNode());
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:184: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.textNode("hello"));
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:184: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.textNode("hello"));
+                                                       ^
+  symbol:   method textNode(String)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:194: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.numberNode(5));
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:194: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.numberNode(5));
+                                                       ^
+  symbol:   method numberNode(int)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:202: error: no suitable method found for getSchema(InputStream,InputFormat)
+        JsonSchema s = factory.getSchema(is, InputFormat.YAML);
+                              ^
+    method JsonSchemaFactory.getSchema(String,SchemaValidatorsConfig) is not applicable
+      (argument mismatch; InputStream cannot be converted to String)
+    method JsonSchemaFactory.getSchema(String,InputFormat) is not applicable
+      (argument mismatch; InputStream cannot be converted to String)
+    method JsonSchemaFactory.getSchema(InputStream,SchemaValidatorsConfig) is not applicable
+      (argument mismatch; InputFormat cannot be converted to SchemaValidatorsConfig)
+    method JsonSchemaFactory.getSchema(SchemaLocation,SchemaValidatorsConfig) is not applicable
+      (argument mismatch; InputStream cannot be converted to SchemaLocation)
+    method JsonSchemaFactory.getSchema(URI,JsonNode) is not applicable
+      (argument mismatch; InputStream cannot be converted to URI)
+    method JsonSchemaFactory.getSchema(SchemaLocation,JsonNode) is not applicable
+      (argument mismatch; InputStream cannot be converted to SchemaLocation)
+    method JsonSchemaFactory.getSchema(JsonNode,SchemaValidatorsConfig) is not applicable
+      (argument mismatch; InputStream cannot be converted to JsonNode)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:204: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.booleanNode(true));
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:204: error: cannot find symbol
+        Set<ValidationMessage> msgs = s.validate(mapper.booleanNode(true));
+                                                       ^
+  symbol:   method booleanNode(boolean)
+  location: variable mapper of type ObjectMapper
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:318: error: cannot find symbol
+        Set<ValidationMessage> msgs = sub.validate(mapper.numberNode(10));
+        ^
+  symbol:   class Set
+  location: class JsonSchemaFactoryTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java:318: error: cannot find symbol
+        Set<ValidationMessage> msgs = sub.validate(mapper.numberNode(10));
+                                                         ^
+  symbol:   method numberNode(int)
+  location: variable mapper of type ObjectMapper
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/GToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+14 errors

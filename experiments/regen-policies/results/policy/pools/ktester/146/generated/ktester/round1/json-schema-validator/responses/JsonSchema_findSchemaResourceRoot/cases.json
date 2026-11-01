@@ -1,0 +1,67 @@
+[
+  {
+    "group": "findSchemaResourceRoot",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same JsonSchema instance because it is already a schema resource root",
+        "description": "When the current JsonSchema instance reports isSchemaResourceRoot() == true, the method should return the instance itself without traversing to a parent."
+      },
+      {
+        "input": [],
+        "expected": "the ancestor JsonSchema instance that first returns true for isSchemaResourceRoot()",
+        "description": "A hierarchy of three schemas is created: child \u2192 middle \u2192 root. Only the root returns true for isSchemaResourceRoot(). The method should walk up the chain and return the root instance."
+      },
+      {
+        "input": [],
+        "expected": "the middle JsonSchema instance because it is the first ancestor that returns true for isSchemaResourceRoot()",
+        "description": "A hierarchy of three schemas is created: leaf \u2192 middle \u2192 top. Both middle and top return true for isSchemaResourceRoot(). The method must stop at the first true result (middle) and return it."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "A schema whose isSchemaResourceRoot() returns false and whose getParentSchema() returns null is used. The method will attempt to continue the loop and dereference null, resulting in a NullPointerException. This verifies the method\u2019s behaviour when the resource\u2011root invariant is violated."
+      }
+    ]
+  },
+  {
+    "group": "findSchemaResourceRoot_additional",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the topmost JsonSchema instance (level 5) because it is the first ancestor for which isSchemaResourceRoot() returns true",
+        "description": "A hierarchy of five schemas is created (level1 \u2192 level2 \u2192 level3 \u2192 level4 \u2192 level5). Only level5 returns true for isSchemaResourceRoot(). The method should traverse up through four false ancestors and return level5."
+      },
+      {
+        "input": [],
+        "expected": "the immediate parent JsonSchema instance because it is the first ancestor that returns true for isSchemaResourceRoot()",
+        "description": "A two\u2011level hierarchy is built: child (isSchemaResourceRoot() == false) \u2192 parent (isSchemaResourceRoot() == true). The method should stop after one iteration and return the parent."
+      },
+      {
+        "input": [],
+        "expected": "the middle JsonSchema instance (level3) because it is the first ancestor that returns true for isSchemaResourceRoot()",
+        "description": "A hierarchy of four schemas is created: leaf (false) \u2192 level2 (false) \u2192 level3 (true) \u2192 top (true). The method must return level3, demonstrating that it stops at the first true result even when higher ancestors also return true."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.StackOverflowError",
+        "description": "A cyclic schema chain is constructed where a schema's getParentSchema() returns itself, creating an infinite loop. The method will keep traversing until the JVM stack overflows, confirming that cyclic parent references are not safely handled."
+      }
+    ]
+  },
+  {
+    "group": "findSchemaResourceRoot_exceptionPropagation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "When isSchemaResourceRoot() is overridden (e.g., via a mock or subclass) to throw IllegalStateException, findSchemaResourceRoot() should not catch it and must propagate the exception to the caller."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.IllegalArgumentException",
+        "description": "When getParentSchema() is overridden (e.g., via a mock or subclass) to throw IllegalArgumentException during the upward traversal, findSchemaResourceRoot() should propagate the exception without handling it."
+      }
+    ]
+  }
+]

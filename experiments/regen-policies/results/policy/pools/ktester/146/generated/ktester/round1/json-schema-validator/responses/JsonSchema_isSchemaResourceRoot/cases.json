@@ -1,0 +1,67 @@
+[
+  {
+    "group": "isSchemaResourceRoot",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When the schema has a non\u2011null id, the method should return true without checking parent schema or locations."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "When the id is null and the schema has no parent (root schema), the method should return true."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When the id is null, a parent schema exists, and both the schema and its parent have the same absolute IRI, the method should return false (the schema is not a resource root)."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "When the id is null, a parent schema exists, and the absolute IRIs differ, the method should return true (the schema is a resource root)."
+      }
+    ]
+  },
+  {
+    "group": "isSchemaResourceRoot_edge_cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When the schema id is an empty string (non\u2011null), the method should return true, treating it as a defined id."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "When id is null, a parent schema exists, and both the schema and its parent have a null SchemaLocation, Objects.equals(null, null) is true, so the method returns false."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "When id is null, a parent schema exists, the schema's SchemaLocation is null while the parent's SchemaLocation has a non\u2011null absolute IRI, Objects.equals(null, nonNull) is false, thus the method returns true."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "When id is null, a parent schema exists, the schema's SchemaLocation has a non\u2011null absolute IRI but the parent's SchemaLocation is null, Objects.equals(nonNull, null) is false, so the method returns true."
+      }
+    ]
+  },
+  {
+    "group": "isSchemaResourceRoot_exceptions",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the schema has a null id, a non\u2011null parent schema, but the schema's SchemaLocation is null, calling getSchemaLocation().getAbsoluteIri() throws NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the schema has a null id, a non\u2011null parent schema whose SchemaLocation is null (while the schema's own SchemaLocation is non\u2011null), the call to getParentSchema().getSchemaLocation().getAbsoluteIri() throws NullPointerException."
+      }
+    ]
+  }
+]

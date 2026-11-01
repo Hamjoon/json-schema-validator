@@ -1,0 +1,204 @@
+package com.networknt.schema;
+import com.networknt.schema.i18n.MessageSource;
+
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.junit.Assert.*;
+
+public class JsonSchemaTest {
+
+    private ObjectMapper mapper;
+
+    @Before
+    public void setUp() {
+        mapper = new ObjectMapper();
+    }
+
+    /**
+     * Helper that builds a JsonSchema using the protected constructor.
+     * All fields that are not required for the tested methods are set to {@code null}
+     * or simple defaults.
+     */
+    private JsonSchema buildSchema(String id, SchemaLocation location, JsonSchema parent) throws Exception {
+        // Minimal valid arguments for the protected constructor
+        List<JsonValidator> validators = Collections.emptyList();
+        boolean validatorsLoaded = false;
+        boolean recursiveAnchor = false;
+        TypeValidator typeValidator = null;
+        boolean suppressSubSchemaRetrieval = false;
+        JsonNode schemaNode = mapper.readTree("{}");
+        ValidationContext validationContext = null; // not used by the methods under test
+        ErrorMessageType errorMessageType = null;
+        String errorMessageKeyword = null;
+        MessageSource messageSource = null;
+        Keyword keyword = null;
+        Map<String, String> errorMessage = null;
+
+        return new JsonSchema(
+                validators,
+                validatorsLoaded,
+                recursiveAnchor,
+                typeValidator,
+                id,
+                suppressSubSchemaRetrieval,
+                schemaNode,
+                validationContext,
+                errorMessageType,
+                errorMessageKeyword,
+                messageSource,
+                keyword,
+                parent,
+                location,
+                new JsonNodePath(PathType.JSON_POINTER),
+                parent,
+                errorMessage
+        );
+    }
+
+    @Test
+    public void testIsSchemaResourceRoot_WithId() throws Exception {
+        SchemaLocation loc = SchemaLocation.of("http://example.com/root");
+        JsonSchema root = buildSchema("http://example.com/root", loc, null);
+        assertTrue(root.isSchemaResourceRoot());
+    }
+
+    @Test
+    public void testIsSchemaResourceRoot_WithoutId_Root() throws Exception {
+        SchemaLocation loc = SchemaLocation.of("http://example.com/root");
+        JsonSchema root = buildSchema(null, loc, null);
+        assertTrue(root.isSchemaResourceRoot());
+    }
+
+    @Test
+    public void testIsSchemaResourceRoot_CrossIri() throws Exception {
+        SchemaLocation rootLoc = SchemaLocation.of("http://example.com/root");
+        SchemaLocation childLoc = SchemaLocation.of("http://example.com/child");
+        JsonSchema root = buildSchema(null, rootLoc, null);
+        JsonSchema child = buildSchema(null, childLoc, root);
+        // child has different absolute IRI from its parent, therefore it is a resource root
+        assertTrue(child.isSchemaResourceRoot());
+    }
+
+    @Test
+    public void testFindLexicalRoot() throws Exception {
+        SchemaLocation rootLoc = SchemaLocation.of("http://example.com/root");
+        SchemaLocation childLoc = SchemaLocation.of("http://example.com/child");
+        JsonSchema root = buildSchema("http://example.com/root", rootLoc, null);
+        JsonSchema child = buildSchema(null, childLoc, root);
+        JsonSchema lexicalRoot = child.findLexicalRoot();
+        assertSame(root, lexicalRoot);
+    }
+
+    @Test
+    public void testFindSchemaResourceRoot() throws Exception {
+        SchemaLocation rootLoc = SchemaLocation.of("http://example.com/root");
+        SchemaLocation childLoc = SchemaLocation.of("http://example.com/child");
+        JsonSchema root = buildSchema("http://example.com/root", rootLoc, null);
+        JsonSchema child = buildSchema(null, childLoc, root);
+        JsonSchema resourceRoot = child.findSchemaResourceRoot();
+        // The root has an $id, therefore it is the resource root
+        assertSame(root, resourceRoot);
+    }
+
+    @Test
+    public void testGetId() throws Exception {
+        SchemaLocation loc = SchemaLocation.of("http://example.com/root");
+        JsonSchema schema = buildSchema("my-id", loc, null);
+        assertEquals("my-id", schema.getId());
+    }
+
+    @Test
+    public void testGetRefSchemaNode_MissingNodeReturnsNull() throws Exception {
+        // Build a real schema using the public factory to have a functional ValidationContext
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        JsonNode schemaNode = mapper.readTree("{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}");
+        JsonSchema schema = factory.getSchema(schemaNode);
+
+        // Reference to a non‑existent property
+        JsonNode result = schema.getRefSchemaNode("#/properties/age");
+        assertNull(result);
+    }
+
+    @Test
+    public void testGetSubSchema_ValidPointer() throws Exception {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        JsonNode schemaNode = mapper.readTree("{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}");
+        JsonSchema schema = factory.getSchema(schemaNode);
+
+        JsonNodePath pointer = new JsonNodePath(PathType.JSON_POINTER).append("properties").append("name");
+        JsonSchema sub = schema.getSubSchema(pointer);
+        assertNotNull(sub);
+        // The sub‑schema should have a type validator for "string"
+        assertTrue(sub.hasTypeValidator());
+        assertEquals("string", sub.getTypeValidator().getSchemaType().name().toLowerCase());
+    }
+
+    @Test
+    public void testReadBooleanTrueCreatesValidator() throws Exception {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        JsonNode trueNode = mapper.readTree("true");
+        JsonSchema schema = factory.getSchema(trueNode);
+
+        List<JsonValidator> validators = schema.getValidators();
+        assertEquals(1, validators.size());
+        JsonValidator v = validators.get(0);
+        assertEquals("true", v.getKeyword());
+    }
+
+    @Test
+    public void testValidateSimpleStringSchema() throws Exception {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        JsonNode schemaNode = mapper.readTree("{\"type\":\"string\"}");
+        JsonSchema schema = factory.getSchema(schemaNode);
+
+        JsonNode instance = mapper.readTree("123"); // number, not string
+        Set<ValidationMessage> messages = schema.validate(instance);
+        assertFalse(messages.isEmpty());
+        // The error code should be "type"
+        boolean hasTypeError = messages.stream().anyMatch(m -> "type".equals(m.getCode()));
+        assertTrue(hasTypeError);
+    }
+
+    @Test
+    public void testInitializeValidatorsSetsLoadedFlag() throws Exception {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        JsonNode schemaNode = mapper.readTree("{\"type\":\"string\"}");
+        JsonSchema schema = factory.getSchema(schemaNode);
+
+        // Initially validatorsLoaded is false (reflected via reflection)
+        java.lang.reflect.Field f = JsonSchema.class.getDeclaredField("validatorsLoaded");
+        f.setAccessible(true);
+        assertFalse((Boolean) f.get(schema));
+
+        schema.initializeValidators();
+        assertTrue((Boolean) f.get(schema));
+    }
+
+    @Test
+    public void testCreateExecutionContextPropagatesConfig() throws Exception {
+        // Create a custom config
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+        config.setLocale(Locale.GERMAN);
+        config.setFailFast(true);
+
+        JsonMetaSchema meta = JsonMetaSchema.getV7(); // static helper from library
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        ValidationContext ctx = new ValidationContext(meta, factory, config);
+        JsonNode schemaNode = mapper.readTree("{\"type\":\"string\"}");
+        JsonSchema schema = new JsonSchema(ctx, SchemaLocation.DOCUMENT, new JsonNodePath(PathType.JSON_POINTER), schemaNode, null, false);
+
+        ExecutionContext execCtx = schema.createExecutionContext();
+        assertEquals(Locale.GERMAN, execCtx.getExecutionConfig().getLocale());
+        assertTrue(execCtx.isFailFast());
+    }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchemaLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.SCHEMA_2020_12"
+          }
+        ],
+        "expected": "SchemaLocation.SCHEMA_2020_12",
+        "description": "When a non\u2011null SchemaLocation is supplied, the method should return the same instance (the true branch of the ternary operator)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": null
+          }
+        ],
+        "expected": "SchemaLocation.DOCUMENT",
+        "description": "When a null SchemaLocation is supplied, the method should fall back to the default constant SchemaLocation.DOCUMENT (the false branch of the ternary operator)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchemaLocation.additional",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.DOCUMENT"
+          }
+        ],
+        "expected": "SchemaLocation.DOCUMENT",
+        "description": "When the explicit default constant SchemaLocation.DOCUMENT is supplied, the method should return the same instance (true branch) rather than substituting another value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.SCHEMA_DRAFT_04"
+          }
+        ],
+        "expected": "SchemaLocation.SCHEMA_DRAFT_04",
+        "description": "Verify that a non\u2011null enum constant representing Draft\u201104 is returned unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.SCHEMA_DRAFT_06"
+          }
+        ],
+        "expected": "SchemaLocation.SCHEMA_DRAFT_06",
+        "description": "Verify that a non\u2011null enum constant representing Draft\u201106 is returned unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.SCHEMA_DRAFT_07"
+          }
+        ],
+        "expected": "SchemaLocation.SCHEMA_DRAFT_07",
+        "description": "Verify that a non\u2011null enum constant representing Draft\u201107 is returned unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaLocation",
+            "value": "SchemaLocation.SCHEMA_DRAFT_2019_09"
+          }
+        ],
+        "expected": "SchemaLocation.SCHEMA_DRAFT_2019_09",
+        "description": "Verify that a non\u2011null enum constant representing Draft\u20112019\u201109 is returned unchanged."
+      }
+    ]
+  }
+]

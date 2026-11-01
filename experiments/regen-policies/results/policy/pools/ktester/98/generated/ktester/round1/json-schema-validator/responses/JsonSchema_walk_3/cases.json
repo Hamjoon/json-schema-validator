@@ -1,0 +1,301 @@
+[
+  {
+    "group": "walk_validNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a valid instance according to the schema (e.g., {\"name\":\"John\",\"age\":30})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage in result",
+        "description": "When a non\u2011null ExecutionContext and a JSON node that conforms to the schema are supplied with validate=true, walk should return a successful ValidationResult with no error messages."
+      }
+    ]
+  },
+  {
+    "group": "walk_invalidNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing an invalid instance (e.g., {\"name\":123,\"age\":\"thirty\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and at least one ValidationMessage describing the schema violations",
+        "description": "When the instance does not satisfy the schema constraints, walk should return a ValidationResult marked as invalid and contain appropriate validation messages."
+      }
+    ]
+  },
+  {
+    "group": "walk_validateFlagFalse",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON (valid or invalid) \u2013 e.g., {\"any\":\"value\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage, regardless of node content",
+        "description": "When validate flag is false, walk should skip schema validation and always return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "walk_nullNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and a ValidationMessage indicating that the instance node is missing or null",
+        "description": "Passing a null JsonNode should cause walk to treat it as an invalid instance and return an appropriate error message."
+      }
+    ]
+  },
+  {
+    "group": "walk_nullExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a valid instance (e.g., {\"name\":\"Alice\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because ExecutionContext is required",
+        "description": "The method expects a non\u2011null ExecutionContext; providing null should result in an exception rather than a ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "walk_recursiveAnchor_true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext with recursive anchor enabled (e.g., schema.isRecursiveAnchor() == true)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode that references itself via $recursiveRef (e.g., {\"$recursiveRef\":\"#\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage, confirming that recursive anchors are processed without infinite recursion",
+        "description": "When the schema defines a recursive anchor, walk must correctly resolve $recursiveRef without stack overflow and validate the node successfully."
+      }
+    ]
+  },
+  {
+    "group": "walk_schemaResourceRoot",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext() for a schema that is a resource root (schema.isSchemaResourceRoot() == true)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a valid instance for the resource\u2011root schema"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true, confirming that walk works when the schema is marked as a resource root",
+        "description": "Ensures that walk correctly handles schemas flagged as resource roots, which may affect resolution of relative $ref URIs."
+      }
+    ]
+  },
+  {
+    "group": "walk_withCustomExecutionContextCustomizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a valid instance"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true; the customizer (if any) is invoked without affecting validation outcome",
+        "description": "Although the focal overload does not accept a customizer directly, the internal walkAtNodeInternal may receive a null customizer; this test confirms that the default path works and that providing a customizer via the overload that accepts it does not change the result."
+      }
+    ]
+  },
+  {
+    "group": "walk_invalidRefSyntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext() for a schema containing a malformed $ref (e.g., \"$ref\": \"http://[invalid-uri]\")"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON (e.g., {\"any\":\"value\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) indicating that the $ref URI is malformed",
+        "description": "The schema contains a $ref with an invalid URI syntax. walk should detect the malformed reference during resolution and throw an appropriate exception rather than returning a ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "walk_unresolvableRef",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext() for a schema that contains a $ref to a non\u2011existent definition (e.g., \"$ref\": \"#/components/schemas/Unknown\")"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON (e.g., {\"any\":\"value\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) stating that the reference could not be resolved",
+        "description": "When a $ref points to a fragment that does not exist in the schema, walk must fail fast and throw an exception indicating the unresolved reference."
+      }
+    ]
+  },
+  {
+    "group": "walk_recursiveAnchorDepthExceeded",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext with recursive anchor enabled and a recursion depth limit set to a low value (e.g., via ValidationContext#setMaxRecursionDepth(1))"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode that triggers recursive validation (e.g., {\"$recursiveRef\":\"#\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "StackOverflowError or JsonSchemaException indicating recursion depth exceeded",
+        "description": "The schema defines a recursive anchor and the instance references itself. With a low recursion\u2011depth limit, walk should detect the overflow condition and throw an exception instead of looping indefinitely."
+      }
+    ]
+  },
+  {
+    "group": "walk_executionContextMissingValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext instance whose internal ValidationContext is null (constructed manually for the test)"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a valid instance (e.g., {\"name\":\"Bob\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException (or NullPointerException) because the ExecutionContext does not contain a required ValidationContext",
+        "description": "walk relies on a non\u2011null ValidationContext inside the ExecutionContext. Supplying an ExecutionContext with a missing ValidationContext should cause an immediate exception."
+      }
+    ]
+  },
+  {
+    "group": "walk_unsupportedEncodingDuringRefResolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "ExecutionContext created via JsonSchema.createExecutionContext() for a schema that contains a $ref with percent\u2011encoded characters requiring an unsupported charset (e.g., \"%FF%FE\")"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON (e.g., {\"any\":\"value\"})"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "UnsupportedEncodingException wrapped in JsonSchemaException",
+        "description": "During $ref fragment decoding, URLDecoder may throw UnsupportedEncodingException for an unknown charset. walk should propagate this as a wrapped JsonSchemaException."
+      }
+    ]
+  }
+]

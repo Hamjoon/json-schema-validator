@@ -1,0 +1,192 @@
+[
+  {
+    "group": "testGetSchemaWithValidNodeAndConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose schemaNode equals the supplied JsonNode and whose meta\u2011schema is the default (draft\u201107)",
+        "description": "A typical valid JSON\u2011Schema node is supplied together with an explicit, default\u2011configured SchemaValidatorsConfig. The factory should return a usable JsonSchema object without throwing."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithValidNodeAndNullConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"array\", \"items\": { \"type\": \"integer\" } }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (default configuration is applied internally)",
+        "description": "When the configuration argument is null the factory must fall back to its built\u2011in default configuration and still produce a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithEmptyObjectNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing an empty schema (accepts any JSON value)",
+        "description": "An empty JSON object is a valid schema (equivalent to {}); the factory should create a JsonSchema that validates everything."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithNullJsonNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null JsonNode is illegal; the method is expected to throw a NullPointerException rather than returning a schema."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithInvalidSchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"type\": \"unknownType\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or a subclass) indicating an unsupported type keyword",
+        "description": "If the supplied JsonNode contains an invalid or unknown keyword/value combination, the factory should raise a JsonSchemaException during schema creation."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithMetaSchemaReference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\", \"type\": \"string\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is draft\u201104",
+        "description": "When the schema node explicitly declares a $schema URI, the factory must resolve and use the referenced meta\u2011schema (draft\u201104) instead of the default."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithNonObjectNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "\"just a string\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalArgumentException) indicating that the root schema node must be an object",
+        "description": "The supplied JsonNode is a JSON string literal rather than an object. The factory should reject it because a JSON\u2011Schema document must be a JSON object."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithUnresolvableRef",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$ref\": \"http://nonexistent.example.com/schema.json\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException indicating that the referenced schema could not be loaded or resolved",
+        "description": "The schema contains a $ref that points to a URI which cannot be fetched. The factory must raise an exception rather than returning a partially built schema."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithInvalidIdUri",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"ht!tp://[invalid]\", \"type\": \"object\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or JsonSchemaException) caused by malformed $id URI",
+        "description": "The $id keyword contains an invalid URI. The factory should detect the malformed identifier and throw an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "testGetSchemaWithCircularReference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "{ \"$id\": \"http://example.com/root\", \"$ref\": \"http://example.com/root\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException indicating circular $ref detection",
+        "description": "The schema refers to itself directly, creating a circular reference. The factory must detect this situation and abort with a clear exception rather than entering infinite recursion."
+      }
+    ]
+  }
+]

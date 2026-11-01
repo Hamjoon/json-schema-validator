@@ -1,0 +1,417 @@
+[
+  {
+    "group": "Successful validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "empty list []",
+        "description": "A well\u2011formed JSON document that conforms to the schema should be deserialized successfully and the validator should return an empty list of ValidationMessage objects."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"id\":1,\"tags\":[\"a\",\"b\"]}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { return messages.isEmpty() ? \"OK\" : \"FAIL\"; } }"
+          }
+        ],
+        "expected": "\"OK\"",
+        "description": "When the JSON input is valid the OutputFormat converts the empty ValidationMessage set to the string \"OK\"."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON / deserialization errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{invalidJson: true"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "com.fasterxml.jackson.core.JsonParseException",
+        "description": "A malformed JSON string should cause the internal deserialize method to throw a JsonParseException, which propagates out of validate."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name=John&age=30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.io.UnsupportedEncodingException",
+        "description": "If the InputFormat is URL_ENCODED and the internal URLDecoder cannot decode the string, an UnsupportedEncodingException should be thrown."
+      }
+    ]
+  },
+  {
+    "group": "Null argument handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "Passing a null input string should result in a NullPointerException from deserialize."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "A null InputFormat argument should cause a NullPointerException before deserialization."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "A null OutputFormat argument should cause a NullPointerException when the overloaded validate method is invoked."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Integer>() { public Integer apply(Set<ValidationMessage> messages) { return messages.size(); } }"
+          }
+        ],
+        "expected": "0",
+        "description": "When the document is valid the custom OutputFormat returns the count of validation messages, which should be zero."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"unexpected\":123}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Integer>() { public Integer apply(Set<ValidationMessage> messages) { return messages.size(); } }"
+          }
+        ],
+        "expected": "greater than 0",
+        "description": "For an input that violates the schema, the custom OutputFormat should return a positive integer representing the number of validation errors."
+      }
+    ]
+  },
+  {
+    "group": "YAML format handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "empty list []",
+        "description": "A well\u2011formed YAML document that conforms to the schema should be deserialized correctly and result in an empty ValidationMessage list."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: thirty"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Integer>() { public Integer apply(Set<ValidationMessage> messages) { return messages.size(); } }"
+          }
+        ],
+        "expected": "greater than 0",
+        "description": "YAML input where a field type does not match the schema (age should be numeric) should produce one or more validation messages; the custom OutputFormat returns the count."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "invalid: [unbalanced"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "com.fasterxml.jackson.core.JsonParseException",
+        "description": "Malformed YAML should cause a JsonParseException during deserialization, which propagates out of validate."
+      }
+    ]
+  },
+  {
+    "group": "URL_ENCODED valid decoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name=John%20Doe&age=30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { return messages.isEmpty() ? \"OK\" : \"FAIL\"; } }"
+          }
+        ],
+        "expected": "\"OK\"",
+        "description": "A correctly URL\u2011encoded string that matches the schema should be decoded, validated, and the OutputFormat should return \"OK\"."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name=John%ZZ&age=30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.io.UnsupportedEncodingException",
+        "description": "A URL\u2011encoded string containing illegal escape sequences should trigger UnsupportedEncodingException during deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "com.fasterxml.jackson.core.JsonParseException",
+        "description": "An empty JSON string is not valid JSON and should cause a JsonParseException."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { throw new IllegalStateException(\"formatter failure\"); } }"
+          }
+        ],
+        "expected": "java.lang.IllegalStateException",
+        "description": "If the provided OutputFormat throws a runtime exception, validate should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "Array root validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "[{\"id\":1},{\"id\":2}]"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Integer>() { public Integer apply(Set<ValidationMessage> messages) { return messages.size(); } }"
+          }
+        ],
+        "expected": "greater than 0",
+        "description": "When the schema expects an object but the JSON root is an array, validation should fail and the custom OutputFormat should return a positive count."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat returning null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> messages) { return null; } }"
+          }
+        ],
+        "expected": "null",
+        "description": "A valid document with an OutputFormat that deliberately returns null should result in a null return value from validate."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.lang.IllegalArgumentException",
+        "description": "Passing an InputFormat value that the validator does not recognise should cause an IllegalArgumentException before any deserialization occurs."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "A null InputFormat (different from the previously tested null reference) that is explicitly passed as the string \"null\" should be interpreted as a null enum value, triggering a NullPointerException."
+      }
+    ]
+  }
+]

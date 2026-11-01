@@ -1,0 +1,186 @@
+###Test START##
+```java
+package com.networknt.schema;
+
+import static org.junit.Assert.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.IntNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.Set;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link AnyOfValidator}.
+ *
+ * <p>
+ * The tests build a real {@link ValidationContext} together with a
+ * {@link JsonSchemaFactory} so that the {@code AnyOfValidator} works with
+ * genuine {@link JsonSchema} instances (no mocking or subclassing of library
+ * types).  The schema used in the tests contains two simple subschemas:
+ *
+ * <pre>
+ * [
+ *   { "type" : "string" },
+ *   { "type" : "integer" }
+ * ]
+ * </pre>
+ *
+ * This allows us to verify the following behaviours:
+ *
+ * <ul>
+ *   <li>Successful validation when the instance matches at least one subschema.</li>
+ *   <li>Failure when the instance matches none of the subschemas.</li>
+ *   <li>The early‑return optimisation that clears errors once a matching subschema is found.</li>
+ *   <li>The {@code walk} method with {@code shouldValidateSchema}=true delegates to {@code validate}.</li>
+ *   <li>The {@code walk} method with {@code shouldValidateSchema}=false walks each child schema and returns an empty set.</li>
+ *   <li>The {@code preloadJsonSchema} method executes without throwing.</li>
+ * </ul>
+ *
+ * All tests use only the public APIs listed in the prompt.
+ */
+public class AnyOfValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private ValidationContext validationContext;
+    private SchemaLocation schemaLocation;
+    private JsonNodePath evaluationPath;
+    private JsonNode anyOfArrayNode;   // the array node that will be passed to AnyOfValidator
+    private JsonSchema parentSchema;   // not needed for these tests – can be {@code null}
+    private AnyOfValidator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        // -----------------------------------------------------------------
+        // Build a minimal ValidationContext (no OpenAPI3 discriminators)
+        // -----------------------------------------------------------------
+        URIFactory uriFactory = new URIFactory();                     // default constructor
+        URNFactory urnFactory = new URNFactory();                     // default constructor
+        JsonMetaSchema metaSchema = JsonMetaSchema.getV7();           // use the Draft‑07 meta‑schema
+        JsonSchemaFactory schemaFactory = new JsonSchemaFactory();   // default constructor
+        SchemaValidatorsConfig config = new SchemaValidatorsConfig(); // defaults → discriminators disabled
+        validationContext = new ValidationContext(uriFactory, urnFactory, metaSchema, schemaFactory, config);
+
+        // -----------------------------------------------------------------
+        // Prepare the schema node that represents the "anyOf" array.
+        // The overall schema is not required – only the array node is needed.
+        // -----------------------------------------------------------------
+        String anyOfJson = "[{\"type\":\"string\"},{\"type\":\"integer\"}]";
+        anyOfArrayNode = MAPPER.readTree(anyOfJson);   // this is an ArrayNode
+
+        // -----------------------------------------------------------------
+        // Create the AnyOfValidator instance.
+        // -----------------------------------------------------------------
+        schemaLocation = SchemaLocation.DOCUMENT;               // start from the document root
+        evaluationPath = new JsonNodePath(JsonNodePath.PathType.ROOT);
+        validator = new AnyOfValidator(
+                schemaLocation,
+                evaluationPath,
+                anyOfArrayNode,
+                null,                     // parent schema not relevant for these tests
+                validationContext);
+    }
+
+    /**
+     * Helper that creates an {@link ExecutionContext} with the default
+     * {@link CollectorContext} and {@link ValidatorState}.
+     */
+    private ExecutionContext newExecutionContext() {
+        return new ExecutionContext();   // the no‑arg ctor creates a fresh CollectorContext
+    }
+
+    @Test
+    public void testValidate_StringMatchesFirstSubSchema() {
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = new TextNode("hello");
+
+        Set<ValidationMessage> errors = validator.validate(ctx, instance, instance, evaluationPath);
+
+        // The string matches the first subschema → no errors should be reported.
+        assertTrue("Expected no validation errors for a matching string", errors.isEmpty());
+
+        // The validator should have marked the node as matched in the ValidatorState.
+        assertTrue("ValidatorState should indicate a matched node", ctx.getValidatorState().hasMatchedNode());
+    }
+
+    @Test
+    public void testValidate_IntegerMatchesSecondSubSchema() {
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = new IntNode(42);
+
+        Set<ValidationMessage> errors = validator.validate(ctx, instance, instance, evaluationPath);
+
+        assertTrue("Expected no validation errors for a matching integer", errors.isEmpty());
+        assertTrue("ValidatorState should indicate a matched node", ctx.getValidatorState().hasMatchedNode());
+    }
+
+    @Test
+    public void testValidate_NoSubSchemaMatches() {
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = MAPPER.readTree("true");   // a boolean node
+
+        Set<ValidationMessage> errors = validator.validate(ctx, instance, instance, evaluationPath);
+
+        // Both subschemas (string & integer) reject a boolean → we must obtain errors.
+        assertFalse("Expected validation errors when no subschema matches", errors.isEmpty());
+
+        // None of the subschemas succeeded, therefore the node must NOT be marked as matched.
+        assertFalse("ValidatorState must indicate that the node did not match any subschema",
+                ctx.getValidatorState().hasMatchedNode());
+
+        // All errors must be of type "anyOf" (the validator's own type code)
+        for (ValidationMessage vm : errors) {
+            assertEquals("anyOf", vm.getType());
+        }
+    }
+
+    @Test
+    public void testValidate_EarlyReturnWhenMatchFound() {
+        // The configuration disables OpenAPI3 discriminators, therefore the validator
+        // clears all accumulated errors as soon as it finds a matching subschema.
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = new TextNode("any string");
+
+        // The first subschema (type:string) will succeed.
+        Set<ValidationMessage> errors = validator.validate(ctx, instance, instance, evaluationPath);
+
+        // Because a match is found early, the result must be empty.
+        assertTrue("Early‑return optimisation should produce an empty error set", errors.isEmpty());
+    }
+
+    @Test
+    public void testWalk_ValidateTrueDelegatesToValidate() {
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = new TextNode("delegated");
+
+        Set<ValidationMessage> errorsFromWalk = validator.walk(ctx, instance, instance, evaluationPath, true);
+        Set<ValidationMessage> errorsFromValidate = validator.validate(ctx, instance, instance, evaluationPath);
+
+        assertEquals("walk(…, true) must return the same result as validate()", errorsFromValidate, errorsFromWalk);
+    }
+
+    @Test
+    public void testWalk_ValidateFalseReturnsEmptySet() {
+        ExecutionContext ctx = newExecutionContext();
+        JsonNode instance = new TextNode("ignored");
+
+        Set<ValidationMessage> result = validator.walk(ctx, instance, instance, evaluationPath, false);
+
+        // When validation is disabled, walk should never add errors – it always returns an empty set.
+        assertTrue("walk(…, false) must return an empty set", result.isEmpty());
+    }
+
+    @Test
+    public void testPreloadJsonSchemaDoesNotThrow() {
+        // The method simply iterates over the child schemas and calls their
+        // preloadJsonSchema() method.  No exception should be thrown.
+        validator.preloadJsonSchema();
+    }
+}
+```
+###Test END##

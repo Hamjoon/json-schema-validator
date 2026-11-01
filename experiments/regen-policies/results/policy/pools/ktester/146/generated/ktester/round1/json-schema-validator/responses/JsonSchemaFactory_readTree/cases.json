@@ -1,0 +1,284 @@
+[
+  {
+    "group": "jsonNodeReader is null \u2013 delegate to ObjectMapper",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "JsonNode representing the parsed JSON object (field \"name\" with value \"John\")",
+        "description": "When jsonNodeReader is null the method should obtain the JSON ObjectMapper via getObjectMapper(JSON) and return the JsonNode produced by ObjectMapper.readTree. The content is a valid JSON string."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "JsonNode representing the parsed YAML (fields \"name\" and \"age\" with values \"John\" and 30)",
+        "description": "When jsonNodeReader is null and the requested format is YAML the method should delegate to the YAML ObjectMapper and return the parsed JsonNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{invalid json}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown by ObjectMapper.readTree",
+        "description": "If the underlying ObjectMapper cannot parse the supplied content (invalid JSON), the IOException should propagate out of readTree."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is set \u2013 use JsonNodeReader implementation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"id\":123}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "Mocked JsonNode with field \"id\" = 123",
+        "description": "When jsonNodeReader is non\u2011null the method must call jsonNodeReader.readTree(content, JSON) and return whatever JsonNode the reader provides. The mock is configured to return a JsonNode containing the field \"id\"."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "id: 123\nactive: true"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "Mocked JsonNode with fields \"id\" = 123 and \"active\" = true",
+        "description": "Same as above but for YAML format. The JsonNodeReader mock should be invoked with InputFormat.YAML and return the prepared JsonNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "any content"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException thrown by JsonNodeReader.readTree",
+        "description": "If the injected JsonNodeReader throws an IOException (e.g., due to I/O error), the exception must propagate unchanged from readTree."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is null \u2013 edge cases with null or empty inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException (or JsonProcessingException) thrown by ObjectMapper.readTree due to null content",
+        "description": "When jsonNodeReader is null and the supplied content is null, ObjectMapper.readTree should throw an exception which propagates out of readTree."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IOException (or JsonProcessingException) thrown by ObjectMapper.readTree because the input string is empty",
+        "description": "Validate that an empty JSON string results in a parsing exception when delegating to the default ObjectMapper."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "   "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "IOException (or JsonProcessingException) thrown by ObjectMapper.readTree due to whitespace\u2011only content",
+        "description": "Even though the format is YAML, whitespace\u2011only input cannot be parsed and should cause an exception that bubbles up."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"valid\":true}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException thrown before delegating to ObjectMapper",
+        "description": "If the InputFormat argument is null, the method should fail early (NPE) because getObjectMapper(null) cannot resolve a mapper."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is set \u2013 edge cases with null/empty inputs and null returns",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "IOException thrown by JsonNodeReader.readTree due to null content",
+        "description": "When a custom JsonNodeReader is injected, passing a null content string should cause the reader to throw an IOException, which must propagate unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "JsonNode returned by JsonNodeReader (could be null or EmptyNode depending on mock configuration)",
+        "description": "Test that the factory forwards an empty string to the injected JsonNodeReader; the mock is set up to return a specific JsonNode (e.g., NullNode) and the factory returns exactly that node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"key\":\"value\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException thrown before calling JsonNodeReader.readTree",
+        "description": "When the InputFormat argument is null, the method should not invoke the JsonNodeReader and instead throw NPE (or behave consistently with the null\u2011format contract)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"nested\":{\"a\":1,\"b\":2}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "Mocked JsonNode representing a complex nested structure",
+        "description": "Ensure that the factory returns exactly the JsonNode supplied by the JsonNodeReader even when the node contains nested objects; verifies no transformation occurs."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "any string"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "null (JsonNodeReader returns null)",
+        "description": "If the injected JsonNodeReader deliberately returns null, readTree should propagate that null result rather than throwing or wrapping it."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is null \u2013 unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"key\":\"value\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown by getObjectMapper because the InputFormat is not supported",
+        "description": "When jsonNodeReader is null and an InputFormat value that the factory does not recognise (e.g., XML) is supplied, getObjectMapper should reject it and throw IllegalArgumentException, which must propagate out of readTree."
+      }
+    ]
+  },
+  {
+    "group": "jsonNodeReader is set \u2013 unchecked exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": "{\"id\":1}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "RuntimeException (e.g., IllegalStateException) thrown by JsonNodeReader.readTree propagates unchanged",
+        "description": "When a custom JsonNodeReader is injected, if its readTree method throws a runtime exception (not declared in the signature), readTree must let that exception bubble up unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "content",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "NullPointerException thrown by JsonNodeReader.readTree propagates unchanged",
+        "description": "Even though the method signature declares IOException, a JsonNodeReader implementation may throw a NullPointerException for a null content argument; the factory must not catch it and should let it propagate."
+      }
+    ]
+  }
+]

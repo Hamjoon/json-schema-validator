@@ -1,0 +1,295 @@
+[
+  {
+    "group": "Valid inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose getSchemaLocation().toString() equals \"http://example.com/schema.json\"",
+        "description": "Happy\u2011path: a well\u2011formed URI and a simple JSON schema node should result in a non\u2011null JsonSchema with the correct location."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose getSchemaLocation().toString() equals \"\" (empty string)",
+        "description": "Edge case: an empty string URI is still accepted; the factory should create a JsonSchema with an empty location."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"file:/tmp/space%20in%20name.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"number\\\"}}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose getSchemaLocation().toString() contains \"space in name\" after decoding",
+        "description": "URI with encoded spaces \u2013 verify that the location is stored correctly after normalization."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"urn:example:schema\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\",\\\"type\\\":\\\"null\\\"}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose meta\u2011schema is Draft\u201107 (as indicated by $schema) and location equals \"urn:example:schema\"",
+        "description": "Non\u2011hierarchical URI (URN) with a $schema keyword \u2013 ensures the factory forwards the node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Invalid inputs \u2013 null arguments",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null URI should cause the method to throw NPE because SchemaLocation.of(null) cannot be created."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null JsonNode should result in NPE when newJsonSchema attempts to process the node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Both parameters null \u2013 the first null encountered (schemaUri) should trigger the exception."
+      }
+    ]
+  },
+  {
+    "group": "Edge cases \u2013 malformed URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"ht!tp://[invalid]\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          }
+        ],
+        "expected": "URISyntaxException wrapped in IllegalArgumentException (or RuntimeException) when SchemaLocation.of throws",
+        "description": "A syntactically invalid URI should cause the factory to fail early, propagating the exception."
+      }
+    ]
+  },
+  {
+    "group": "Complex schema node with definitions and $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/complex.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-07/schema#\\\",\\\"definitions\\\":{\\\"positive\\\":{\\\"type\\\":\\\"integer\\\",\\\"minimum\\\":1}},\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"age\\\":{\\\"$ref\\\":\\\"#/definitions/positive\\\"}}}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose meta\u2011schema is Draft\u201107, location equals \"http://example.com/complex.json\", and internal $ref resolution works (i.e., the schema contains a resolved definition for \"age\")",
+        "description": "A schema containing definitions and a $ref should be loaded correctly; the factory must preserve the $ref so that later validation can resolve it."
+      }
+    ]
+  },
+  {
+    "group": "URI containing query and fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"https://example.org/schema.json?version=1#section2\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"string\\\",\\\"maxLength\\\":10}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose getSchemaLocation().toString() equals \"https://example.org/schema.json?version=1#section2\"",
+        "description": "Verify that query strings and fragments are preserved in the stored SchemaLocation."
+      }
+    ]
+  },
+  {
+    "group": "URI with Unicode characters (percent\u2011encoded)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/\u00fcber.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"type\\\":\\\"null\\\"}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose getSchemaLocation().toString() equals \"http://example.com/\u00fcber.json\" (the Unicode character is correctly retained after normalization)",
+        "description": "A URI containing non\u2011ASCII characters should survive the factory\u2019s normalization unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Boolean schema node (true)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/alwaysValid.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"true\")"
+          }
+        ],
+        "expected": "instance of JsonSchema representing a boolean true schema (i.e., any instance validates successfully)",
+        "description": "JSON Schema draft\u201107 allows a schema to be a literal boolean; the factory should accept a JsonNode that is the literal true."
+      }
+    ]
+  },
+  {
+    "group": "Boolean schema node (false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/alwaysInvalid.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"false\")"
+          }
+        ],
+        "expected": "instance of JsonSchema representing a boolean false schema (i.e., no instance validates successfully)",
+        "description": "A literal false schema should be accepted and reflected in the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object, non\u2011boolean schema node (string literal)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/invalidSchema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"\\\"just a string\\\"\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A schema node that is a JSON string (neither object nor boolean) is not a valid JSON Schema; the factory should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unknown $schema IRI \u2013 fallback to default meta\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/unknownMeta.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"{\\\"$schema\\\":\\\"http://example.com/unknown#\\\",\\\"type\\\":\\\"number\\\"}\")"
+          }
+        ],
+        "expected": "instance of JsonSchema whose meta\u2011schema defaults to the library's latest supported version (e.g., Draft\u201107) because the provided $schema IRI cannot be resolved",
+        "description": "When the $schema keyword points to an IRI that the factory does not recognise, it should fall back to the default meta\u2011schema rather than throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid inputs \u2013 unsupported json node types",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/numberNode.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"5\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A JsonNode that is a numeric literal (neither object nor boolean) is not a valid JSON Schema; the factory should reject it with IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/arrayNode.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "JsonMapperFactory.getMapper().readTree(\"[1,2,3]\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A JsonNode that is a JSON array (neither object nor boolean) is invalid as a top\u2011level schema; the factory must throw IllegalArgumentException."
+      }
+    ]
+  }
+]

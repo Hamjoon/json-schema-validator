@@ -1,0 +1,361 @@
+[
+  {
+    "group": "customizer is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "null"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "factory.defaultMetaSchemaURI equals the URI of the built\u2011in meta\u2011schema for the supplied version",
+              "expression": "factory.getMetaSchema(factory.defaultMetaSchemaURI, new SchemaValidatorsConfig()).getUri().equals(JsonSchemaVersion.V4.getInstance().getUri())"
+            },
+            {
+              "description": "the built\u2011in meta\u2011schema is registered in the factory\u2019s internal map",
+              "expression": "factory.getMetaSchema(JsonSchemaVersion.V4.getInstance().getUri(), new SchemaValidatorsConfig()) != null"
+            }
+          ]
+        },
+        "description": "Verify that getInstance returns a factory with the correct default meta\u2011schema when no customizer is supplied."
+      }
+    ]
+  },
+  {
+    "group": "customizer modifies builder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.enableUriSchemaCache(false)"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "customizer is executed \u2013 the builder\u2019s enableUriSchemaCache flag is set to false",
+              "expression": "factory.enableUriSchemaCache == false"
+            },
+            {
+              "description": "defaultMetaSchemaURI still matches the version\u2019s meta\u2011schema URI",
+              "expression": "factory.getMetaSchema(factory.defaultMetaSchemaURI, new SchemaValidatorsConfig()).getUri().equals(JsonSchemaVersion.V7.getInstance().getUri())"
+            }
+          ]
+        },
+        "description": "Ensure that a non\u2011null customizer is invoked and can alter the builder state (e.g., disabling the URI schema cache)."
+      }
+    ]
+  },
+  {
+    "group": "null versionFlag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "null"
+          },
+          {
+            "parameter": "customizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling getInstance with a null VersionFlag should throw NullPointerException (the method forwards the argument to checkVersion which dereferences it)."
+      }
+    ]
+  },
+  {
+    "group": "unsupported versionFlag (future enum value)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.UNKNOWN"
+          },
+          {
+            "parameter": "customizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If an enum constant that is not mapped to a JsonSchemaVersion is supplied, checkVersion should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "different supported versionFlag with null customizer (V6)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": "null"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "factory.defaultMetaSchemaURI equals the built\u2011in meta\u2011schema URI for V6",
+              "expression": "factory.getMetaSchema(factory.defaultMetaSchemaURI, new SchemaValidatorsConfig()).getUri().equals(JsonSchemaVersion.V6.getInstance().getUri())"
+            },
+            {
+              "description": "the built\u2011in V6 meta\u2011schema is registered in the factory\u2019s internal map",
+              "expression": "factory.getMetaSchema(JsonSchemaVersion.V6.getInstance().getUri(), new SchemaValidatorsConfig()) != null"
+            }
+          ]
+        },
+        "description": "Verify that getInstance correctly initialises a factory for a supported version other than those already tested when no customizer is supplied."
+      }
+    ]
+  },
+  {
+    "group": "customizer adds an additional meta\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.addMetaSchema(customMetaSchema)"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "the built\u2011in V6 meta\u2011schema is still registered",
+              "expression": "factory.getMetaSchema(JsonSchemaVersion.V6.getInstance().getUri(), new SchemaValidatorsConfig()) != null"
+            },
+            {
+              "description": "the custom meta\u2011schema supplied by the customizer is registered",
+              "expression": "factory.getMetaSchema(customMetaSchema.getUri(), new SchemaValidatorsConfig()) != null"
+            },
+            {
+              "description": "the internal meta\u2011schema map contains at least two entries (built\u2011in + custom)",
+              "expression": "factory.jsonMetaSchemas.size() >= 2"
+            }
+          ]
+        },
+        "description": "Ensure that a customizer can add extra JsonMetaSchema objects to the builder and that they are present in the resulting factory."
+      }
+    ]
+  },
+  {
+    "group": "customizer overrides defaultMetaSchemaURI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.defaultMetaSchemaURI(\"http://example.com/custom-meta\")"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "factory.defaultMetaSchemaURI is replaced by the value supplied by the customizer",
+              "expression": "factory.defaultMetaSchemaURI.equals(\"http://example.com/custom-meta\")"
+            },
+            {
+              "description": "the built\u2011in V7 meta\u2011schema is still registered (it was added before the customizer runs)",
+              "expression": "factory.getMetaSchema(JsonSchemaVersion.V7.getInstance().getUri(), new SchemaValidatorsConfig()) != null"
+            }
+          ]
+        },
+        "description": "Check that a customizer can change the defaultMetaSchemaURI after the builder has been pre\u2011populated with the version\u2011specific meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "customizer toggles enableUriSchemaCache flag twice",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.enableUriSchemaCache(false).enableUriSchemaCache(true)"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "final value of enableUriSchemaCache reflects the last call (true)",
+              "expression": "factory.enableUriSchemaCache == true"
+            },
+            {
+              "description": "defaultMetaSchemaURI still matches the V7 meta\u2011schema URI",
+              "expression": "factory.getMetaSchema(factory.defaultMetaSchemaURI, new SchemaValidatorsConfig()).getUri().equals(JsonSchemaVersion.V7.getInstance().getUri())"
+            }
+          ]
+        },
+        "description": "Validate that multiple invocations on the same builder property are applied in order and the last one wins."
+      }
+    ]
+  },
+  {
+    "group": "customizer adds a collection of meta\u2011schemas",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.addMetaSchemas(java.util.Arrays.asList(customMeta1, customMeta2))"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "both custom meta\u2011schemas are registered",
+              "expression": "factory.getMetaSchema(customMeta1.getUri(), new SchemaValidatorsConfig()) != null && factory.getMetaSchema(customMeta2.getUri(), new SchemaValidatorsConfig()) != null"
+            },
+            {
+              "description": "the built\u2011in V6 meta\u2011schema is also present",
+              "expression": "factory.getMetaSchema(JsonSchemaVersion.V6.getInstance().getUri(), new SchemaValidatorsConfig()) != null"
+            },
+            {
+              "description": "total number of registered meta\u2011schemas is at least three",
+              "expression": "factory.jsonMetaSchemas.size() >= 3"
+            }
+          ]
+        },
+        "description": "Confirm that the builder\u2019s addMetaSchemas(Collection) method works when invoked from a customizer."
+      }
+    ]
+  },
+  {
+    "group": "customizer configures schemaLoaders and schemaMappers",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.schemaLoaders(b -> b.addSchemaLoader(customLoader)).schemaMappers(b -> b.addSchemaMapper(customMapper))"
+          }
+        ],
+        "expected": {
+          "type": "instance",
+          "class": "JsonSchemaFactory",
+          "assertions": [
+            {
+              "description": "the custom SchemaLoader is present in the factory\u2019s loader chain",
+              "expression": "factory.getSchemaLoader().getLoaders().contains(customLoader)"
+            },
+            {
+              "description": "the custom SchemaMapper is present in the factory\u2019s mapper chain",
+              "expression": "factory.getSchemaMappers().getMappers().contains(customMapper)"
+            }
+          ]
+        },
+        "description": "Ensure that a customizer can customise the SchemaLoaders and SchemaMappers builders and that those custom components are reflected in the resulting factory."
+      }
+    ]
+  },
+  {
+    "group": "customizer throws NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new NullPointerException(\"customizer NPE\"); }"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The customizer lambda throws a NullPointerException; getInstance should propagate this exception."
+      }
+    ]
+  },
+  {
+    "group": "customizer throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new IllegalArgumentException(\"customizer illegal arg\"); }"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The customizer lambda throws an IllegalArgumentException; getInstance must not catch it and should let it propagate."
+      }
+    ]
+  },
+  {
+    "group": "customizer throws custom RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "A customizer that throws a generic RuntimeException should cause getInstance to abort and propagate the same exception."
+      }
+    ]
+  }
+]

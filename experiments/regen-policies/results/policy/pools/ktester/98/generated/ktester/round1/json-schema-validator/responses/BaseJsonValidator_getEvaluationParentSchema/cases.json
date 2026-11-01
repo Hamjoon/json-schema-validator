@@ -1,0 +1,102 @@
+[
+  {
+    "group": "evaluationParentSchemaIsSet",
+    "cases": [
+      {
+        "input": [],
+        "expected": "mockEvaluationParentSchema",
+        "description": "When the internal field `evaluationParentSchema` is already set (non\u2011null), `getEvaluationParentSchema()` should return that exact instance without delegating to `getParentSchema()`."
+      },
+      {
+        "input": [],
+        "expected": "getParentSchemaNotInvoked",
+        "description": "Ensures that `getParentSchema()` is **not** called when `evaluationParentSchema` is present. The test subclass overrides `getParentSchema()` to throw if invoked; the method should complete successfully returning the pre\u2011set schema."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaIsNull",
+    "cases": [
+      {
+        "input": [],
+        "expected": "mockParentSchema",
+        "description": "When `evaluationParentSchema` is null, the method must fall back to `getParentSchema()` and return the schema provided by that call."
+      },
+      {
+        "input": [],
+        "expected": "getParentSchemaInvokedOnce",
+        "description": "Verifies that `getParentSchema()` is invoked exactly once when `evaluationParentSchema` is null. The subclass records the number of invocations and the test asserts the count."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaNullParentNull",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "When `evaluationParentSchema` is `null` **and** `getParentSchema()` also returns `null`, `getEvaluationParentSchema()` should return `null` without throwing."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaNullParentThrows",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "When `evaluationParentSchema` is `null` and `getParentSchema()` throws a `RuntimeException`, the exception must propagate out of `getEvaluationParentSchema()`."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaSetParentThrows",
+    "cases": [
+      {
+        "input": [],
+        "expected": "mockEvaluationParentSchema",
+        "description": "Even if `getParentSchema()` would throw an exception, when `evaluationParentSchema` is already set the method must return that instance and never invoke `getParentSchema()`."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaSetSameAsParent",
+    "cases": [
+      {
+        "input": [],
+        "expected": "sameInstance",
+        "description": "When both `evaluationParentSchema` and the value returned by `getParentSchema()` refer to the **same** `JsonSchema` instance, `getEvaluationParentSchema()` should return that instance (demonstrating that the method does not create a new object or alter the reference)."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaSetDifferentFromParent",
+    "cases": [
+      {
+        "input": [],
+        "expected": "mockEvaluationParentSchema",
+        "description": "When `evaluationParentSchema` is set to a different `JsonSchema` than the one returned by `getParentSchema()`, the method must return the explicitly set `evaluationParentSchema` and ignore the parent schema."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaNullParentThrowsIllegalArgument",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalArgumentException",
+        "description": "When `evaluationParentSchema` is null and the overridden `getParentSchema()` throws an `IllegalArgumentException`, the exception must propagate unchanged out of `getEvaluationParentSchema()`."
+      }
+    ]
+  },
+  {
+    "group": "evaluationParentSchemaNullParentThrowsError",
+    "cases": [
+      {
+        "input": [],
+        "expected": "AssertionError",
+        "description": "When `evaluationParentSchema` is null and the overridden `getParentSchema()` throws an `AssertionError` (a subclass of `Error`), the method should not catch it and must let the `Error` propagate to the caller."
+      }
+    ]
+  }
+]

@@ -1,0 +1,461 @@
+[
+  {
+    "group": "Normal validation \u2013 happy path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=true, suppressSubSchemaRetrieval=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage>",
+        "description": "When a valid JSON node is supplied and the validator is configured to collect annotations, the `validate` method should return an empty set indicating no validation errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=true, suppressSubSchemaRetrieval=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=false, type=ObjectNode, errors=[\"field missing\"])"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with message \"field missing\"",
+        "description": "When the JSON node violates the schema (e.g., a required field is missing), the validator should return a set with the corresponding ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Null or missing parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true)"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"ExecutionContext must not be null\"",
+        "description": "The method should guard against a null ExecutionContext and throw an IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"JsonNode must not be null\"",
+        "description": "The method should guard against a null JsonNode and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Root vs. non\u2011root evaluation path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "validation performed with atRoot() == true",
+        "description": "When `atRoot()` returns true the validator should treat the supplied node as the root of the evaluation path."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "validation performed with atRoot() == false",
+        "description": "When `atRoot()` returns false the validator should treat the supplied node as a child node; the internal call to the overloaded `validate` receives `node` as both the instance node and the parent node."
+      }
+    ]
+  },
+  {
+    "group": "Suppress sub\u2011schema retrieval flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(suppressSubSchemaRetrieval=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "Set without invoking fetchSubSchemaNode (no sub\u2011schema validation)",
+        "description": "When the validator is constructed with `suppressSubSchemaRetrieval` set to true, the `validate` method must skip any sub\u2011schema fetching and only apply its own keyword validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(suppressSubSchemaRetrieval=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "Set may contain messages produced by fetchSubSchemaNode",
+        "description": "When `suppressSubSchemaRetrieval` is false the validator is allowed to retrieve and evaluate sub\u2011schemas; the test verifies that the sub\u2011schema path is exercised."
+      }
+    ]
+  },
+  {
+    "group": "Annotation collection branches",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=true, keyword=\"type\")"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "annotation for keyword \"type\" is present in ExecutionContext after validation",
+        "description": "When `collectAnnotations` returns true for a specific keyword, the validator must store a JsonNodeAnnotation for that keyword."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=false, keyword=\"type\")"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "no annotation added for keyword \"type\"",
+        "description": "When `collectAnnotations` returns false, the validator must skip annotation creation."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator handling (static helper branches)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(withDiscriminator=true, discriminatorProperty=\"type\", discriminatorValue=\"A\")"
+          }
+        ],
+        "expected": "registerAndMergeDiscriminator invoked, no ValidationMessage for discriminator mismatch",
+        "description": "When a node contains a discriminator object that matches the expected value, the static helper `registerAndMergeDiscriminator` should be called and validation should pass."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(withDiscriminator=true, discriminatorProperty=\"type\", discriminatorValue=\"B\")"
+          }
+        ],
+        "expected": "Set containing ValidationMessage indicating discriminator mismatch",
+        "description": "When the discriminator value does not match any defined mapping, `checkDiscriminatorMatch` should add a ValidationMessage describing the mismatch."
+      }
+    ]
+  },
+  {
+    "group": "Sub\u2011schema retrieval edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(suppressSubSchemaRetrieval=false, collectAnnotations=false, fetchSubSchemaNodeResult=null)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> (no sub\u2011schema fetched, therefore no additional errors)",
+        "description": "When `suppressSubSchemaRetrieval` is false but `fetchSubSchemaNode` returns null, the validator should simply return the result of its own keyword validation (which is empty for a valid node)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(suppressSubSchemaRetrieval=false, collectAnnotations=false, fetchSubSchemaNodeResult=mockSubSchemaNode(errors=[\"sub\u2011schema violation\"]))"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with message \"sub\u2011schema violation\"",
+        "description": "When `suppressSubSchemaRetrieval` is false and `fetchSubSchemaNode` returns a sub\u2011schema that itself produces a validation error, that error must be propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator missing property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(withDiscriminator=true, discriminatorProperty=\"type\", discriminatorValue=null)"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage indicating missing discriminator property \"type\"",
+        "description": "If a node contains a discriminator object but the required discriminator property is absent, `checkDiscriminatorMatch` should generate a ValidationMessage describing the missing property."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011Object node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ArrayNode)"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with message \"expected type ObjectNode but found ArrayNode\"",
+        "description": "When the validator expects an ObjectNode but receives an ArrayNode, it must report a type\u2011mismatch ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "Annotation without keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=true, keyword=null)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode()"
+          }
+        ],
+        "expected": "no annotation added to ExecutionContext (keyword is null, so annotation is skipped)",
+        "description": "When `collectAnnotations` returns true but the keyword argument is null, the validator should not create a JsonNodeAnnotation."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation from ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotationsThrows=RuntimeException(\"boom\"))"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "RuntimeException with message \"boom\" propagated",
+        "description": "If `ExecutionContext.collectAnnotations` throws an unchecked exception, `validate` must not swallow it; the exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Debug logging activation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(loggerDebugEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "empty Set<ValidationMessage> and BaseJsonValidator.debug invoked once",
+        "description": "When the logger is debug\u2011enabled, the static `debug` method should be called during validation; the validation result itself remains unchanged (empty set for a valid node)."
+      }
+    ]
+  },
+  {
+    "group": "Constructor validation exceptions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "IllegalStateException with message \"schemaNode must not be null\"",
+        "description": "If a BaseJsonValidator (or subclass) is instantiated with a null `schemaNode`, the `validate` method should detect the missing schema and throw an IllegalStateException before any validation logic runs."
+      }
+    ]
+  },
+  {
+    "group": "atRoot() returning null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(atRootReturnsNull=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the overridden `atRoot()` method returns `null`, the internal call that expects a non\u2011null `JsonNodePath` triggers a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(fetchSubSchemaThrows=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"invalid sub\u2011schema reference\"",
+        "description": "If a validator's `fetchSubSchemaNode` implementation throws an IllegalArgumentException (e.g., because a $ref cannot be resolved), `validate` must let the exception propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator object type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(withDiscriminator=true, discriminatorObjectType=ArrayNode, discriminatorProperty=\"type\", discriminatorValue=\"A\")"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "When a node contains a discriminator field that is not an `ObjectNode` (e.g., an `ArrayNode`), the static helper `checkDiscriminatorMatch` casts it and throws a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator property non\u2011textual value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(withDiscriminator=true, discriminatorProperty=\"type\", discriminatorValue=12345)"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"Discriminator property 'type' must be a textual value\"",
+        "description": "If the discriminator property exists but its value is not a text node (e.g., a numeric node), `checkDiscriminatorMatch` should raise an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Debug logging with null logger",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(logger=null, loggerDebugEnabled=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When debug logging is enabled but the provided `Logger` instance is `null`, the static `debug` method attempts to call `logger.isDebugEnabled()` and throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Annotation customizer null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(collectAnnotations=true, customizer=null)"
+          },
+          {
+            "parameter": "node",
+            "value": "mockJsonNode(valid=true, type=ObjectNode)"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If `collectAnnotations` returns true but the validator invokes `putAnnotation` with a `null` customizer, the internal `Consumer.accept` call results in a NullPointerException."
+      }
+    ]
+  }
+]

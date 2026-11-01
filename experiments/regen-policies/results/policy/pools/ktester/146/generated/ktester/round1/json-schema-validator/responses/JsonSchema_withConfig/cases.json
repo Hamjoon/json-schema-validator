@@ -1,0 +1,77 @@
+[
+  {
+    "group": "sameConfigReturnsOriginalInstance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "ConfigSameAsContext"
+          }
+        ],
+        "expected": "returns the same JsonSchema instance (reference equality)",
+        "description": "The ValidationContext of the JsonSchema already holds ConfigSameAsContext. Calling withConfig with an equal configuration should not create a new schema but return the original object."
+      }
+    ]
+  },
+  {
+    "group": "differentConfigCreatesNewInstance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "ConfigDifferentFromContext"
+          }
+        ],
+        "expected": "returns a new JsonSchema instance whose ValidationContext contains ConfigDifferentFromContext",
+        "description": "When the supplied configuration differs from the one stored in the current ValidationContext (and the meta\u2011schema does not force a change), withConfig must build a new ValidationContext and return a freshly constructed JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "discriminatorKeywordAutoEnabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "ConfigWithDiscriminatorDisabled"
+          }
+        ],
+        "expected": "returns a new JsonSchema instance whose ValidationContext config has discriminatorKeywordEnabled=true and nullableKeywordEnabled=true",
+        "description": "If the meta\u2011schema declares the keyword \"discriminator\" and the supplied config has discriminatorKeywordEnabled=false, withConfig must automatically enable both the discriminator and nullable keywords (by rebuilding the config via the builder) and then create a new JsonSchema because the effective config changed."
+      }
+    ]
+  },
+  {
+    "group": "nullConfigThrowsNPE",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "Passing a null SchemaValidatorsConfig should cause a NullPointerException when the method tries to read config properties."
+      }
+    ]
+  },
+  {
+    "group": "nullValidationContextThrowsNPE",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "ValidConfig"
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "If the JsonSchema instance has a null ValidationContext (e.g., created via reflection or a faulty factory), calling withConfig will attempt to invoke getValidationContext().getMetaSchema() and result in a NullPointerException."
+      }
+    ]
+  }
+]

@@ -1,0 +1,402 @@
+[
+  {
+    "group": "validate \u2013 normal flow (no customizer, no exception)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "format.customize(executionContext, validationContext) is invoked; executionCustomizer is not invoked; internal validate(executionContext,node) returns a Set<ValidationMessage> called expectedMessages; format.format(this, expectedMessages, executionContext, validationContext) is invoked and its return value is returned as the method result.",
+        "description": "Verifies the happy\u2011path where no ExecutionContextCustomizer is supplied, validation succeeds without throwing, and the OutputFormat receives the correct validation messages."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 with ExecutionContextCustomizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "format.customize(executionContext, validationContext) is invoked; executionCustomizer.customize(executionContext, validationContext) is also invoked exactly once; internal validate returns expectedMessages; format.format(this, expectedMessages, executionContext, validationContext) is invoked and its return value is returned.",
+        "description": "Ensures that when a non\u2011null ExecutionContextCustomizer is supplied it is called after the format customization and before validation proceeds."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 FailFastAssertionException handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "format.customize(executionContext, validationContext) is invoked; internal validate throws FailFastAssertionException containing a Set<ValidationMessage> called failFastMessages; the catch block captures the exception and assigns validationMessages = failFastMessages; format.format(this, failFastMessages, executionContext, validationContext) is invoked and its return value is returned.",
+        "description": "Tests the branch where the underlying validation throws FailFastAssertionException; the method must swallow the exception, extract its messages, and forward them to the OutputFormat."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "mockExecutionCustomizer"
+          }
+        ],
+        "expected": "format.customize(executionContext, validationContext) is invoked; executionCustomizer.customize(executionContext, validationContext) is invoked; internal validate throws FailFastAssertionException with failFastMessages; catch block assigns validationMessages = failFastMessages; format.format(this, failFastMessages, executionContext, validationContext) is invoked and its return value is returned.",
+        "description": "Combines both a non\u2011null ExecutionContextCustomizer and a FailFastAssertionException to verify that customizer execution occurs before the exception is caught and that the correct messages are still passed to the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 null ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown when format.customize(null, validationContext) is invoked.",
+        "description": "Ensures that passing a null ExecutionContext causes an NPE because the method does not guard against a null executionContext before delegating to the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 null OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to invoke format.customize(...).",
+        "description": "Verifies that a null OutputFormat leads to an NPE because the method immediately calls format.customize without null\u2011checking."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 OutputFormat.customize throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "outputFormatThrowingOnCustomize"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException (custom message) propagates out of validate method; format.format is never invoked.",
+        "description": "Checks that if OutputFormat.customize throws an unchecked exception, the validate method does not catch it and the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 OutputFormat.format throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "outputFormatThrowingOnFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException (custom message) propagates out of validate method after successful validation; format.customize is invoked, internal validation runs, but format.format throws.",
+        "description": "Ensures that an exception thrown by OutputFormat.format is not swallowed by validate and is propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 ExecutionContextCustomizer throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowingOnCustomize"
+          }
+        ],
+        "expected": "RuntimeException (custom message) propagates out of validate method after format.customize has been invoked; format.format is never called.",
+        "description": "Validates that a RuntimeException thrown by the supplied ExecutionContextCustomizer is not caught by validate and aborts processing."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 internal validate returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "format.format(this, null, executionContext, validationContext) is invoked and its return value is returned.",
+        "description": "Simulates a scenario where the underlying validate(executionContext, node) method (perhaps overridden in a test subclass) returns null; the method should forward the null set to the OutputFormat without throwing."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 both customizer and format.customize throw",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "outputFormatThrowingOnCustomize"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizerThrowingOnCustomize"
+          }
+        ],
+        "expected": "RuntimeException from format.customize propagates; executionCustomizer.customize is never invoked because the method aborts after the first exception.",
+        "description": "Confirms the order of operations: format.customize is called first; if it throws, the customizer is not executed."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 null JsonNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown when internal validate(executionContext, null) is invoked (or earlier when format.customize is called, depending on implementation).",
+        "description": "Tests the behaviour when the JSON node to validate is null; the method does not perform a null\u2011check before delegating to the internal validation logic."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 internal validate throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalStateException (or any RuntimeException) propagates out of validate; format.format is never invoked.",
+        "description": "Simulates a scenario where the internal validate(executionContext, node) method throws a generic RuntimeException (e.g., IllegalStateException). The validate method should not catch it, allowing the exception to bubble up, and should not call format.format."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 internal validate throws Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "AssertionError (or any java.lang.Error) propagates out of validate; format.format is never invoked.",
+        "description": "Ensures that if the internal validation logic throws an Error (e.g., AssertionError), the validate method does not catch it and the error propagates to the caller."
+      }
+    ]
+  },
+  {
+    "group": "validate \u2013 FailFastAssertionException with null messages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockOutputFormat"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "format.customize(executionContext, validationContext) is invoked; internal validate throws FailFastAssertionException whose getValidationMessages() returns null; catch block assigns validationMessages = null; format.format(this, null, executionContext, validationContext) is invoked and its return value is returned.",
+        "description": "Tests the edge case where FailFastAssertionException is thrown but its payload (validation messages) is null. The method should forward the null set to the OutputFormat without throwing."
+      }
+    ]
+  }
+]

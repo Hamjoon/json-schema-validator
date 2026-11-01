@@ -1,0 +1,166 @@
+[
+  {
+    "group": "withConfig_sameConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "sameConfigInstance"
+          }
+        ],
+        "expected": "returns the original JsonSchema instance (reference equality)",
+        "description": "The supplied SchemaValidatorsConfig is exactly the same instance that the current ValidationContext holds. The method should detect equality, skip the copy logic, and return `this`."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_differentConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "differentConfigInstance"
+          }
+        ],
+        "expected": {
+          "instanceDifferent": true,
+          "validationContextConfigEqualsProvided": true,
+          "validatorsLoaded": false,
+          "requiredValidator": null,
+          "typeValidator": null,
+          "validators": null,
+          "initializeConfigCalled": true
+        },
+        "description": "A distinct SchemaValidatorsConfig is supplied. The method must create a copy of the JsonSchema, replace its ValidationContext with a new one that contains the new config, reset mutable fields (validatorsLoaded, requiredValidator, typeValidator, validators) and invoke `initializeConfig()`. The returned object must not be the same reference as the original."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_nullConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": {
+          "instanceDifferent": true,
+          "validationContextConfigIsNull": true,
+          "validatorsLoaded": false,
+          "requiredValidator": null,
+          "typeValidator": null,
+          "validators": null,
+          "initializeConfigCalled": true
+        },
+        "description": "A `null` config is passed. Since the current config is non\u2011null, the equality check fails, triggering the copy path. The new JsonSchema must hold a ValidationContext whose config is `null`, and all mutable fields must be reset just like in the non\u2011null different\u2011config case."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_equalDifferentInstance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "equalButDistinctConfigInstance"
+          }
+        ],
+        "expected": "returns the original JsonSchema instance (reference equality)",
+        "description": "The supplied SchemaValidatorsConfig is equal (according to .equals) to the one held by the current ValidationContext but is a different object instance. The method should treat them as the same configuration, skip the copy logic, and return `this`."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_currentConfigNull_sameNull",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The JsonSchema's ValidationContext currently holds a `null` config. Invoking `withConfig(null)` triggers a call to `null.equals(null)`, which results in a NullPointerException. The test verifies that the method does not swallow the exception."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_currentConfigNull_nonNullProvided",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "nonNullConfigInstance"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The JsonSchema's ValidationContext has a `null` config while a non\u2011null SchemaValidatorsConfig is supplied. The equality check attempts to invoke `null.equals(nonNullConfigInstance)` and therefore throws a NullPointerException. The test ensures this failure path is exercised."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_copyPreservesContextFields",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "differentConfigInstance"
+          }
+        ],
+        "expected": {
+          "instanceDifferent": true,
+          "validationContextConfigEqualsProvided": true,
+          "validationContextMetaSchemaSameAsOriginal": true,
+          "validationContextJsonSchemaFactorySameAsOriginal": true,
+          "validationContextSchemaReferencesSameAsOriginal": true,
+          "validationContextSchemaResourcesSameAsOriginal": true,
+          "validationContextDynamicAnchorsSameAsOriginal": true,
+          "validatorsLoaded": false,
+          "requiredValidator": null,
+          "typeValidator": null,
+          "validators": null,
+          "initializeConfigCalled": true
+        },
+        "description": "When a distinct config is supplied, a new JsonSchema copy is created. Apart from the config, all other parts of the ValidationContext (meta\u2011schema, factory, references, resources, dynamic anchors) must be preserved exactly (same object references). Mutable validator\u2011related fields are reset and `initializeConfig()` is invoked."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_nullValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "anyConfigInstance"
+          }
+        ],
+        "expected": "throws NullPointerException",
+        "description": "The JsonSchema instance has its internal `validationContext` field set to `null`. Invoking `withConfig` attempts to call `this.getValidationContext().getConfig()`, which results in a NullPointerException because `getValidationContext()` returns null. The test verifies that the method does not catch this exception."
+      }
+    ]
+  },
+  {
+    "group": "withConfig_currentConfigEqualsThrows",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "differentConfigInstance"
+          }
+        ],
+        "expected": "throws RuntimeException",
+        "description": "The current `SchemaValidatorsConfig` stored in the ValidationContext overrides `equals(Object)` to deliberately throw a `RuntimeException`. When `withConfig` executes `!this.getValidationContext().getConfig().equals(config)`, the overridden `equals` is invoked and the exception propagates. The test ensures that such unexpected exceptions are not swallowed by the method."
+      }
+    ]
+  }
+]

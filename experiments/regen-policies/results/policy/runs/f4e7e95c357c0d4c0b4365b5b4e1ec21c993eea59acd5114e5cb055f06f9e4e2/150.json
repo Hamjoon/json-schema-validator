@@ -1,0 +1,290 @@
+{
+  "index": 150,
+  "sha": "02a6e06b0ccb349c997cbf985f1399821ea9a663",
+  "status": "evaluated",
+  "imported": false,
+  "coverage_version": 3,
+  "coverage_status": "complete",
+  "coverage_reason": "",
+  "methods": [
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_withConsumer_executesConsumerAndDetectsErrors",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_withConsumer_executesConsumerAndDetectsErrors",
+      "body_hash": "c4f41da24d96dfbd73bf04e6efc82186e4666356d9537bb43da16cdd7869667c",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_withConsumer_executesConsumerAndDetectsErrors()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_withConsumer_executesConsumerAndDetectsErrors",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_withConsumer_andValidInstance_returnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_withConsumer_andValidInstance_returnsEmptySet",
+      "body_hash": "1f6cbe146c706b69ecb4acc20fe0c78789582b38c351d35672a9aedef6596cf8",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_withConsumer_andValidInstance_returnsEmptySet()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_withConsumer_andValidInstance_returnsEmptySet",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_nullConsumer_behavesAsNoOpCustomizer",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_nullConsumer_behavesAsNoOpCustomizer",
+      "body_hash": "faa9dea6b89b4c420651265a35a8cc61ac9e2968805f200a8c33fb7f3482b372",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_nullConsumer_behavesAsNoOpCustomizer()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_nullConsumer_behavesAsNoOpCustomizer",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_consumerDisablesFailFast_validInstance_returnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerDisablesFailFast_validInstance_returnsEmptySet",
+      "body_hash": "8bde7556354a3b948926008b9d6ebabc837cb4f49f552a97880876113e79ea70",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_consumerDisablesFailFast_validInstance_returnsEmptySet()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerDisablesFailFast_validInstance_returnsEmptySet",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_consumerEnablesFailFast_missingRequired_returnsSingleMessage",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerEnablesFailFast_missingRequired_returnsSingleMessage",
+      "body_hash": "7f5b9abb52db295cd7bceff318faafa9ba8cb35c444f5725ecf0d632dc4f1a72",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_consumerEnablesFailFast_missingRequired_returnsSingleMessage()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerEnablesFailFast_missingRequired_returnsSingleMessage",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_consumerThrowsException_propagatesRuntimeException",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerThrowsException_propagatesRuntimeException",
+      "body_hash": "ddcb87b68160a2dd1f21e23a15fc58f507bf418b4c9764a9eecd03122a5ee797",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_consumerThrowsException_propagatesRuntimeException()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_consumerThrowsException_propagatesRuntimeException",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_multipleIndependentErrors_returnsAtLeastTwoMessages",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_multipleIndependentErrors_returnsAtLeastTwoMessages",
+      "body_hash": "7480efd4779089e7b63ffe6b264d5a801bca7a3fdfc01929adc6603ac3f6fdc9",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_multipleIndependentErrors_returnsAtLeastTwoMessages()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_multipleIndependentErrors_returnsAtLeastTwoMessages",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_schemaWithRecursiveAnchor_resolvesWithoutInfiniteLoop",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_schemaWithRecursiveAnchor_resolvesWithoutInfiniteLoop",
+      "body_hash": "3378967f4bb1a7184516719a9860e28b169a6d65e932067c71f2a627577303dd",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_schemaWithRecursiveAnchor_resolvesWithoutInfiniteLoop()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_schemaWithRecursiveAnchor_resolvesWithoutInfiniteLoop",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java",
+      "class": "com.networknt.schema.JsonSchema_validate_3_Test",
+      "method": "validate_failFastTrueWithValidInstance_returnsEmptySet",
+      "kind": "plain",
+      "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_failFastTrueWithValidInstance_returnsEmptySet",
+      "body_hash": "95bc9575ecc44200150a9ddb9f145dd1077f132313d9578978d64a8da1e621bc",
+      "round": "round1",
+      "technique": "KTester",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:101: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(invalidNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:134: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(validNode, executionCustomizer);\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:165: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, ctx -> {\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:177: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:187: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = defaultSchema.validate(node, customizer);\n                                                                ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:224: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:251: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, ctx -> {\n                                                         ^\n/repo/experiments/regen-policies/work/policy-survive/150/sources/0/JsonSchema_validate_3_Test.java:275: error: incompatible types: List<ValidationMessage> cannot be converted to Set<ValidationMessage>\n        Set<ValidationMessage> messages = schema.validate(node, customizer);\n                                                         ^\n8 errors\n",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchema_validate_3_Test#validate_failFastTrueWithValidInstance_returnsEmptySet()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "e17b45c4b04198f160c16a8707da4117a06aae7516f7da0b68475e28e83234ec",
+      "execution_hash": "f4e7e95c357c0d4c0b4365b5b4e1ec21c993eea59acd5114e5cb055f06f9e4e2",
+      "source_root": "work/policy-survive/150/sources/0",
+      "source_tree_hash": "9ca785b2601c64edf571bae1ab2e72d57486d28b716243535725a7aeacd64dae",
+      "resource_tree_hash": "c268e929bd949f58357d108f68aead3a6ad2086b479ae7b99426dff51a860ca1",
+      "unit": "com.networknt.schema.JsonSchema#validate(JsonNode, Consumer<ExecutionContext>)",
+      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_3_Test.java|com.networknt.schema.JsonSchema_validate_3_Test|validate_failFastTrueWithValidInstance_returnsEmptySet",
+      "resource_root": "results/policy/pools/ktester/146/dev/src-test-t",
+      "lines": []
+    }
+  ]
+}

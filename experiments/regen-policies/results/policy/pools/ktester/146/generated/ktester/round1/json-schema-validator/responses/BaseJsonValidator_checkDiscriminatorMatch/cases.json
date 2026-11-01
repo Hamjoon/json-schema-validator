@@ -1,0 +1,383 @@
+[
+  {
+    "group": "checkDiscriminatorMatch \u2013 branch coverage",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (markIgnore() records a flag)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "null (not used when property value is null)"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema (unused in this branch)"
+          }
+        ],
+        "expected": "currentDiscriminatorContext.markIgnore() is invoked exactly once; method returns early; no calls to checkForExplicitDiscriminatorMappingMatch or checkForImplicitDiscriminatorMappingMatch.",
+        "description": "When the discriminator property value is null the validator must ignore the discriminator and exit immediately."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode without a \"mapping\" field"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": "checkForImplicitDiscriminatorMappingMatch(currentDiscriminatorContext, \"cat\", mockJsonSchema) is invoked once; no explicit\u2011mapping logic is executed.",
+        "description": "When a mapping node is absent the validator must fall back to the implicit\u2011discriminator logic."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext where isDiscriminatorMatchFound() will return true after explicit check"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a non\u2011null \"mapping\" field (e.g., {\"mapping\": {\"cat\": \"#/components/schemas/Cat\"}})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns true",
+          "checkForImplicitDiscriminatorMappingMatch(...) is NOT invoked"
+        ],
+        "description": "When an explicit mapping exists and the explicit match is found, the validator must not attempt the implicit fallback."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext where isDiscriminatorMatchFound() returns false after explicit check"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a non\u2011null \"mapping\" field (e.g., {\"mapping\": {\"dog\": \"#/components/schemas/Dog\"}})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns false",
+          "noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns true",
+          "checkForImplicitDiscriminatorMappingMatch(...) is invoked once"
+        ],
+        "description": "When an explicit mapping exists but does not match and the parent schema does not override the explicit key, the validator must fall back to the implicit mapping logic."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext where isDiscriminatorMatchFound() returns false after explicit check"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a non\u2011null \"mapping\" field (e.g., {\"mapping\": {\"dog\": \"#/components/schemas/Dog\"}})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema where noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns false"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns false",
+          "noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns false",
+          "checkForImplicitDiscriminatorMappingMatch(...) is NOT invoked"
+        ],
+        "description": "When an explicit mapping exists but does not match and the parent schema explicitly overrides the key, the validator must stop without trying the implicit mapping."
+      }
+    ]
+  },
+  {
+    "group": "checkDiscriminatorMatch \u2013 additional edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set, isDiscriminatorMatchFound() returns false after explicit check)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a \"mapping\" field whose value is null (i.e., {\"mapping\": null})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema (noExplicitDiscriminatorKeyOverride will not be consulted because mapping is null)"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is NOT invoked because discriminatorMapping is null",
+          "checkForImplicitDiscriminatorMappingMatch(currentDiscriminatorContext, \"cat\", mockJsonSchema) is invoked exactly once"
+        ],
+        "description": "When the discriminator object contains a \"mapping\" field whose value is JSON null, the method should treat it as absent and fall back to the implicit\u2011discriminator logic."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set, isDiscriminatorMatchFound() returns false after explicit check)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a non\u2011object \"mapping\" field (e.g., {\"mapping\": [\"cat\", \"dog\"]})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema where noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns false"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once (receives a non\u2011object mapping node)",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns false",
+          "noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns false",
+          "checkForImplicitDiscriminatorMappingMatch(...) is NOT invoked"
+        ],
+        "description": "If the \"mapping\" field exists but is not an object, the explicit\u2011mapping check runs, fails to find a match, and because the parent schema explicitly overrides the discriminator key, the implicit fallback must not be attempted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set, isDiscriminatorMatchFound() returns false after explicit check)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with an empty object as \"mapping\" (e.g., {\"mapping\": {}})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema where noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns true"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once (receives an empty mapping object)",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns false",
+          "noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns true",
+          "checkForImplicitDiscriminatorMappingMatch(currentDiscriminatorContext, \"cat\", mockJsonSchema) is invoked once"
+        ],
+        "description": "An empty explicit mapping provides no match; because the parent schema does not override the explicit key, the validator must fall back to the implicit\u2011discriminator logic."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set, isDiscriminatorMatchFound() returns false after explicit check)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a \"mapping\" field that contains an empty string key (e.g., {\"mapping\": {\"\": \"#/components/schemas/Empty\"}})"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema where noExplicitDiscriminatorKeyOverride(mappingNode, mockJsonSchema) returns true"
+          }
+        ],
+        "expected": [
+          "checkForExplicitDiscriminatorMappingMatch(...) is invoked once and finds a match for the empty string key",
+          "currentDiscriminatorContext.isDiscriminatorMatchFound() returns true",
+          "checkForImplicitDiscriminatorMappingMatch(...) is NOT invoked"
+        ],
+        "description": "The discriminator property value can be an empty string; if the explicit mapping contains an empty\u2011string key, the explicit\u2011mapping match should succeed and the implicit fallback must be skipped."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (any implementation, not used because method throws early)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "null"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": "NullPointerException is thrown when attempting to call discriminator.get(\"mapping\") on a null discriminator",
+        "description": "If the discriminator argument itself is null (which should not happen in normal usage), the method will attempt to dereference it and therefore throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "checkDiscriminatorMatch \u2013 null currentDiscriminatorContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "null"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode {} (no \"mapping\" field)"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema (non\u2011null)"
+          }
+        ],
+        "expected": "NullPointerException is thrown because the method attempts to use a null DiscriminatorContext inside checkForImplicitDiscriminatorMappingMatch.",
+        "description": "When the discriminator property value is non\u2011null but the DiscriminatorContext argument is null, the method eventually calls checkForImplicitDiscriminatorMappingMatch which dereferences the context, resulting in a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "null"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode {\"mapping\": {\"cat\": \"#/components/schemas/Cat\"}}"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": "NullPointerException is thrown when checkForExplicitDiscriminatorMappingMatch tries to interact with the null DiscriminatorContext.",
+        "description": "Even though a mapping node exists, the explicit\u2011mapping helper receives a null context and throws a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "null"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode {} (any value, not used because property value is null)"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "mockJsonSchema"
+          }
+        ],
+        "expected": "NullPointerException is thrown when the method attempts to invoke currentDiscriminatorContext.markIgnore() in the early\u2011return branch.",
+        "description": "If the discriminator property value is null, the method returns early after calling markIgnore(); a null context causes a NullPointerException at that call."
+      }
+    ]
+  },
+  {
+    "group": "checkDiscriminatorMatch \u2013 null jsonSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (no match flag set)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode {} (no \"mapping\" field)"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"cat\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown inside checkForImplicitDiscriminatorMappingMatch because the JsonSchema argument is null.",
+        "description": "When there is no explicit mapping and the schema argument is null, the implicit\u2011discriminator helper receives a null schema and throws a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockDiscriminatorContext (isDiscriminatorMatchFound() returns false after explicit check)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode {\"mapping\": {\"cat\": \"#/components/schemas/Cat\"}}"
+          },
+          {
+            "parameter": "discriminatorPropertyValue",
+            "value": "\"dog\""
+          },
+          {
+            "parameter": "jsonSchema",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown either in checkForExplicitDiscriminatorMappingMatch or in noExplicitDiscriminatorKeyOverride when they receive a null JsonSchema.",
+        "description": "With an explicit mapping present but a null JsonSchema, the method proceeds to the explicit\u2011mapping branch; any internal use of the schema (e.g., to resolve references) results in a NullPointerException."
+      }
+    ]
+  }
+]

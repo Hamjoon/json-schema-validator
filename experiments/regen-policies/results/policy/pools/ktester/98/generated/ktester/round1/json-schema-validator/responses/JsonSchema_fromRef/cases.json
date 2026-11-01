@@ -1,0 +1,496 @@
+[
+  {
+    "group": "Basic successful creation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "A new JsonSchema instance is returned. Its getValidationContext() contains the same meta\u2011schema, jsonSchemaFactory, config, schemaReferences, schemaResources and dynamicAnchors as the parentSchemaMock. Its evaluationPath equals pathMock, evaluationParentSchema equals parentSchemaMock, and its recursiveAnchor flag equals the original schema\u2019s recursiveAnchor (false in this case).",
+        "description": "Verify that fromRef creates a new JsonSchema with the evaluation context copied from the parent and the supplied evaluation path."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with recursiveAnchor = true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaRecursiveTrueMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema has recursiveAnchor == false (the flag is taken from the *current* schema, not the parent). All other fields in the ValidationContext are still copied from the parent.",
+        "description": "Ensure that the recursiveAnchor flag of the new schema is NOT taken from the parent but from the original schema on which fromRef is invoked."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with custom config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithCustomConfigMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "customPathMock"
+          }
+        ],
+        "expected": "The ValidationContext inside the new JsonSchema contains the custom config object supplied by the parent schema.",
+        "description": "Validate that the config object from the parent schema is propagated to the new ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Null refEvaluationPath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": null
+          }
+        ],
+        "expected": "A JsonSchema instance is still created; its evaluationPath field is null. No NullPointerException is thrown.",
+        "description": "Check that a null evaluation path is accepted and stored as\u2011is."
+      }
+    ]
+  },
+  {
+    "group": "Null refEvaluationParentSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": null
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Throws NullPointerException when trying to access refEvaluationParentSchema.validationContext. The method should not succeed with a null parent.",
+        "description": "Confirm that a null parent schema leads to an exception because the method dereferences the parent to build the new ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Original schema id propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "The returned JsonSchema has the same id value as the original schema on which fromRef was called.",
+        "description": "Verify that the id field is copied from the current schema into the newly created schema."
+      }
+    ]
+  },
+  {
+    "group": "Validators and typeValidator are reset",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "The new JsonSchema has validators == null, validatorsLoaded == false, and typeValidator == null regardless of the state of the original schema.",
+        "description": "Ensure that fromRef always resets validator related fields as indicated by the local variables before constructing the new JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Original schema recursiveAnchor true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "somePath"
+          }
+        ],
+        "expected": "Returned JsonSchema has recursiveAnchor == true because the flag is taken from the *original* schema (the one on which fromRef is invoked), not from the parent. All other fields are copied from the parent as usual.",
+        "description": "Verify that when the original schema has recursiveAnchor set to true, the new schema preserves that value, confirming the flag is sourced from the current instance."
+      }
+    ]
+  },
+  {
+    "group": "Original schema with non\u2011default suppressSubSchemaRetrieval",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema has suppressSubSchemaRetrieval == true (matching the original schema). The flag is not taken from the parent schema.",
+        "description": "Ensure that the suppressSubSchemaRetrieval flag is copied from the invoking schema, not from the parent, and that the flag survives the constructor call."
+      }
+    ]
+  },
+  {
+    "group": "Original schema id null propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.id == null (the original schema\u2019s id was null). No NullPointerException is thrown.",
+        "description": "Validate that a null id on the original schema is propagated unchanged to the new instance."
+      }
+    ]
+  },
+  {
+    "group": "Original schema with custom schemaNode reference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.schemaNode == originalSchemaMock.schemaNode (the same object reference).",
+        "description": "Confirm that the schemaNode field is not cloned but directly passed to the new JsonSchema, preserving reference equality."
+      }
+    ]
+  },
+  {
+    "group": "Original schema with non\u2011null errorMessage fields",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.errorMessage, errorMessageKeyword, errorMessageType, messageSource, keyword are identical to those of the original schema (copied by reference).",
+        "description": "Check that all error\u2011message related fields are transferred from the invoking schema to the new schema."
+      }
+    ]
+  },
+  {
+    "group": "EvaluationParentSchema reference correctness",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "differentParentMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "somePath"
+          }
+        ],
+        "expected": "Returned JsonSchema.evaluationParentSchema == differentParentMock (exact same object). The new schema\u2019s parentSchema field remains the original schema\u2019s parent, not the ref\u2011evaluation parent.",
+        "description": "Validate that the constructor stores the supplied refEvaluationParentSchema as evaluationParentSchema while leaving the logical parentSchema unchanged."
+      }
+    ]
+  },
+  {
+    "group": "EvaluationPath empty JsonNodePath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "Returned JsonSchema.evaluationPath is an empty JsonNodePath instance (not null). No exception is thrown.",
+        "description": "Ensure that an empty (but non\u2011null) JsonNodePath is accepted and stored correctly."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with null config object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullConfigMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.getValidationContext().getConfig() == null. The method does not throw an exception despite the parent\u2019s config being null.",
+        "description": "Confirm that a null config in the parent\u2019s ValidationContext is tolerated and propagated to the new ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with non\u2011empty dynamicAnchors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithDynamicAnchorsMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.getValidationContext().getDynamicAnchors() contains the same entries as the parent\u2019s dynamicAnchors map.",
+        "description": "Verify that dynamicAnchors are copied verbatim from the parent schema\u2019s ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with distinct meta\u2011schema and factory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithCustomMetaAndFactoryMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "pathMock"
+          }
+        ],
+        "expected": "Returned JsonSchema.getValidationContext().getMetaSchema() == parentSchemaWithCustomMetaAndFactoryMock.validationContext.getMetaSchema() AND getJsonSchemaFactory() == parentSchemaWithCustomMetaAndFactoryMock.validationContext.getJsonSchemaFactory().",
+        "description": "Ensure that both meta\u2011schema and jsonSchemaFactory are copied from the parent\u2019s ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Current schema with null ValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "validParentSchemaMock"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPathMock"
+          }
+        ],
+        "expected": "Throws NullPointerException because this.getValidationContext() returns null and the method attempts to call getMetaSchema() on it.",
+        "description": "Validate that a JsonSchema instance whose internal ValidationContext is null cannot create a new schema via fromRef and raises NPE."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with null ValidationContext field (direct field access)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullValidationContextField"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "somePath"
+          }
+        ],
+        "expected": "Throws NullPointerException when the method accesses refEvaluationParentSchema.validationContext to retrieve config.",
+        "description": "The parent schema's internal validationContext field is null (bypassing the getter). The method dereferences it directly, causing NPE."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with null ValidationContext via getter",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithGetterReturningNull"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "path"
+          }
+        ],
+        "expected": "Throws NullPointerException when the method calls refEvaluationParentSchema.getValidationContext().getConfig().",
+        "description": "Even if the field exists, the getter returns null, leading to NPE on the subsequent call."
+      }
+    ]
+  },
+  {
+    "group": "Parent ValidationContext with null config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullConfig"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException inside ValidationContext constructor when null config is passed (assuming constructor does not accept null).",
+        "description": "The parent schema's ValidationContext returns null for getConfig(); the ValidationContext constructor is expected to reject null config."
+      }
+    ]
+  },
+  {
+    "group": "Parent ValidationContext with null schemaReferences",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullSchemaReferences"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) when ValidationContext constructor receives null schemaReferences.",
+        "description": "Validate that missing schemaReferences in the parent ValidationContext cause an exception during new ValidationContext creation."
+      }
+    ]
+  },
+  {
+    "group": "Parent ValidationContext with null schemaResources",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullSchemaResources"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) when ValidationContext constructor receives null schemaResources.",
+        "description": "Check that a null schemaResources map in the parent ValidationContext leads to an exception."
+      }
+    ]
+  },
+  {
+    "group": "Parent ValidationContext with null dynamicAnchors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "parentSchemaWithNullDynamicAnchors"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) when ValidationContext constructor receives null dynamicAnchors.",
+        "description": "Ensure that a missing dynamicAnchors map in the parent ValidationContext triggers an exception."
+      }
+    ]
+  },
+  {
+    "group": "Current schema with null meta\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "validParentSchema"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because this.getValidationContext().getMetaSchema() returns null and is passed to ValidationContext constructor.",
+        "description": "Validate that the method cannot operate when the invoking schema's ValidationContext lacks a meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Current schema with null JsonSchemaFactory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "validParentSchema"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "validPath"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because this.getValidationContext().getJsonSchemaFactory() returns null and is passed to ValidationContext constructor.",
+        "description": "Ensure that a missing JsonSchemaFactory in the invoking schema's ValidationContext results in an exception."
+      }
+    ]
+  }
+]

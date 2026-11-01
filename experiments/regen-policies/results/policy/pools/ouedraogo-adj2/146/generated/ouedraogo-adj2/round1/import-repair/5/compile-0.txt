@@ -1,0 +1,23 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:90: error: method isDebugEnabled() is already defined in class TestLogger
+        @Override public boolean isDebugEnabled() { return debugEnabled; }
+                                 ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:68: error: isDebugEnabled() in TestLogger cannot implement isDebugEnabled() in Logger
+        boolean isDebugEnabled() {
+                ^
+  attempting to assign weaker access privileges; was public
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:224: error: incompatible types: com.networknt.schema.BaseJsonValidatorTest.ExecutionConfig cannot be converted to com.networknt.schema.ExecutionConfig
+        executionContext.setExecutionConfig(execConfig);
+                                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:246: error: incompatible types: com.networknt.schema.BaseJsonValidatorTest.ExecutionConfig cannot be converted to com.networknt.schema.ExecutionConfig
+        executionContext.setExecutionConfig(execConfig);
+                                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java:319: error: cannot find symbol
+        mapping.set("typeA", MAPPER.textNode("#/definitions/typeA"));
+                                   ^
+  symbol:   method textNode(String)
+  location: variable MAPPER of type ObjectMapper
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/CoT/BaseJsonValidatorTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+5 errors

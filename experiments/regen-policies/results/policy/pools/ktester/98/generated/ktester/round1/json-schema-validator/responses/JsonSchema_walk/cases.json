@@ -1,0 +1,335 @@
+[
+  {
+    "group": "walk(ExecutionContext, JsonNode, boolean, ExecutionContextCustomizer) - basic and edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid, empty context)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"name\":\"John\"} (valid JSON object)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizer that adds attribute \"mode\"=\"test\" to the ExecutionContext"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 no ValidationMessage, and the ExecutionContext contains the attribute added by the customizer",
+        "description": "Happy\u2011path: all arguments are non\u2011null, validation is enabled and a customizer mutates the context. The method should delegate to walkAtNodeInternal and return a successful ValidationResult."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ArrayNode [1,2,3]"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 validation flag is false, so the schema is not applied and the result is successful",
+        "description": "When validate is false the walk method must skip validation logic but still return a successful ValidationResult."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {} (empty object)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 customizer is optional; method works without it",
+        "description": "Customiser is null \u2013 the method must handle a missing customiser gracefully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"a\":1}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op customizer"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"executionContext must not be null\"",
+        "description": "The method should reject a null ExecutionContext early (pre\u2011condition check)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op customizer"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"node must not be null\"",
+        "description": "The method should reject a null JsonNode argument."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"id\":\"123\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizer that throws RuntimeException(\"customiser failure\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"customiser failure\" propagated to the caller",
+        "description": "If the ExecutionContextCustomizer throws an exception, walk must not swallow it; the exception should propagate."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (root context with instanceLocation = \"/\")"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"type\":\"string\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op customizer"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 atRoot() returns true, internal path handling for root is exercised",
+        "description": "Ensures the branch where `atRoot()` is true (the node is the root of the document) is covered."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (instanceLocation = \"/properties/name\")"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"type\":\"string\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op customizer"
+          }
+        ],
+        "expected": "ValidationResult.success() \u2013 atRoot() returns false, internal handling for non\u2011root nodes is exercised",
+        "description": "Covers the branch where `atRoot()` is false (node is not the document root)."
+      }
+    ]
+  },
+  {
+    "group": "walk(ExecutionContext, JsonNode, boolean, ExecutionContextCustomizer) - validation failure cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid, empty context)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"age\": \"twenty\"} (string where schema expects integer)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.failure() \u2013 contains a ValidationMessage with message key 'type' indicating expected type 'integer' but found 'string'",
+        "description": "The schema for the root expects an integer property 'age'. Providing a string should cause walk to return a failed ValidationResult with the appropriate type\u2011mismatch message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid, empty context)"
+          },
+          {
+            "parameter": "node",
+            "value": "NullNode instance (JSON null literal)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.failure() \u2013 contains a ValidationMessage with message key 'type' because the root schema does not allow null",
+        "description": "When the root schema does not permit null values, walking a NullNode must produce a failed ValidationResult with a type\u2011error message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid, empty context)"
+          },
+          {
+            "parameter": "node",
+            "value": "BooleanNode true (JSON boolean)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.failure() \u2013 contains a ValidationMessage with message key 'type' indicating expected type 'object' but found 'boolean'",
+        "description": "The root schema expects an object; supplying a boolean should trigger a type\u2011validation failure."
+      }
+    ]
+  },
+  {
+    "group": "walk(ExecutionContext, JsonNode, boolean, ExecutionContextCustomizer) - execution context immutability exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (attributes map is unmodifiable Collections.unmodifiableMap)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"name\":\"Alice\"} (valid JSON object)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "customizer that attempts to put attribute \"mode\"=\"test\" into the ExecutionContext"
+          }
+        ],
+        "expected": "UnsupportedOperationException propagated from the customizer when it tries to modify the immutable attribute map",
+        "description": "The ExecutionContext provided has an immutable attribute map. The customizer tries to mutate the context, which should cause an UnsupportedOperationException that must not be swallowed by walk."
+      }
+    ]
+  },
+  {
+    "group": "walk(ExecutionContext, JsonNode, boolean, ExecutionContextCustomizer) - unresolved $ref exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (valid, empty context)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"ref\":\"#/nonexistent\"} (JSON containing an invalid $ref)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "JsonSchemaException (or RuntimeException) with message containing \"Unable to resolve reference\" indicating that $ref could not be resolved",
+        "description": "The JsonSchema instance is built from a schema that contains a $ref to a non\u2011existent definition. When walk processes the node, the reference resolution fails and a JsonSchemaException should be thrown."
+      }
+    ]
+  },
+  {
+    "group": "walk(ExecutionContext, JsonNode, boolean, ExecutionContextCustomizer) - atRoot() illegal state",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext (instanceLocation field is null, causing atRoot() to throw IllegalStateException)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode {\"type\":\"string\"} (valid JSON object)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IllegalStateException with message containing \"instanceLocation\" propagated from atRoot()",
+        "description": "If the ExecutionContext lacks a proper instanceLocation, the internal call to atRoot() throws IllegalStateException. walk must let this exception bubble up."
+      }
+    ]
+  }
+]

@@ -1,0 +1,555 @@
+[
+  {
+    "group": "Successful validation \u2013 JSON input, validate true, no customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "A well\u2011formed JSON document that conforms to a simple schema. Validation is enabled and no customizer is supplied, so walk should return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 YAML input, validate true, no customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  age:\n    type: integer"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "Same schema as above but supplied as YAML. Walk should correctly deserialize YAML and perform validation."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false \u2013 validation is skipped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"invalid\":\"data\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true (validation skipped) and ValidationResult.getMessages().isEmpty()",
+        "description": "Even though the JSON does not match the schema, the validate flag is false, so walkAtNodeInternal should bypass validation and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer invoked",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", true)"
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ctx.getAttribute(\"custom\") == true",
+        "description": "A customizer lambda that sets an attribute on the ExecutionContext. The test verifies that the customizer is executed before walking the node."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON \u2013 deserialize throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"unclosedObject\": true"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (or IOException) from deserialize",
+        "description": "Malformed JSON should cause the private deserialize method to fail, propagating an exception from walk."
+      }
+    ]
+  },
+  {
+    "group": "Null or empty input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == false and ValidationResult.getMessages().size() > 0 (error about empty input)",
+        "description": "An empty string cannot be deserialized into a JsonNode; the method should return a ValidationResult indicating failure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "throws NullPointerException from deserialize",
+        "description": "Passing null as the input string should result in a NullPointerException during deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContextCustomizer that throws",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { ctx.setAttribute(\"before\", true); throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\" is propagated and no ValidationResult is returned",
+        "description": "The customizer throws an exception after mutating the ExecutionContext. walk should not swallow the exception; it must be propagated to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Schema with unresolved $ref produces validation errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"$ref\": \"#/components/schemas/Unknown\"\n}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == false and ValidationResult.getMessages() contains a message about an unresolved $ref",
+        "description": "The schema contains a $ref that cannot be resolved. walk should still deserialize the JSON but validation (against the meta\u2011schema) must fail, reporting the missing reference."
+      }
+    ]
+  },
+  {
+    "group": "Valid empty schema {} returns a successful ValidationResult",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "An empty JSON object is a valid schema according to the JSON\u2011Schema meta\u2011schema. walk should return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Schema with invalid \"type\" value fails validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"invalidType\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == false and ValidationResult.getMessages() contains a message about an unsupported type value",
+        "description": "The meta\u2011schema defines a limited set of allowed values for the \"type\" keyword. Supplying an unsupported value should cause validation to fail."
+      }
+    ]
+  },
+  {
+    "group": "URL\u2011encoded JSON input is correctly decoded before validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "%7B%22type%22%3A%22object%22%2C%22properties%22%3A%7B%22age%22%3A%7B%22type%22%3A%22integer%22%7D%7D%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "The input string is URL\u2011encoded. walk should decode it (via URLDecoder) before deserialization, resulting in a valid schema and a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "YAML schema using anchors and aliases parses correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  person: &personSchema\n    type: object\n    properties:\n      name:\n        type: string\n  employee:\n    <<: *personSchema\n    properties:\n      employeeId:\n        type: integer"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "The YAML schema uses an anchor (&personSchema) and an alias (<<: *personSchema). walk must correctly resolve these YAML features and validate the resulting schema successfully."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false with a schema that would otherwise be invalid",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"invalid\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.isValid == true and ValidationResult.getMessages().isEmpty()",
+        "description": "Even though the schema contains an illegal \"type\" value, the validate flag is false, so walk should skip validation and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 throws NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "The method dereferences the supplied ExecutionContext when calling walkAtNodeInternal. Supplying null should cause a NullPointerException before any deserialization occurs."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat \u2013 throws NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "deserialize expects a non\u2011null InputFormat to decide how to parse the string. Passing null should result in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML input \u2013 deserialize throws IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  name: {type: string"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IOException (or JsonProcessingException) is thrown from deserialize",
+        "description": "The YAML string is syntactically broken (missing closing brace). When InputFormat.YAML is used, deserialize should attempt to parse it and throw an IOException/JsonProcessingException."
+      }
+    ]
+  },
+  {
+    "group": "Malformed URL\u2011encoded input \u2013 throws IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "%7B%22type%22%3A%22object%22%ZZ"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown during URL decoding",
+        "description": "The input contains an invalid percent\u2011encoding sequence (%ZZ). URLDecoder.decode should detect the malformed escape and throw IllegalArgumentException before deserialization."
+      }
+    ]
+  }
+]

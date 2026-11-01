@@ -1,0 +1,442 @@
+{
+  "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+  "compile": {
+    "command": [
+      "javac",
+      "-J-Xmx512m",
+      "-cp",
+      "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0/target/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-agent-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-io-2.16.1.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-2.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-core-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-junit-jupiter-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/objenesis-3.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/opentest4j-1.3.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-4.13.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-core-1.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.14.0/itu-1.14.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.18.3/jackson-dataformat-yaml-2.18.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.37.Final/undertow-core-2.2.37.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.16.Final/xnio-api-3.8.16.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.16.Final/xnio-nio-3.8.16.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/root/.m2/repository/org/jruby/joni/joni/2.2.6/joni-2.2.6.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.63/jcodings-1.0.63.jar:/root/.m2/repository/org/graalvm/js/js/21.3.10/js-21.3.10.jar:/root/.m2/repository/org/graalvm/regex/regex/21.3.10/regex-21.3.10.jar:/root/.m2/repository/org/graalvm/truffle/truffle-api/21.3.10/truffle-api-21.3.10.jar:/root/.m2/repository/com/ibm/icu/icu4j/71.1/icu4j-71.1.jar:/root/.m2/repository/org/graalvm/sdk/graal-sdk/21.3.10/graal-sdk-21.3.10.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar",
+      "-sourcepath",
+      "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL",
+      "-d",
+      "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/classes",
+      "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java"
+    ],
+    "cwd": "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 1.44,
+    "log": "work/validation/ouedraogo-adj2/round1/16/test/javac.txt"
+  },
+  "runs": [
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0/target/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-agent-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-io-2.16.1.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-2.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-core-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-junit-jupiter-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/objenesis-3.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/opentest4j-1.3.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-4.13.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-core-1.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.14.0/itu-1.14.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.18.3/jackson-dataformat-yaml-2.18.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.37.Final/undertow-core-2.2.37.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.16.Final/xnio-api-3.8.16.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.16.Final/xnio-nio-3.8.16.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/root/.m2/repository/org/jruby/joni/joni/2.2.6/joni-2.2.6.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.63/jcodings-1.0.63.jar:/root/.m2/repository/org/graalvm/js/js/21.3.10/js-21.3.10.jar:/root/.m2/repository/org/graalvm/regex/regex/21.3.10/regex-21.3.10.jar:/root/.m2/repository/org/graalvm/truffle/truffle-api/21.3.10/truffle-api-21.3.10.jar:/root/.m2/repository/com/ibm/icu/icu4j/71.1/icu4j-71.1.jar:/root/.m2/repository/org/graalvm/sdk/graal-sdk/21.3.10/graal-sdk-21.3.10.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/resources:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionSupportedValues()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionNullReturnsNull()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriAlreadyNormalized()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft07()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft2019()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetInstanceProvidesDefaultMetaSchemaIri()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomObjectMappers()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomMetaSchemaAndLookup()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderDisableSchemaCacheDoesNotThrow()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaParsesValidJson()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaInvalidJsonThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithYamlInputFormat()",
+        "--reports-dir",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/run1"
+      ],
+      "cwd": "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 4.812,
+      "log": "work/validation/ouedraogo-adj2/round1/16/test/run1/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0/target/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-agent-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-io-2.16.1.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-2.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-core-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-junit-jupiter-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/objenesis-3.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/opentest4j-1.3.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-4.13.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-core-1.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.14.0/itu-1.14.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.18.3/jackson-dataformat-yaml-2.18.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.37.Final/undertow-core-2.2.37.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.16.Final/xnio-api-3.8.16.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.16.Final/xnio-nio-3.8.16.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/root/.m2/repository/org/jruby/joni/joni/2.2.6/joni-2.2.6.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.63/jcodings-1.0.63.jar:/root/.m2/repository/org/graalvm/js/js/21.3.10/js-21.3.10.jar:/root/.m2/repository/org/graalvm/regex/regex/21.3.10/regex-21.3.10.jar:/root/.m2/repository/org/graalvm/truffle/truffle-api/21.3.10/truffle-api-21.3.10.jar:/root/.m2/repository/com/ibm/icu/icu4j/71.1/icu4j-71.1.jar:/root/.m2/repository/org/graalvm/sdk/graal-sdk/21.3.10/graal-sdk-21.3.10.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/resources:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionSupportedValues()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionNullReturnsNull()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriAlreadyNormalized()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft07()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft2019()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetInstanceProvidesDefaultMetaSchemaIri()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomObjectMappers()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomMetaSchemaAndLookup()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderDisableSchemaCacheDoesNotThrow()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaParsesValidJson()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaInvalidJsonThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithYamlInputFormat()",
+        "--reports-dir",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/run2"
+      ],
+      "cwd": "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 1.482,
+      "log": "work/validation/ouedraogo-adj2/round1/16/test/run2/console.txt"
+    },
+    {
+      "command": [
+        "java",
+        "-Xmx1g",
+        "-XX:+UseSerialGC",
+        "-cp",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0/target/classes:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/apiguardian-api-1.1.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/byte-buddy-agent-1.17.7.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-io-2.16.1.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/commons-lang3-3.14.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-2.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-5.11.4.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-api-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-jupiter-params-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-commons-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-engine-1.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-core-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/mockito-junit-jupiter-5.24.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/objenesis-3.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/opentest4j-1.3.0.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-vintage-engine-5.10.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-4.13.2.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/hamcrest-core-1.3.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/libs/junit-platform-console-standalone-1.9.3.jar:/root/.m2/repository/ch/qos/logback/logback-classic/1.3.14/logback-classic-1.3.14.jar:/root/.m2/repository/ch/qos/logback/logback-core/1.3.14/logback-core-1.3.14.jar:/root/.m2/repository/com/ethlo/time/itu/1.14.0/itu-1.14.0.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar:/root/.m2/repository/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.18.3/jackson-dataformat-yaml-2.18.3.jar:/root/.m2/repository/org/yaml/snakeyaml/2.3/snakeyaml-2.3.jar:/root/.m2/repository/io/undertow/undertow-core/2.2.37.Final/undertow-core-2.2.37.Final.jar:/root/.m2/repository/org/jboss/logging/jboss-logging/3.4.1.Final/jboss-logging-3.4.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-api/3.8.16.Final/xnio-api-3.8.16.Final.jar:/root/.m2/repository/org/wildfly/common/wildfly-common/1.5.4.Final/wildfly-common-1.5.4.Final.jar:/root/.m2/repository/org/wildfly/client/wildfly-client-config/1.0.1.Final/wildfly-client-config-1.0.1.Final.jar:/root/.m2/repository/org/jboss/xnio/xnio-nio/3.8.16.Final/xnio-nio-3.8.16.Final.jar:/root/.m2/repository/org/jboss/threads/jboss-threads/3.1.0.Final/jboss-threads-3.1.0.Final.jar:/root/.m2/repository/org/hamcrest/hamcrest/3.0/hamcrest-3.0.jar:/root/.m2/repository/org/jruby/joni/joni/2.2.6/joni-2.2.6.jar:/root/.m2/repository/org/jruby/jcodings/jcodings/1.0.63/jcodings-1.0.63.jar:/root/.m2/repository/org/graalvm/js/js/21.3.10/js-21.3.10.jar:/root/.m2/repository/org/graalvm/regex/regex/21.3.10/regex-21.3.10.jar:/root/.m2/repository/org/graalvm/truffle/truffle-api/21.3.10/truffle-api-21.3.10.jar:/root/.m2/repository/com/ibm/icu/icu4j/71.1/icu4j-71.1.jar:/root/.m2/repository/org/graalvm/sdk/graal-sdk/21.3.10/graal-sdk-21.3.10.jar:/root/.m2/repository/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/resources:/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/dev/src-test-t/suite",
+        "org.junit.platform.console.ConsoleLauncher",
+        "--disable-banner",
+        "--disable-ansi-colors",
+        "--fail-if-no-tests",
+        "--details",
+        "summary",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionSupportedValues()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionNullReturnsNull()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriAlreadyNormalized()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft07()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft2019()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetInstanceProvidesDefaultMetaSchemaIri()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomObjectMappers()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomMetaSchemaAndLookup()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderDisableSchemaCacheDoesNotThrow()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaParsesValidJson()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaInvalidJsonThrowsException()",
+        "--select-method",
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithYamlInputFormat()",
+        "--reports-dir",
+        "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/validation/ouedraogo-adj2/round1/16/test/run3"
+      ],
+      "cwd": "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/runtime",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 3.104,
+      "log": "work/validation/ouedraogo-adj2/round1/16/test/run3/console.txt"
+    }
+  ],
+  "methods": [
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testCheckVersionSupportedValues",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionSupportedValues",
+      "body_hash": "d834eb0eb777c4285874644d9e01b0ef6f7ef02d7b07f844190b86f99bc2567d",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionSupportedValues()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testCheckVersionNullReturnsNull",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionNullReturnsNull",
+      "body_hash": "9dcfbf8e184f90691ece90aed101d4b9a82acc96ddfd2114cb82e62b4bc14357",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionNullReturnsNull()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testNormalizeMetaSchemaUriAlreadyNormalized",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testNormalizeMetaSchemaUriAlreadyNormalized",
+      "body_hash": "e5ad95f053faf3057769002b83895e4f982982390fd7538ccd5558b58966df02",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriAlreadyNormalized()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testNormalizeMetaSchemaUriUnnormalizedDraft07",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testNormalizeMetaSchemaUriUnnormalizedDraft07",
+      "body_hash": "72fbe08a43275790231827da8a133b7eb0fa14b24742928fecc790c3c61b0f01",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "fail",
+      "message": "org.junit.ComparisonFailure: expected:<http://[]json-schema.org/draf...> but was:<http://[somehost/]json-schema.org/draf...>",
+      "flaky": false,
+      "initial_state": "fail",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft07()"
+      ],
+      "baseline_states": [
+        "fail",
+        "fail",
+        "fail"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testNormalizeMetaSchemaUriUnnormalizedDraft2019",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testNormalizeMetaSchemaUriUnnormalizedDraft2019",
+      "body_hash": "b0f599a843a5a5c2a4890300837d3950235b3a025c274e532c5c1cada2eefac5",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "fail",
+      "message": "org.junit.ComparisonFailure: expected:<http[s://json-schema.org/draft/2019-09/schema]> but was:<http[://example.com/draft/2019-09/schema#]>",
+      "flaky": false,
+      "initial_state": "fail",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testNormalizeMetaSchemaUriUnnormalizedDraft2019()"
+      ],
+      "baseline_states": [
+        "fail",
+        "fail",
+        "fail"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetInstanceProvidesDefaultMetaSchemaIri",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetInstanceProvidesDefaultMetaSchemaIri",
+      "body_hash": "2bdc3bca4630951c16330d1b046b77594d7e48186bc74c5cde555e97c5207b53",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetInstanceProvidesDefaultMetaSchemaIri()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testBuilderWithCustomObjectMappers",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testBuilderWithCustomObjectMappers",
+      "body_hash": "19e4df80110cd421e8daa94b13e50d8d5e70e9004e65d1dfd43dce43e41bc24d",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomObjectMappers()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testBuilderWithCustomMetaSchemaAndLookup",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testBuilderWithCustomMetaSchemaAndLookup",
+      "body_hash": "e5d105bbb118cca49781cdc36e03be4755fc9f9f50b763112c5e82bc054596ee",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderWithCustomMetaSchemaAndLookup()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testBuilderDisableSchemaCacheDoesNotThrow",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testBuilderDisableSchemaCacheDoesNotThrow",
+      "body_hash": "406b07a5e4b09a5c235b81c505e5eea0936add7f3e98cee6537452bb24f9f9c9",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderDisableSchemaCacheDoesNotThrow()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaParsesValidJson",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaParsesValidJson",
+      "body_hash": "1e31933651f97b6b975024c4f45a6165df6aa2ce43383fb06a674617b34ca4aa",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaParsesValidJson()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaInvalidJsonThrowsException",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaInvalidJsonThrowsException",
+      "body_hash": "ef27d47886649f0c77cafc2780afd1faea5b463133a206eb315a254cb9d558d5",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaInvalidJsonThrowsException()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    },
+    {
+      "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaWithYamlInputFormat",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaWithYamlInputFormat",
+      "body_hash": "382d9d52d3b8c29c3237fd42929265b3d9dec1b0dcea8f52bdd6b432df0dddc8",
+      "round": "round1",
+      "technique": "FSL",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithYamlInputFormat()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ]
+    }
+  ],
+  "parse": {
+    "command": [
+      "java",
+      "-Xmx512m",
+      "/survival-package/adapters/java/SourceInventory.java",
+      "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java",
+      "auto"
+    ],
+    "cwd": "/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/work/checkouts/0",
+    "exit_code": 0,
+    "timeout": false,
+    "seconds": 2.064,
+    "log": "work/validation/ouedraogo-adj2/round1/16/inventory.tsv"
+  },
+  "input_sha256": "efba0dbf2769a003914e1cbbb52451e6ea6248879b4f9176c5c99dec5cb87395"
+}

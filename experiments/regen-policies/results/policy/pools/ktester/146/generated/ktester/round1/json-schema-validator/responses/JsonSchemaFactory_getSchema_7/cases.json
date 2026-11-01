@@ -1,0 +1,260 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, SchemaValidatorsConfig)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream (contains a minimal valid JSON schema, e.g. {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose meta\u2011schema is the default (draft\u20117) and which can validate a simple JSON object",
+        "description": "Normal path \u2013 a valid JSON schema is supplied together with an explicit non\u2011null configuration. The method should forward to the overload with InputFormat.JSON and produce a usable JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws IllegalArgumentException (or NullPointerException) because the InputStream argument is null",
+        "description": "Branch where the required schema InputStream is missing. The factory should reject a null stream early."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream (same as case 1)"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance using the factory's default SchemaValidatorsConfig",
+        "description": "When the configuration argument is null the method should fall back to the default configuration created by createSchemaValidatorsConfig()."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "emptyInputStream (0 bytes)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws IOException (or JsonSchemaException) because the content cannot be parsed into a JsonNode",
+        "description": "Edge case where the stream contains no data. The underlying readTree call fails, propagating an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "malformedJsonStream (e.g. \"{ type: object\" )"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (wrapped in a JsonSchemaException)",
+        "description": "Invalid JSON content should cause the JSON parser to raise a parsing exception, which the factory propagates."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validYamlSchemaStream (e.g. \"type: object\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (or JsonSchemaException) because the method forces InputFormat.JSON while the content is YAML",
+        "description": "Even though the stream holds a correct schema in YAML format, the overload used by this method assumes JSON, leading to a parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, SchemaValidatorsConfig) \u2013 additional cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream (contains a moderately complex schema, e.g. {\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}}})"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with failFast=true and typeLoose=false"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose internal SchemaValidatorsConfig reflects failFast=true and typeLoose=false (the provided config is used, not a default one)",
+        "description": "Ensures that a non\u2011null, customized configuration object is propagated to the created JsonSchema and that the settings are honoured during validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "InputStream that throws IOException on first read (e.g. new InputStream() { public int read() throws IOException { throw new IOException(\"forced\"); } })"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws IOException (or JsonSchemaException wrapping IOException) because the underlying readTree call cannot read the stream",
+        "description": "Verifies that I/O errors while reading the schema are propagated to the caller rather than being swallowed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream prefixed with UTF\u20118 BOM (bytes: 0xEF,0xBB,0xBF followed by {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; parsing succeeds despite the BOM",
+        "description": "Checks that a JSON schema stream containing a UTF\u20118 Byte Order Mark is accepted, as Jackson's parser should ignore the BOM."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream with leading/trailing whitespace and newlines (e.g. \"\\n  { \\\"type\\\": \\\"object\\\" } \\n\\n\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; whitespace does not affect parsing",
+        "description": "Ensures that the method correctly trims or ignores surrounding whitespace when parsing the JSON schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream followed by garbage characters (e.g. {\"type\":\"object\"}xyz)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (wrapped in JsonSchemaException) because extra non\u2011JSON content after the valid object causes a parsing error",
+        "description": "Validates that the parser fails when the input contains trailing non\u2011JSON data, confirming strict JSON parsing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream encoded in UTF\u201116LE with BOM (bytes: 0xFF,0xFE followed by UTF\u201116LE representation of {\"type\":\"object\"})"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (or JsonSchemaException) because Jackson expects UTF\u20118 by default and cannot parse UTF\u201116 encoded content",
+        "description": "Confirms that schemas encoded in an unsupported character set are rejected, leading to a parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, SchemaValidatorsConfig) \u2013 schema structure validation errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonStreamContainingNonObjectRoot (e.g. the literal \"true\" or \"[]\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws JsonSchemaException (or IllegalArgumentException) because the parsed JSON is not an object, which is required for a JSON Schema root",
+        "description": "The method parses the stream successfully but then validates that the schema node is an object; a non\u2011object root should cause a schema\u2011validation exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonStreamWithUnknownMetaSchema (e.g. {\"$schema\":\"http://example.com/unknown\", \"type\":\"object\"})"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws JsonSchemaException (or IllegalArgumentException) indicating that the meta\u2011schema identified by the $schema keyword cannot be located or is unsupported",
+        "description": "When the schema declares an unknown or unsupported meta\u2011schema URI, the factory should fail during meta\u2011schema loading."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonStreamWithUnresolvableRef (e.g. {\"$ref\":\"http://nonexistent.example/schema.json\"})"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws JsonSchemaException (or JsonSchemaException wrapping an IOException) because the external reference cannot be resolved by the SchemaLoader",
+        "description": "A schema that contains a $ref to a URI that the factory cannot load should cause a resolution failure during schema loading."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, SchemaValidatorsConfig) \u2013 stream state errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "closedInputStream (a ByteArrayInputStream that has been closed before the call)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws IOException (or JsonSchemaException wrapping IOException) because reading from a closed stream fails",
+        "description": "Ensures that the factory propagates an I/O error when the supplied InputStream is already closed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "truncatedJsonStream (contains only the beginning of a valid JSON object, e.g. \"{\\\"type\\\":\\\"object\\\"\" without the closing brace)"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonParseException (wrapped in JsonSchemaException) due to unexpected end\u2011of\u2011input while parsing",
+        "description": "A stream that ends prematurely should trigger a parsing exception, confirming that the method does not silently accept incomplete JSON."
+      }
+    ]
+  }
+]

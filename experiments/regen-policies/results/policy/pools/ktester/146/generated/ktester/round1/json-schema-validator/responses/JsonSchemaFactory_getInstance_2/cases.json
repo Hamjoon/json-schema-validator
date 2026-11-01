@@ -1,0 +1,341 @@
+[
+  {
+    "group": "Version flag handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri equals the IRI of the V4 meta\u2011schema and whose internal meta\u2011schema map contains exactly that meta\u2011schema.",
+        "description": "When a supported version flag is supplied and no customizer is provided, getInstance should create a factory with the default meta\u2011schema derived from the version."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": null
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or NullPointerException) from JsonSchemaFactory.checkVersion because the version flag is null.",
+        "description": "The method must validate the version flag; a null flag should cause an exception before any builder logic is executed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.UNKNOWN"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Throws IllegalArgumentException indicating the version flag is not supported.",
+        "description": "If an unsupported enum constant is passed, checkVersion should reject it, exercising the error branch."
+      }
+    ]
+  },
+  {
+    "group": "Customizer execution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.defaultMetaSchemaIri(\"http://custom/meta\").enableSchemaCache(false)"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri is \"http://custom/meta\" and whose schema cache is disabled, while still containing the V7 meta\u2011schema added by the method before the customizer runs.",
+        "description": "When a non\u2011null customizer is supplied it must be invoked after the factory has been pre\u2011populated with the version\u2019s meta\u2011schema. The customizer can override properties (e.g., defaultMetaSchemaIri) and change other builder flags."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V201909"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.metaSchema(new JsonMetaSchema(\"http://example/custom\", ...))"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose internal meta\u2011schema map contains both the version\u2011derived meta\u2011schema and the additional custom meta\u2011schema added by the customizer.",
+        "description": "The customizer may add extra meta\u2011schemas; the test verifies that the builder\u2019s meta\u2011schema collection is correctly merged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new RuntimeException(\"boom\"); }"
+          }
+        ],
+        "expected": "Throws RuntimeException with message \"boom\"; the exception propagates out of getInstance.",
+        "description": "If the customizer itself throws, getInstance must not swallow the exception \u2013 this exercises the branch where customizer.accept(...) propagates an error."
+      }
+    ]
+  },
+  {
+    "group": "Different version flags \u2013 default configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri equals the IRI of the V6 meta\u2011schema and whose internal meta\u2011schema map contains exactly that meta\u2011schema (size 1). The schema cache remains enabled (default).",
+        "description": "Validate that getInstance correctly resolves the V6 version flag when no customizer is supplied."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri equals the IRI of the V7 meta\u2011schema and whose internal meta\u2011schema map contains exactly that meta\u2011schema (size 1).",
+        "description": "Same as above but for the V7 flag \u2013 ensures each supported flag maps to its own meta\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V201909"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri equals the IRI of the V201909 meta\u2011schema and whose internal meta\u2011schema map contains exactly that meta\u2011schema (size 1).",
+        "description": "Confirm handling of the 2019\u201109 version flag without a customizer."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V202012"
+          },
+          {
+            "parameter": "customizer",
+            "value": null
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri equals the IRI of the V202012 meta\u2011schema and whose internal meta\u2011schema map contains exactly that meta\u2011schema (size 1).",
+        "description": "Confirm handling of the most recent version flag (2020\u201112) without a customizer."
+      }
+    ]
+  },
+  {
+    "group": "No\u2011op customizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { /* do nothing */ }"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory identical to the one produced when customizer is null: defaultMetaSchemaIri equals V4 meta\u2011schema IRI, internal meta\u2011schema map size 1, schema cache enabled.",
+        "description": "A customizer that performs no operations must not alter the factory; this verifies that the method does not treat a non\u2011null but empty customizer specially."
+      }
+    ]
+  },
+  {
+    "group": "Customizer modifies schema loaders",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.schemaLoaders(b -> b.addLoader(new SchemaLoader() { @Override public JsonSchema loadSchema(SchemaLocation location, SchemaValidatorsConfig cfg) { return null; } }))"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose defaultMetaSchemaIri is still the V4 IRI, schema cache enabled, and whose internal SchemaLoaders builder has been invoked (no exception thrown).",
+        "description": "Ensures that the customizer can safely customize the SchemaLoaders component after the version meta\u2011schema has been pre\u2011populated."
+      }
+    ]
+  },
+  {
+    "group": "Customizer adds multiple meta\u2011schemas via collection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.metaSchemas(map -> { map.put(\"http://custom/one\", new JsonMetaSchema(\"http://custom/one\", JsonMetaSchema.getDefaultMetaSchema()) ); map.put(\"http://custom/two\", new JsonMetaSchema(\"http://custom/two\", JsonMetaSchema.getDefaultMetaSchema()) ); })"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose internal meta\u2011schema map contains three entries: the V4 meta\u2011schema plus the two custom meta\u2011schemas added by the customizer (size 3). The defaultMetaSchemaIri remains the V4 IRI.",
+        "description": "Verifies that the builder\u2019s metaSchemas(Consumer) API correctly merges additional meta\u2011schemas supplied by the customizer."
+      }
+    ]
+  },
+  {
+    "group": "Customizer overrides object mappers",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.jsonMapper(new ObjectMapper())"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose getJsonMapper() returns the ObjectMapper instance supplied by the customizer (not the default JsonMapperFactory instance). The defaultMetaSchemaIri is still the V4 IRI.",
+        "description": "Ensures that a custom jsonMapper supplied via the builder replaces the default mapper."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.yamlMapper(new ObjectMapper())"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose getYamlMapper() returns the ObjectMapper instance supplied by the customizer. The defaultMetaSchemaIri remains the V4 IRI.",
+        "description": "Ensures that a custom yamlMapper supplied via the builder replaces the default yaml mapper."
+      }
+    ]
+  },
+  {
+    "group": "Customizer sets defaultMetaSchemaIri to null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.defaultMetaSchemaIri(null)"
+          }
+        ],
+        "expected": "Returns a JsonSchemaFactory whose internal defaultMetaSchemaIri is null (overridden by the customizer) while still containing the V4 meta\u2011schema in its meta\u2011schema map. No exception is thrown.",
+        "description": "Tests that the customizer can explicitly null\u2011out the defaultMetaSchemaIri, overriding the value set by getInstance before the customizer runs."
+      }
+    ]
+  },
+  {
+    "group": "Customizer passes null to builder methods",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.metaSchema(null)"
+          }
+        ],
+        "expected": "Throws NullPointerException because builder.metaSchema(null) attempts to call getIri() on a null JsonMetaSchema.",
+        "description": "When the customizer supplies a null JsonMetaSchema to the builder, the builder's metaSchema method dereferences the argument, causing a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.metaSchemas((java.util.Collection)null)"
+          }
+        ],
+        "expected": "Throws NullPointerException when builder.metaSchemas attempts to iterate over a null collection.",
+        "description": "Passing a null collection to the metaSchemas(Collection) overload should result in a NullPointerException because the method iterates over the collection without a null\u2011check."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.schemaLoaders(null)"
+          }
+        ],
+        "expected": "Throws NullPointerException because the schemaLoaders method invokes accept on a null Consumer.",
+        "description": "The builder.schemaLoaders method expects a non\u2011null Consumer; supplying null leads to a NullPointerException when accept is called."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.schemaMappers(null)"
+          }
+        ],
+        "expected": "Throws NullPointerException because the schemaMappers method invokes accept on a null Consumer.",
+        "description": "Analogous to schemaLoaders, passing a null Consumer to schemaMappers results in a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> builder.metaSchemas(null)"
+          }
+        ],
+        "expected": "Throws NullPointerException because the metaSchemas(Consumer) method attempts to invoke accept on a null Consumer.",
+        "description": "When the customizer supplies a null Consumer to the metaSchemas(Consumer) overload, the builder calls accept on it, causing a NullPointerException."
+      }
+    ]
+  }
+]

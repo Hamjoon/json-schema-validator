@@ -1,0 +1,292 @@
+[
+  {
+    "group": "getSchema(SchemaLocation) - basic functionality",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/simple-schema.json"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance whose meta\u2011schema version matches the $schema keyword in the file.",
+        "description": "Loads a valid JSON schema from the classpath. This exercises the normal path where the schema is found, parsed and cached."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/nonexistent-schema.json"
+          }
+        ],
+        "expected": "Throws a JsonSchemaException (or IOException) indicating that the schema cannot be found.",
+        "description": "Supplies a SchemaLocation that points to a non\u2011existent resource. Triggers the branch that handles missing resources."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": null
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the argument is null.",
+        "description": "Verifies that the method validates its input and does not accept a null SchemaLocation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/invalid-json-schema.json"
+          }
+        ],
+        "expected": "Throws a JsonSchemaException (or JsonProcessingException) because the content cannot be parsed as valid JSON/YAML.",
+        "description": "Provides a schema file that exists but contains malformed JSON/YAML, exercising the error\u2011handling branch for parsing failures."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/schema-with-remote-ref.json"
+          }
+        ],
+        "expected": "Returns a JsonSchema whose child schema references are resolved using the default SchemaLoader.",
+        "description": "Tests the branch where the loaded schema contains `$ref` to external schemas, ensuring the loader is invoked."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/schema-with-meta-iri.json"
+          }
+        ],
+        "expected": "Returns a JsonSchema whose meta\u2011schema is loaded via loadMetaSchema() based on the IRI declared in the schema.",
+        "description": "Covers the conditional that checks for an explicit meta\u2011schema IRI and loads it."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - caching behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/cached-schema.json"
+          }
+        ],
+        "expected": "The first and second calls to getSchema with the same SchemaLocation return the identical JsonSchema instance (reference equality), demonstrating that the factory caches loaded schemas.",
+        "description": "Verifies that the factory does not reload a schema that has already been parsed and cached, which is important for performance and for preserving identity semantics across the application."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - HTTP URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "http://localhost:8080/remote-schema.json"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance loaded from the HTTP resource. The meta\u2011schema version matches the $schema keyword present in the remote file.",
+        "description": "Ensures that the factory can resolve a SchemaLocation that uses the HTTP scheme, fetch the content over the network, and parse it correctly."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - YAML format support",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/yaml-schema.yaml"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance whose structure matches the YAML definition. No exception is thrown, confirming that the factory auto\u2011detects YAML input format.",
+        "description": "Tests that a schema stored in YAML (instead of JSON) is correctly read by the factory via the default YamlMapper."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unknown $schema version fallback",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/unknown-meta-schema.json"
+          }
+        ],
+        "expected": "Returns a JsonSchema instance using the library's default meta\u2011schema (latest supported draft). No exception is thrown even though the $schema IRI is not recognized.",
+        "description": "Validates that when a schema declares an unknown or unsupported $schema IRI, the factory falls back to the default meta\u2011schema rather than failing outright."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - cyclic $ref detection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/cyclic-schema.json"
+          }
+        ],
+        "expected": "Throws a JsonSchemaException (or a subclass) with a message indicating a cyclic $ref resolution was detected.",
+        "description": "Provides a schema where definition A $ref's B and B $ref's A. The test confirms that the loader detects the cycle and aborts with a clear exception rather than entering infinite recursion."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - relative $ref with $id resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/relative-ref-schema.json"
+          }
+        ],
+        "expected": "Returns a JsonSchema where the relative $ref is correctly resolved against the base URI defined by the $id keyword in the same document.",
+        "description": "Ensures that the factory respects the $id base URI for relative reference resolution, a subtle but required part of the JSON\u2011Schema spec."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - custom SchemaLoader via builder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/custom-loader-schema.json"
+          }
+        ],
+        "expected": "The returned JsonSchema originates from the custom SchemaLoader supplied to the factory builder (e.g., a mock loader that returns a predefined JsonNode). The test asserts that the loader\u2019s `loadSchema` method was invoked.",
+        "description": "Demonstrates that a user\u2011provided SchemaLoader can override the default loading mechanism, allowing injection of mocked or pre\u2011processed schemas."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - legacy draft\u201104 meta\u2011schema handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/draft04-schema.json"
+          }
+        ],
+        "expected": "Returns a JsonSchema whose meta\u2011schema version is DraftV4 (the library\u2019s representation of draft\u201104). The $schema keyword \"http://json-schema.org/draft-04/schema#\" is correctly interpreted.",
+        "description": "Verifies that the factory still supports the older draft\u201104 meta\u2011schema and maps it to the appropriate internal VersionFlag."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unsupported URI scheme",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "ftp://example.com/schemas/unsupported-schema.json"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException indicating that the URI scheme is not supported by JsonSchemaFactory.",
+        "description": "Provides a SchemaLocation using an unsupported 'ftp' scheme. The factory should reject it and raise an IllegalArgumentException before any network or file access."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - malformed URI string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "://bad-uri-format"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or URISyntaxException wrapped) because the supplied string cannot be parsed into a valid URI.",
+        "description": "Supplies a syntactically invalid URI string. The method should detect the parsing failure early and throw an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unreadable file (IO error)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "file:/tmp/unreadable-schema.json"
+          }
+        ],
+        "expected": "Throws IOException (or JsonSchemaException wrapping IOException) indicating that the schema file could not be read due to permission issues.",
+        "description": "Points to a local file that exists but lacks read permissions. The factory attempts to open the stream and encounters an IOException, which should be propagated."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - empty schema content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/empty-schema.json"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or JsonProcessingException) because the content is empty and cannot be parsed into a JsonNode.",
+        "description": "Loads a schema resource that exists but contains zero bytes. Parsing an empty document should fail and result in a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - unresolved $ref target",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/unresolved-ref-schema.json"
+          }
+        ],
+        "expected": "Throws JsonSchemaException with a message indicating that a $ref could not be resolved because the target definition does not exist.",
+        "description": "The schema contains a $ref that points to a non\u2011existent definition within the same document or an external document. The loader should detect the missing target and raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - invalid $schema IRI format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/invalid-meta-iri-schema.json"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or IllegalArgumentException) because the $schema keyword contains a malformed IRI that cannot be normalized.",
+        "description": "The schema declares a $schema value that is not a valid IRI (e.g., missing scheme). The factory should validate the IRI format and fail with an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "getSchema(SchemaLocation) - binary file supplied as schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "classpath:/schemas/binary-data.bin"
+          }
+        ],
+        "expected": "Throws JsonSchemaException (or JsonProcessingException) because the content is not valid JSON/YAML and cannot be parsed.",
+        "description": "Points to a binary resource that is not a textual JSON/YAML schema. The factory attempts to detect the format, fails, and throws a parsing\u2011related exception."
+      }
+    ]
+  }
+]

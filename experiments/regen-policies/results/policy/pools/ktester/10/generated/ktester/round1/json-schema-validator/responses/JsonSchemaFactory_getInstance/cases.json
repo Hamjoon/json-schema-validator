@@ -1,0 +1,193 @@
+[
+  {
+    "group": "Valid version flags - should return a non\u2011null factory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance whose meta\u2011schema id is \"http://json-schema.org/draft-04/schema#\"",
+        "description": "When a supported Draft\u201104 flag is supplied, getInstance should create a factory for Draft\u201104 and never return null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance whose meta\u2011schema id is \"http://json-schema.org/draft-06/schema#\"",
+        "description": "When a supported Draft\u201106 flag is supplied, the method must return a factory configured for Draft\u201106."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance whose meta\u2011schema id is \"http://json-schema.org/draft-07/schema#\"",
+        "description": "When a supported Draft\u201107 flag is supplied, the method must return a factory configured for Draft\u201107."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2019_09"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance whose meta\u2011schema id is \"https://json-schema.org/draft/2019-09/schema#\"",
+        "description": "When a supported 2019\u201109 flag is supplied, the method must return a factory configured for that version."
+      }
+    ]
+  },
+  {
+    "group": "Invalid inputs - should throw IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"versionFlag must not be null\"",
+        "description": "Passing a null version flag must be rejected and result in an IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.UNKNOWN"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"Unsupported version flag\"",
+        "description": "If an enum constant that is not mapped to a known JSON\u2011Schema draft is supplied, the method must fail fast with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Additional supported version flags - should return a non\u2011null factory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2020_12"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance whose meta\u2011schema id is \"https://json-schema.org/draft/2020-12/schema#\"",
+        "description": "When the Draft\u20112020\u201112 flag is supplied, getInstance must create a factory for Draft\u20112020\u201112 and never return null."
+      }
+    ]
+  },
+  {
+    "group": "Factory instance uniqueness - repeated calls with same flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          }
+        ],
+        "expected": "two distinct JsonSchemaFactory instances (different object references) returned on successive calls",
+        "description": "Calling getInstance with the same supported flag multiple times should produce separate factory objects (no caching of a singleton)."
+      }
+    ]
+  },
+  {
+    "group": "Custom builder interaction via overload - null customizer should behave like simple call",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          }
+        ],
+        "expected": "non\u2011null JsonSchemaFactory instance identical in configuration to the one returned by getInstance(versionFlag) without customizer",
+        "description": "When the overload getInstance(versionFlag, null) is used internally, it must produce the same result as the single\u2011argument version; this case verifies that the factory\u2019s meta\u2011schema id matches the expected Draft\u201106 identifier."
+      }
+    ]
+  },
+  {
+    "group": "Customizer throws IllegalArgumentException - should propagate",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V7"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new IllegalArgumentException(\"customizer error\"); }"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"customizer error\"",
+        "description": "When a non\u2011null customizer throws an IllegalArgumentException, getInstance(versionFlag, customizer) must propagate that exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Customizer throws RuntimeException - should propagate",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V6"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { throw new RuntimeException(\"unexpected failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"unexpected failure\"",
+        "description": "If the customizer lambda throws a generic RuntimeException, the method must not catch it and should let it bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Customiser sets null version flag - should raise IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.V4"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { builder.versionFlag(null); }"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing \"versionFlag must not be null\"",
+        "description": "A customizer that attempts to set a null version flag on the builder must cause an IllegalArgumentException, mirroring the validation performed in the factory method."
+      }
+    ]
+  },
+  {
+    "group": "Internal meta\u2011schema loading failure - should throw IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "versionFlag",
+            "value": "SpecVersion.VersionFlag.DRAFT_2020_12"
+          },
+          {
+            "parameter": "customizer",
+            "value": "builder -> { /* mock JsonSchemaFactory.loadMetaSchema to throw IOException */ }"
+          }
+        ],
+        "expected": "IllegalStateException with cause IOException",
+        "description": "If loading the meta\u2011schema (e.g., reading a resource file) fails with an IOException, the factory should wrap it in an IllegalStateException. The test uses a mocking framework to make loadMetaSchema throw IOException and verifies the wrapper exception."
+      }
+    ]
+  }
+]

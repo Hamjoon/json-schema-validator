@@ -1,0 +1,82 @@
+[
+  {
+    "group": "JsonSchema.toString() - basic concatenation scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/properties/name\" : {\"type\":\"string\"}",
+        "description": "Typical case where the evaluation path is a non\u2011empty JSON Pointer and the schema node is an ObjectNode representing `{ \"type\": \"string\" }`. The toString() method should wrap the path in quotes, add a colon and space, then append the node's JSON representation."
+      },
+      {
+        "input": [],
+        "expected": "\"\" : true",
+        "description": "Edge case with an empty evaluation path (root schema) and a simple Boolean schema node (`BooleanNode.TRUE`). The method must still produce a pair of quotes for the empty path and correctly serialize the Boolean value."
+      },
+      {
+        "input": [],
+        "expected": "\"/items[0]/$ref\" : [1,2,3]",
+        "description": "Path containing special characters (`[`, `]`, `$`) and an ArrayNode schema node. Verifies that the method does not escape the path content and that the array is rendered in compact JSON form."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "Defensive test: when the underlying schema node is `null` (which should not happen in normal usage), the call to `getSchemaNode().toString()` throws a NullPointerException. The test asserts that the exception is propagated."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString() - diverse data type handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/description\" : \"A \\\"quoted\\\" description\"",
+        "description": "Path contains regular characters while the schema node is a TextNode whose value includes escaped double\u2011quote characters. The toString() method should embed the raw text (including the quotes) inside the JSON string representation without additional escaping."
+      },
+      {
+        "input": [],
+        "expected": "\"/price\" : 19.99",
+        "description": "Schema node is a numeric (DecimalNode) value. Verify that the numeric literal is appended correctly after the colon and space."
+      },
+      {
+        "input": [],
+        "expected": "\"/nullNode\" : null",
+        "description": "Schema node is a NullNode. The method should render the literal `null` after the colon."
+      },
+      {
+        "input": [],
+        "expected": "\"/unicode/\u03c0\" : {\"type\":\"number\"}",
+        "description": "Evaluation path contains a Unicode character (Greek pi). The path should be quoted verbatim and the ObjectNode representing `{ \"type\": \"number\" }` should be rendered in compact form."
+      },
+      {
+        "input": [],
+        "expected": "\"/space path/with spaces\" : true",
+        "description": "Path includes spaces. Ensure that spaces are preserved inside the quoted path and that a BooleanNode is rendered as `true`."
+      },
+      {
+        "input": [],
+        "expected": "\"null\" : 42",
+        "description": "The underlying evaluation path is `null`. In Java string concatenation, `null` becomes the literal string \"null\", so the result should be `\"null\" : 42` when the schema node is a numeric node with value 42."
+      },
+      {
+        "input": [],
+        "expected": "\"/escaped\\\\backslash\" : false",
+        "description": "Path contains a backslash character which must be preserved in the output (resulting in `\\\\` in the JSON string). The schema node is a BooleanNode `false`."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString() - schema node toString() exception propagation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException: custom toString failure",
+        "description": "The underlying schema node overrides toString() and deliberately throws an IllegalStateException. The toString() method of JsonSchema should not catch this exception, allowing it to propagate to the caller."
+      },
+      {
+        "input": [],
+        "expected": "java.lang.RuntimeException: unexpected error",
+        "description": "The schema node's toString() throws a generic RuntimeException. Verify that JsonSchema.toString() does not wrap or swallow the exception, and the original RuntimeException is observed by the test."
+      }
+    ]
+  }
+]

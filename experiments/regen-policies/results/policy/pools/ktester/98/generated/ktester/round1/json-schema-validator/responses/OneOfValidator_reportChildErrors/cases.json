@@ -1,0 +1,97 @@
+[
+  {
+    "group": "reportChildErrors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose ExecutionConfig.isFailFast() returns true"
+          }
+        ],
+        "expected": false,
+        "description": "When the execution configuration is set to fail\u2011fast, the validator should not aggregate child errors, therefore reportChildErrors must return false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose ExecutionConfig.isFailFast() returns false"
+          }
+        ],
+        "expected": true,
+        "description": "When fail\u2011fast is disabled, the validator should aggregate child errors, so reportChildErrors must return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null ExecutionContext should result in a NullPointerException because the method dereferences executionContext without a null\u2011check."
+      }
+    ]
+  },
+  {
+    "group": "reportChildErrorsAdditional",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose getExecutionConfig() returns null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the ExecutionConfig is null, the method attempts to call isFailFast() on a null reference, resulting in a NullPointerException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose ExecutionConfig.isFailFast() throws RuntimeException(\"boom\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"boom\"",
+        "description": "When the underlying ExecutionConfig throws an exception while evaluating isFailFast(), the exception should propagate out of reportChildErrors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose ExecutionConfig.isFailFast() returns true on first call and false on second call"
+          }
+        ],
+        "expected": "False",
+        "description": "reportChildErrors calls isFailFast() only once; the returned value should be the negation of the first call (true \u2192 false), confirming no repeated evaluation."
+      }
+    ]
+  },
+  {
+    "group": "unnamed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose getExecutionConfig() throws IllegalArgumentException(\"invalid config\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"invalid config\"",
+        "description": "When getExecutionConfig() throws an IllegalArgumentException, the exception should propagate out of reportChildErrors without being caught."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose ExecutionConfig.isFailFast() throws AssertionError(\"assertion failed\")"
+          }
+        ],
+        "expected": "AssertionError with message \"assertion failed\"",
+        "description": "If isFailFast() throws an AssertionError, reportChildErrors must not swallow it; the error should be propagated to the caller."
+      }
+    ]
+  }
+]

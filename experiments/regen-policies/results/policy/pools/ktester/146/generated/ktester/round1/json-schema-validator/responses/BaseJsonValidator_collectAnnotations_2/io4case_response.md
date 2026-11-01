@@ -1,0 +1,126 @@
+{
+  "testCases": [
+    {
+      "group": "collectAnnotations(ExecutionContext, String) - exception handling",
+      "cases": [
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = predicate that throws RuntimeException for \"badKeyword\")"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"badKeyword\""
+            }
+          ],
+          "expected": "RuntimeException",
+          "description": "When annotation collection is enabled but the filter throws an exception for the supplied keyword, the method should propagate the exception."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = null)"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"anyKeyword\""
+            }
+          ],
+          "expected": "NullPointerException",
+          "description": "If the execution config provides a null filter, invoking test() on it should result in a NullPointerException."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "null"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"anyKeyword\""
+            }
+          ],
+          "expected": "NullPointerException",
+          "description": "Passing a null ExecutionContext should cause a NullPointerException when the method tries to access its configuration."
+        }
+      ]
+    },
+    {
+      "group": "collectAnnotations(ExecutionContext, String) - special keyword values",
+      "cases": [
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = predicate returns true for empty string \"\")"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"\""
+            }
+          ],
+          "expected": true,
+          "description": "Empty string keyword is accepted by the filter; with collection enabled the method must return true."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = predicate returns false for empty string \"\")"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"\""
+            }
+          ],
+          "expected": false,
+          "description": "Empty string keyword is rejected by the filter; even though collection is enabled the method must return false."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = predicate returns true for whitespace string \"   \")"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"   \""
+            }
+          ],
+          "expected": true,
+          "description": "Keyword consisting only of whitespace is accepted by the filter; method should return true."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = true, filter = predicate returns true for Unicode string \"µñïçødë\")"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"µñïçødë\""
+            }
+          ],
+          "expected": true,
+          "description": "Unicode keyword is accepted; verifies that the method correctly forwards non‑ASCII values to the filter."
+        },
+        {
+          "input": [
+            {
+              "parameter": "executionContext",
+              "value": "mockExecutionContext(annotationCollectionEnabled = false, filter = predicate that would throw if invoked)"
+            },
+            {
+              "parameter": "keyword",
+              "value": "\"anyKeyword\""
+            }
+          ],
+          "expected": false,
+          "description": "When annotation collection is disabled, the filter must not be invoked; the method should return false even if the filter would throw an exception."
+        }
+      ]
+    }
+  ]
+}

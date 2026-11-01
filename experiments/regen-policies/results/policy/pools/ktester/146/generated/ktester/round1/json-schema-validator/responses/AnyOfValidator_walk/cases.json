@@ -1,0 +1,514 @@
+[
+  {
+    "group": "Validate when shouldValidateSchema is true and node is non\u2011null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate is invoked and its returned Set<ValidationMessage> (e.g., [{\"type\":\"anyOf\",\"message\":\"validation failed\"}]) is returned; schema.walk is NOT invoked",
+        "description": "When validation is required and the node exists, AnyOfValidator should delegate to its validate method and return whatever validate returns."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate returns an empty Set; walk returns an empty Set as well",
+        "description": "Ensures that a successful validation (empty message set) is propagated unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Skip validation when shouldValidateSchema is false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "validate is NOT invoked; each schema in the schemas list has its walk(executionContext, node, rootNode, instanceLocation, false) called; method returns Collections.emptySet()",
+        "description": "When validation is disabled, AnyOfValidator must walk each contained schema with shouldValidateSchema = false and return an empty result set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "validate is NOT invoked; schemas (if any) are walked with shouldValidateSchema = false; method returns empty Set",
+        "description": "Even when the node is null, disabling validation should cause only schema walking, not validation."
+      }
+    ]
+  },
+  {
+    "group": "Node is null while shouldValidateSchema is true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate is NOT invoked because (node != null) is false; each schema.walk is called with shouldValidateSchema = false; method returns empty Set",
+        "description": "The guard requires both shouldValidateSchema and a non\u2011null node; if node is null the method falls back to schema walking."
+      }
+    ]
+  },
+  {
+    "group": "Schemas list is empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "No schema.walk calls (list empty); method returns empty Set",
+        "description": "When there are no inner schemas, the loop does nothing and the method should still return an empty Set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate is NOT invoked; no schema.walk calls; returns empty Set",
+        "description": "Even with an empty schemas list, a null node prevents validation, resulting in an empty Set."
+      }
+    ]
+  },
+  {
+    "group": "Validate when shouldValidateSchema is true and schemas list is non\u2011empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate is invoked and its returned Set<ValidationMessage> (e.g., [{\"type\":\"anyOf\",\"message\":\"failed\"}]) is returned; none of the inner schemas' walk methods are called despite the list containing two mock schemas",
+        "description": "Ensures that the presence of inner schemas does not affect the short\u2011circuit path when validation is required; the validator must delegate to its own validate method and must not walk the contained schemas."
+      }
+    ]
+  },
+  {
+    "group": "Skip validation when shouldValidateSchema is false and schemas list is non\u2011empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "validate is NOT invoked; each schema in the non\u2011empty schemas list (e.g., mockSchemaA and mockSchemaB) has its walk(executionContext, node, rootNode, instanceLocation, false) called exactly once; method returns Collections.emptySet()",
+        "description": "Verifies that when validation is disabled, the validator walks every inner schema with shouldValidateSchema set to false and ignores any messages those schemas might produce."
+      }
+    ]
+  },
+  {
+    "group": "Node is null, shouldValidateSchema true, schemas list non\u2011empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "rootNode",
+            "value": null
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate is NOT invoked because node is null; each inner schema (e.g., mockSchemaX) has its walk called with shouldValidateSchema = false; method returns an empty Set",
+        "description": "Confirms that the guard `(shouldValidateSchema && node != null)` prevents validation when the node is null, even if validation was requested, and that the fallback walking of inner schemas still occurs."
+      }
+    ]
+  },
+  {
+    "group": "Node is null, shouldValidateSchema false, schemas list non\u2011empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": null
+          },
+          {
+            "parameter": "rootNode",
+            "value": null
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "validate is NOT invoked; each inner schema (e.g., mockSchemaY) has its walk called with shouldValidateSchema = false; method returns Collections.emptySet()",
+        "description": "Ensures that when validation is disabled and the node is null, the validator still walks each inner schema with the flag false and returns an empty result set."
+      }
+    ]
+  },
+  {
+    "group": "Validate returns non\u2011empty set while schemas list is non\u2011empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "validate returns a non\u2011empty Set<ValidationMessage> (e.g., [{\"type\":\"anyOf\",\"message\":\"first schema failed\"},{\"type\":\"anyOf\",\"message\":\"second schema failed\"}]); walk returns exactly that same Set; no inner schema.walk calls occur",
+        "description": "Checks that any messages produced by the validator's own validate method are propagated unchanged, regardless of the presence of inner schemas."
+      }
+    ]
+  },
+  {
+    "group": "Null schemas list",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the internal `schemas` field is null, the for\u2011each loop attempts to iterate over a null collection and throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schemas list contains null element",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": false
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the `schemas` list contains a null entry, the iteration reaches that entry and attempts to invoke `schema.walk(...)` on a null reference, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": null
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When `shouldValidateSchema` is true and `node` is non\u2011null, `walk` delegates to `validate`. Passing a null `executionContext` causes `validate` (or downstream code) to throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null instanceLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": null
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If `instanceLocation` is null while validation is requested, the call to `validate` receives a null argument and throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Validate method throws unchecked exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nonNullJsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/field\")"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When `validate` is mocked to throw an unchecked exception (e.g., IllegalStateException), `walk` must not catch it; the exception propagates to the caller."
+      }
+    ]
+  }
+]

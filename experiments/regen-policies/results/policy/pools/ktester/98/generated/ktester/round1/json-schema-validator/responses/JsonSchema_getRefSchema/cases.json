@@ -1,0 +1,277 @@
+[
+  {
+    "group": "JSON Pointer Path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.JSON_POINTER"
+          }
+        ],
+        "expected": "Returns the JsonSchema instance produced by getSubSchema(fragment)",
+        "description": "When the fragment's PathType is JSON_POINTER the method should delegate to getSubSchema and return its result."
+      }
+    ]
+  },
+  {
+    "group": "Anchor found in schemaResources",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/definitions/foo\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored in validationContext.schemaResources under the computed anchor",
+        "description": "Fragment is an anchor. The base IRI is empty, so anchor becomes \"#/definitions/foo\". The schemaResources map contains this key, so the method must return the associated JsonSchema without checking dynamicAnchors."
+      }
+    ]
+  },
+  {
+    "group": "Anchor found in dynamicAnchors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/defs/bar\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored in validationContext.dynamicAnchors under the computed anchor",
+        "description": "Fragment is an anchor. The key is not present in schemaResources but is present in dynamicAnchors, so the method should fall back to the dynamicAnchors map and return that schema."
+      }
+    ]
+  },
+  {
+    "group": "Anchor not found \u2013 exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/missing\""
+          }
+        ],
+        "expected": "Throws JsonSchemaException with message containing \"Unable to find anchor\" and the computed anchor",
+        "description": "Fragment is an anchor and the computed anchor is absent from both schemaResources and dynamicAnchors. The method must throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.JSON_POINTER and getFragment() is irrelevant"
+          }
+        ],
+        "expected": "Returns null because getSubSchema(fragment) is mocked to return null",
+        "description": "When the fragment is a JSON Pointer but the underlying getSubSchema method returns null, getRefSchema should propagate the null result."
+      }
+    ]
+  },
+  {
+    "group": "Anchor with non\u2011empty base IRI found in schemaResources",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() returns \"/defs/foo\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored under the key \"http://example.com/schema.json#/defs/foo\" in validationContext.schemaResources",
+        "description": "The JsonSchema has a non\u2011null absolute IRI (\"http://example.com/schema.json\"). The computed anchor should be \"http://example.com/schema.json#/defs/foo\" and the method must retrieve the schema from schemaResources."
+      }
+    ]
+  },
+  {
+    "group": "Anchor with non\u2011empty base IRI found in dynamicAnchors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() returns \"/defs/bar\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored under the key \"http://example.com/schema.json#/defs/bar\" in validationContext.dynamicAnchors",
+        "description": "The base IRI is present, but the anchor is not in schemaResources. The method should fall back to dynamicAnchors and return the associated schema."
+      }
+    ]
+  },
+  {
+    "group": "Anchor precedence \u2013 schemaResources over dynamicAnchors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() returns \"/common\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance from validationContext.schemaResources even though the same anchor exists in dynamicAnchors",
+        "description": "When the computed anchor is present in both maps, the method must return the one from schemaResources, demonstrating the correct precedence."
+      }
+    ]
+  },
+  {
+    "group": "Anchor fallback when schemaResources entry is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() returns \"/fallback\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance from validationContext.dynamicAnchors because the schemaResources entry for the anchor is null",
+        "description": "If schemaResources contains the anchor key but maps to null, the method should continue searching dynamicAnchors and return the non\u2011null schema found there."
+      }
+    ]
+  },
+  {
+    "group": "Anchor with empty fragment string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() returns \"\" (empty string)"
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored under the key \"#\" in validationContext.schemaResources (or dynamicAnchors if not present there)",
+        "description": "When the fragment's string representation is empty, the computed anchor becomes just \"#\" (or \"base#\" if a base IRI exists). The method must correctly handle this edge case."
+      }
+    ]
+  },
+  {
+    "group": "Null fragment argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException",
+        "description": "Passing a null JsonNodePath should result in a NullPointerException because the method dereferences fragment without a null check."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/foo\""
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (thrown when getSchemaLocation() is dereferenced)",
+        "description": "The JsonSchema instance has a null schemaLocation. When getRefSchema is called with an anchor fragment the method attempts to call this.getSchemaLocation().getAbsoluteIri(), causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null validationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/bar\""
+          },
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (thrown when accessing validationContext.getSchemaResources())",
+        "description": "The JsonSchema instance has a null validationContext. The method tries to read validationContext.getSchemaResources() and validationContext.getDynamicAnchors(), which results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaResources map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/missing\""
+          },
+          {
+            "parameter": "validationContext.schemaResources",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (thrown when invoking get(anchor) on a null map)",
+        "description": "validationContext.getSchemaResources() returns null. The method attempts to call .get(anchor) on this null reference, causing a NullPointerException before checking dynamicAnchors."
+      }
+    ]
+  },
+  {
+    "group": "Null dynamicAnchors map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath with PathType.ANCHOR, toString() = \"/missing\""
+          },
+          {
+            "parameter": "validationContext.schemaResources",
+            "value": "{} (empty map)"
+          },
+          {
+            "parameter": "validationContext.dynamicAnchors",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (thrown when invoking get(anchor) on a null dynamicAnchors map)",
+        "description": "The schemaResources map does not contain the anchor and validationContext.getDynamicAnchors() returns null. The method attempts to call .get(anchor) on the null map, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Fragment toString throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() returns PathType.ANCHOR and toString() throws RuntimeException(\"toString failure\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"toString failure\"",
+        "description": "When the fragment is an anchor, getRefSchema concatenates the result of fragment.toString(). If toString() itself throws an exception, that exception propagates out of getRefSchema."
+      }
+    ]
+  },
+  {
+    "group": "Fragment getPathType throws exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "Mocked JsonNodePath where getPathType() throws IllegalStateException(\"path type failure\")"
+          }
+        ],
+        "expected": "IllegalStateException with message \"path type failure\"",
+        "description": "If fragment.getPathType() throws an exception, the method does not catch it, so the exception propagates to the caller."
+      }
+    ]
+  }
+]

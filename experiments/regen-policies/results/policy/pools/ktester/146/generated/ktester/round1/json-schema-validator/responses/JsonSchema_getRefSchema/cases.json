@@ -1,0 +1,172 @@
+[
+  {
+    "group": "JSON Pointer Path",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.JSON_POINTER"
+          }
+        ],
+        "expected": "Returns the JsonSchema instance produced by getSubSchema(fragment). The test verifies that getSubSchema is invoked exactly once and its result is returned.",
+        "description": "When the fragment's PathType is JSON_POINTER the method should delegate to getSubSchema and return its result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.JSON_POINTER and null schemaLocation"
+          }
+        ],
+        "expected": "Returns the JsonSchema instance from getSubSchema(fragment). No interaction with schemaLocation or validationContext occurs.",
+        "description": "Even if the owning JsonSchema has a null absolute IRI, the JSON\u2011Pointer branch must ignore it and still call getSubSchema."
+      }
+    ]
+  },
+  {
+    "group": "Anchor Path \u2013 Resource Found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"myAnchor\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored in validationContext.schemaResources under the computed anchor key.",
+        "description": "Fragment is an anchor. The schemaLocation has a non\u2011null absolute IRI (e.g., \"http://example.com/schema.json\"). The method builds the anchor \"http://example.com/schema.json#myAnchor\", finds it in schemaResources and returns it."
+      },
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"anchorOnly\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored in validationContext.schemaResources under the computed anchor key (base part empty).",
+        "description": "Fragment is an anchor but the owning schema has a null absolute IRI, so base is empty. The anchor becomes \"#anchorOnly\" and the method finds the schema in schemaResources."
+      }
+    ]
+  },
+  {
+    "group": "Anchor Path \u2013 Dynamic Anchor Found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"dynAnchor\""
+          }
+        ],
+        "expected": "Returns the JsonSchema instance stored in validationContext.dynamicAnchors under the computed anchor key.",
+        "description": "Fragment is an anchor. The computed anchor is not present in schemaResources, but a matching entry exists in dynamicAnchors. The method should fall back to dynamicAnchors and return that schema."
+      }
+    ]
+  },
+  {
+    "group": "Anchor Path \u2013 Not Found (Exception)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"missingAnchor\""
+          }
+        ],
+        "expected": "Throws JsonSchemaException with message containing \"Unable to find anchor\" and the computed anchor string.",
+        "description": "Fragment is an anchor and the computed anchor is absent from both schemaResources and dynamicAnchors. The method must raise a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JSON Pointer Path \u2013 SubSchema Returns Null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.JSON_POINTER (any non\u2011null fragment)"
+          }
+        ],
+        "expected": "Returns null because getSubSchema(fragment) is stubbed to return null. No exception is thrown and no further lookup is performed.",
+        "description": "When the fragment is a JSON\u2011Pointer the method should delegate to getSubSchema. If getSubSchema returns null the method must propagate that null result."
+      }
+    ]
+  },
+  {
+    "group": "Null Fragment",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null JsonNodePath causes a NullPointerException when the method attempts to call fragment.getPathType()."
+      }
+    ]
+  },
+  {
+    "group": "Null SchemaLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"anyAnchor\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the owning JsonSchema's schemaLocation is null, the call to this.getSchemaLocation().getAbsoluteIri() throws a NullPointerException before any anchor lookup."
+      }
+    ]
+  },
+  {
+    "group": "Null ValidationContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"anyAnchor\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the JsonSchema's validationContext is null, accessing validationContext.getSchemaResources() results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null SchemaResources Map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"anyAnchor\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If validationContext.getSchemaResources() returns null, the subsequent .get(anchor) call throws a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null DynamicAnchors Map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "fragment",
+            "value": "JsonNodePath mock with PathType.ANCHOR and toString() = \"anyAnchor\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When validationContext.getDynamicAnchors() returns null, the fallback lookup result = this.validationContext.getDynamicAnchors().get(anchor) throws a NullPointerException."
+      }
+    ]
+  }
+]

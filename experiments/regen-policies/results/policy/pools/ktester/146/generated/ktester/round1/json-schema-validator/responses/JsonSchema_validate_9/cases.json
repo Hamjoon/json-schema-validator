@@ -1,0 +1,488 @@
+[
+  {
+    "group": "Null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "validate should throw NPE when the JSON document (rootNode) is null."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "validate should reject a null OutputFormat and throw IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "SimpleStringOutputFormat result containing an empty validation set",
+        "description": "When executionCustomizer is null the method should use a default no\u2011op customizer and return a successful validation result (empty set)."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 no errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"name\", \"John\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "String \"[]\" (empty JSON array) \u2013 meaning no ValidationMessage objects",
+        "description": "A JSON document that satisfies the schema should produce an empty validation result, formatted by SimpleStringOutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "Validation with errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"age\", \"twenty\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "String containing at least one ValidationMessage (e.g., \"age: integer expected\")",
+        "description": "When the JSON does not conform to the schema (wrong type for \"age\"), the validator should return a non\u2011empty set, which the OutputFormat turns into a descriptive string."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext \u2013 flag manipulation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"id\", 1)"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"skip\", true)"
+          }
+        ],
+        "expected": "String \"[]\" (empty validation set) because the customizer signals the walk to skip validation",
+        "description": "A customizer that sets a known attribute (e.g., \"skip\") which the internal walk logic checks to bypass validation, resulting in an empty result."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"name\", \"Alice\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\"",
+        "description": "If the ExecutionContextCustomizer throws an exception, validate should propagate it unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"self\", objectNode())"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setRecursiveAnchor(true)"
+          }
+        ],
+        "expected": "String representing successful validation (empty array) \u2013 recursive anchor should be honoured without infinite recursion",
+        "description": "When the schema is marked as a recursive anchor, the customizer enables that flag; the validator must handle it correctly and still terminate, returning an empty result for a valid document."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"name\", \"Bob\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { throw new IllegalStateException(\"format failure\"); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IllegalStateException with message \"format failure\"",
+        "description": "When the supplied OutputFormat throws an exception while formatting the validation messages, validate should propagate that exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat \u2013 collection result",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"age\", \"twenty\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "List size > 0 (contains at least one ValidationMessage)",
+        "description": "A custom OutputFormat that returns a List<ValidationMessage> should receive the set of validation errors; for an invalid document the list must contain one or more messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"name\", \"Alice\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> messages) { return new ArrayList<>(messages); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "Empty List (size == 0)",
+        "description": "When the JSON document satisfies the schema, the custom OutputFormat should receive an empty set and therefore return an empty list."
+      }
+    ]
+  },
+  {
+    "group": "Invalid rootNode type handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.arrayNode().add(1).add(2)"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "String containing a ValidationMessage indicating type mismatch (expected object, got array)",
+        "description": "The schema expects an object; providing a JSON array should cause a type\u2011validation error that is reflected in the formatted output."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.booleanNode(true)"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "String containing a ValidationMessage indicating type mismatch (expected object, got boolean)",
+        "description": "Supplying a primitive boolean where an object is required must produce a validation error."
+      }
+    ]
+  },
+  {
+    "group": "JSON null literal handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.nullNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "String containing a ValidationMessage about type mismatch (null not allowed)",
+        "description": "A JSON literal null should be validated against the schema; because the schema does not allow null, a validation error is expected."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer \u2013 attribute set but not used",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "objectNode().put(\"name\", \"Charlie\")"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"unusedFlag\", \"value\")"
+          }
+        ],
+        "expected": "String \"[]\" (empty validation set)",
+        "description": "Setting an attribute that the validator does not consult must not affect the validation outcome; a valid document should still produce an empty result."
+      }
+    ]
+  },
+  {
+    "group": "Null handling \u2013 multiple nulls",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Both the JSON document (rootNode) and the OutputFormat are null. The method should fail fast with a NullPointerException because rootNode is validated before format."
+      }
+    ]
+  },
+  {
+    "group": "Null handling \u2013 format null, customizer null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the OutputFormat is null the method must reject the call with an IllegalArgumentException, regardless of a null executionCustomizer."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer \u2013 throws NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new NullPointerException(\"customizer NPE\"); }"
+          }
+        ],
+        "expected": "NullPointerException with message \"customizer NPE\"",
+        "description": "If the supplied ExecutionContextCustomizer throws a NullPointerException, validate must propagate it unchanged."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer \u2013 illegal attribute key",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(null, \"value\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Setting an attribute with a null key is illegal for ExecutionContext; the customizer should cause an IllegalArgumentException that propagates out of validate."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat \u2013 RuntimeException propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { throw new RuntimeException(\"format runtime failure\"); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "RuntimeException with message \"format runtime failure\"",
+        "description": "When the OutputFormat implementation throws a RuntimeException, validate must let that exception bubble up unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Custom OutputFormat \u2013 Error propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> messages) { throw new AssertionError(\"format error\"); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "AssertionError with message \"format error\"",
+        "description": "If the OutputFormat throws an Error (e.g., AssertionError), validate must not catch it and should propagate it to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Schema with unresolved $ref \u2013 IllegalStateException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          },
+          {
+            "parameter": "format",
+            "value": "new SimpleStringOutputFormat()"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> {}"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When the JsonSchema instance contains a $ref that cannot be resolved (e.g., missing external schema), the validation process should fail with an IllegalStateException."
+      }
+    ]
+  }
+]

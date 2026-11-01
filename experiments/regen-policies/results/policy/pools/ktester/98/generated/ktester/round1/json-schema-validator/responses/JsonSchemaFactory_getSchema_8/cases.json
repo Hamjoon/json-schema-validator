@@ -1,0 +1,180 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode, SchemaValidatorsConfig)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance whose meta\u2011schema matches the default meta\u2011schema and contains the supplied schema node.",
+        "description": "Typical usage: both JsonNode and SchemaValidatorsConfig are provided. The method should delegate to newJsonSchema and produce a valid JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the schema JsonNode is required.",
+        "description": "Edge case where the schema node is null. The factory should reject a null JsonNode and raise an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance using the default SchemaValidatorsConfig.",
+        "description": "Config parameter is optional; when null the factory should fall back to its default configuration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the schema JsonNode is required, regardless of config being null.",
+        "description": "Both parameters are null \u2013 the method must still reject the missing JsonNode and raise an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-04/schema#\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"integer\\\"}}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setTypeLoose(true); } }"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema whose meta\u2011schema corresponds to Draft\u201104 (the $schema value) and whose SchemaValidatorsConfig has typeLoose set to true.",
+        "description": "Schema node explicitly declares Draft\u201104 meta\u2011schema and a custom config enables type\u2011loose mode; the factory must honour both the $schema URI and the supplied configuration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance using the default meta\u2011schema (the factory\u2019s default) even though the schema node is empty.",
+        "description": "An empty JSON object is a valid (though useless) schema; the method should still create a JsonSchema object rather than throwing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"42\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance (the factory does not validate the content of the JsonNode at creation time).",
+        "description": "The supplied JsonNode is a primitive numeric node, not an object schema. The factory should still wrap it in a JsonSchema; validation errors would surface later, not during creation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setFailFast(true); } }"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema whose internal SchemaValidatorsConfig has failFast set to true.",
+        "description": "A custom configuration that enables fail\u2011fast validation is supplied; the created JsonSchema must carry this configuration forward."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode, SchemaValidatorsConfig) - exception scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"ht!tp://bad_uri\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or JsonSchemaException) because the $schema URI is syntactically invalid and cannot be normalized.",
+        "description": "The schema node contains a $schema property with a malformed URI. The factory should detect the invalid URI during meta\u2011schema resolution and raise an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"http://json-schema.org/draft-99/schema#\\\",\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or JsonSchemaException) because the $schema IRI does not correspond to any supported meta\u2011schema version.",
+        "description": "The $schema value points to an unknown/unsupported draft version. The factory should fail fast when it cannot locate a matching JsonMetaSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":null,\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the $schema field is present but its value is null.",
+        "description": "A schema node explicitly defines $schema with a null value. The factory should treat this as an invalid meta\u2011schema reference and raise an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"$schema\\\":\\\"   \\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or JsonSchemaException) because the $schema string is blank/whitespace only, which cannot be resolved to a meta\u2011schema.",
+        "description": "The $schema property is present but contains only whitespace. The factory should reject this as an invalid meta\u2011schema identifier."
+      }
+    ]
+  }
+]

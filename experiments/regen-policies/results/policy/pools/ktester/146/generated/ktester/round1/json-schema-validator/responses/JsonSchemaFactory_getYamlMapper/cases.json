@@ -1,0 +1,95 @@
+[
+  {
+    "group": "JsonSchemaFactory.getYamlMapper",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "custom ObjectMapper instance"
+          }
+        ],
+        "expected": "returns the same custom ObjectMapper instance that was injected",
+        "description": "When the JsonSchemaFactory instance has a non\u2011null yamlMapper field, getYamlMapper() must return that exact instance instead of delegating to YamlMapperFactory."
+      },
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "null"
+          }
+        ],
+        "expected": "returns YamlMapperFactory.getInstance()",
+        "description": "When the yamlMapper field is null, getYamlMapper() should fall back to the singleton provided by YamlMapperFactory and return it."
+      },
+      {
+        "input": [],
+        "expected": "returned ObjectMapper is not null",
+        "description": "Regardless of the branch taken, the method must never return null; verify that the returned mapper is a non\u2011null ObjectMapper."
+      },
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "null"
+          }
+        ],
+        "expected": "YamlMapperFactory.getInstance() is called exactly once",
+        "description": "When yamlMapper is null, ensure that the static factory method is invoked (can be verified with a spy/mock of YamlMapperFactory)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getYamlMapper - concurrent access",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "null"
+          },
+          {
+            "parameter": "threads",
+            "value": "10"
+          }
+        ],
+        "expected": "All threads receive a non\u2011null ObjectMapper; YamlMapperFactory.getInstance() is invoked at least once (exact count may vary) but no race conditions or exceptions occur",
+        "description": "Simulates concurrent calls to getYamlMapper() on the same factory instance when yamlMapper is null, ensuring thread\u2011safety and that each thread obtains a valid mapper."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getYamlMapper - invalid yamlMapper type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "String instance (\"not an ObjectMapper\")"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "When the yamlMapper field is non\u2011null but holds an object that is not an instance of ObjectMapper, the ternary operator returns that value and the JVM throws a ClassCastException at the return statement."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getYamlMapper - YamlMapperFactory throws",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "yamlMapper field (via reflection)",
+            "value": "null"
+          },
+          {
+            "parameter": "YamlMapperFactory.getInstance throws",
+            "value": "IllegalStateException(\"factory failure\")"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When yamlMapper is null, getYamlMapper() delegates to YamlMapperFactory.getInstance(). If that static method throws a RuntimeException (simulated here as IllegalStateException), the exception must propagate unchanged."
+      }
+    ]
+  }
+]

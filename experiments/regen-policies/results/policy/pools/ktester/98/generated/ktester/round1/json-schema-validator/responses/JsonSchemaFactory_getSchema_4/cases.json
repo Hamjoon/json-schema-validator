@@ -1,0 +1,302 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - basic and edge cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/valid-schema.json\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose meta\u2011schema version matches the schema content",
+        "description": "Happy\u2011path: a valid classpath URI points to an existing JSON Schema file; the factory should load the file, parse it and return a usable JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          }
+        ],
+        "expected": "throws NullPointerException (or IllegalArgumentException) because the supplied SchemaLocation is null",
+        "description": "Validate that the method guards against a null argument and fails fast."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"ftp://example.com/schema.json\")"
+          }
+        ],
+        "expected": "throws IllegalArgumentException indicating an unsupported URI scheme",
+        "description": "The factory only supports http, https, classpath and file schemes; an unsupported scheme should cause an explicit exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/non\u2011existent.json\")"
+          }
+        ],
+        "expected": "throws JsonSchemaException (or IOException) because the resource cannot be found",
+        "description": "When the location points to a resource that does not exist, the loader must surface the error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://json-schema.org/draft-07/schema#\")"
+          }
+        ],
+        "expected": "returns a JsonSchema whose meta\u2011schema IRI is \"http://json-schema.org/draft-07/schema#\"",
+        "description": "Meta\u2011schema URIs are treated specially; the factory should recognise the IRI and return a JsonSchema that represents the draft\u201107 meta\u2011schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/relative/../base-schema.json\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema that corresponds to the normalized path (i.e., classpath:/schemas/base-schema.json)",
+        "description": "The method should normalise relative path components (\"..\", \".\") before loading the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/empty-schema.json\")"
+          }
+        ],
+        "expected": "throws JsonSchemaException because the file exists but does not contain a valid JSON Schema document",
+        "description": "Even if the file is reachable, an empty or malformed JSON document must be detected and reported."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - additional scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/valid-schema.json\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance whose meta\u2011schema version matches the $schema keyword in the file (e.g., \"http://json-schema.org/draft/2020-12/schema#\")",
+        "description": "Happy\u2011path for a file\u2011system URI: the file exists and contains a correct JSON Schema; the factory should read, parse and return a usable JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://example.com/schemas/remote-schema.json\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance representing the remote schema",
+        "description": "Valid HTTP URI where the remote resource is reachable (e.g., via a test HTTP server or WireMock). The method must perform an HTTP GET, parse the response and produce a JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/with-ref.json\")"
+          }
+        ],
+        "expected": "returns a JsonSchema that can resolve the external $ref defined in the schema (e.g., a definition located at classpath:/schemas/definitions.json)",
+        "description": "Schema contains a $ref to another schema file. The factory must load the referenced schema and attach it to the resulting JsonSchema so that validation would succeed for referenced definitions."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/circular-ref.json\")"
+          }
+        ],
+        "expected": "returns a JsonSchema instance without throwing StackOverflowError; circular $ref is detected and handled via lazy resolution",
+        "description": "Schema has a self\u2011referencing $ref (direct or indirect). The factory should create the JsonSchema without entering an infinite recursion."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/space%20in%20name.json\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; the URL\u2011encoded space is correctly decoded and the resource is loaded",
+        "description": "Schema location contains URL\u2011encoded characters (e.g., %20). The method must decode the path before locating the resource."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/\")"
+          }
+        ],
+        "expected": "throws IllegalArgumentException indicating that the location does not point to a file containing a JSON Schema",
+        "description": "The supplied URI points to a directory rather than a file; the factory should reject it early."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/schema.json?version=1\")"
+          }
+        ],
+        "expected": "returns a non\u2011null JsonSchema instance; query parameters are ignored during loading",
+        "description": "Schema URI includes a query string. The loader must strip the query part and load the underlying file."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/cached-schema.json\")"
+          }
+        ],
+        "expected": "the two calls to getSchema with the same SchemaLocation return the identical JsonSchema instance (reference equality)",
+        "description": "Verifies that the factory caches schemas; repeated requests for the same location should return the same object, not a new instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/malformed.json\")"
+          }
+        ],
+        "expected": "throws JsonSchemaException (or IOException) because the content is not valid JSON",
+        "description": "The resource exists but contains malformed JSON (e.g., missing a closing brace). The factory must detect the parsing error and surface an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - malformed URI and I/O errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://[invalid-uri]\")"
+          }
+        ],
+        "expected": "IllegalArgumentException (malformed URI syntax)",
+        "description": "The supplied URI string cannot be parsed according to RFC 2396; the factory should reject it with an IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://example.com/not\u2011found.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating HTTP 404 Not Found",
+        "description": "The HTTP endpoint exists but returns a 404 status; the loader must surface the error rather than returning a schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://example.com/server\u2011error.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) indicating HTTP 500 Internal Server Error",
+        "description": "A remote server error should be propagated as a JsonSchemaException/IOException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"http://example.com/html\u2011response.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) because the response body is not valid JSON",
+        "description": "The HTTP resource returns HTML (or any non\u2011JSON content); parsing must fail and an exception should be thrown."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"file:/tmp/unreadable-schema.json\")"
+          }
+        ],
+        "expected": "IOException (or JsonSchemaException) caused by AccessDeniedException",
+        "description": "The file exists but the process lacks read permission; loading the schema should raise an I/O\u2011related exception."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - unsupported schemes and fragments",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"mailto:user@example.com\")"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating an unsupported URI scheme",
+        "description": "Only http, https, classpath and file schemes are supported; a mailto scheme must be rejected."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/valid-schema.json#definition\")"
+          }
+        ],
+        "expected": "IllegalArgumentException because fragment identifiers are not allowed in schema locations",
+        "description": "A SchemaLocation containing a URI fragment should be considered invalid for loading a whole schema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - invalid schema content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/unknown-meta-schema.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException indicating an unknown $schema meta\u2011schema IRI",
+        "description": "The schema contains a $schema value that does not correspond to any registered meta\u2011schema; the factory must fail."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/invalid-ref.json\")"
+          }
+        ],
+        "expected": "JsonSchemaException because a $ref points to a non\u2011existent external schema",
+        "description": "During loading the factory encounters a $ref that cannot be resolved; this should result in an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/valid-schema.yaml\")"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) because the default loader expects JSON and the content is YAML",
+        "description": "A schema file with a .yaml extension is supplied without specifying InputFormat; the loader should reject the unsupported format."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(SchemaLocation) - security manager restrictions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new SchemaLocation(\"classpath:/schemas/secure-schema.json\")"
+          }
+        ],
+        "expected": "SecurityException indicating access to the classpath resource is denied",
+        "description": "When a SecurityManager blocks access to the requested classpath resource, the factory must propagate the SecurityException."
+      }
+    ]
+  }
+]

@@ -1,0 +1,244 @@
+[
+  {
+    "group": "Null Parameters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormat"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the JSON document (rootNode) is null the method should immediately throw a NullPointerException because validation cannot be performed on a non\u2011existent node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the OutputFormat instance is null the method should reject the call with an IllegalArgumentException, as it has no way to produce a result."
+      }
+    ]
+  },
+  {
+    "group": "Successful Validation (no messages)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatSuccess"
+          }
+        ],
+        "expected": "outputSuccess",
+        "description": "A JSON document that conforms to the schema should result in an empty set of ValidationMessage objects. The mock OutputFormat receives this empty set and returns a predefined success value (outputSuccess)."
+      }
+    ]
+  },
+  {
+    "group": "Failed Validation (messages produced)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatCollect"
+          }
+        ],
+        "expected": "outputFailure",
+        "description": "A JSON document that violates the schema generates one or more ValidationMessage objects. The mock OutputFormat collects those messages and returns a predefined failure value (outputFailure)."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatThrows"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "If the OutputFormat implementation throws a RuntimeException while processing the validation result, the validate method should propagate that exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer influences validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatSuccess"
+          }
+        ],
+        "expected": "outputSuccessWithCustomizer",
+        "description": "When a non\u2011null ExecutionContextCustomizer is supplied (via the overload that eventually calls this method), it may modify the ExecutionContext (e.g., enable/disable certain validators). The test verifies that the customizer is invoked and that validation still succeeds, returning the customizer\u2011aware output."
+      }
+    ]
+  },
+  {
+    "group": "RootNode is MissingNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "missingNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatSuccess"
+          }
+        ],
+        "expected": "outputSuccess",
+        "description": "When the supplied JsonNode is a Jackson MissingNode (represents a non\u2011existent JSON value) the validator should treat it as a valid instance for an empty schema and forward an empty ValidationMessage set to the OutputFormat, which returns the predefined success value."
+      }
+    ]
+  },
+  {
+    "group": "RootNode is JSON null with required type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "jsonNullNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatCollect"
+          }
+        ],
+        "expected": "outputFailure",
+        "description": "The schema requires a non\u2011null type (e.g., \"type\": \"object\"). Providing a JsonNode that represents JSON null should generate a ValidationMessage about type mismatch, which the mock OutputFormat collects and returns the predefined failure value."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat returns null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatReturnsNull"
+          }
+        ],
+        "expected": "null",
+        "description": "If the OutputFormat implementation returns null (instead of a concrete result) the validate method must propagate that null value to the caller."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat returns custom object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatReturnsCustomObject"
+          }
+        ],
+        "expected": "customResultObject",
+        "description": "A custom OutputFormat that builds a domain\u2011specific DTO from the validation result should have its object returned unchanged by the validate method."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref resolution produces messages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "invalidJsonNodeReferencingOtherSchema"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatCollect"
+          }
+        ],
+        "expected": "outputFailure",
+        "description": "The schema contains a $ref to another schema file. The referenced schema defines a required property that is missing in the provided JSON, so validation yields a message. The mock OutputFormat collects the message and returns the predefined failure value."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor does not cause infinite loop",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNodeWithRecursiveAnchor"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatSuccess"
+          }
+        ],
+        "expected": "outputSuccess",
+        "description": "A schema that uses the \"$recursiveAnchor\": true keyword can reference itself. Validation of a JSON document that satisfies the recursive definition must complete without stack overflow, returning an empty message set that the mock OutputFormat translates to success."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws non\u2011Runtime Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "validJsonNode"
+          },
+          {
+            "parameter": "format",
+            "value": "mockFormatThrowsError"
+          }
+        ],
+        "expected": "Error",
+        "description": "If the OutputFormat implementation throws a java.lang.Error (e.g., AssertionError) the validate method must not catch it; the Error should propagate unchanged to the caller."
+      }
+    ]
+  }
+]

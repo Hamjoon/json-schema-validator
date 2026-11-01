@@ -1,0 +1,102 @@
+[
+  {
+    "group": "JsonSchema.toString - normal operation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/properties/name\" : {\"type\":\"string\"}",
+        "description": "When getEvaluationPath() returns a non\u2011null path and getSchemaNode() returns a non\u2011null JsonNode, toString() should concatenate them in the format \"<path>\" : <node>. A spy of JsonSchema is used to stub getEvaluationPath() to return \"/properties/name\" and getSchemaNode() to return a JsonNode whose toString() yields {\"type\":\"string\"}."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - null evaluation path",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"null\" : {\"type\":\"integer\"}",
+        "description": "If getEvaluationPath() returns null, Java string concatenation converts it to the literal \"null\". The method should still produce a valid string without throwing. A spy is configured to return null for getEvaluationPath() and a normal JsonNode for getSchemaNode()."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - null schema node",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "When getSchemaNode() returns null, the call to getSchemaNode().toString() triggers a NullPointerException. The test verifies that the exception is thrown. A spy is configured to return a non\u2011null path and null for getSchemaNode()."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - both null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.NullPointerException",
+        "description": "When both getEvaluationPath() and getSchemaNode() return null, the method attempts to invoke toString() on the null schema node, which results in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - empty evaluation path",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"\" : {\"type\":\"boolean\"}",
+        "description": "When getEvaluationPath() returns an empty string and getSchemaNode() returns a JsonNode representing {\"type\":\"boolean\"}, toString() should produce a string with empty quotes before the colon."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - whitespace evaluation path",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"  \" : {\"type\":\"string\"}",
+        "description": "When getEvaluationPath() returns a string consisting solely of whitespace characters, those spaces must be preserved inside the quotes in the resulting string."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - special characters in path",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/properties/name with space\" : {\"type\":\"string\"}",
+        "description": "When getEvaluationPath() contains spaces (or other printable characters), they should appear unchanged in the output, demonstrating that the method does not trim or alter the path."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - complex schema node",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\"/items\" : [{\"type\":\"string\"},{\"type\":\"number\"}]",
+        "description": "When getSchemaNode() is an array node containing multiple element schemas, its toString() representation (a JSON array) must be concatenated correctly with the evaluation path."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - repeated calls produce equal strings",
+    "cases": [
+      {
+        "input": [],
+        "expected": "identical strings",
+        "description": "Calling toString() multiple times on the same JsonSchema instance should return equal string values each time (the content must be identical, even if the object reference differs)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.toString - schema node toString throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "java.lang.IllegalStateException",
+        "description": "When getSchemaNode() returns a JsonNode whose toString() method throws an unchecked exception (e.g., IllegalStateException), the toString() implementation of JsonSchema propagates that exception. The test uses a spy or mock of JsonSchema that returns a valid evaluation path and a mocked JsonNode whose toString() is stubbed to throw IllegalStateException."
+      }
+    ]
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "testCases": [
+    {
+      "group": "JsonSchemaFactory#getYamlMapper - injected equals default",
+      "cases": [
+        {
+          "input": [],
+          "expected": "Returns the injected yamlMapper instance (same reference as the one set), even though it equals YamlMapperFactory.getInstance()",
+          "description": "Create a JsonSchemaFactory with yamlMapper set to the exact instance returned by YamlMapperFactory.getInstance(). Call getYamlMapper() and verify the returned object is the same reference as the injected one, confirming the true branch of the ternary expression is taken."
+        }
+      ]
+    },
+    {
+      "group": "JsonSchemaFactory#getYamlMapper - custom subclass",
+      "cases": [
+        {
+          "input": [],
+          "expected": "Returns the injected custom ObjectMapper subclass instance",
+          "description": "Define a subclass of ObjectMapper (e.g., MyObjectMapper) and construct JsonSchemaFactory with this instance. getYamlMapper() should return the same subclass instance, proving that the method returns the exact object supplied, regardless of its concrete type."
+        }
+      ]
+    },
+    {
+      "group": "JsonSchemaFactory#getYamlMapper - lazy fallback after injection change",
+      "cases": [
+        {
+          "input": [],
+          "expected": "First call returns YamlMapperFactory.getInstance(); after setting yamlMapper via reflection to a new ObjectMapper, subsequent call returns the newly injected instance",
+          "description": "Construct JsonSchemaFactory with no yamlMapper (field remains null). Call getYamlMapper() – expect the default mapper from YamlMapperFactory.getInstance(). Then, using reflection, set the private field `yamlMapper` to a new ObjectMapper instance. Call getYamlMapper() again – expect the newly set instance, demonstrating that the method always reflects the current state of the `yamlMapper` field."
+        }
+      ]
+    }
+  ]
+}

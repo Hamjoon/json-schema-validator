@@ -1,0 +1,278 @@
+```java
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Map;
+
+/**
+ * Tests for {@link JsonSchema#walk(ExecutionContext, JsonNode, boolean, Consumer)}.
+ *
+ * The original test suite referenced Mockito's {@code MockitoExtension}, which is not
+ * required for the behaviour under test. The import and the corresponding
+ * {@code @ExtendWith} annotation have therefore been removed to eliminate the
+ * compilation error caused by the missing Mockito dependency.
+ *
+ * Some versions of {@code ExecutionContext} do not expose {@code setAttribute} /
+ * {@code getAttribute} methods.  To keep the test portable we manipulate the
+ * internal attribute map via reflection.  This approach works for the reference
+ * implementation used by the library while still allowing us to verify that
+ * the customiser is applied before validation.
+ */
+class JsonSchema_walk_6_Test {
+
+    private static final String SIMPLE_SCHEMA = """
+        {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" }
+          },
+          "required": ["name"]
+        }
+        """;
+
+    private JsonSchema jsonSchema;
+
+    private ObjectMapper mapper;
+
+    @BeforeEach
+    void setupBeforeEach() {
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        jsonSchema = factory.getSchema(SIMPLE_SCHEMA);
+        mapper = new ObjectMapper();
+    }
+
+    @AfterEach
+    void teardownAfterEach() {
+        jsonSchema = null;
+        mapper = null;
+    }
+
+    /**
+     * Verify that {@code walk(ExecutionContext, JsonNode, boolean, Consumer<ExecutionContext>)}
+     * correctly validates a valid JSON instance when {@code validate} is {@code true}.
+     */
+    @Test
+    void walk_WithValidNodeAndValidateTrue_ShouldReturnEmptyValidationResult() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode validNode = mapper.readTree("{\"name\":\"John Doe\"}");
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        ValidationResult result = jsonSchema.walk(executionContext, validNode, true, noOpCustomizer);
+        assertNotNull(result, "Result must not be null");
+        assertTrue(result.getValidationMessages().isEmpty(), "Expected no validation messages for a valid instance");
+    }
+
+    /**
+     * Verify that the same method returns a {@link ValidationResult} containing
+     * messages when validation is requested and the instance is invalid.
+     */
+    @Test
+    void walk_WithInvalidNodeAndValidateTrue_ShouldReturnValidationMessages() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode invalidNode = mapper.readTree("{\"name\":123}");
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        ValidationResult result = jsonSchema.walk(executionContext, invalidNode, true, noOpCustomizer);
+        assertNotNull(result, "Result must not be null");
+        assertFalse(result.getValidationMessages().isEmpty(), "Expected validation messages for an invalid instance");
+    }
+
+    /**
+     * Verify that when {@code validate} is {@code false} the walk operation still
+     * returns a {@link ValidationResult} but does not perform validation, i.e.
+     * the message set is empty regardless of the node content.
+     */
+    @Test
+    void walk_WithValidateFalse_ShouldSkipValidation() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode anyNode = mapper.readTree("{\"name\":123}");
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        ValidationResult result = jsonSchema.walk(executionContext, anyNode, false, noOpCustomizer);
+        assertNotNull(result, "Result must not be null");
+        assertTrue(result.getValidationMessages().isEmpty(), "Validation messages should be empty when validation is disabled");
+    }
+
+    @Test
+    void walk_WithExecutionCustomizer_ShouldInjectAttributeBeforeValidation() throws Exception {
+        // given
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode validNode = mapper.readTree("{\"name\":\"Alice\"}");
+
+        // The ExecutionContext implementation used in this project does not expose
+        // a public setAttribute/getAttribute API.  We therefore manipulate the
+        // internal attribute map via reflection.
+        Consumer<ExecutionContext> customizer = ctx -> {
+            try {
+                var field = ctx.getClass().getDeclaredField("attributes");
+                field.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> map = (Map<String, Object>) field.get(ctx);
+                map.put("custom", "value");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        // when
+        ValidationResult result = jsonSchema.walk(executionContext, validNode, true, customizer);
+
+        // then
+        assertNotNull(result);
+        assertTrue(result.getValidationMessages().isEmpty(), "Expected no validation errors");
+
+        // Verify that the attribute set by the customizer is present.
+        Object customValue;
+        try {
+            var field = executionContext.getClass().getDeclaredField("attributes");
+            field.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) field.get(executionContext);
+            customValue = map.get("custom");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals("value", customValue, "The execution customizer should have stored the attribute \"custom\"=\"value\"");
+    }
+
+    @Test
+    void walk_NullNode_ShouldReturnValidationMessageIndicatingMissingInstance() {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        ValidationResult result = jsonSchema.walk(executionContext, null, true, noOpCustomizer);
+        assertNotNull(result);
+        Set<ValidationMessage> messages = result.getValidationMessages();
+        assertFalse(messages.isEmpty(), "Expected at least one validation message for null node");
+    }
+
+    @Test
+    void walk_NullExecutionContext_ShouldThrowNullPointerException() throws Exception {
+        JsonNode node = mapper.readTree("{\"name\":\"John\"}");
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.walk(null, node, true, noOpCustomizer),
+                "Passing a null ExecutionContext must result in NPE");
+    }
+
+    @Test
+    void walk_NullExecutionContextWithCustomizer_ShouldThrowNullPointerException() throws Exception {
+        JsonNode node = mapper.readTree("{\"name\":\"Alice\"}");
+        Consumer<ExecutionContext> customizer = ctx -> {
+            /* no‑op */
+        };
+        assertThrows(NullPointerException.class,
+                () -> jsonSchema.walk(null, node, true, customizer),
+                "Null ExecutionContext with a customizer must result in NPE");
+    }
+
+    @Test
+    void walk_ExecutionCustomizerThrowsException_ShouldPropagateRuntimeException() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode node = mapper.readTree("{\"name\":\"Bob\"}");
+        Consumer<ExecutionContext> explodingCustomizer = ctx -> {
+            throw new RuntimeException("customizer failure");
+        };
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> jsonSchema.walk(executionContext, node, true, explodingCustomizer),
+                "Exception from customizer must be propagated");
+        assertEquals("customizer failure", ex.getMessage());
+    }
+
+    @Test
+    void walk_WithSchemaReferenceResolution_ShouldValidateSuccessfully() throws Exception {
+        String schemaWithRef = """
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "http://example.com/root.json",
+              "$ref": "#/definitions/refSchema",
+              "definitions": {
+                "refSchema": {
+                  "type": "object",
+                  "properties": {
+                    "refProp": { "type": "string" }
+                  },
+                  "required": ["refProp"]
+                }
+              }
+            }
+            """;
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V202012);
+        JsonSchema refSchema = factory.getSchema(schemaWithRef);
+        JsonNode instance = mapper.readTree("{\"refProp\":\"value\"}");
+        ExecutionContext ctx = refSchema.createExecutionContext();
+        ValidationResult result = refSchema.walk(ctx, instance, true, ec -> {
+            /* no‑op */
+        });
+        assertNotNull(result);
+        assertTrue(result.getValidationMessages().isEmpty(),
+                "Instance satisfies the referenced subschema, so no errors are expected");
+    }
+
+    @Test
+    void walk_WithRecursiveAnchor_ShouldValidateWithoutInfiniteLoop() throws Exception {
+        String recursiveSchema = """
+            {
+              "$schema": "https://json-schema.org/draft/2020-12/schema",
+              "$id": "http://example.com/recursive.json",
+              "$recursiveAnchor": true,
+              "type": "object",
+              "properties": {
+                "self": { "$recursiveRef": "#" }
+              }
+            }
+            """;
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V202012);
+        JsonSchema schema = factory.getSchema(recursiveSchema);
+        JsonNode instance = mapper.readTree("{\"self\":{}}");
+        ExecutionContext ctx = schema.createExecutionContext();
+        ValidationResult result = schema.walk(ctx, instance, true, ec -> {
+            /* no‑op */
+        });
+        assertNotNull(result);
+        assertTrue(result.getValidationMessages().isEmpty(),
+                "Recursive anchor should be handled gracefully without errors");
+    }
+
+    @Test
+    void walk_MissingRequiredProperty_ShouldReturnValidationMessage() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode node = mapper.readTree("{\"age\":30}");
+        Consumer<ExecutionContext> noOpCustomizer = ctx -> {
+            /* no‑op */
+        };
+        ValidationResult result = jsonSchema.walk(executionContext, node, true, noOpCustomizer);
+        assertNotNull(result);
+        Set<ValidationMessage> messages = result.getValidationMessages();
+        assertFalse(messages.isEmpty(), "Expected a validation message for missing required property");
+        boolean mentionsName = messages.stream().anyMatch(m -> m.getMessage().contains("name"));
+        assertTrue(mentionsName, "Validation message should mention the missing 'name' property");
+    }
+
+    @Test
+    void walk_WithExecutionCustomizer_ShouldBeInvoked() throws Exception {
+        ExecutionContext executionContext = jsonSchema.createExecutionContext();
+        JsonNode validNode = mapper.readTree("{\"name\":\"Alice\"}");
+        AtomicBoolean invoked = new AtomicBoolean(false);
+        Consumer<ExecutionContext> customizer = ctx -> invoked.set(true);
+        ValidationResult result = jsonSchema.walk(executionContext, validNode, true, customizer);
+        assertNotNull(result);
+        assertTrue(result.getValidationMessages().isEmpty(), "Expected no validation errors");
+        assertTrue(invoked.get(), "Customizer should have been invoked");
+    }
+}
+```

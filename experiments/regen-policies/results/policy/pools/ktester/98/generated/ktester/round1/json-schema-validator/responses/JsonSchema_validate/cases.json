@@ -1,0 +1,542 @@
+[
+  {
+    "group": "Discriminator keyword disabled \u2013 no discriminator handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false)"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "No interaction with DiscriminatorContext; errors set is empty; executionContext.results.setResult is NOT called.",
+        "description": "When the configuration disables the discriminator keyword, both discriminator blocks are skipped regardless of schema content."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator absent in schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=null)"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "Both discriminator blocks find null discriminator \u2013 no registration, no checkDiscriminatorMatch, errors empty.",
+        "description": "Schema does not contain a \"discriminator\" property; the validator must safely ignore it."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator present, but ExecutionContext has no DiscriminatorContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=null)"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "First discriminator block does not register (null context). Second block skips because context is null. No errors produced.",
+        "description": "Ensures that a missing DiscriminatorContext prevents any discriminator processing."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 context present, discriminator not previously registered (null from context)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext(returnFromPath=null))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"type\":\"cat\"})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"type\":\"cat\"})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "First block registers discriminator. Second block retrieves null from context, registers again, uses current discriminator, extracts propertyName, obtains value \"cat\", calls checkDiscriminatorMatch with that value. No errors unless validator adds them.",
+        "description": "Tests the path where the discriminator is newly registered because it was not present in the context."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 context present, discriminator already registered (non\u2011null from context)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext(returnFromPath=objectNode({\"propertyName\":\"type\"})))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"type\":\"dog\"})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"type\":\"dog\"})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "First block registers discriminator. Second block finds existing discriminator from context, does NOT re\u2011register, uses the existing one, extracts propertyName \"type\", reads value \"dog\", invokes checkDiscriminatorMatch.",
+        "description": "Ensures that when a discriminator is already stored in the context, it is reused."
+      }
+    ]
+  },
+  {
+    "group": "Validator returns errors \u2013 errors collection populated",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(returnSet={errorMessage(\"msg1\")}))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors set contains the returned ValidationMessage; executionContext.results.setResult called with false; method returns non\u2011empty set.",
+        "description": "Verifies that when any validator produces messages, they are collected, the result is marked as failed, and the set is returned."
+      }
+    ]
+  },
+  {
+    "group": "Validator returns empty set \u2013 no errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(returnSet=emptySet()))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors remains null; executionContext.results.setResult NOT called; method returns emptySet.",
+        "description": "Ensures that when validators produce no messages, the method returns an empty set and does not mark the instance as failed."
+      }
+    ]
+  },
+  {
+    "group": "Validator throws exception \u2013 finally block still processes results",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(throwsException=RuntimeException(\"boom\"), returnSet={errorMessage(\"msg2\")}))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "Exception propagates, but finally block adds any non\u2011null results to errors before propagation.",
+        "description": "Confirms that the finally block executes even when a validator throws, preserving any partial results."
+      }
+    ]
+  },
+  {
+    "group": "No validators \u2013 empty validator list",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validators=emptyList())"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors == emptySet; executionContext.results.setResult is NOT called",
+        "description": "When the schema has no validators, the method should return an empty set and must not mark the instance as failed."
+      }
+    ]
+  },
+  {
+    "group": "Validator returns null \u2013 result ignored",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(returnSet=null))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors == emptySet; executionContext.results.setResult is NOT called",
+        "description": "A validator that returns null should be treated as no messages; the method must continue without adding a null collection to the error set."
+      }
+    ]
+  },
+  {
+    "group": "Multiple validators \u2013 first returns errors, second empty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validators=[mockValidator(returnSet={msg(\"first\"), msg(\"second\")}), mockValidator(returnSet=emptySet())])"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors contains exactly two messages (\"first\", \"second\"); executionContext.results.setResult called once with false",
+        "description": "Ensures that errors from the first validator are retained while an empty result from a later validator does not affect the already\u2011collected errors."
+      }
+    ]
+  },
+  {
+    "group": "Multiple validators \u2013 both return errors, union performed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validators=[mockValidator(returnSet={msg(\"a\")}), mockValidator(returnSet={msg(\"b\"), msg(\"c\")})])"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "errors contains three distinct messages (\"a\", \"b\", \"c\"); executionContext.results.setResult called once with false",
+        "description": "Validates that the SetView correctly unions messages from several validators, preserving uniqueness."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator present but property missing in instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext(returnFromPath=objectNode({\"propertyName\":\"type\"})))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"name\":\"Rex\"})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"name\":\"Rex\"})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "First discriminator block registers discriminator; second block retrieves same discriminator; discriminatorNode == null; discriminatorPropertyValue == null; checkDiscriminatorMatch called with null value; no errors unless checkDiscriminatorMatch adds them; errors set remains empty; executionContext.results.setResult NOT called",
+        "description": "When the instance does not contain the discriminator property, the validator must still invoke checkDiscriminatorMatch with a null value, allowing the discriminator logic to decide if this is an error."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator property present but value is null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext(returnFromPath=objectNode({\"propertyName\":\"type\"})))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"type\":null})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"type\":null})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "discriminatorNode is a NullNode; discriminatorPropertyValue == null; checkDiscriminatorMatch called with null; errors set empty unless checkDiscriminatorMatch adds messages; executionContext.results.setResult NOT called",
+        "description": "Even when the discriminator field exists but its value is JSON null, the method should treat the extracted value as null and forward it to the discriminator matching logic."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator property value non\u2011textual (number)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext(returnFromPath=objectNode({\"propertyName\":\"type\"})))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"type\":123})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"type\":123})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "discriminatorNode is numeric; discriminatorPropertyValue == \"123\" (asText conversion); checkDiscriminatorMatch called with \"123\"; errors empty unless checkDiscriminatorMatch adds them; executionContext.results.setResult NOT called",
+        "description": "Ensures that non\u2011string discriminator values are converted to text via JsonNode.asText() before being passed to the matching routine."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode \u2013 NullPointerException when accessing discriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext())"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "The JsonSchema instance is constructed with a null schemaNode. The method attempts to call schemaNode.get(\"discriminator\") which throws NPE before any other logic is executed."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator node is not an ObjectNode \u2013 ClassCastException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext())"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "java.lang.ClassCastException",
+        "description": "The schemaNode contains a \"discriminator\" field whose value is a JSON array (or text). The cast to ObjectNode in both discriminator blocks fails, resulting in a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator object missing required \"propertyName\" \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=true, discriminatorContext=mockDiscriminatorContext())"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "objectNode({\"type\":\"cat\"})"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "objectNode({\"type\":\"cat\"})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "The schemaNode contains a valid ObjectNode discriminator but does not define the mandatory \"propertyName\" field. When the code executes discriminatorToUse.get(\"propertyName\").asText(), get returns null and asText() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext results null \u2013 NullPointerException when marking failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(returnSet={errorMessage(\"msg\")}), results=null)"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "java.lang.NullPointerException",
+        "description": "A validator returns a non\u2011empty set, causing errors to be populated. After the loop the method attempts to call executionContext.getResults().setResult(...). Because getResults() returns null, a NPE is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Validator throws unchecked exception and finally block still processes results",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext(discriminatorKeywordEnabled=false, validator=mockValidator(throwsException=IllegalStateException(\"boom\"), returnSet={errorMessage(\"msg2\")}))"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "nullNode()"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "java.lang.IllegalStateException",
+        "description": "The validator throws an unchecked exception. The finally block must still execute, adding any non\u2011null results (the mock returns a set with one message) to the errors collection before the exception propagates."
+      }
+    ]
+  }
+]

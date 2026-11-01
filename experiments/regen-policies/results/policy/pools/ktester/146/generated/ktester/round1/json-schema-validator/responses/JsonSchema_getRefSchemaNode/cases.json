@@ -1,0 +1,247 @@
+[
+  {
+    "group": "Schema ID handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/name"
+          }
+        ],
+        "expected": "JsonNode located at '/properties/name' of the root schema (no ID stripping, pointer resolved)",
+        "description": "Schema has no ID (findSchemaResourceRoot().getId() returns null). The reference starts with '/' so it is decoded (no encoded chars) and resolved directly against the root schema node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema/properties/age"
+          }
+        ],
+        "expected": "JsonNode located at '/properties/age' of the root schema (ID stripped, pointer resolved)",
+        "description": "Schema ID is 'http://example.com/schema'. The reference starts with this ID, therefore the ID part is stripped leaving '/properties/age'. The pointer is then resolved against the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "Fragment handling with '#/' prefix",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/definitions/person"
+          }
+        ],
+        "expected": "JsonNode located at '/definitions/person' of the root schema (fragment stripped, pointer resolved)",
+        "description": "Reference begins with '#/'. After optional ID stripping, the leading '#/' is removed (substring(1)) resulting in '/definitions/person', which is then resolved."
+      },
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema#/definitions/address"
+          }
+        ],
+        "expected": "JsonNode located at '/definitions/address' of the root schema (ID stripped, fragment stripped, pointer resolved)",
+        "description": "Reference contains both an ID and a fragment. ID is stripped first, leaving '#/definitions/address'. The '#/' prefix is then removed, yielding '/definitions/address' which is resolved."
+      }
+    ]
+  },
+  {
+    "group": "No leading '/' after processing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "definitions/simple"
+          }
+        ],
+        "expected": "Root schema JsonNode (no pointer processing because it does not start with '/' after previous steps)",
+        "description": "After ID and '#/' handling, the resulting jsonPointer does not start with '/' so the method returns the original root schema node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Missing node handling (handleNullNode invoked)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/nonexistent/path"
+          }
+        ],
+        "expected": "Result of handleNullNode(ref, schema) (the method is called because node.at('/nonexistent/path') returns MissingNode)",
+        "description": "The pointer resolves to a missing node; the method should call handleNullNode and return its result."
+      }
+    ]
+  },
+  {
+    "group": "URL decoding of encoded characters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties%2Fname"
+          }
+        ],
+        "expected": "JsonNode located at '/properties/name' of the root schema (encoded '/' decoded before resolution)",
+        "description": "Reference contains an encoded '/' (%2F). After ID and fragment handling, the pointer starts with '/', the method decodes it using UTF\u20118, turning it into '/properties/name' before resolution."
+      }
+    ]
+  },
+  {
+    "group": "Null reference handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null reference should cause a NullPointerException because the method invokes ref.startsWith(...) without a null\u2011check."
+      }
+    ]
+  },
+  {
+    "group": "Empty reference handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": ""
+          }
+        ],
+        "expected": "Root schema JsonNode (no processing performed)",
+        "description": "An empty string does not trigger ID stripping, '#/' removal, or '/' handling, so the method should return the original root schema node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Exact ID match (no pointer)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema"
+          }
+        ],
+        "expected": "Root schema JsonNode (ID stripped leaving empty pointer)",
+        "description": "When the reference exactly equals the schema ID, the ID part is stripped, leaving an empty jsonPointer. Because it does not start with '/', the method returns the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "Reference without leading slash after ID stripping",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schemaproperties/name"
+          }
+        ],
+        "expected": "Root schema JsonNode (pointer does not start with '/' after ID stripping)",
+        "description": "The reference starts with the schema ID, which is stripped, leaving 'properties/name' (no leading '/'). The method therefore skips pointer resolution and returns the root node."
+      }
+    ]
+  },
+  {
+    "group": "Reference with plus sign decoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties+name"
+          }
+        ],
+        "expected": "JsonNode located at '/properties name' of the root schema (plus decoded to space)",
+        "description": "The '+' character is decoded by URLDecoder into a space character. After decoding, the pointer becomes '/properties name' which is resolved against the root schema."
+      }
+    ]
+  },
+  {
+    "group": "Reference with encoded space (%20)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties%20name"
+          }
+        ],
+        "expected": "JsonNode located at '/properties name' of the root schema (encoded space decoded)",
+        "description": "The reference contains an encoded space (%20). The method decodes it to a literal space before resolving the pointer."
+      }
+    ]
+  },
+  {
+    "group": "Fragment only reference without leading slash",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#definitions/person"
+          }
+        ],
+        "expected": "Root schema JsonNode (fragment not prefixed with '#/', so no stripping; pointer does not start with '/', method returns root node)",
+        "description": "A fragment that starts with '#', but not with '#/', bypasses the '#/' removal logic. Since the resulting jsonPointer does not begin with '/', the method returns the root schema node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Encoded slash after ID stripping leading to missing node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema#/nonexistent%2Fpath"
+          }
+        ],
+        "expected": "Result of handleNullNode(ref, schema) (decoded pointer '/nonexistent/path' resolves to MissingNode, triggering handleNullNode)",
+        "description": "ID is stripped, leaving '#/nonexistent%2Fpath'. After '#/' removal, jsonPointer becomes '/nonexistent%2Fpath', which is decoded to '/nonexistent/path'. The node is missing, so handleNullNode should be invoked."
+      }
+    ]
+  },
+  {
+    "group": "Null schema resource root handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/any/pointer"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When findSchemaResourceRoot() returns null, the subsequent call to schema.getId() triggers a NullPointerException before any other processing."
+      }
+    ]
+  },
+  {
+    "group": "Null schema node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/some/path"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "findSchemaResourceRoot() returns a valid JsonSchema, but its getSchemaNode() returns null. Because the ref starts with '/', the method attempts node.at(jsonPointer) on a null node, causing a NullPointerException."
+      }
+    ]
+  }
+]

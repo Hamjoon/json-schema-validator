@@ -1,0 +1,242 @@
+[
+  {
+    "group": "getNode(Object) \u2013 property name (String)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"title\""
+          }
+        ],
+        "expected": "\"Example Schema\"",
+        "description": "When the schemaNode is an ObjectNode containing a field \"title\" with value \"Example Schema\", getNode(\"title\") should return the JsonNode representing that value."
+      },
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"missing\""
+          }
+        ],
+        "expected": "null",
+        "description": "If the requested field does not exist in the ObjectNode, getNode should return null (the branch that handles a missing property)."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 array index (Integer)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "0"
+          }
+        ],
+        "expected": "\"first\"",
+        "description": "When the schemaNode is an ArrayNode ['first','second'], getNode(0) should return the JsonNode representing the first element."
+      },
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "1"
+          }
+        ],
+        "expected": "\"second\"",
+        "description": "When the schemaNode is an ArrayNode ['first','second'], getNode(1) should return the JsonNode representing the second element."
+      },
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "2"
+          }
+        ],
+        "expected": "null",
+        "description": "When the schemaNode is an ArrayNode of size 2, getNode(2) (out\u2011of\u2011bounds) should return null."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 array index supplied as String",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"0\""
+          }
+        ],
+        "expected": "null",
+        "description": "When the schemaNode is an ArrayNode, a String argument (even if numeric) is not treated as an index; getNode(\"0\") should therefore return null."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 null argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing null as propertyOrIndex should result in a NullPointerException (the method does not accept null)."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 unsupported argument type (Boolean)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "true"
+          }
+        ],
+        "expected": "null",
+        "description": "When a Boolean is supplied, getNode should ignore the type and return null."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 schemaNode is a value node (not container)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"any\""
+          }
+        ],
+        "expected": "null",
+        "description": "If the underlying schemaNode is a primitive/value node (e.g., a text node), getNode should always return null regardless of the argument."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 URL\u2011decoded property name",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"a%20b\""
+          }
+        ],
+        "expected": "\"space key\"",
+        "description": "When the schemaNode contains a field with a space in its name (\"a b\"), supplying the URL\u2011encoded string \"a%20b\" should be decoded and the corresponding JsonNode returned."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 negative array index (Integer)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "-1"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the schemaNode is an ArrayNode, supplying a negative integer index should be considered invalid and cause an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 non\u2011integer numeric type (Long)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "123L"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A Long value is not a supported index type for array access; the method should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 floating\u2011point index (Double)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "1.5"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Floating\u2011point numbers cannot be used as array indexes; the method should throw IllegalArgumentException when a Double is supplied."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 invalid URL\u2011encoded property name",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"%ZZ\""
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If the supplied String cannot be URL\u2011decoded (malformed percent\u2011encoding), the method should propagate an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 unsupported argument type (Character)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "'c'"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A Character is not a recognized property name or index type; the method should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 unsupported argument type (Object)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "new Object()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Passing an arbitrary Object as the argument is unsupported and should result in IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "getNode(Object) \u2013 schemaNode is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "propertyOrIndex",
+            "value": "\"any\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the JsonSchema instance was constructed with a null schemaNode, any call to getNode should raise NullPointerException."
+      }
+    ]
+  }
+]

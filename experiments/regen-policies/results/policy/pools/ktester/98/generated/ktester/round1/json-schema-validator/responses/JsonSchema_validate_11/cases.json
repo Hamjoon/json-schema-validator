@@ -1,0 +1,517 @@
+[
+  {
+    "group": "Valid Input Scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A well\u2011formed JSON string that conforms to the schema. No custom execution context is supplied, so the default context is used."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: 30\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A well\u2011formed YAML document that conforms to the schema, using a different InputFormat branch."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Input Scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":\\\"thirty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011empty Set<ValidationMessage> containing at least one message about type mismatch for property 'age'.",
+        "description": "JSON is syntactically correct but violates the schema (age should be an integer). Tests the validation branch that collects schema violations."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because the JSON is malformed.",
+        "description": "Malformed JSON triggers the deserialization error branch."
+      }
+    ]
+  },
+  {
+    "group": "Null / Exception Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException with message indicating that input must not be null.",
+        "description": "Ensures the method validates the mandatory 'input' argument before deserialization."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or NullPointerException) because inputFormat is required.",
+        "description": "Covers the branch that checks for a null InputFormat."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%E4%BD%A0%E5%A5%BD\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws UnsupportedEncodingException wrapped in a ValidationException when URL decoding fails.",
+        "description": "Tests the branch that catches UnsupportedEncodingException from URLDecoder."
+      }
+    ]
+  },
+  {
+    "group": "Custom Execution Context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setFailFast(true)"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> that may be truncated after the first error (if any). Since the input is valid, the set is empty.",
+        "description": "Provides a custom ExecutionContextCustomizer that enables fail\u2011fast mode, exercising the branch where the customizer is applied to the ExecutionContext before validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":\\\"thirty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setReportAllErrors(false)"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing at most one error message because the customizer disables reporting of all errors.",
+        "description": "Customizes the execution context to stop collecting further errors after the first violation, covering the branch that respects the customized context settings."
+      }
+    ]
+  },
+  {
+    "group": "URL Encoded Input Scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%7B%22name%22%3A%22John%22%2C%22age%22%3A30%7D\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A correctly URL\u2011encoded JSON document; after decoding it matches the schema, exercising the URL_ENCODED branch without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%E4%BD%A0%E5%A5%BD\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws UnsupportedEncodingException (wrapped in a ValidationException) because the decoded content is not valid JSON/YAML for the schema.",
+        "description": "Valid URL\u2011encoded string that decodes to non\u2011JSON content, triggering the decoding\u2011then\u2011deserialization error path."
+      }
+    ]
+  },
+  {
+    "group": "Empty / Whitespace Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because the input string is empty.",
+        "description": "Empty string supplied for JSON format; deserialization should fail immediately."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"   \\n   \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because the input contains only whitespace.",
+        "description": "Whitespace\u2011only input for JSON format; verifies that whitespace is not treated as valid JSON."
+      }
+    ]
+  },
+  {
+    "group": "Schema Constraint Violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30,\\\"extra\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011empty Set<ValidationMessage> containing a message about an additional property 'extra' not being allowed.",
+        "description": "JSON contains a property that is not defined in the schema (additionalProperties = false)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011empty Set<ValidationMessage> containing a message that required property 'age' is missing.",
+        "description": "Required property 'age' is omitted; tests the required\u2011property validation branch."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":null,\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011empty Set<ValidationMessage> containing a type\u2011mismatch message for property 'name' (null not allowed).",
+        "description": "Property 'name' is explicitly null while the schema expects a non\u2011null string."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":\\\"thirty\\\",\\\"city\\\":\\\"NY\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setFailFast(true)"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing exactly one error (either the type mismatch for 'age' or the additional property 'city'), because fail\u2011fast is enabled.",
+        "description": "Input has two independent violations; the custom execution context forces fail\u2011fast, verifying that validation stops after the first error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":\\\"thirty\\\",\\\"city\\\":\\\"NY\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setReportAllErrors(true)"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing at least two messages (type mismatch for 'age' and additional property 'city'), because all errors are reported.",
+        "description": "Same input as above but with a customizer that ensures all errors are collected, testing the multi\u2011error aggregation path."
+      }
+    ]
+  },
+  {
+    "group": "Custom Execution Context Edge Cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"Customizer failure\"); }"
+          }
+        ],
+        "expected": "Throws RuntimeException with message 'Customizer failure' propagated from the executionCustomizer.",
+        "description": "The customizer itself throws an exception; verifies that such exceptions are not swallowed by the validate method."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setCustomMessage(\"myCustomMessage\")"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors) and the custom message is stored in the ExecutionContext (observable via ctx.getCustomMessage()).",
+        "description": "Customizer sets a user\u2011defined attribute on the ExecutionContext; the test checks that the customizer is applied without affecting validation outcome."
+      }
+    ]
+  },
+  {
+    "group": "Malformed YAML Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: 30: extra\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because the YAML input is malformed and cannot be deserialized.",
+        "description": "Provides a syntactically invalid YAML document to trigger the deserialization error path for the YAML branch."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Percent Encoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%E4%BD%A0%E5%A5\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException (or UnsupportedEncodingException) caused by malformed percent\u2011encoding when URLDecoder attempts to decode the input.",
+        "description": "Supplies a URL\u2011encoded string with an incomplete percent\u2011encoding sequence, exercising the branch that validates percent\u2011encoding before decoding."
+      }
+    ]
+  },
+  {
+    "group": "Empty URL Encoded Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because after decoding the empty string the JSON parser fails.",
+        "description": "Tests the behavior when an empty string is supplied with URL_ENCODED format; decoding yields an empty string which cannot be parsed as JSON/YAML."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace URL Encoded Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"   \\n   \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws com.fasterxml.jackson.core.JsonParseException (or a wrapped ValidationException) because after decoding the whitespace\u2011only string cannot be parsed as JSON/YAML.",
+        "description": "Ensures that whitespace\u2011only URL\u2011encoded input is not treated as valid content and triggers a parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "Custom Execution Context Invalid Configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setMaxDepth(-1)"
+          }
+        ],
+        "expected": "Throws IllegalArgumentException because the execution customizer attempts to set a negative max depth, which is invalid.",
+        "description": "Customizes the ExecutionContext with an illegal configuration (negative max depth) to verify that the validator validates customizer\u2011provided settings."
+      }
+    ]
+  }
+]

@@ -1,0 +1,145 @@
+{
+    "new_cases": [
+        {
+            "group": "JsonSchemaFactory.getSchema(URI, JsonNode) - URI variants",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/schema.json#%2Fdefinitions%2Ffoo\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"id\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/schema.json#/definitions/foo\" and whose root node matches the supplied JsonNode",
+                    "description": "Verify that a URI containing an encoded fragment is preserved verbatim in the resulting SchemaLocation."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"schemas/myschema.json\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"schemas/myschema.json\" and whose root node matches the supplied JsonNode",
+                    "description": "Test handling of a relative URI (no scheme). The factory should accept it and store the exact string."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/schema.json?v=2&debug=true\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"type\\\":\\\"null\\\"}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/schema.json?v=2&debug=true\" and whose root node matches the supplied JsonNode",
+                    "description": "Ensure that query parameters are retained in the SchemaLocation."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"ftp://example.com/remote-schema.json\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"type\\\":\\\"integer\\\"}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"ftp://example.com/remote-schema.json\" and whose root node matches the supplied JsonNode",
+                    "description": "Confirm that the factory does not enforce a particular scheme; an FTP URI should be accepted like any other."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchemaFactory.getSchema(URI, JsonNode) - JsonNode content variations",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/empty-object\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/empty-object\" and whose root node is an empty ObjectNode",
+                    "description": "Pass an empty JSON object as the schema node; the factory should still create a JsonSchema wrapper."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/array-schema\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/array-schema\" and whose root node contains an array definition with string items",
+                    "description": "Validate that a typical array schema is accepted without error."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/complex-schema\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"{\\\"$id\\\":\\\"#/components/schemas/Person\\\",\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"},\\\"address\\\":{\\\"$ref\\\":\\\"#/components/schemas/Address\\\"}}}\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/complex-schema\" and whose root node contains the $ref field unchanged",
+                    "description": "Supply a schema containing a $ref to ensure the node is stored verbatim; the factory should not resolve references at construction time."
+                },
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/primitive-node\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "new com.fasterxml.jackson.databind.ObjectMapper().readTree(\"\\\"just a string\\\"\")"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance whose SchemaLocation string equals \"http://example.com/primitive-node\" and whose root node is a TextNode with value \\\"just a string\\\"",
+                    "description": "Pass a JSON primitive (a plain string) as the schema node. The factory should still wrap it without throwing."
+                }
+            ]
+        },
+        {
+            "group": "JsonSchemaFactory.getSchema(URI, JsonNode) - immutability check",
+            "cases": [
+                {
+                    "input": [
+                        {
+                            "parameter": "schemaUri",
+                            "value": "java.net.URI.create(\"http://example.com/immutable-test\")"
+                        },
+                        {
+                            "parameter": "jsonNode",
+                            "value": "com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.objectNode().set(\"type\", com.fasterxml.jackson.databind.node.TextNode.valueOf(\"string\"))"
+                        }
+                    ],
+                    "expected": "non‑null JsonSchema instance and the original JsonNode remains unchanged after the call",
+                    "description": "Ensure that `getSchema` does not mutate the supplied JsonNode. The test captures the node before the call, invokes the method, then verifies the node's content is identical."
+                }
+            ]
+        }
+    ]
+}

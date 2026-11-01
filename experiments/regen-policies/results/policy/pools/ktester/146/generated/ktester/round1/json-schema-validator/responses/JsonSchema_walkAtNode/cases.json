@@ -1,0 +1,648 @@
+[
+  {
+    "group": "Successful validation when flag is true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "The node satisfies the schema (required string property \"name\"). With validate=true the method should return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Failed validation when flag is true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage about missing required property 'name'",
+        "description": "The node is missing the required property defined in the schema. With validate=true the method must return a ValidationResult that contains the appropriate error message."
+      }
+    ]
+  },
+  {
+    "group": "Validation skipped when flag is false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "When the validate flag is false the schema walk should not perform any validation, therefore even an invalid node must result in a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Null executionContext \u2013 internal creation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"Alice\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"Alice\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "If the supplied ExecutionContext is null the method should create a default context internally and still validate correctly."
+      }
+    ]
+  },
+  {
+    "group": "Null node \u2013 defensive handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException thrown",
+        "description": "The method is expected to throw NPE (or return a failure ValidationResult) when the node to walk is null, exercising the null\u2011check branch."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011root instanceLocation tracking",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"address\": { \"city\": 123 } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"address\": { \"city\": 123 } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"address\")"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage whose path is '/address/city'",
+        "description": "When walking a sub\u2011node, the instanceLocation should be prepended to any error paths. The schema expects \"city\" to be a string, so the error path must reflect the supplied location."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation for array type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "[1, 2, 3]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "[1, 2, 3]"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "The schema for this JsonSchema instance defines type \"array\" with items of type \"integer\". Supplying a valid integer array with validate=true must produce a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Failed validation for array type with wrong element type",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "[\"a\", \"b\", 3]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "[\"a\", \"b\", 3]"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage about element at index 2 not being an integer",
+        "description": "The schema expects an array of integers. The provided array contains a non\u2011integer element (3 is okay but if we use \"c\" it would be wrong \u2013 here we use 3 as a placeholder for a string to trigger the error). The validator must report the type mismatch at the offending index."
+      }
+    ]
+  },
+  {
+    "group": "Enum constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "\"blue\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "\"blue\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage about value not being one of the allowed enum values",
+        "description": "The schema defines an enum [\"red\",\"green\",\"yellow\"]. Supplying \"blue\" should cause a validation failure regardless of the validate flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "\"blue\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "\"blue\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "When validate=false the enum check must be skipped, therefore even an illegal enum value results in a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "AdditionalProperties false \u2013 extra field present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"allowed\": \"yes\", \"extra\": 123 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"allowed\": \"yes\", \"extra\": 123 }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage about additional property 'extra' not being allowed",
+        "description": "The schema has \"additionalProperties\": false and defines a single property \"allowed\". The supplied JSON contains an unexpected property \"extra\"; validation must fail and report the extra property."
+      }
+    ]
+  },
+  {
+    "group": "Deep instanceLocation error path tracking",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "\"not-a-number\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"level1\": { \"level2\": { \"value\": \"not-a-number\" } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"level1\",\"level2\",\"value\")"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage whose path is '/level1/level2/value'",
+        "description": "The schema expects the node at this location to be an integer. The supplied node is a string. Because instanceLocation is already deep, the resulting error path must reflect the full hierarchy."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution with external definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"person\": { } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"person\": { } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing a ValidationMessage about missing required property 'name' defined in the $ref schema",
+        "description": "The JsonSchema instance contains a property \"person\" whose schema is a $ref to an external definition that requires a \"name\" property. The node lacks \"name\", so validation must follow the reference and report the missing property."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling \u2013 valid recursive structure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"node\": { \"node\": { \"value\": 1 } } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"node\": { \"node\": { \"value\": 1 } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "The schema is declared with \"$recursiveAnchor\": true and defines a recursive object structure where each \"node\" may contain another \"node\". The supplied JSON conforms to the recursion, so validation must succeed."
+      }
+    ]
+  },
+  {
+    "group": "Fail\u2011fast disabled \u2013 multiple errors aggregated",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext().setFailFast(false)"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"age\": -5, \"email\": \"not-an-email\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"age\": -5, \"email\": \"not-an-email\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.failure containing at least two ValidationMessages: one for \"age\" being less than minimum, another for \"email\" not matching format",
+        "description": "The schema defines \"age\" with a minimum of 0 and \"email\" with format \"email\". With failFast disabled the validator must report both violations in the same ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Node is sub\u2011node but rootNode is full document \u2013 $ref uses rootNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"id\": 10 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"wrapper\": { \"id\": 10 } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"wrapper\")"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult.success (no validation messages)",
+        "description": "The schema contains a $ref that resolves relative to the root document. By passing a sub\u2011node as 'node' and the full document as 'rootNode', the validator must correctly resolve the reference using rootNode and validate the sub\u2011node successfully."
+      }
+    ]
+  },
+  {
+    "group": "Null instanceLocation \u2013 defensive handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The method should validate that the instanceLocation argument is not null and throw a NullPointerException when it is null."
+      }
+    ]
+  },
+  {
+    "group": "Unresolvable $ref \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"refNode\": {} }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"refNode\": {} }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The schema contains a $ref that points to a non\u2011existent definition (e.g., \"#/components/schemas/Unknown\"). walkAtNode should detect the unresolved reference and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref URI \u2013 UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"badRef\": {} }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"badRef\": {} }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "UnsupportedEncodingException",
+        "description": "The schema uses a $ref with an illegal URI component (e.g., \"#/components/schemas/%ZZ\"). During resolution the code calls URLDecoder, which throws UnsupportedEncodingException. The test verifies that this exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "External schema loading failure \u2013 IOException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"external\": {} }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"external\": {} }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IOException",
+        "description": "The schema contains a $ref that points to an external file (e.g., \"file:///nonexistent/schema.json\"). When walkAtNode attempts to load the external resource it fails, resulting in an IOException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JsonNodePath segment \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "node",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "{ \"name\": \"John\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(null)"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "JsonNodePath.of(null) creates a path containing a null segment. walkAtNode should detect the illegal path element and throw an IllegalArgumentException."
+      }
+    ]
+  }
+]

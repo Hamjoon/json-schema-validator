@@ -1,0 +1,79 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:86: error: JsonSchemaFactory(ObjectMapper,YAMLMapper,String,URISchemeFactory,URISchemeFetcher,URNFactory,Map<String,JsonMetaSchema>,Map<String,String>,boolean,CompositeURITranslator) has private access in JsonSchemaFactory
+            super(jsonMapper, yamlMapper, defaultMetaSchemaURI, uriFactory, uriFetcher,
+            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:101: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:103: error: findMetaSchemaForSchema(JsonNode) has private access in JsonSchemaFactory
+            return super.findMetaSchemaForSchema(schemaNode);
+                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:106: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:108: error: fromId(String) has private access in JsonSchemaFactory
+            return super.fromId(id);
+                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:111: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:113: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+            return super.idMatchesSourceUri(metaSchema, schema, schemaUri);
+                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:116: error: method does not override or implement a method from a supertype
+        @Override
+        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:118: error: isYaml(URI) has private access in JsonSchemaFactory
+            return super.isYaml(schemaUri);
+                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:156: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertTrue(f.jsonMetaSchemas.containsKey(normalized));
+                    ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:253: error: uriFetcher has private access in JsonSchemaFactory
+        ((MemURIFetcher) ((URISchemeFetcher) factory.uriFetcher).getURIFetchers().get("mem")).put(uriStr, schemaContent);
+                                                    ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:269: error: uriFetcher has private access in JsonSchemaFactory
+        ((MemURIFetcher) ((URISchemeFetcher) factory.uriFetcher).getURIFetchers().get("mem")).put(uriStr, yamlContent);
+                                                    ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:304: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        boolean matches = factory.idMatchesSourceUri(meta, node, uri);
+                                 ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:316: error: idMatchesSourceUri(JsonMetaSchema,JsonNode,URI) has private access in JsonSchemaFactory
+        boolean matches = factory.idMatchesSourceUri(meta, node, uri);
+                                 ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:395: error: fromId(String) has private access in JsonSchemaFactory
+        JsonMetaSchema meta = factory.fromId(JsonMetaSchema.getV202012().getUri());
+                                     ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:402: error: fromId(String) has private access in JsonSchemaFactory
+            factory.fromId("http://example.com/unknown-dialect");
+                   ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:448: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(URI.create("mem://file.yaml")));
+                          ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:449: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(URI.create("mem://file.yml")));
+                          ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:450: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(URI.create("mem://file.json")));
+                           ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:451: error: isYaml(URI) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(URI.create("mem://noextension")));
+                           ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:463: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, clone.defaultMetaSchemaURI);
+                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:463: error: defaultMetaSchemaURI has private access in JsonSchemaFactory
+        assertEquals(factory.defaultMetaSchemaURI, clone.defaultMetaSchemaURI);
+                                                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:464: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(factory.jsonMetaSchemas.keySet(), clone.jsonMetaSchemas.keySet());
+                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:464: error: jsonMetaSchemas has private access in JsonSchemaFactory
+        assertEquals(factory.jsonMetaSchemas.keySet(), clone.jsonMetaSchemas.keySet());
+                                                            ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java:536: error: uriFetcher has private access in JsonSchemaFactory
+        ((MemURIFetcher) ((URISchemeFetcher) factory.uriFetcher).getURIFetchers().get("mem"))
+                                                    ^
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/4/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/ToT/JsonSchemaFactoryTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+25 errors

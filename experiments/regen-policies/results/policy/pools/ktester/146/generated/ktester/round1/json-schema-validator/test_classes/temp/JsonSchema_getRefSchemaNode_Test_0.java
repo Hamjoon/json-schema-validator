@@ -1,0 +1,194 @@
+package com.networknt.schema;
+
+import static org.junit.jupiter.api.Assertions.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class JsonSchema_getRefSchemaNode_Test {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /**
+     * Simple schema used for all tests
+     */
+    private static final String SIMPLE_SCHEMA = "{\n" + "  \"$id\": \"http://example.com/simple-schema.json\",\n" + "  \"type\": \"object\",\n" + "  \"properties\": {\n" + "    \"name\": { \"type\": \"string\" },\n" + "    \"age\":  { \"type\": \"integer\" }\n" + "  }\n" + "}";
+
+    private JsonSchema schema;
+
+    /**
+     * A richer schema that contains an $id, definitions and properties with spaces/encoded chars.
+     */
+    private static final String COMPLEX_SCHEMA = "{\n" + "  \"$id\": \"http://example.com/schema\",\n" + "  \"type\": \"object\",\n" + "  \"properties\": {\n" + "    \"name\": { \"type\": \"string\" },\n" + "    \"age\": { \"type\": \"integer\" },\n" + "    \"properties name\": { \"type\": \"string\" }\n" + "  },\n" + "  \"definitions\": {\n" + "    \"person\": { \"type\": \"object\", \"properties\": { \"first\": {\"type\":\"string\"} } },\n" + "    \"address\": { \"type\": \"object\", \"properties\": { \"city\": {\"type\":\"string\"} } }\n" + "  }\n" + "}";
+
+    @BeforeEach
+    void setupBeforeEach() {
+        // Build a JsonSchema instance from the simple schema string.
+        // The factory will take care of constructing all required internal objects.
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        this.schema = factory.getSchema(SIMPLE_SCHEMA);
+        assertNotNull(this.schema, "Schema should be created successfully");
+    }
+
+    /**
+     * Provides arguments for the parameterised test {@link #parameterisedRefResolution}.
+     *
+     * <p>Each argument consists of:
+     *
+     * <ul>
+     *   <li>the reference string supplied to {@code getRefSchemaNode}</li>
+     *   <li>a description used only for readability in the test name</li>
+     *   <li>a {@code java.util.function.Predicate<JsonNode>} that validates the returned node</li>
+     * </ul>
+     */
+    private static Stream<Arguments> refResolutionProvider() {
+        return Stream.of(// Schema ID handling – no ID present (simulated by stripping the ID in the method)
+        Arguments.of("/properties/name", "no ID, leading '/' – direct pointer", (java.util.function.Predicate<JsonNode>) node -> node != null && node.equals(MAPPER.createObjectNode().put("type", "string"))), // Schema ID handling – ID stripped, pointer resolved
+        Arguments.of("http://example.com/schema/properties/age", "ID stripped, pointer resolved", (java.util.function.Predicate<JsonNode>) node -> node != null && node.equals(MAPPER.createObjectNode().put("type", "integer"))), // Fragment handling with '#/' prefix
+        Arguments.of("#/definitions/person", "fragment '#/' stripped", (java.util.function.Predicate<JsonNode>) node -> node != null && node.path("type").asText().equals("object")), Arguments.of("http://example.com/schema#/definitions/address", "ID + fragment '#/' stripped", (java.util.function.Predicate<JsonNode>) node -> node != null && node.path("type").asText().equals("object")), // No leading '/' after processing – should return root node
+        Arguments.of("definitions/simple", "no leading '/' after processing – root node", (java.util.function.Predicate<JsonNode>) node -> node != null && node.isObject()), // URL decoding of encoded characters (%2F)
+        Arguments.of("/properties%2Fname", "encoded '/' decoded", (java.util.function.Predicate<JsonNode>) node -> node != null && node.equals(MAPPER.createObjectNode().put("type", "string"))), // Null reference – expect NPE
+        Arguments.of(null, "null reference – NPE", null), // Empty reference – should return root node unchanged
+        Arguments.of("", "empty reference – root node", (java.util.function.Predicate<JsonNode>) node -> node != null && node.isObject()), // Exact ID match – empty pointer → root node
+        Arguments.of("http://example.com/schema", "exact ID match – root node", (java.util.function.Predicate<JsonNode>) node -> node != null && node.isObject()), // Reference without leading slash after ID stripping
+        Arguments.of("http://example.com/schemaproperties/name", "ID stripped, no leading '/' – root node", (java.util.function.Predicate<JsonNode>) node -> node != null && node.isObject()), // '+' character decoding to space
+        Arguments.of("/properties+name", "plus decoded to space", (java.util.function.Predicate<JsonNode>) node -> node != null && node.equals(MAPPER.createObjectNode().put("type", "string"))), // Encoded space (%20)
+        Arguments.of("/properties%20name", "encoded space decoded", (java.util.function.Predicate<JsonNode>) node -> node != null && node.equals(MAPPER.createObjectNode().put("type", "string"))), // Fragment only reference without leading slash – root node
+        Arguments.of("#definitions/person", "fragment without '#/' – root node", (java.util.function.Predicate<JsonNode>) node -> node != null && node.isObject()), // Encoded slash after ID stripping leading to missing node – expect missing or null
+        Arguments.of("http://example.com/schema#/nonexistent%2Fpath", "decoded missing path – missing node", null));
+    }
+
+    /**
+     * Verify that a reference that starts with the schema's $id is correctly
+     * resolved to the same node as a plain JSON‑Pointer reference.
+     */
+    @Test
+    void getRefSchemaNode_WithIdPrefix_resolvesCorrectly() throws Exception {
+        // reference that includes the $id followed by a JSON‑Pointer fragment
+        String refWithId = "http://example.com/simple-schema.json#/properties/name";
+        JsonNode result = schema.getRefSchemaNode(refWithId);
+        assertNotNull(result, "Resulting node must not be null");
+        assertFalse(result.isMissingNode(), "Resulting node must exist");
+        // The resolved node should be the schema for the \"name\" property
+        JsonNode expected = MAPPER.readTree("{\"type\":\"string\"}");
+        assertEquals(expected, result, "Resolved node should match the \"name\" property schema");
+    }
+
+    /**
+     * Verify that a plain JSON‑Pointer reference (starting with \"#/\") is
+     * resolved to the correct sub‑schema node.
+     */
+    @Test
+    void getRefSchemaNode_WithPlainPointer_resolvesCorrectly() throws Exception {
+        // plain JSON‑Pointer reference
+        String plainRef = "#/properties/age";
+        JsonNode result = schema.getRefSchemaNode(plainRef);
+        assertNotNull(result, "Resulting node must not be null");
+        assertFalse(result.isMissingNode(), "Resulting node must exist");
+        // The resolved node should be the schema for the \"age\" property
+        JsonNode expected = MAPPER.readTree("{\"type\":\"integer\"}");
+        assertEquals(expected, result, "Resolved node should match the \"age\" property schema");
+    }
+
+    /**
+     * Verify that a reference that points to a non‑existent location falls back
+     * to {@code handleNullNode}. In the current implementation {@code handleNullNode}
+     * returns {@code null} when it cannot resolve the reference, so the method
+     * should return {@code null} (or a missing node) for such a case.
+     */
+    @Test
+    void getRefSchemaNode_NonExistingPointer_returnsMissingOrNull() {
+        String missingRef = "#/properties/unknown";
+        JsonNode result = schema.getRefSchemaNode(missingRef);
+        // The contract of the method is to return a node; when the pointer is missing
+        // the implementation ends up calling the private handleNullNode which returns null.
+        // Therefore we accept either a null reference or a MissingNode.
+        assertTrue(result == null || result.isMissingNode(), "Result should be null or a missing node for a non‑existent reference");
+    }
+
+    @ParameterizedTest(name = "[{index}] {1}")
+    @MethodSource("refResolutionProvider")
+    void parameterisedRefResolution(String ref, String description, java.util.function.Predicate<JsonNode> validator) {
+        // Build a schema that contains the $id used in the test cases.
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        JsonSchema complexSchema = factory.getSchema(COMPLEX_SCHEMA);
+        assertNotNull(complexSchema, "Complex schema must be created");
+        // The method under test is invoked on the schema instance.
+        if (ref == null) {
+            // Expect a NullPointerException because the implementation does not guard against null.
+            assertThrows(NullPointerException.class, () -> complexSchema.getRefSchemaNode(ref), "Calling getRefSchemaNode(null) should throw NPE");
+            return;
+        }
+        JsonNode result = complexSchema.getRefSchemaNode(ref);
+        // If a validator is supplied we use it, otherwise we assert that the result is
+        // either null or a MissingNode (the behaviour when the pointer cannot be resolved).
+        if (validator != null) {
+            assertNotNull(result, "Resulting node must not be null");
+            assertTrue(validator.test(result), () -> "Validator failed for reference [" + ref + "], result: " + result);
+        } else {
+            // Cases where we expect a missing node (or null) because the pointer cannot be resolved.
+            assertTrue(result == null || result.isMissingNode(), () -> "Expected missing node or null for reference [" + ref + "], but got: " + result);
+        }
+    }
+
+    /**
+     * Simulates {@code findSchemaResourceRoot()} returning {@code null}.
+     * The subsequent call to {@code schema.getId()} should trigger a
+     * {@link NullPointerException}.
+     */
+    @Test
+    void getRefSchemaNode_nullRoot_throwsNPE() {
+        JsonSchema spy = spy(schema);
+        // Stub findSchemaResourceRoot() to return null
+        doReturn(null).when(spy).findSchemaResourceRoot();
+        assertThrows(NullPointerException.class, () -> spy.getRefSchemaNode("/any/pointer"), "When the root schema is null, a NullPointerException is expected");
+    }
+
+    /**
+     * Simulates a valid root schema but its {@code getSchemaNode()} returns {@code null}.
+     * When the reference starts with '/', the method will attempt {@code node.at(...)} on a null
+     * node, resulting in a {@link NullPointerException}.
+     */
+    @Test
+    void getRefSchemaNode_nullRootNode_throwsNPE() {
+        // Create a real schema (so that internal fields are initialised) and then spy it.
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        JsonSchema real = factory.getSchema(SIMPLE_SCHEMA);
+        JsonSchema spy = spy(real);
+        // Stub getSchemaNode() on the root schema returned by findSchemaResourceRoot()
+        JsonSchema rootMock = mock(JsonSchema.class);
+        when(rootMock.getId()).thenReturn(null);
+        when(rootMock.getSchemaNode()).thenReturn(null);
+        doReturn(rootMock).when(spy).findSchemaResourceRoot();
+        assertThrows(NullPointerException.class, () -> spy.getRefSchemaNode("/some/path"), "When the root schema node is null, a NullPointerException is expected");
+    }
+
+    /**
+     * Verifies that when the JSON‑Pointer resolves to a missing node, the private
+     * {@code handleNullNode} method is invoked. The current implementation of
+     * {@code handleNullNode} returns {@code null}, therefore the public method
+     * should return {@code null} (or a MissingNode) for such a reference.
+     */
+    @Test
+    void getRefSchemaNode_missingNode_triggersHandleNullNode() {
+        // Use the complex schema that contains the $id.
+        JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012);
+        JsonSchema complexSchema = factory.getSchema(COMPLEX_SCHEMA);
+        assertNotNull(complexSchema);
+        // Reference that points to a non‑existent location after decoding.
+        String ref = "http://example.com/schema#/nonexistent%2Fpath";
+        JsonNode result = complexSchema.getRefSchemaNode(ref);
+        // According to the implementation, handleNullNode returns null.
+        assertTrue(result == null || result.isMissingNode(), "Result should be null or MissingNode when the pointer cannot be resolved");
+    }
+}

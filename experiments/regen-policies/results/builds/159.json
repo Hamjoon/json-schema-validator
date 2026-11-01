@@ -1,0 +1,67 @@
+{
+  "index": 159,
+  "sha": "c485230dd1d656784bdf11213b9cb3e94dd529b5",
+  "build": "ok",
+  "attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "-DskipTests",
+        "compile"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/159",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 10.497,
+      "log": "results/builds/logs/159-1.txt"
+    }
+  ],
+  "input_sha256": "c71919cfd18675125fa80bd0bb7b0e5f4f7c287687f1c0d439738fef553a0067",
+  "pom_sha256": "6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85",
+  "classpath": "work/classpaths/6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85.txt",
+  "classpath_attempts": [
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/159",
+      "exit_code": 1,
+      "timeout": false,
+      "seconds": 2.711,
+      "log": "results/builds/logs/classpath-159/go-offline-6c675fa78b2d4243996e63f83dcd5cc6/1.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-U",
+        "dependency:go-offline"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/159",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 4.313,
+      "log": "results/builds/logs/classpath-159/go-offline-6c675fa78b2d4243996e63f83dcd5cc6/2.txt"
+    },
+    {
+      "command": [
+        "mvn",
+        "-q",
+        "-o",
+        "dependency:build-classpath",
+        "-DincludeScope=test",
+        "-Dmdep.outputFile=/repo/experiments/regen-policies/work/classpaths/6e17adca62209866998bf7a102565818748daf5aaa74256e903a368fbbf11e85-c68d8316fdc3449ab6eae19c03b02869.tmp"
+      ],
+      "cwd": "/repo/experiments/regen-policies/work/checkouts/159",
+      "exit_code": 0,
+      "timeout": false,
+      "seconds": 2.879,
+      "log": "results/builds/logs/classpath-159/build-classpath-931dd7c3d439435b994ab6483b529eb3/1.txt"
+    }
+  ]
+}

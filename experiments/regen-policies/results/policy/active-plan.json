@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "baseline": "/Users/donggi/_projects/experiment-projects/json-schema-validator/experiments/commit-survival-run2",
+  "groups": [
+    "dev-scope",
+    "ktester",
+    "ouedraogo-adj2"
+  ],
+  "policies": [
+    {
+      "name": "release-reset",
+      "trigger": "release",
+      "action": "reset"
+    },
+    {
+      "name": "half-reset",
+      "trigger": "threshold",
+      "action": "reset"
+    },
+    {
+      "name": "half-fill",
+      "trigger": "threshold",
+      "action": "fill"
+    }
+  ],
+  "points": [
+    {
+      "group": "ktester",
+      "trigger": "release",
+      "tag": "1.5.0",
+      "tag_sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "requested_index": 98,
+      "index": 98,
+      "sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "baseline_alive": 48,
+      "baseline_denominator": 131,
+      "missing_classes": []
+    },
+    {
+      "group": "ktester",
+      "trigger": "release",
+      "tag": "1.5.9",
+      "tag_sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "requested_index": 146,
+      "index": 146,
+      "sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "baseline_alive": 48,
+      "baseline_denominator": 131,
+      "missing_classes": []
+    },
+    {
+      "group": "ktester",
+      "trigger": "threshold",
+      "requested_index": 10,
+      "index": 10,
+      "sha": "7f1ec11b7a4b391577595e0d31d5825548c9a64f",
+      "baseline_alive": 51,
+      "baseline_denominator": 131,
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "trigger": "release",
+      "tag": "1.5.0",
+      "tag_sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "requested_index": 98,
+      "index": 98,
+      "sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "baseline_alive": 0,
+      "baseline_denominator": 41,
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "trigger": "release",
+      "tag": "1.5.9",
+      "tag_sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "requested_index": 146,
+      "index": 146,
+      "sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "baseline_alive": 0,
+      "baseline_denominator": 41,
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "trigger": "threshold",
+      "requested_index": 4,
+      "index": 4,
+      "sha": "5a94df7e914b90c185fb573b6e7a6b3fb5f2460b",
+      "baseline_alive": 13,
+      "baseline_denominator": 41,
+      "missing_classes": []
+    }
+  ],
+  "pools": [
+    {
+      "group": "ktester",
+      "index": 10,
+      "sha": "7f1ec11b7a4b391577595e0d31d5825548c9a64f",
+      "missing_classes": []
+    },
+    {
+      "group": "ktester",
+      "index": 98,
+      "sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "missing_classes": []
+    },
+    {
+      "group": "ktester",
+      "index": 146,
+      "sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "index": 4,
+      "sha": "5a94df7e914b90c185fb573b6e7a6b3fb5f2460b",
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "index": 98,
+      "sha": "11f9af05eb3f717ee593dabd96dd2b16863dbb0d",
+      "missing_classes": []
+    },
+    {
+      "group": "ouedraogo-adj2",
+      "index": 146,
+      "sha": "270df62471e6a0c564dc13ae6cf2bf4116916f82",
+      "missing_classes": []
+    }
+  ],
+  "denominators": {
+    "dev-scope": 153,
+    "ktester": 131,
+    "ouedraogo-adj2": 41
+  },
+  "threshold_basis": "baseline survival; after a trigger, remaining baseline alive is the planning segment denominator"
+}

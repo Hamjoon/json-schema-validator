@@ -1,0 +1,409 @@
+[
+  {
+    "group": "Valid inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation equals \"http://example.com/schema.json\" and its schemaNode equals the supplied JsonNode",
+        "description": "Happy\u2011path test: all arguments are non\u2011null and well\u2011formed; verifies that getSchema forwards the arguments to newJsonSchema and the resulting JsonSchema reflects them."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"integer\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation equals \"http://example.com/schema.json\" and its schemaNode equals the supplied JsonNode; a default SchemaValidatorsConfig is used internally",
+        "description": "Pass a null config to ensure the factory creates a default configuration rather than throwing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation equals \"http://example.com/schema.json\" and its schemaNode is null",
+        "description": "Pass a null JsonNode to verify that the method does not reject a missing schema document (some callers use a separate schema loader)."
+      }
+    ]
+  },
+  {
+    "group": "Null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "null"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "A null URI should cause an NPE because the method dereferences schemaUri.toString()."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; both jsonNode and config are null inside the created schema",
+        "description": "Both optional arguments are null \u2013 the method should still succeed, delegating to newJsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Edge URI cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json#fragment\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"boolean\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string includes the fragment \"#fragment\"",
+        "description": "URI contains a fragment; verify that the fragment is preserved in the SchemaLocation used by the created JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json?version=1\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"null\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string includes the query part \"?version=1\"",
+        "description": "URI contains a query string; ensure the full URI string is stored unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Config variations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\", \\\"properties\\\":{}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setFailFast(true); } }"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its internal validation context reflects the fail\u2011fast setting (e.g., first validation error aborts processing)",
+        "description": "Pass a custom SchemaValidatorsConfig with failFast enabled and verify that the resulting JsonSchema is created with that configuration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"array\\\", \\\"items\\\":{\\\"type\\\":\\\"string\\\"}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setTypeLoose(true); } }"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its validation context has typeLoose set to true",
+        "description": "Configure the factory to allow loose type checking and ensure the flag propagates to the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Relative URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"/relative/path/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string equals \"/relative/path/schema.json\" and its schemaNode equals the supplied JsonNode",
+        "description": "Pass a relative URI (no scheme, host, or authority) to verify that the factory does not reject it and stores the exact string in the created SchemaLocation."
+      }
+    ]
+  },
+  {
+    "group": "Empty URI string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string is empty (\"\") and its schemaNode equals the supplied JsonNode",
+        "description": "An empty URI string should be accepted; the resulting JsonSchema should carry an empty location without throwing an exception."
+      }
+    ]
+  },
+  {
+    "group": "Special characters in URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schemas/my%20schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"number\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string includes the encoded space \"%20\" exactly as supplied",
+        "description": "Ensures that URI encoding is preserved when the factory creates the SchemaLocation."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object JsonNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"\\\"just a string\\\"\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaNode is a TextNode with value \"just a string\"",
+        "description": "The factory should accept any JsonNode, not only object nodes; verify that a primitive JSON value is stored unchanged."
+      }
+    ]
+  },
+  {
+    "group": "NullNode JsonNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "com.fasterxml.jackson.databind.node.JsonNodeFactory.instance.nullNode()"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaNode is a NullNode (represents JSON literal null)",
+        "description": "Distinguish between a null reference (already covered) and a JsonNode that explicitly represents JSON null."
+      }
+    ]
+  },
+  {
+    "group": "Combined config flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\", \\\"properties\\\":{}}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig(){ { setFailFast(true); setTypeLoose(true); setReadOnly(true); } }"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its internal ValidationContext reflects failFast, typeLoose and readOnly all set to true",
+        "description": "Pass a configuration object that enables several flags simultaneously and verify that all flags are propagated to the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "URI with user info and port",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://user:pass@example.com:8080/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"array\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string equals \"http://user:pass@example.com:8080/schema.json\"",
+        "description": "Validate that authority components (user info, port) are retained unchanged in the SchemaLocation."
+      }
+    ]
+  },
+  {
+    "group": "URI with fragment and query together",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/schema.json?ver=2#section\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"boolean\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchema instance is returned; its schemaLocation string includes both the query \"?ver=2\" and the fragment \"#section\" exactly as supplied",
+        "description": "Ensures that when both a query string and a fragment are present, the full URI is preserved without loss or reordering."
+      }
+    ]
+  },
+  {
+    "group": "Invalid URI handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"http://example.com/invalid|char.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (thrown by SchemaLocation.of when the URI string contains characters that are not allowed in an IRI)",
+        "description": "Pass a URI that contains characters illegal for an IRI (e.g., a pipe '|'). The method should forward the string to SchemaLocation.of, which validates the IRI and throws IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaUri",
+            "value": "new URI(\"ftp://example.com/schema.json\")"
+          },
+          {
+            "parameter": "jsonNode",
+            "value": "new ObjectMapper().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (unsupported URI scheme for a JSON Schema location)",
+        "description": "Pass a URI with a scheme other than http, https, or file (e.g., ftp). SchemaLocation.of validates that the scheme is acceptable for schema locations and should reject unsupported schemes with IllegalArgumentException."
+      }
+    ]
+  }
+]

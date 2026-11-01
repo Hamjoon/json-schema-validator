@@ -1,0 +1,152 @@
+[
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with null optional builders",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where schemaLoadersBuilder == null and schemaMappersBuilder == null, metaSchemas contains a single entry {\"http://example.com/meta\": dummyMetaSchema}, defaultMetaSchemaIri = \"http://example.com/meta\", jsonMapper = customJsonMapper, yamlMapper = customYamlMapper, jsonNodeReader = customReader"
+          }
+        ],
+        "expected": "Returned Builder has: schemaLoadersBuilder == null, schemaMappersBuilder == null, metaSchemas map contains the same entry with normalized IRI, defaultMetaSchemaIri equal to blueprint's, jsonMapper, yamlMapper and jsonNodeReader equal to those supplied in the blueprint. No NullPointerException is thrown.",
+        "description": "Verifies that when the blueprint does not define schemaLoadersBuilder or schemaMappersBuilder the builder copies all other fields correctly and leaves those two fields null."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with non\u2011null schemaLoadersBuilder and schemaMappersBuilder",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where schemaLoadersBuilder != null (configured with a custom ClasspathSchemaLoader), schemaMappersBuilder != null (configured with a custom SchemaMapper), metaSchemas contains one entry {\"http://example.com/meta\": dummyMetaSchema}, defaultMetaSchemaIri = \"http://example.com/meta\", jsonMapper = customJsonMapper, yamlMapper = customYamlMapper, jsonNodeReader = customReader"
+          }
+        ],
+        "expected": "Returned Builder has a non\u2011null schemaLoadersBuilder that is a new instance (not the same object as blueprint.schemaLoadersBuilder) and contains the same custom configuration; similarly schemaMappersBuilder is a new instance with the same custom configuration. All other fields (metaSchemas map, defaultMetaSchemaIri, jsonMapper, yamlMapper, jsonNodeReader) are copied exactly. No NullPointerException is thrown.",
+        "description": "Ensures that when the blueprint supplies schemaLoadersBuilder and schemaMappersBuilder, the factory builder creates deep copies of those builders while preserving their configuration."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with empty metaSchemas and null defaultMetaSchemaIri",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas is an empty ConcurrentHashMap, defaultMetaSchemaIri = null, jsonMapper = null, yamlMapper = null, jsonNodeReader = null, schemaLoadersBuilder = null, schemaMappersBuilder = null"
+          }
+        ],
+        "expected": "Returned Builder has metaSchemas map empty (size 0), defaultMetaSchemaIri remains null, and the three mapper/reader fields stay null. schemaLoadersBuilder and schemaMappersBuilder remain null. The builder can be built without throwing an exception.",
+        "description": "Verifies that the method correctly handles a blueprint that does not define any meta\u2011schemas nor a default IRI and that null mapper/reader fields are propagated."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with multiple metaSchemas requiring IRI normalization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas contains two entries: {\"http://example.com/meta#\": metaSchemaA, \"http://example.com/meta\": metaSchemaB}, defaultMetaSchemaIri = \"http://example.com/meta#\", jsonMapper = customJsonMapper, yamlMapper = customYamlMapper, jsonNodeReader = customReader, schemaLoadersBuilder = null, schemaMappersBuilder = null"
+          }
+        ],
+        "expected": "Returned Builder\u2019s metaSchemas map contains a single entry with normalized IRI \"http://example.com/meta\" mapping to the last supplied JsonMetaSchema (metaSchemaB). The duplicate key (with '#') is overwritten after normalization. defaultMetaSchemaIri is normalized to \"http://example.com/meta\". All other fields are copied unchanged. No exception is thrown.",
+        "description": "Checks that the builder normalizes IRIs via JsonSchemaFactory.normalizeMetaSchemaUri and that duplicate normalized keys are handled correctly."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with null mapper/reader fields",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where jsonMapper = null, yamlMapper = null, jsonNodeReader = null, metaSchemas contains one entry {\"http://example.com/meta\": dummyMetaSchema}, defaultMetaSchemaIri = \"http://example.com/meta\", schemaLoadersBuilder = null, schemaMappersBuilder = null"
+          }
+        ],
+        "expected": "Returned Builder has jsonMapper, yamlMapper and jsonNodeReader all set to null. The metaSchemas map and defaultMetaSchemaIri are copied correctly. No NullPointerException occurs during builder creation or later build().",
+        "description": "Ensures that the method tolerates null values for the deprecated mapper fields and the jsonNodeReader."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 defensive copy of metaSchemas map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas contains entry {\"http://example.com/meta\": dummyMetaSchema}, defaultMetaSchemaIri = \"http://example.com/meta\", all other fields null"
+          }
+        ],
+        "expected": "After calling JsonSchemaFactory.builder(blueprint) the returned Builder contains its own ConcurrentMap instance. Mutating the Builder\u2019s metaSchemas (e.g., adding a new entry) does NOT affect blueprint.metaSchemas. Conversely, modifying blueprint.metaSchemas after the builder is created does NOT affect the Builder\u2019s map. No exception is thrown.",
+        "description": "Validates that the builder method creates a defensive copy of the meta\u2011schemas map rather than sharing the original reference."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 null blueprint",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling JsonSchemaFactory.builder(null) should throw a NullPointerException because the method dereferences the blueprint to copy its fields."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with null metaSchemas map",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas == null, all other fields set to valid non\u2011null values (e.g., defaultMetaSchemaIri = \"http://example.com/meta\", jsonMapper = new ObjectMapper())"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The builder method calls blueprint.metaSchemas.values(); if metaSchemas is null a NullPointerException must be thrown."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with metaSchemas containing a null entry",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas map contains a single entry with key \"http://example.com/meta\" and value null, other fields (defaultMetaSchemaIri, jsonMapper, yamlMapper, jsonNodeReader) are valid"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "During builder creation the method iterates over blueprint.metaSchemas.values() and calls metaSchema(jsonMetaSchema) for each element. A null element causes a NullPointerException when metaSchema() attempts to access jsonMetaSchema.getIri()."
+      }
+    ]
+  },
+  {
+    "group": "builder(JsonSchemaFactory) \u2013 blueprint with metaSchema having null IRI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "blueprint",
+            "value": "JsonSchemaFactory instance where metaSchemas map contains an entry whose JsonMetaSchema.getIri() returns null, other fields are valid"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "normalizeMetaSchemaUri(String id) is invoked with the IRI returned by jsonMetaSchema.getIri(). If that IRI is null the method is expected to throw a NullPointerException."
+      }
+    ]
+  }
+]

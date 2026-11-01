@@ -1,0 +1,26 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:41: error: cannot find symbol
+        MessageSource messageSource = null;
+        ^
+  symbol:   class MessageSource
+  location: class JsonSchemaTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:43: error: cannot find symbol
+        Map<String, String> errorMessage = null;
+        ^
+  symbol:   class Map
+  location: class JsonSchemaTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:163: error: cannot find symbol
+        Set<ValidationMessage> messages = schema.validate(instance);
+        ^
+  symbol:   class Set
+  location: class JsonSchemaTest
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java:196: error: constructor JsonSchema in class JsonSchema cannot be applied to given types;
+        JsonSchema schema = new JsonSchema(ctx, SchemaLocation.DOCUMENT, new JsonNodePath(PathType.JSON_POINTER), schemaNode, null, false);
+                            ^
+  required: ValidationContext,SchemaLocation,JsonNodePath,JsonNode,JsonSchema,boolean
+  found:    ValidationContext,SchemaLocation,JsonNodePath,JsonNode,<null>,boolean
+  reason: JsonSchema(ValidationContext,SchemaLocation,JsonNodePath,JsonNode,JsonSchema,boolean) has private access in JsonSchema
+Note: /repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/146/generated/ouedraogo-adj2/round1/sources/JsonSchema/ZSL/JsonSchemaTest.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+4 errors

@@ -1,0 +1,461 @@
+[
+  {
+    "group": "Valid walk with validation (JSON input, validate = true)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true and no ValidationMessage entries",
+        "description": "A well\u2011formed JSON document is supplied, the format is JSON and validation is requested. The method should deserialize the string and invoke walkAtNodeInternal with validation enabled, returning a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid walk without validation (JSON input, validate = false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"id\\\":1,\\\"active\\\":true}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (or at least no validation errors) \u2013 the walk should complete even though validation is disabled",
+        "description": "Even when validation is turned off, walk should still deserialize the input and walk the schema tree without performing validation checks."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"unclosed\": [1,2,3}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonProcessingException (or a subclass) from deserialize",
+        "description": "The JSON string is syntactically incorrect; deserialize should throw a JsonProcessingException which propagates out of walk."
+      }
+    ]
+  },
+  {
+    "group": "Null input string \u2013 handling of null payload",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws NullPointerException or IllegalArgumentException (depending on deserialize implementation)",
+        "description": "Passing a null input string should cause deserialize to reject the argument; the test verifies that the appropriate exception is thrown."
+      }
+    ]
+  },
+  {
+    "group": "YAML input format \u2013 successful deserialization and validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: Jane\\nage: 25\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true and no ValidationMessage entries",
+        "description": "A correct YAML document is supplied; deserialize should use YamlMapperFactory and produce a JsonNode that can be walked and validated successfully."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat \u2013 fallback or error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"some text\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws IllegalArgumentException (or a custom exception) because inputFormat is null/unsupported",
+        "description": "When the inputFormat argument is null or not recognized, deserialize should reject the call, causing walk to throw an exception."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON input \u2013 deserialization failure with validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"bad\\\": [1,2,}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonProcessingException (or a subclass) from deserialize",
+        "description": "Even when validation is disabled, the method must first deserialize the payload. An ill\u2011formed JSON string should cause a JsonProcessingException to be propagated."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: [1, 2\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonProcessingException (or a subclass) from deserialize",
+        "description": "A malformed YAML document should trigger a deserialization error regardless of the validate flag."
+      }
+    ]
+  },
+  {
+    "group": "Empty string input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonProcessingException (or a subclass) because an empty string is not valid JSON",
+        "description": "An empty payload cannot be parsed into a JsonNode; the method should surface the parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"   \\n\\t  \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws com.fasterxml.jackson.core.JsonProcessingException (or a subclass) because whitespace alone is not a valid JSON document",
+        "description": "Even though the string contains only whitespace, Jackson treats it as invalid JSON and throws an exception."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 argument validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"key\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "throws NullPointerException (or IllegalArgumentException) because executionContext is required",
+        "description": "The method expects a non\u2011null ExecutionContext; passing null should result in an immediate exception before deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input without validation (validate = false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"name: Alice\\nage: 30\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no ValidationMessage entries) \u2013 validation is skipped but walk completes",
+        "description": "When validation is disabled, walk should still deserialize the YAML and traverse the schema tree without producing validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON literal null input \u2013 walk succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"null\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (or no ValidationMessage entries) \u2013 the JSON literal null is deserialized to a NullNode and walked without errors",
+        "description": "A JSON document that is the literal `null` should be handled gracefully; deserialization yields a NullNode which the walk algorithm can process."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON array input \u2013 walk succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"[\\\"a\\\", \\\"b\\\", \\\"c\\\"]\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no ValidationMessage entries) \u2013 array nodes are supported and should not cause errors in a permissive schema",
+        "description": "Ensures that the walk method correctly handles a root JSON array after successful deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON number input \u2013 walk succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"12345\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no ValidationMessage entries) \u2013 numeric root nodes are deserialized to NumericNode and walked without issues",
+        "description": "Verifies that a simple numeric JSON document is processed correctly by walk."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON empty object \u2013 walk succeeds",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationResult with isSuccess() == true (no ValidationMessage entries) \u2013 an empty object should be accepted by a schema that does not require properties",
+        "description": "Confirms that a minimal valid JSON object does not cause unexpected validation failures."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat enum constant (e.g., InputFormat.XML)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "JsonSchema.createExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"<root><name>John</name></root>\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException (or a subclass) because the supplied InputFormat is not supported by JsonSchema.deserialize",
+        "description": "Passing a valid InputFormat enum constant that the library does not handle (e.g., XML) should cause deserialize to reject the request and the walk method to throw an IllegalArgumentException."
+      }
+    ]
+  }
+]

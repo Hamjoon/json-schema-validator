@@ -1,0 +1,179 @@
+Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:61: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+        assertEquals(JsonMetaSchema.getV4().getIri(), factory.defaultMetaSchemaIri);
+                                                             ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:197: error: isYaml(SchemaLocation) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(yamlLoc));
+                          ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:198: error: isYaml(SchemaLocation) has private access in JsonSchemaFactory
+        assertTrue(factory.isYaml(ymlLoc));
+                          ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:199: error: isYaml(SchemaLocation) has private access in JsonSchemaFactory
+        assertFalse(factory.isYaml(jsonLoc));
+                           ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:213: error: no suitable method found for validate(String)
+        java.util.Set<ValidationMessage> messages = schema.validate("\"hello\"");
+                                                          ^
+    method JsonSchema.validate(JsonNode) is not applicable
+      (argument mismatch; String cannot be converted to JsonNode)
+    method JsonSchema.<T#1>validate(JsonNode,OutputFormat<T#1>) is not applicable
+      (cannot infer type-variable(s) T#1
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#3
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#4>validate(String,InputFormat,OutputFormat<T#4>) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#5
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#6
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>) is not applicable
+      (cannot infer type-variable(s) T#7
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#8
+        (actual and formal argument lists differ in length))
+  where T#1,T#2,T#3,T#4,T#5,T#6,T#7,T#8 are type-variables:
+    T#1 extends Object declared in method <T#1>validate(JsonNode,OutputFormat<T#1>)
+    T#2 extends Object declared in method <T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer)
+    T#3 extends Object declared in method <T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>)
+    T#4 extends Object declared in method <T#4>validate(String,InputFormat,OutputFormat<T#4>)
+    T#5 extends Object declared in method <T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer)
+    T#6 extends Object declared in method <T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>)
+    T#7 extends Object declared in method <T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>)
+    T#8 extends Object declared in method <T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:223: error: no suitable method found for validate(String)
+        java.util.Set<ValidationMessage> messages = schema.validate("\"not an int\"");
+                                                          ^
+    method JsonSchema.validate(JsonNode) is not applicable
+      (argument mismatch; String cannot be converted to JsonNode)
+    method JsonSchema.<T#1>validate(JsonNode,OutputFormat<T#1>) is not applicable
+      (cannot infer type-variable(s) T#1
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#3
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#4>validate(String,InputFormat,OutputFormat<T#4>) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#5
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#6
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>) is not applicable
+      (cannot infer type-variable(s) T#7
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#8
+        (actual and formal argument lists differ in length))
+  where T#1,T#2,T#3,T#4,T#5,T#6,T#7,T#8 are type-variables:
+    T#1 extends Object declared in method <T#1>validate(JsonNode,OutputFormat<T#1>)
+    T#2 extends Object declared in method <T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer)
+    T#3 extends Object declared in method <T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>)
+    T#4 extends Object declared in method <T#4>validate(String,InputFormat,OutputFormat<T#4>)
+    T#5 extends Object declared in method <T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer)
+    T#6 extends Object declared in method <T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>)
+    T#7 extends Object declared in method <T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>)
+    T#8 extends Object declared in method <T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:235: error: no suitable method found for validate(String)
+        java.util.Set<ValidationMessage> ok = schema.validate("true");
+                                                    ^
+    method JsonSchema.validate(JsonNode) is not applicable
+      (argument mismatch; String cannot be converted to JsonNode)
+    method JsonSchema.<T#1>validate(JsonNode,OutputFormat<T#1>) is not applicable
+      (cannot infer type-variable(s) T#1
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#3
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#4>validate(String,InputFormat,OutputFormat<T#4>) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#5
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#6
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>) is not applicable
+      (cannot infer type-variable(s) T#7
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#8
+        (actual and formal argument lists differ in length))
+  where T#1,T#2,T#3,T#4,T#5,T#6,T#7,T#8 are type-variables:
+    T#1 extends Object declared in method <T#1>validate(JsonNode,OutputFormat<T#1>)
+    T#2 extends Object declared in method <T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer)
+    T#3 extends Object declared in method <T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>)
+    T#4 extends Object declared in method <T#4>validate(String,InputFormat,OutputFormat<T#4>)
+    T#5 extends Object declared in method <T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer)
+    T#6 extends Object declared in method <T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>)
+    T#7 extends Object declared in method <T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>)
+    T#8 extends Object declared in method <T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:238: error: no suitable method found for validate(String)
+        java.util.Set<ValidationMessage> bad = schema.validate("123");
+                                                     ^
+    method JsonSchema.validate(JsonNode) is not applicable
+      (argument mismatch; String cannot be converted to JsonNode)
+    method JsonSchema.<T#1>validate(JsonNode,OutputFormat<T#1>) is not applicable
+      (cannot infer type-variable(s) T#1
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#3
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#4>validate(String,InputFormat,OutputFormat<T#4>) is not applicable
+      (cannot infer type-variable(s) T#4
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#5
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>) is not applicable
+      (cannot infer type-variable(s) T#6
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>) is not applicable
+      (cannot infer type-variable(s) T#7
+        (actual and formal argument lists differ in length))
+    method JsonSchema.<T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer) is not applicable
+      (cannot infer type-variable(s) T#8
+        (actual and formal argument lists differ in length))
+  where T#1,T#2,T#3,T#4,T#5,T#6,T#7,T#8 are type-variables:
+    T#1 extends Object declared in method <T#1>validate(JsonNode,OutputFormat<T#1>)
+    T#2 extends Object declared in method <T#2>validate(JsonNode,OutputFormat<T#2>,ExecutionContextCustomizer)
+    T#3 extends Object declared in method <T#3>validate(JsonNode,OutputFormat<T#3>,Consumer<ExecutionContext>)
+    T#4 extends Object declared in method <T#4>validate(String,InputFormat,OutputFormat<T#4>)
+    T#5 extends Object declared in method <T#5>validate(String,InputFormat,OutputFormat<T#5>,ExecutionContextCustomizer)
+    T#6 extends Object declared in method <T#6>validate(String,InputFormat,OutputFormat<T#6>,Consumer<ExecutionContext>)
+    T#7 extends Object declared in method <T#7>validate(ExecutionContext,JsonNode,OutputFormat<T#7>)
+    T#8 extends Object declared in method <T#8>validate(ExecutionContext,JsonNode,OutputFormat<T#8>,ExecutionContextCustomizer)
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:287: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaIri, copy.defaultMetaSchemaIri);
+                             ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:287: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+        assertEquals(original.defaultMetaSchemaIri, copy.defaultMetaSchemaIri);
+                                                        ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:289: error: metaSchemas has private access in JsonSchemaFactory
+        assertTrue(copy.metaSchemas.containsKey(
+                       ^
+/repo/experiments/regen-policies/results/policy/pools/ouedraogo-adj2/98/generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/FSL/JsonSchemaFactoryTest.java:290: error: defaultMetaSchemaIri has private access in JsonSchemaFactory
+                JsonSchemaFactory.normalizeMetaSchemaUri(original.defaultMetaSchemaIri)));
+                                                                 ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+12 errors

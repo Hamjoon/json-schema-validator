@@ -1,0 +1,157 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - basic functionality",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"{}\")"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (schema representing an empty JSON object)",
+        "description": "Verify that a simple, valid JSON object node results in a JsonSchema object being created without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree('{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}')"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema matches the default version",
+        "description": "Pass a typical JSON\u2011Schema definition and ensure the factory creates a JsonSchema that can later be used for validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The method should reject a null JsonNode argument and throw a NullPointerException (as per the implementation of newJsonSchema)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - boolean schema true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"true\")"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing a true (always\u2011valid) schema",
+        "description": "Pass a JSON boolean node `true` which is a valid JSON\u2011Schema representation; the factory should return a JsonSchema that validates any instance successfully."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - boolean schema false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"false\")"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing a false (always\u2011invalid) schema",
+        "description": "Pass a JSON boolean node `false`; the factory must still create a JsonSchema object that will reject every instance."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - $ref handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree('{\"$ref\":\"#/definitions/foo\",\"definitions\":{\"foo\":{\"type\":\"string\"}}}')"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose resolved schema type is `string`",
+        "description": "Provide a schema containing a `$ref` to an internal definition; the factory should resolve the reference and produce a usable JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - custom meta\u2011schema version (draft\u201107)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree('{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"null\"}')"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema version is Draft\u201107",
+        "description": "Supply a schema that explicitly declares `$schema` draft\u201107; the factory must load the corresponding meta\u2011schema and associate it with the created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - unknown $schema URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree('{\"$schema\":\"http://example.com/unknown/schema#\",\"type\":\"object\"}')"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance falling back to the default meta\u2011schema",
+        "description": "When the `$schema` URI cannot be resolved, the factory should not fail but revert to the default meta\u2011schema (usually the latest supported version)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid node type (array)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"[]\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "An array node is not a valid top\u2011level JSON\u2011Schema representation; the factory is expected to reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - invalid node type (string)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"\\\"just a string\\\"\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A plain string node cannot be interpreted as a JSON\u2011Schema; the method should throw IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(JsonNode) - numeric schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "jsonNode",
+            "value": "ObjectMapper.readTree(\"123\")"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A numeric JSON node is not a valid top\u2011level JSON\u2011Schema representation; the factory must reject it with an IllegalArgumentException."
+      }
+    ]
+  }
+]

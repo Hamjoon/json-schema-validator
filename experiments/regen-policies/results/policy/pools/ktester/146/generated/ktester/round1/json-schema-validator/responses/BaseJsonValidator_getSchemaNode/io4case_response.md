@@ -1,0 +1,83 @@
+{
+  "testCases": [
+    {
+      "group": "BaseJsonValidator#getSchemaNode - various JsonNode implementations",
+      "cases": [
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "ArrayNode instance containing [1,2,3]"
+            }
+          ],
+          "expected": "Same ArrayNode instance that was supplied to the validator (identity equality)",
+          "description": "Validate that getSchemaNode() returns the exact ArrayNode instance when the validator is constructed with an ArrayNode schema."
+        },
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "BooleanNode true"
+            }
+          ],
+          "expected": "Same BooleanNode instance that was supplied to the validator (identity equality)",
+          "description": "Validate that getSchemaNode() returns the exact BooleanNode instance when the validator is constructed with a BooleanNode schema."
+        },
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "NumericNode 42"
+            }
+          ],
+          "expected": "Same NumericNode instance that was supplied to the validator (identity equality)",
+          "description": "Validate that getSchemaNode() returns the exact NumericNode instance when the validator is constructed with a numeric schema."
+        },
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "NullNode instance"
+            }
+          ],
+          "expected": "Same NullNode instance that was supplied to the validator (identity equality)",
+          "description": "Validate that getSchemaNode() returns the exact NullNode instance when the validator is constructed with a null JSON schema node."
+        }
+      ]
+    },
+    {
+      "group": "BaseJsonValidator#getSchemaNode - mutable node reflection",
+      "cases": [
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "ObjectNode instance containing {\"type\":\"string\"}"
+            }
+          ],
+          "expected": "Returned ObjectNode contains the additional field \"maxLength\":5 after mutation",
+          "description": "Ensure that the node returned by getSchemaNode() is the same mutable instance supplied at construction. After retrieving the node, a new property (\"maxLength\":5) is added; a subsequent call to getSchemaNode() must reflect this mutation, confirming identity rather than a copy."
+        }
+      ]
+    },
+    {
+      "group": "BaseJsonValidator#getSchemaNode - subclass concrete implementation",
+      "cases": [
+        {
+          "input": [
+            {
+              "parameter": "schemaNode",
+              "value": "ObjectNode instance containing {\"type\":\"integer\"}"
+            },
+            {
+              "parameter": "suppressSubSchemaRetrieval",
+              "value": "true"
+            }
+          ],
+          "expected": "Same ObjectNode instance that was supplied (identity equality)",
+          "description": "BaseJsonValidator is abstract; this test uses a minimal concrete subclass that implements required abstract methods. The test verifies that getSchemaNode() works unchanged regardless of the suppressSubSchemaRetrieval flag and that the concrete subclass does not alter the returned node."
+        }
+      ]
+    }
+  ]
+}

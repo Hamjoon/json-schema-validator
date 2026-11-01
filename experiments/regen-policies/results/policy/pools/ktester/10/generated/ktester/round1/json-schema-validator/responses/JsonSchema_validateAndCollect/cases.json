@@ -1,0 +1,377 @@
+[
+  {
+    "group": "Null inputs and early exit",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a single ValidationMessage indicating that the instance node is null",
+        "description": "When both executionContext and node are null the method should guard against NPE and return an invalid result immediately."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage stating that executionContext is required",
+        "description": "If executionContext is null the method should fail early before any validator processing."
+      }
+    ]
+  },
+  {
+    "group": "Schema without any validators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (no customizations)"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and empty message set",
+        "description": "When the schema has no required or type validators the method should simply walk the node and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Required validator present \u2013 missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"present\":\"value\"}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage containing the missing required property name",
+        "description": "The schema declares a required property \"missing\". The node does not contain it, so the required validator should add a message."
+      }
+    ]
+  },
+  {
+    "group": "Type validator present \u2013 type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "IntNode representing 123"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage indicating expected type \"string\" but found \"integer\"",
+        "description": "The schema expects a string (has a TypeValidator for STRING). Providing an integer should trigger the type\u2011validation branch."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with recursiveAnchor flag set to true"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"self\":{}}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true (no infinite recursion) and no ValidationMessage about recursion depth",
+        "description": "When the schema is marked as a recursive anchor the method must detect and avoid re\u2011entering the same schema instance, returning a valid result for a self\u2011referencing node."
+      }
+    ]
+  },
+  {
+    "group": "WalkListenerRunner present \u2013 listener aborts walk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with WalkListenerRunner that throws WalkAbortException on first node"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"a\":1}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage indicating walk was aborted by listener",
+        "description": "If a WalkListenerRunner is attached and it aborts the walk, the method should catch the abort and return a result reflecting the early termination."
+      }
+    ]
+  },
+  {
+    "group": "Null node with valid executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (no customizations)"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a single ValidationMessage indicating that the instance node is null",
+        "description": "When the node argument is null but a non\u2011null ExecutionContext is supplied the method should guard against NPE and return an invalid result immediately."
+      }
+    ]
+  },
+  {
+    "group": "Enum validator \u2013 value not allowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "TextNode representing \"blue\""
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage stating that the value \"blue\" is not one of the allowed enum values [\"red\",\"green\",\"yellow\"]",
+        "description": "The schema contains an enum validator with allowed values [\"red\",\"green\",\"yellow\"]. Providing a value outside this set should trigger the enum validation branch."
+      }
+    ]
+  },
+  {
+    "group": "Pattern validator \u2013 regex mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "TextNode representing \"123-AB\""
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage indicating that the string \"123-AB\" does not match the pattern \"^[A-Z]{3}[0-9]{3}$\"",
+        "description": "The schema defines a pattern validator expecting three uppercase letters followed by three digits. Supplying a non\u2011matching string should produce a pattern\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution \u2013 required property in referenced schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage mentioning missing required property \"age\" from the referenced schema",
+        "description": "The primary schema contains a $ref to another schema that declares a required property \"age\". The instance node lacks this property, so the validator must resolve the reference and report the missing required field."
+      }
+    ]
+  },
+  {
+    "group": "Combined required + type validators \u2013 type passes, required fails",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"optional\":\"value\"}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage for missing required property \"mandatory\" (type validator succeeds because the node is an object)",
+        "description": "The schema defines a required property \"mandatory\" and a type validator that expects an object. The instance is an object (type passes) but does not contain the required field, so only the required\u2011validator message should appear."
+      }
+    ]
+  },
+  {
+    "group": "Array items type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ArrayNode representing [\"a\", 2, \"c\"]"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage indicating that array element at index 1 is of type integer but expected string",
+        "description": "The schema specifies an array where each item must be a string. The second element is an integer, causing the items\u2011type validator to add an error for that index."
+      }
+    ]
+  },
+  {
+    "group": "AdditionalProperties false \u2013 extra field present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"known\":\"value\",\"extra\":\"notAllowed\"}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage stating that property \"extra\" is not allowed (additionalProperties = false)",
+        "description": "The schema defines \"additionalProperties\": false. The instance contains an unexpected property, which should be reported as a validation error."
+      }
+    ]
+  },
+  {
+    "group": "WalkListenerRunner \u2013 listener adds custom message without aborting",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with WalkListenerRunner that records a custom ValidationMessage \"listener\u2011info\" for each visited node"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"a\":1,\"b\":2}"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == true and a message set that includes the custom \"listener\u2011info\" messages (one per visited node) in addition to any schema\u2011generated messages (none in this case)",
+        "description": "When a WalkListenerRunner is present but does not abort the walk, it may inject additional ValidationMessages. The method should collect those messages together with the normal validation results."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext with custom CollectorContext \u2013 messages are aggregated correctly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext whose CollectorContext is pre\u2011populated with a custom scope that prefixes messages with \"[custom]\""
+          },
+          {
+            "parameter": "node",
+            "value": "IntNode representing 42"
+          }
+        ],
+        "expected": "ValidationResult with isValid() == false and a ValidationMessage prefixed with \"[custom]\" describing the type mismatch (expected string, found integer)",
+        "description": "The ExecutionContext can carry a CollectorContext that influences how messages are recorded. This test verifies that the custom scope is applied to the messages produced by the validator."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with schema containing $ref \"#/invalid%zz\""
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {}"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown from URLDecoder.decode indicating malformed percent\u2011encoding in $ref",
+        "description": "The schema includes a $ref with an illegal percent\u2011encoding sequence. When validateAndCollect attempts to resolve the reference it should trigger URLDecoder.decode which throws IllegalArgumentException. The method must let this exception surface."
+      }
+    ]
+  },
+  {
+    "group": "WalkListenerRunner unexpected exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with WalkListenerRunner that throws RuntimeException(\"listener failure\") on first node"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"a\":1}"
+          }
+        ],
+        "expected": "RuntimeException with message \"listener failure\" propagates out of validateAndCollect",
+        "description": "When a WalkListenerRunner attached to the schema throws an unexpected RuntimeException (not WalkAbortException), validateAndCollect should not swallow it; the exception must propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref without recursive anchor \u2013 recursion limit exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with schema that $ref\u2011s to itself and isRecursiveAnchor() returns false"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {}"
+          }
+        ],
+        "expected": "ValidationException (or IllegalStateException) indicating recursion depth exceeded or circular reference detected",
+        "description": "A schema that references itself via $ref but is not marked as a recursive anchor should cause the validator to detect a circular reference and abort with a specific exception rather than entering an infinite recursion."
+      }
+    ]
+  },
+  {
+    "group": "Validator throws JsonProcessingException \u2013 wrapper exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext with a custom JsonValidator that throws JsonProcessingException(\"invalid JSON\") during validation"
+          },
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"field\":\"value\"}"
+          }
+        ],
+        "expected": "ValidationException (or RuntimeException) whose cause is JsonProcessingException with message \"invalid JSON\"",
+        "description": "If a JsonValidator invoked by validateAndCollect throws a JsonProcessingException, the method should wrap it in a higher\u2011level ValidationException (or rethrow as RuntimeException) so that callers can see the original cause."
+      }
+    ]
+  }
+]

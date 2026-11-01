@@ -1,0 +1,97 @@
+[
+  {
+    "group": "preloadJsonSchema - normal operation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "initializeValidators() is invoked exactly once on each schema in the list and canShortCircuit() is called once; no exception is thrown.",
+        "description": "Validate that with a non\u2011empty list of mock JsonSchema objects the method iterates over all schemas, calls initializeValidators() on each, and then calls canShortCircuit() to cache the short\u2011circuit flag."
+      },
+      {
+        "input": [],
+        "expected": "initializeValidators() is invoked exactly three times (once per schema) and canShortCircuit() is called once; no exception is thrown.",
+        "description": "Same as above but with three schemas to ensure the loop processes every element."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - empty schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "canShortCircuit() is invoked exactly once; initializeValidators() is never invoked; no exception is thrown.",
+        "description": "When the validator is constructed with an empty List<JsonSchema>, the loop body is skipped. Verify that only the short\u2011circuit cache method is called and the method completes normally."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - null schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is thrown when attempting to iterate over a null schemas field.",
+        "description": "Simulate a situation where the internal `schemas` field is null (e.g., via reflection). The method should fail with NPE because it tries to iterate over a null collection."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - schema initializeValidators throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The exception thrown by the first schema's initializeValidators() propagates out of preloadJsonSchema; canShortCircuit() is never called.",
+        "description": "Inject a mock JsonSchema whose `initializeValidators()` method throws a RuntimeException. Verify that the method does not swallow the exception and that short\u2011circuit caching is not performed."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - duplicate schema instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "initializeValidators() is invoked once per list entry (twice for the duplicate), canShortCircuit() is called once; no exception is thrown.",
+        "description": "Provide a list containing the same mock JsonSchema object twice. Ensure the loop does not de\u2011duplicate entries and calls `initializeValidators()` for each occurrence."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - list contains null element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is thrown when the loop reaches the null element while calling initializeValidators().",
+        "description": "Create a list `[validSchema, null, anotherValidSchema]`. The method should attempt to invoke `initializeValidators()` on the null entry, resulting in NPE."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - canShortCircuit throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException is propagated out of preloadJsonSchema; initializeValidators() is called for each schema before the exception, but canShortCircuit() throws and is not caught.",
+        "description": "Create a subclass of OneOfValidator that overrides canShortCircuit() to throw a RuntimeException. Provide a non\u2011empty schemas list with mock JsonSchema objects whose initializeValidators() succeed. Verify that the exception from canShortCircuit() propagates and no further processing occurs."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - ConcurrentModificationException during iteration",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ConcurrentModificationException is propagated out of preloadJsonSchema; canShortCircuit() is never called.",
+        "description": "Inject a mock JsonSchema whose initializeValidators() method removes an element from the underlying schemas list (or adds a new one). When the for\u2011each loop continues, the JVM detects the concurrent modification and throws ConcurrentModificationException. Verify that the exception bubbles up and the short\u2011circuit cache method is not invoked."
+      }
+    ]
+  },
+  {
+    "group": "preloadJsonSchema - iterator() throws IllegalStateException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "IllegalStateException is propagated out of preloadJsonSchema; canShortCircuit() is never called.",
+        "description": "Replace the internal `schemas` field with a custom List implementation whose iterator() method throws IllegalStateException. When preloadJsonSchema() attempts to start the for\u2011each loop, the exception is thrown immediately. Verify that the method does not catch it and that canShortCircuit() is not executed."
+      }
+    ]
+  }
+]

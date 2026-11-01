@@ -1,0 +1,150 @@
+{
+  "testCases": [
+    {
+      "group": "different version flags",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V6" },
+            { "parameter": "customizer", "value": null }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose defaultMetaSchemaIri equals the IRI of the JsonMetaSchema for V6 (e.g. \"http://json-schema.org/draft-06/schema#\"). No customisation applied.",
+          "description": "Verify that getInstance selects the correct meta‑schema IRI when the version flag is V6 and the customiser is null."
+        },
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V7" },
+            { "parameter": "customizer", "value": null }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose defaultMetaSchemaIri equals the IRI of the JsonMetaSchema for V7 (e.g. \"http://json-schema.org/draft-07/schema#\"). No customisation applied.",
+          "description": "Verify that getInstance selects the correct meta‑schema IRI when the version flag is V7 and the customiser is null."
+        },
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V2019_09" },
+            { "parameter": "customizer", "value": null }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose defaultMetaSchemaIri equals the IRI of the JsonMetaSchema for V2019‑09 (e.g. \"https://json-schema.org/draft/2019-09/schema#\"). No customisation applied.",
+          "description": "Verify that getInstance selects the correct meta‑schema IRI for the 2019‑09 draft when the customiser is null."
+        },
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V2020_12" },
+            { "parameter": "customizer", "value": null }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose defaultMetaSchemaIri equals the IRI of the JsonMetaSchema for V2020‑12 (e.g. \"https://json-schema.org/draft/2020-12/schema#\"). No customisation applied.",
+          "description": "Verify that getInstance selects the correct meta‑schema IRI for the 2020‑12 draft when the customiser is null."
+        }
+      ]
+    },
+    {
+      "group": "customizer disables schema cache",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            {
+              "parameter": "customizer",
+              "value": "builder -> builder.enableSchemaCache(false)"
+            }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose internal enableSchemaCache flag is false (i.e., schema caching is disabled). The defaultMetaSchemaIri remains the V4 IRI.",
+          "description": "Customiser disables the schema cache; verify that the built factory reflects the disabled cache while preserving the default meta‑schema."
+        }
+      ]
+    },
+    {
+      "group": "customizer throws exception",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            {
+              "parameter": "customizer",
+              "value": "builder -> { throw new IllegalStateException(\"boom\"); }"
+            }
+          ],
+          "expected": "IllegalStateException with message \"boom\" propagates out of getInstance.",
+          "description": "When the supplied customiser throws a runtime exception, getInstance must not swallow it; the exception should be propagated to the caller."
+        }
+      ]
+    },
+    {
+      "group": "customizer adds extra meta schema via collection",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            {
+              "parameter": "customizer",
+              "value": "builder -> builder.metaSchemas(java.util.Collections.singletonList(customMetaSchema))"
+            }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose metaSchemas map contains both the default V4 meta‑schema and the supplied customMetaSchema (identified by its IRI).",
+          "description": "Customiser adds an additional meta‑schema using the collection overload; verify that the resulting factory holds both schemas."
+        }
+      ]
+    },
+    {
+      "group": "customizer sets jsonNodeReader",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            {
+              "parameter": "customizer",
+              "value": "builder -> builder.jsonNodeReader(customReader)"
+            }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose jsonNodeReader is the supplied customReader. The defaultMetaSchemaIri remains the V4 IRI.",
+          "description": "Customiser provides a JsonNodeReader; verify that the built factory uses this reader instead of the default mapper."
+        }
+      ]
+    },
+    {
+      "group": "customizer sets jsonMapper (deprecated)",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            {
+              "parameter": "customizer",
+              "value": "builder -> builder.jsonMapper(customJsonMapper)"
+            }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance whose internal jsonMapper is the supplied customJsonMapper. (Deprecated path still functional.)",
+          "description": "Even though jsonMapper is deprecated, the customiser may still set it; verify that the factory retains the provided mapper."
+        }
+      ]
+    },
+    {
+      "group": "customizer does nothing (no‑op)",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": "SpecVersion.VersionFlag.V4" },
+            { "parameter": "customizer", "value": "builder -> {}" }
+          ],
+          "expected": "A non‑null JsonSchemaFactory instance identical to the one produced when customizer is null (defaultMetaSchemaIri equals V4 IRI, no extra meta‑schemas).",
+          "description": "A customiser that performs no operations should result in the same factory as when the customiser argument is null."
+        }
+      ]
+    },
+    {
+      "group": "null version flag with non‑null customizer",
+      "cases": [
+        {
+          "input": [
+            { "parameter": "versionFlag", "value": null },
+            {
+              "parameter": "customizer",
+              "value": "builder -> builder.defaultMetaSchemaIri(\"ignored\")"
+            }
+          ],
+          "expected": "IllegalArgumentException (or NullPointerException) thrown by JsonSchemaFactory.checkVersion before the customiser is invoked.",
+          "description": "Even if a customiser is supplied, a null version flag must cause checkVersion to fail and the customiser must never be called."
+        }
+      ]
+    }
+  ]
+}

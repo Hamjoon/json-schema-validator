@@ -1,0 +1,42 @@
+[
+  {
+    "group": "BaseJsonValidator.message()",
+    "cases": [
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode equals the non\u2011null JsonNode supplied to the validator constructor",
+        "description": "Verify that when the validator is constructed with a concrete JsonNode (e.g., an ObjectNode representing {\"type\":\"string\"}), the overridden message() method returns a builder that has its schemaNode property set to that same JsonNode."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is null",
+        "description": "Verify that when the validator is constructed with a null schemaNode, the overridden message() method still returns a builder and the builder's schemaNode property is null (i.e., the method forwards the null reference without throwing)."
+      },
+      {
+        "input": [],
+        "expected": "Two successive calls to message() return distinct Builder objects (different object references)",
+        "description": "Ensure that each invocation of message() creates a fresh Builder rather than reusing a cached instance, confirming that super.message() is called on every call."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.message() \u2013 additional scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is the Jackson NullNode singleton (JsonNode instance representing JSON null)",
+        "description": "Create a concrete subclass of BaseJsonValidator passing `JsonNode schemaNode = NullNode.getInstance()` to the constructor. Invoke `message()` and verify that the returned builder\u2019s `schemaNode` property is exactly the same NullNode instance (i.e., `builder.schemaNode() == NullNode.getInstance()`). This tests that the method correctly propagates a non\u2011object, non\u2011array JsonNode that represents JSON null."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose schemaNode is the same mutable ArrayNode reference supplied at construction time",
+        "description": "Instantiate a concrete BaseJsonValidator with an `ArrayNode` containing a few numeric elements (e.g., `[1,2,3]`). Call `message()` to obtain a builder and assert that `builder.schemaNode()` returns the exact same `ArrayNode` object (reference equality). Then mutate the original `ArrayNode` (e.g., add another element) and verify that the builder\u2019s `schemaNode` reflects the mutation, confirming that the builder stores the reference rather than a copy."
+      },
+      {
+        "input": [],
+        "expected": "MessageSourceValidationMessage.Builder instance whose MessageSource is the default implementation (`DefaultMessageSource`)",
+        "description": "Construct a validator with any schemaNode (null or non\u2011null). After calling `message()`, retrieve the builder\u2019s `messageSource` (or equivalent accessor) and assert that it is an instance of `DefaultMessageSource`. This ensures that the overridden `message()` method does not replace the default message source supplied by `super.message()`."
+      }
+    ]
+  }
+]

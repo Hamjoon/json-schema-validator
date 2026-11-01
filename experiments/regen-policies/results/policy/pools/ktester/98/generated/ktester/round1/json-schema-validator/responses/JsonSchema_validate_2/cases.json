@@ -1,0 +1,317 @@
+[
+  {
+    "group": "Valid JSON satisfies schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"name\":\"John\"}"
+          }
+        ],
+        "expected": "empty set []",
+        "description": "The schema requires a string property \"name\". Providing a JsonNode with a valid string value should result in an empty ValidationMessage set (no errors)."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property triggers validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about missing required property 'name'",
+        "description": "The schema declares \"name\" as required. An empty JsonNode should cause validate(JsonNode) to return a set with at least one ValidationMessage indicating the missing required property."
+      }
+    ]
+  },
+  {
+    "group": "Wrong type for property triggers validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"name\":123}"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about type mismatch for property 'name'",
+        "description": "The schema expects \"name\" to be a string. Supplying a numeric value should cause a type\u2011validation error to be reported."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling validate(null) should throw a NullPointerException because the implementation forwards the argument to the overloaded method which expects a non\u2011null JsonNode."
+      }
+    ]
+  },
+  {
+    "group": "Schema with no constraints accepts any JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"anyKey\":\"anyValue\", \"num\":42}"
+          }
+        ],
+        "expected": "empty set []",
+        "description": "When the JsonSchema is created from an empty schema (\"{}\"), any JsonNode is valid. The method should return an empty ValidationMessage set regardless of the node's content."
+      }
+    ]
+  },
+  {
+    "group": "Additional properties disallowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"name\":\"John\",\"extra\":\"value\"}"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about additional property 'extra' not allowed",
+        "description": "The schema defines \"additionalProperties\": false and requires a string property \"name\". Supplying a JSON object that contains an extra property should cause a validation error about disallowed additional properties."
+      }
+    ]
+  },
+  {
+    "group": "Enum constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"yellow\""
+          }
+        ],
+        "expected": "non\u2011empty set containing a message that value is not one of the allowed enum values",
+        "description": "The schema specifies an enum [\"red\",\"green\",\"blue\"]. Providing a value \"yellow\" which is not listed should trigger an enum\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Pattern constraint violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"ab1\""
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about pattern mismatch",
+        "description": "The schema defines a string pattern \"^[A-Z]{3}$\" (exactly three uppercase letters). Supplying \"ab1\" violates the pattern and should be reported."
+      }
+    ]
+  },
+  {
+    "group": "Number range violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "5"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message that the number is less than the minimum (10)",
+        "description": "The schema sets \"minimum\": 10 and \"maximum\": 20. Providing a number below the minimum should produce a minimum\u2011violation message."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "25"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message that the number exceeds the maximum (20)",
+        "description": "The same schema as above; providing a number above the maximum should produce a maximum\u2011violation message."
+      }
+    ]
+  },
+  {
+    "group": "Array constraints violations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "[1]"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about array having fewer items than \"minItems\": 2",
+        "description": "The schema defines an array with \"minItems\": 2 and \"uniqueItems\": true. Supplying an array with only one element violates the minItems constraint."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "[1,1]"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about duplicate items when \"uniqueItems\" is true",
+        "description": "Using the same array schema, providing duplicate values violates the uniqueItems rule and should be reported."
+      }
+    ]
+  },
+  {
+    "group": "Nested object required property missing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"address\":{}}"
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about missing required property 'city' inside 'address'",
+        "description": "The schema defines a property \"address\" of type object with a required string property \"city\". Supplying an empty object for \"address\" should trigger a missing\u2011property error for \"city\"."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution works",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"color\":\"red\"}"
+          }
+        ],
+        "expected": "empty set []",
+        "description": "The root schema contains a \"$ref\" to a definition that restricts \"color\" to the enum [\"red\",\"green\"]. Providing a valid enum value should validate successfully, confirming that $ref resolution is performed."
+      }
+    ]
+  },
+  {
+    "group": "Multiple validation errors aggregated",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{}"
+          }
+        ],
+        "expected": "non\u2011empty set with at least two messages: missing required property 'name' and missing required property 'age'",
+        "description": "The schema requires both \"name\" (string) and \"age\" (integer). An empty JSON object should produce two separate validation messages, demonstrating that the validator aggregates all errors."
+      }
+    ]
+  },
+  {
+    "group": "Null node accepted when type is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set []",
+        "description": "The schema specifies \"type\": \"null\". Supplying a JSON null literal (Jackson's NullNode) should be considered valid and result in no validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Boolean type validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "true"
+          }
+        ],
+        "expected": "empty set []",
+        "description": "The schema defines \"type\": \"boolean\". Providing a proper boolean true should validate without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "\"true\""
+          }
+        ],
+        "expected": "non\u2011empty set containing a message about type mismatch (expected boolean)",
+        "description": "The same boolean schema; providing a JSON string \"true\" instead of a boolean should trigger a type\u2011mismatch validation message."
+      }
+    ]
+  },
+  {
+    "group": "Invalid $ref encoding triggers UnsupportedEncodingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"ref\":\"#%ZZ\"}"
+          }
+        ],
+        "expected": "UnsupportedEncodingException",
+        "description": "The schema contains a $ref with an invalid percent\u2011encoding (\"#%ZZ\"). During validation the implementation attempts to URL\u2011decode the fragment, which throws UnsupportedEncodingException. The exception should propagate (or be wrapped in a RuntimeException) when validate(JsonNode) is invoked."
+      }
+    ]
+  },
+  {
+    "group": "MissingNode as root triggers IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "MissingNode"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "Jackson's MissingNode represents a non\u2011existent node. Passing it as the root to validate(JsonNode) should cause the validator to reject the input and throw IllegalArgumentException because a concrete JSON value is required."
+      }
+    ]
+  },
+  {
+    "group": "Circular $ref leads to StackOverflowError",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "{\"self\":\"$ref\"}"
+          }
+        ],
+        "expected": "StackOverflowError",
+        "description": "The schema defines a $ref that points to itself, creating an infinite recursion during schema resolution. Invoking validate(JsonNode) should eventually cause a StackOverflowError."
+      }
+    ]
+  },
+  {
+    "group": "Root node of unexpected type (binary) triggers IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "BinaryNode"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the root JsonNode is a BinaryNode (e.g., created via JsonNodeFactory.binaryNode()), the validator does not know how to process binary data for most schemas and should throw IllegalArgumentException."
+      }
+    ]
+  }
+]

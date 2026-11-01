@@ -1,0 +1,112 @@
+[
+  {
+    "group": "Empty schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "No exception is thrown and initializeValidators() is never called on any JsonSchema.",
+        "description": "When the internal `schemas` list is empty, `preloadJsonSchema()` should complete without invoking any `initializeValidators()` calls."
+      }
+    ]
+  },
+  {
+    "group": "Single schema initialization",
+    "cases": [
+      {
+        "input": [],
+        "expected": "initializeValidators() is called exactly once on the sole JsonSchema instance and no exception is thrown.",
+        "description": "Verify that a single schema present in the `schemas` list is initialized exactly once."
+      }
+    ]
+  },
+  {
+    "group": "Multiple schemas initialization",
+    "cases": [
+      {
+        "input": [],
+        "expected": "initializeValidators() is called once for each JsonSchema in the list (order preserved) and no exception is thrown.",
+        "description": "When the list contains several schemas, `preloadJsonSchema()` must iterate over the whole collection and invoke `initializeValidators()` on each element."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation from a schema",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The RuntimeException thrown by a schema's initializeValidators() propagates out of preloadJsonSchema().",
+        "description": "If any schema throws an unchecked exception during initialization, `preloadJsonSchema()` should not swallow it; the exception must bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Null schema element handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "A NullPointerException is thrown when the internal `schemas` list contains a null element and `preloadJsonSchema()` attempts to invoke `initializeValidators()` on it.",
+        "description": "Verify that a null entry inside the `schemas` list is not silently ignored and causes a NullPointerException, ensuring the method does not swallow nulls."
+      }
+    ]
+  },
+  {
+    "group": "Repeated preload invocation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "For each schema in the list, `initializeValidators()` is called once per invocation of `preloadJsonSchema()`. After two consecutive calls, the method on each schema is invoked exactly twice, and no exception is thrown.",
+        "description": "Ensure that `preloadJsonSchema()` does not cache a state that prevents re\u2011initialisation; calling it multiple times should re\u2011execute `initializeValidators()` on every schema."
+      }
+    ]
+  },
+  {
+    "group": "Duplicate schema instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "`initializeValidators()` is called once for each occurrence of the duplicate schema object in the list (i.e., twice if the same instance appears twice). No exception is thrown.",
+        "description": "Confirm that the method treats each list entry independently, even when the same `JsonSchema` instance appears multiple times."
+      }
+    ]
+  },
+  {
+    "group": "Schema initialization order with side effects",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Side\u2011effect markers (e.g., appending to a shared list) appear in the exact order of the schemas in the `schemas` list, demonstrating that iteration order is preserved.",
+        "description": "Validate that `preloadJsonSchema()` iterates over the `schemas` list sequentially, not in parallel or random order, by using mock schemas that record the order of `initializeValidators()` calls."
+      }
+    ]
+  },
+  {
+    "group": "Schema throws Error propagation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "The `Error` thrown by a schema's `initializeValidators()` propagates out of `preloadJsonSchema()` unchanged.",
+        "description": "Check that the method does not catch or wrap `Error` types (e.g., `OutOfMemoryError`), allowing them to bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "Concurrent modification of schemas list during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "ConcurrentModificationException is thrown when a schema's initializeValidators() modifies the internal `schemas` list (e.g., adds or removes an element) while preloadJsonSchema() is iterating over it.",
+        "description": "Inject a mock JsonSchema whose initializeValidators() adds a new schema to the OneOfValidator.schemas list. Verify that the iteration detects the structural change and throws ConcurrentModificationException, which propagates out of preloadJsonSchema()."
+      }
+    ]
+  },
+  {
+    "group": "Null schemas list handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is thrown because the internal `schemas` field is null when preloadJsonSchema() attempts to iterate over it.",
+        "description": "Using reflection, set the private `schemas` field of OneOfValidator to null before invoking preloadJsonSchema(). Confirm that a NullPointerException is raised, indicating the method does not guard against a null collection."
+      }
+    ]
+  }
+]

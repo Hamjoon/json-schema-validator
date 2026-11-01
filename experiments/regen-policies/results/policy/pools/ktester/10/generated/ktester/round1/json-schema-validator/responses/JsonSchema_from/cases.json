@@ -1,0 +1,562 @@
+[
+  {
+    "group": "Construction with all non\u2011null arguments (suppressSubSchemaRetrieval = false)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose getValidationContext() returns the supplied ValidationContext, whose getId() matches the supplied SchemaLocation, whose findAncestor() returns null (no parent), and whose internal flag for suppressSubSchemaRetrieval is false.",
+        "description": "Verifies that the static factory creates a proper JsonSchema object when all required arguments are provided and the suppress flag is false."
+      }
+    ]
+  },
+  {
+    "group": "Construction with parent schema (suppressSubSchemaRetrieval = true)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/child-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$.child\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "JsonSchema.from(new ValidationContext(), new SchemaLocation(\"classpath:/parent-schema.json\"), new JsonNodePath(\"$\"), JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\"), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose findAncestor() returns the supplied parent schema and whose internal suppressSubSchemaRetrieval flag is true.",
+        "description": "Ensures that when a parent JsonSchema is supplied, the created schema correctly records the ancestor relationship and respects the suppress flag."
+      }
+    ]
+  },
+  {
+    "group": "Construction with null ValidationContext (should throw NullPointerException)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The factory method is expected to validate mandatory arguments; passing a null ValidationContext must result in NPE."
+      }
+    ]
+  },
+  {
+    "group": "Construction with empty schema node (object node with no properties)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/empty-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance; subsequent calls to getValidators() should return an empty list because the schema node contains no validation keywords.",
+        "description": "Checks that the factory can handle an empty JSON schema definition without failing."
+      }
+    ]
+  },
+  {
+    "group": "Construction with malformed schema JSON (invalid JSON string)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/bad-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null /* JsonNode parsing failed, resulting in null */"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If the schemaNode cannot be parsed (null), the factory should reject the input and throw an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Construction with null SchemaLocation (should throw NullPointerException)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The factory must reject a null SchemaLocation because the schema's identifier is mandatory."
+      }
+    ]
+  },
+  {
+    "group": "Construction with null EvaluationPath (should throw NullPointerException)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "The factory must validate that the evaluationPath argument is non\u2011null; a null value should cause an NPE."
+      }
+    ]
+  },
+  {
+    "group": "Construction with null parent and suppressSubSchemaRetrieval = true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"string\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose findAncestor() returns null and whose internal suppressSubSchemaRetrieval flag is true.",
+        "description": "Verifies that the factory works when no parent is supplied but the suppress flag is true."
+      }
+    ]
+  },
+  {
+    "group": "Construction with non\u2011object schema node (array) and suppressSubSchemaRetrieval = false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/array-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"[\\\"a\\\",\\\"b\\\"]\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance; getValidators() returns an empty list because array nodes do not contain validation keywords.",
+        "description": "Ensures the factory can handle a schema definition that is a JSON array rather than an object."
+      }
+    ]
+  },
+  {
+    "group": "Construction with boolean schema node (true) and suppressSubSchemaRetrieval = false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/bool-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"true\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance; getValidators() returns an empty list because a boolean schema does not define explicit keywords.",
+        "description": "Validates that the factory accepts a boolean schema node (true) and creates a schema object without error."
+      }
+    ]
+  },
+  {
+    "group": "Construction with parent schema and suppressSubSchemaRetrieval = false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/child-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$.child\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"integer\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "JsonSchema.from(new ValidationContext(), new SchemaLocation(\"classpath:/parent-schema.json\"), new JsonNodePath(\"$\"), JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\"), null, false)"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance whose findAncestor() returns the supplied parent schema and whose internal suppressSubSchemaRetrieval flag is false.",
+        "description": "Confirms that the suppress flag is independent of the presence of a parent; when false the flag should be recorded as false."
+      }
+    ]
+  },
+  {
+    "group": "Construction with schema node containing $ref and suppressSubSchemaRetrieval = false (reference resolution possible)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/ref-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"$ref\\\":\\\"#/definitions/name\\\",\\\"definitions\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance; subsequent call to getRefSchema(JsonNodePath.of(\"#/definitions/name\")) returns a JsonSchema whose getTypeValidator() reports type \"string\".",
+        "description": "Ensures that when sub\u2011schema retrieval is not suppressed, a schema containing a $ref can resolve the referenced definition."
+      }
+    ]
+  },
+  {
+    "group": "Construction with schema node containing $ref and suppressSubSchemaRetrieval = true (reference resolution disabled)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/ref-schema-suppressed.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"$ref\\\":\\\"#/definitions/name\\\",\\\"definitions\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "true"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema instance; calling getRefSchema(JsonNodePath.of(\"#/definitions/name\")) returns null because sub\u2011schema retrieval is suppressed.",
+        "description": "Verifies that when the suppress flag is true, the factory does not eagerly resolve $ref fragments."
+      }
+    ]
+  },
+  {
+    "group": "Construction with invalid SchemaLocation (empty string) should throw IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"type\\\":\\\"object\\\"}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "The factory must reject a SchemaLocation that does not contain a valid URI (empty string)."
+      }
+    ]
+  },
+  {
+    "group": "Construction with numeric schema node should throw IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/numeric-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"123\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A schema node that is a numeric literal is not a valid JSON Schema definition; the factory should reject it with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Construction with malformed $ref fragment should throw IllegalArgumentException on resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext()"
+          },
+          {
+            "parameter": "schemaLocation",
+            "value": "new SchemaLocation(\"classpath:/bad-ref-schema.json\")"
+          },
+          {
+            "parameter": "evaluationPath",
+            "value": "new JsonNodePath(\"$\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonMapperFactory.getInstance().readTree(\"{\\\"$ref\\\":\\\"#/definitions/@@invalid@@\\\",\\\"definitions\\\":{\\\"name\\\":{\\\"type\\\":\\\"string\\\"}}}\")"
+          },
+          {
+            "parameter": "parent",
+            "value": "null"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the $ref value contains an illegal fragment, attempting to resolve it (e.g., via getRefSchema) should result in an IllegalArgumentException."
+      }
+    ]
+  }
+]

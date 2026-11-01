@@ -1,0 +1,67 @@
+[
+  {
+    "group": "JsonSchema.getValidationContext() - basic return value",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance that was supplied to the JsonSchema via the static from(...) factory method",
+        "description": "Create a JsonSchema using JsonSchema.from(...) with a non\u2011null mock ValidationContext. Calling getValidationContext() should return that exact instance, proving the getter simply returns the field without alteration."
+      },
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Create a JsonSchema where the internal validationContext field is never set (e.g., by passing null to JsonSchema.from(...)). The getter should return null, confirming that no default value is injected."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.getValidationContext() - child schema inherits context",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance that was supplied to the root JsonSchema via JsonSchema.from(...)",
+        "description": "Create a root JsonSchema using JsonSchema.from(...) with a mock ValidationContext. Then obtain a child schema by calling rootSchema.getSubSchema(JsonNodePath.of(\"properties\", \"child\")) (or any method that creates a subschema). The child schema's getValidationContext() should return the exact same ValidationContext object that was given to the root, confirming that the context is propagated to subschemas."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.getValidationContext() - withConfig retains original context",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance that was supplied to the original JsonSchema",
+        "description": "Create a JsonSchema via JsonSchema.from(...) with a non\u2011null ValidationContext. Call schema.withConfig(new SchemaValidatorsConfig()) to obtain a new JsonSchema instance. The new instance's getValidationContext() must return the original ValidationContext object, proving that withConfig does not replace the context."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.getValidationContext() - identity check",
+    "cases": [
+      {
+        "input": [],
+        "expected": "identical (==) ValidationContext instance",
+        "description": "Create a JsonSchema with a specific ValidationContext object (e.g., new ValidationContext(...)). Store a reference to that object. Invoke schema.getValidationContext() and assert that the returned reference is the same (using ==) as the stored reference. This verifies that the getter does not create a copy or wrapper."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.getValidationContext() - custom ValidationContext subclass",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same custom ValidationContext subclass instance",
+        "description": "Define a subclass of ValidationContext that overrides a method (e.g., getConfig()). Instantiate this subclass and pass it to JsonSchema.from(...). Call getValidationContext() and assert that the returned object is an instance of the custom subclass and is the same object that was supplied. This ensures that the getter preserves the concrete type of the context."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.getValidationContext() - after reference resolution",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance that was supplied to the original schema",
+        "description": "Create a root JsonSchema with a mock ValidationContext. Resolve a $ref by calling rootSchema.getRefSchema(JsonNodePath.of(\"$ref\")) (or rootSchema.fromRef(...)). The resulting referenced JsonSchema should return the original ValidationContext via getValidationContext(), confirming that reference resolution does not alter the context."
+      }
+    ]
+  }
+]

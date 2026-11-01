@@ -1,0 +1,180 @@
+[
+  {
+    "group": "walk(JsonNode, boolean) - basic validation scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": \"John\", \"age\": 30 }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 no ValidationMessage objects (the instance conforms to the schema)",
+        "description": "When `validate` is true and the supplied JsonNode satisfies all schema constraints, walk should return a successful ValidationResult with an empty error set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": 123, \"age\": \"thirty\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains at least two ValidationMessage objects (type mismatch for `name` and `age`)",
+        "description": "When `validate` is true and the JsonNode violates the schema (wrong types), walk must collect the corresponding validation errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"unexpected\": \"field\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains a ValidationMessage about additionalProperties not allowed",
+        "description": "Tests the branch that handles extra properties when `validate` is true and `additionalProperties` is disallowed by the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing any JSON (e.g., { \"any\": \"value\" })"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 empty error set (no validation performed)",
+        "description": "When `validate` is false the method should skip all validator execution and immediately return a successful result regardless of the node content."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains a ValidationMessage indicating that the instance node is null or missing",
+        "description": "Ensures the null\u2011node guard branch is exercised; the method must treat a null instance as a validation failure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": \"Alice\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 empty error set (required property `age` is missing but the schema has a `required` validator that is *not* present in this particular schema configuration)",
+        "description": "Covers the branch where the schema does **not** contain a required\u2011field validator (hasRequiredValidator() returns false). The walk should succeed even though the instance is missing a property that would otherwise be required."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"type\": \"object\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 empty error set (type validator present and passes)",
+        "description": "Triggers the branch where the schema *does* contain a type validator (hasTypeValidator() returns true) and the instance type matches the expected type."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"type\": 123 }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains a ValidationMessage about type mismatch",
+        "description": "Executes the branch where a type validator is present but the instance type does not match, causing a validation error to be recorded."
+      }
+    ]
+  },
+  {
+    "group": "walk(JsonNode, boolean) - required validator scenarios",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": \"Bob\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains a ValidationMessage about missing required property `age`",
+        "description": "The schema includes a required\u2011field validator for `age`. The instance omits this property, so walk must report a missing\u2011required\u2011property error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": \"Bob\", \"age\": 25 }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 empty error set (all required properties are present and satisfy their validators)",
+        "description": "Schema has a required validator for `name` and `age`. The instance provides both properties with correct types, so validation succeeds."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing { \"name\": \"Bob\", \"age\": \"twenty\" }"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure \u2013 contains two ValidationMessages (type mismatch for `age` and required\u2011field validation still passes because the field exists)",
+        "description": "Schema has both a type validator (age must be integer) and a required validator for `age`. The field exists but with wrong type, so walk should report the type error while not flagging a missing\u2011required error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success \u2013 empty error set (validation is disabled, even though node is null)",
+        "description": "When `validate` is false the method must bypass all checks and return success regardless of the node being null."
+      }
+    ]
+  }
+]

@@ -1,0 +1,305 @@
+package com.networknt.schema;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import com.networknt.schema.resource.SchemaLoaders;
+import com.networknt.schema.resource.SchemaMappers;
+import com.networknt.schema.serialization.JsonNodeReader;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.Collections;
+
+import static org.junit.Assert.*;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link JsonSchemaFactory}.
+ *
+ * The tests deliberately avoid any external mocking frameworks and construct
+ * real objects using only the public API that is present in the supplied
+ * source code and the additional signatures that were listed in the problem
+ * statement.
+ *
+ * The suite covers:
+ * <ul>
+ *   <li>Factory creation via {@code getInstance}</li>
+ *   <li>Version flag handling via {@code checkVersion}</li>
+ *   <li>Builder customisation (json mapper, yaml mapper, json node reader,
+ *       meta‑schema registration, cache flag, etc.)</li>
+ *   <li>Schema creation from {@code String}, {@code InputStream} and {@code URI}</li>
+ *   <li>Meta‑schema lookup and normalisation logic</li>
+ *   <li>Private utility methods (<code>isYaml</code> and
+ *       <code>normalizeMetaSchemaUri</code>) via reflection</li>
+ *   <li>Behaviour when mandatory constructor arguments are missing</li>
+ * </ul>
+ */
+public class JsonSchemaFactoryTest {
+
+    private JsonSchemaFactory factoryV4;
+
+    @Before
+    public void setUp() {
+        // Obtain a factory for draft‑04 – this will also exercise checkVersion().
+        factoryV4 = JsonSchemaFactory.getInstance(VersionFlag.V4);
+        assertNotNull("Factory for V4 must not be null", factoryV4);
+    }
+
+    /* ------------------------------------------------------------
+     *  Basic factory creation and version handling
+     * ------------------------------------------------------------ */
+    @Test
+    public void testCheckVersionSupportedValues() {
+        // Each flag should map to a concrete JsonSchemaVersion implementation.
+        assertTrue(JsonSchemaFactory.checkVersion(VersionFlag.V4) instanceof Version4);
+        assertTrue(JsonSchemaFactory.checkVersion(VersionFlag.V6) instanceof Version6);
+        assertTrue(JsonSchemaFactory.checkVersion(VersionFlag.V7) instanceof Version7);
+        assertTrue(JsonSchemaFactory.checkVersion(VersionFlag.V201909) instanceof Version201909);
+        assertTrue(JsonSchemaFactory.checkVersion(VersionFlag.V202012) instanceof Version202012);
+    }
+
+    @Test
+    public void testCheckVersionNullReturnsNull() {
+        assertNull(JsonSchemaFactory.checkVersion(null));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCheckVersionUnsupportedValue() {
+        // The enum cannot be instantiated with an illegal value, therefore we
+        // simulate the situation by calling the private helper with a bogus enum
+        // constant via reflection.
+        // The method throws for the default case, which we trigger by passing null
+        // to the private method that expects a non‑null enum.
+        JsonSchemaFactory.checkVersion(null);
+    }
+
+    /* ------------------------------------------------------------
+     *  Builder customisation
+     * ------------------------------------------------------------ */
+    @Test
+    public void testBuilderWithCustomJsonNodeReaderAndMappers() {
+        // Simple JsonNodeReader that delegates to a fresh ObjectMapper.
+        JsonNodeReader reader = new JsonNodeReader() {
+            private final ObjectMapper mapper = new ObjectMapper();
+
+            @Override
+            public JsonNode readTree(String content, InputFormat inputFormat) throws java.io.IOException {
+                return mapper.readTree(content);
+            }
+
+            @Override
+            public JsonNode readTree(InputStream content, InputFormat inputFormat) throws java.io.IOException {
+                return mapper.readTree(content);
+            }
+        };
+
+        // Build a factory with the custom reader and also provide explicit mappers.
+        JsonSchemaFactory customFactory = JsonSchemaFactory.builder()
+                .jsonNodeReader(reader)
+                .jsonMapper(new ObjectMapper())
+                .yamlMapper(new ObjectMapper())
+                .defaultMetaSchemaIri(JsonMetaSchema.getV4().getIri())
+                .metaSchema(JsonMetaSchema.getV4())
+                .enableSchemaCache(false) // disable cache to test the flag
+                .build();
+
+        // Verify that the custom components are stored.
+        assertSame("Reader must be the one we supplied", reader,
+                getPrivateField(customFactory, "jsonNodeReader"));
+        assertNotNull("Json mapper must not be null", getPrivateField(customFactory, "jsonMapper"));
+        assertNotNull("Yaml mapper must not be null", getPrivateField(customFactory, "yamlMapper"));
+        assertFalse("Cache flag must be false", (Boolean) getPrivateField(customFactory, "enableSchemaCache"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenDefaultMetaSchemaIriMissing() {
+        JsonSchemaFactory.builder()
+                .metaSchema(JsonMetaSchema.getV4())
+                // deliberately omit defaultMetaSchemaIri
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenNoMetaSchemasProvided() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(JsonMetaSchema.getV4().getIri())
+                // no meta schema registration
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilderFailsWhenDefaultMetaSchemaIriNotRegistered() {
+        JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri("http://example.com/unknown")
+                .metaSchema(JsonMetaSchema.getV4())
+                .build();
+    }
+
+    /* ------------------------------------------------------------
+     *  Schema creation from String (JSON & YAML)
+     * ------------------------------------------------------------ */
+    @Test
+    public void testGetSchemaFromJsonString() {
+        String simpleSchema = "{\"type\":\"string\"}";
+        JsonSchema schema = factoryV4.getSchema(simpleSchema);
+        assertNotNull("Schema created from JSON string must not be null", schema);
+
+        // Validate a correct instance – should produce an empty validation set.
+        java.util.Set<ValidationMessage> messages = schema.validate(new ObjectMapper().readTree("\"hello\""));
+        assertTrue("Valid string must produce no validation errors", messages.isEmpty());
+
+        // Validate an incorrect instance – must contain at least one error.
+        messages = schema.validate(new ObjectMapper().readTree("123"));
+        assertFalse("Invalid instance must produce validation errors", messages.isEmpty());
+    }
+
+    @Test
+    public void testGetSchemaFromYamlString() {
+        // Simple YAML representation of the same schema.
+        String yamlSchema = "type: string";
+        JsonSchema schema = factoryV4.getSchema(yamlSchema, InputFormat.YAML);
+        assertNotNull("Schema created from YAML string must not be null", schema);
+
+        // Validate a correct instance.
+        java.util.Set<ValidationMessage> messages = schema.validate(new ObjectMapper().readTree("\"world\""));
+        assertTrue(messages.isEmpty());
+    }
+
+    @Test
+    public void testGetSchemaFromInputStream() {
+        String json = "{\"type\":\"integer\"}";
+        InputStream stream = new ByteArrayInputStream(json.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        JsonSchema schema = factoryV4.getSchema(stream);
+        assertNotNull("Schema created from InputStream must not be null", schema);
+
+        // Validate a correct integer.
+        java.util.Set<ValidationMessage> messages = schema.validate(new ObjectMapper().readTree("42"));
+        assertTrue(messages.isEmpty());
+    }
+
+    /* ------------------------------------------------------------
+     *  Meta‑schema handling and normalisation
+     * ------------------------------------------------------------ */
+    @Test
+    public void testGetMetaSchemaByIri() {
+        // Use the known draft‑07 IRI (already normalised by the library).
+        String draft7Iri = JsonMetaSchema.getV7().getIri();
+        JsonMetaSchema meta = factoryV4.getMetaSchema(draft7Iri, new SchemaValidatorsConfig());
+        assertNotNull("Meta‑schema for draft‑07 must be resolved", meta);
+        assertEquals("Returned meta‑schema IRI must match requested IRI", draft7Iri, meta.getIri());
+    }
+
+    @Test
+    public void testNormalizeMetaSchemaUriHandlesUnnormalisedIds() throws Exception {
+        // Access the protected static method via reflection.
+        Method normalizeMethod = JsonSchemaFactory.class
+                .getDeclaredMethod("normalizeMetaSchemaUri", String.class);
+        normalizeMethod.setAccessible(true);
+
+        // Unnormalised URI for draft‑07.
+        String unnormalised = "http://json-schema.org/draft-07/schema#";
+        String normalised = (String) normalizeMethod.invoke(null, unnormalised);
+        assertEquals("Normalised IRI must be the canonical V7 identifier",
+                JsonMetaSchema.getV7().getIri(), normalised);
+    }
+
+    /* ------------------------------------------------------------
+     *  Private utility method isYaml()
+     * ------------------------------------------------------------ */
+    @Test
+    public void testIsYamlDetection() throws Exception {
+        Method isYamlMethod = JsonSchemaFactory.class
+                .getDeclaredMethod("isYaml", SchemaLocation.class);
+        isYamlMethod.setAccessible(true);
+
+        SchemaLocation jsonLoc = SchemaLocation.of("http://example.com/schema.json");
+        SchemaLocation yamlLoc = SchemaLocation.of("http://example.com/schema.yaml");
+        SchemaLocation ymlLoc = SchemaLocation.of("http://example.com/schema.yml");
+        SchemaLocation noExtLoc = SchemaLocation.of("http://example.com/schema");
+
+        assertFalse("JSON extension must be detected as not YAML", (Boolean) isYamlMethod.invoke(factoryV4, jsonLoc));
+        assertTrue("YAML extension must be detected as YAML", (Boolean) isYamlMethod.invoke(factoryV4, yamlLoc));
+        assertTrue("YML extension must be detected as YAML", (Boolean) isYamlMethod.invoke(factoryV4, ymlLoc));
+        assertFalse("No extension defaults to JSON", (Boolean) isYamlMethod.invoke(factoryV4, noExtLoc));
+    }
+
+    /* ------------------------------------------------------------
+     *  getObjectMapper fallback logic
+     * ------------------------------------------------------------ */
+    @Test
+    public void testGetObjectMapperFallbacks() {
+        // The factory created by getInstance does not set custom mappers,
+        // therefore the fallback should return the library defaults.
+        ObjectMapper jsonMapper = factoryV4.getJsonMapper();
+        ObjectMapper yamlMapper = factoryV4.getYamlMapper();
+
+        assertNotNull("Fallback JSON mapper must not be null", jsonMapper);
+        assertNotNull("Fallback YAML mapper must not be null", yamlMapper);
+        // The two mapper instances are not required to be the same object.
+        assertNotSame("JSON and YAML mappers should be distinct instances", jsonMapper, yamlMapper);
+    }
+
+    /* ------------------------------------------------------------
+     *  Schema creation from URI (uses getSchema(URI))
+     * ------------------------------------------------------------ */
+    @Test
+    public void testGetSchemaFromUri() {
+        // Build a tiny schema and register it with a custom loader so the factory can retrieve it.
+        String schemaJson = "{\"type\":\"boolean\"}";
+        final String uriString = "urn:test:simpleBoolean";
+        SchemaLocation location = SchemaLocation.of(uriString);
+
+        // Create a minimal SchemaLoader that returns the schema from the given URI.
+        SchemaLoader loader = new SchemaLoader() {
+            @Override
+            public com.networknt.schema.resource.InputStreamSource getSchema(com.networknt.schema.resource.AbsoluteIri absoluteIri) {
+                if (absoluteIri.toString().equals(uriString)) {
+                    return new com.networknt.schema.resource.InputStreamSource() {
+                        @Override
+                        public InputStream getInputStream() {
+                            return new ByteArrayInputStream(schemaJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                        }
+
+                        @Override
+                        public String getLocation() {
+                            return uriString;
+                        }
+                    };
+                }
+                return null;
+            }
+        };
+
+        // Build a factory that uses the custom loader (cache disabled for simplicity).
+        JsonSchemaFactory customFactory = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(JsonMetaSchema.getV4().getIri())
+                .metaSchema(JsonMetaSchema.getV4())
+                .schemaLoaders(b -> b.add(loader))
+                .enableSchemaCache(false)
+                .build();
+
+        JsonSchema schema = customFactory.getSchema(URI.create(uriString));
+        assertNotNull("Schema retrieved via URI must not be null", schema);
+        // Validate a boolean instance.
+        java.util.Set<ValidationMessage> msgs = schema.validate(new ObjectMapper().readTree("true"));
+        assertTrue(msgs.isEmpty());
+    }
+
+    /* ------------------------------------------------------------
+     *  Helper to read private fields (used in builder tests)
+     * ------------------------------------------------------------ */
+    @SuppressWarnings("unchecked")
+    private static <T> T getPrivateField(Object target, String fieldName) {
+        try {
+            java.lang.reflect.Field f = JsonSchemaFactory.class.getDeclaredField(fieldName);
+            f.setAccessible(true);
+            return (T) f.get(target);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

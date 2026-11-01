@@ -1,0 +1,223 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchemaLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns \"http://example.com/schema\""
+          }
+        ],
+        "expected": "SchemaLocation.of(\"http://example.com/schema\")",
+        "description": "When the ValidationContext resolves a non\u2011null schema ID, the method should return a SchemaLocation created from that ID, ignoring the supplied schemaRetrievalUri (which is null in this case)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "SchemaLocation.of(\"http://fallback.com/schema\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns null"
+          }
+        ],
+        "expected": "SchemaLocation.of(\"http://fallback.com/schema\")",
+        "description": "When the ValidationContext returns null and a non\u2011null schemaRetrievalUri is supplied, the method should fall back to the string representation of schemaRetrievalUri."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns null"
+          }
+        ],
+        "expected": "SchemaLocation.DOCUMENT",
+        "description": "When both the resolved schema ID and the supplied schemaRetrievalUri are null, the method should return the constant SchemaLocation.DOCUMENT."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "SchemaLocation.of(\"http://fallback.com/schema\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns \"http://example.com/schema\""
+          }
+        ],
+        "expected": "SchemaLocation.of(\"http://example.com/schema\")",
+        "description": "Even if a schemaRetrievalUri is provided, a non\u2011null ID resolved from the ValidationContext takes precedence."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(null) returns null"
+          }
+        ],
+        "expected": "SchemaLocation.DOCUMENT",
+        "description": "Both `schemaNode` and `validationContext` return null, and no fallback URI is supplied \u2013 the method should return the constant `SchemaLocation.DOCUMENT`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns \"\" (empty string)"
+          }
+        ],
+        "expected": "SchemaLocation.of(\"\")",
+        "description": "The ValidationContext resolves an empty string (which is not `null`). The method should treat it as a valid ID and return `SchemaLocation.of(\"\")`, ignoring the null `schemaRetrievalUri`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "SchemaLocation.of(\"\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns null"
+          }
+        ],
+        "expected": "SchemaLocation.of(\"\")",
+        "description": "When the ValidationContext returns `null` and the supplied `schemaRetrievalUri` represents an empty string, the method should fall back to that empty string location."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "SchemaLocation.of(\"http://fallback.com/schema\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns \"\" (empty string)"
+          }
+        ],
+        "expected": "SchemaLocation.of(\"\")",
+        "description": "Even when a non\u2011null fallback URI is provided, a resolved empty string from the ValidationContext takes precedence, resulting in `SchemaLocation.of(\"\")`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a `null` ValidationContext should cause a `NullPointerException` because the method dereferences it to call `resolveSchemaId`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) throws IllegalStateException"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When the ValidationContext throws an exception while resolving the schema ID, the exception should propagate out of getSchemaLocation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "null"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns \"http://[invalid]\""
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "A malformed URI string returned from ValidationContext should cause SchemaLocation.of to throw IllegalArgumentException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaRetrievalUri",
+            "value": "SchemaLocation.of(\"ht!tp://bad\")"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "any JsonNode (mocked)"
+          },
+          {
+            "parameter": "validationContext",
+            "value": "mock ValidationContext where resolveSchemaId(schemaNode) returns null"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When ValidationContext returns null and the fallback schemaRetrievalUri contains an invalid URI string, SchemaLocation.of should throw IllegalArgumentException."
+      }
+    ]
+  }
+]

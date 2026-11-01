@@ -1,0 +1,257 @@
+[
+  {
+    "group": "No ID, simple absolute JSON Pointer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/name"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/properties/name' (e.g., {\"type\":\"string\"})",
+        "description": "The schema has no ID, the reference starts with '/' so it is treated as an absolute JSON Pointer. The method should return the node found at that pointer."
+      }
+    ]
+  },
+  {
+    "group": "Schema ID present and reference starts with the ID",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema#/properties/age"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/properties/age' (e.g., {\"type\":\"integer\"})",
+        "description": "The schema's getId() returns 'http://example.com/schema'. Because the reference starts with this ID, the ID part is stripped, leaving '#/properties/age'. The leading '#/' is then removed, yielding '/properties/age', which is used to locate the node."
+      }
+    ]
+  },
+  {
+    "group": "Reference starts with '#/' fragment only",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#/definitions/person"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/definitions/person' (e.g., {\"type\":\"object\", ...})",
+        "description": "No schema ID is involved. The reference begins with '#/', so the method removes the leading '#', leaving '/definitions/person', and returns the node at that pointer."
+      }
+    ]
+  },
+  {
+    "group": "URL\u2011decoded pointer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/first%20name"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/properties/first name' (decoded space) (e.g., {\"type\":\"string\"})",
+        "description": "The pointer contains percent\u2011encoded characters. After confirming it starts with '/', the method URL\u2011decodes it to '/properties/first name' before locating the node."
+      }
+    ]
+  },
+  {
+    "group": "Missing node \u2013 fallback to handleNullNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/nonexistent/path"
+          }
+        ],
+        "expected": "JsonNode returned by handleNullNode(ref, schema) (fallback node)",
+        "description": "The pointer points to a location that does not exist in the schema. After node.at() returns a missing node, the method invokes handleNullNode and returns its result."
+      }
+    ]
+  },
+  {
+    "group": "Reference does not start with '/' or '#/' \u2013 returns root schema node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "plainReference"
+          }
+        ],
+        "expected": "The original root schema JsonNode (schema.getSchemaNode())",
+        "description": "The reference neither starts with the schema ID, '#/', nor '/' so none of the conditional blocks modify jsonPointer. The method should simply return the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "ID present, reference starts with ID but without fragment '#'",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema/properties/name"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/properties/name' (e.g., {\"type\":\"string\"})",
+        "description": "The schema's getId() returns 'http://example.com/schema'. The reference starts with this ID but does not contain a fragment. The method strips the ID, leaving '/properties/name', decodes it (no change), and returns the node found at that JSON Pointer."
+      }
+    ]
+  },
+  {
+    "group": "ID present, reference starts with ID but concatenated without leading '/' after ID",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schemaproperties/name"
+          }
+        ],
+        "expected": "The original root schema JsonNode (schema.getSchemaNode())",
+        "description": "The reference starts with the schema ID but the remaining part does not begin with '/' or '#/'. After stripping the ID the pointer becomes 'properties/name', which does not satisfy the '/' check, so the method returns the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "Reference equals the schema ID exactly",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "http://example.com/schema"
+          }
+        ],
+        "expected": "The original root schema JsonNode (schema.getSchemaNode())",
+        "description": "When the reference is exactly the same as the schema ID, stripping the ID leaves an empty string. Because the resulting pointer does not start with '/' or '#/', the method returns the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "Empty reference string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": ""
+          }
+        ],
+        "expected": "The original root schema JsonNode (schema.getSchemaNode())",
+        "description": "An empty reference does not trigger any of the conditional branches, so the method returns the root schema node unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Reference is just '#'",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "#"
+          }
+        ],
+        "expected": "The original root schema JsonNode (schema.getSchemaNode())",
+        "description": "A solitary '#' is not followed by '/', therefore after the '#/' check the pointer remains '#'. It does not start with '/', so the method returns the root schema node."
+      }
+    ]
+  },
+  {
+    "group": "Array index JSON Pointer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/items/0"
+          }
+        ],
+        "expected": "JsonNode representing the first element of the 'items' array (e.g., {\"type\":\"string\"})",
+        "description": "The reference points to an array element using a numeric index. After decoding, node.at('/items/0') returns the node at that position."
+      }
+    ]
+  },
+  {
+    "group": "Encoded slash in pointer (%2F)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties%2Faddress/street"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/properties/address/street' (e.g., {\"type\":\"string\"})",
+        "description": "The pointer contains an encoded '/' (%2F). The method decodes it to '/properties/address/street' before invoking node.at, thus locating the correct node."
+      }
+    ]
+  },
+  {
+    "group": "Schema ID is empty string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/definitions/emptyId"
+          }
+        ],
+        "expected": "JsonNode representing the schema node located at '/definitions/emptyId' (e.g., {\"type\":\"object\"})",
+        "description": "When schema.getId() returns an empty string, the condition `schema.getId() != null && ref.startsWith(schema.getId())` is true (empty string is a prefix of any string). The method strips the empty ID, leaving the original pointer unchanged, then proceeds normally."
+      }
+    ]
+  },
+  {
+    "group": "Null reference argument",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling getRefSchemaNode with a null reference should cause a NullPointerException when the method attempts to evaluate ref.startsWith(...)."
+      }
+    ]
+  },
+  {
+    "group": "Schema resource root is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/name"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If findSchemaResourceRoot() returns null, the subsequent call to schema.getSchemaNode() dereferences a null object, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schema node is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "ref",
+            "value": "/properties/name"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the schema returned by findSchemaResourceRoot() has a null schema node (getSchemaNode() returns null), the method attempts to call node.at(...), which throws a NullPointerException."
+      }
+    ]
+  }
+]

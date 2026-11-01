@@ -1,0 +1,597 @@
+[
+  {
+    "group": "Successful walk with validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult containing no ValidationMessage (i.e., successful validation)",
+        "description": "When a well\u2011formed JSON string is supplied, the input format is JSON, validation flag is true and no customizer is provided, the method should deserialize the input, invoke walkAtNodeInternal and return a ValidationResult indicating successful validation."
+      }
+    ]
+  },
+  {
+    "group": "Successful walk with validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "false"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult with empty messages (validation skipped)",
+        "description": "When validation flag is false the walk should still deserialize the JSON and return a ValidationResult, but no schema validation should be performed, resulting in an empty message set."
+      }
+    ]
+  },
+  {
+    "group": "Walk with custom ExecutionContextCustomizer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"id\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", \"value\")"
+          }
+        ],
+        "expected": "ValidationResult and the ExecutionContext contains attribute \"custom\" with value \"value\"",
+        "description": "A non\u2011null ExecutionContextCustomizer should be invoked before walking the node. The test verifies that the customizer mutates the context as expected and that the walk still returns a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Walk with null ExecutionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":true}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the supplied ExecutionContext is null the method should throw a NullPointerException before attempting deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Walk with unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"some text\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "UnsupportedOperationException (or IOException) indicating that the format cannot be parsed",
+        "description": "When an InputFormat that the deserialize method does not support is provided, the method should propagate the appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Walk with malformed JSON input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"unclosed\": [1,2,3\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) thrown by deserialize",
+        "description": "Malformed JSON should cause the deserialize step to fail, resulting in an exception that bubbles up from walk."
+      }
+    ]
+  },
+  {
+    "group": "Walk with custom OutputFormat returning domain object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"type\\\":\\\"string\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<String>() { public String apply(Set<ValidationMessage> msgs) { return msgs.isEmpty()?\"OK\":\"FAIL\"; } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "\"OK\"",
+        "description": "When a custom OutputFormat is supplied that converts the validation messages into a simple string, walk should return that string instead of a ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure returns messages",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"age\\\":\\\"twenty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationResult containing at least one ValidationMessage (type mismatch for property 'age')",
+        "description": "The schema requires 'age' to be a number. Supplying a string should cause validation to fail, resulting in a ValidationResult with a non\u2011empty set of ValidationMessage objects."
+      }
+    ]
+  },
+  {
+    "group": "Null outputFormat causes NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"valid\\\":true}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null OutputFormat should be rejected early, causing a NullPointerException before any deserialization or validation occurs."
+      }
+    ]
+  },
+  {
+    "group": "Null inputFormat causes NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"x\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the InputFormat argument is null, the method cannot decide how to deserialize the string and must throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message \"customizer failure\"",
+        "description": "When the supplied ExecutionContextCustomizer throws an unchecked exception, walk should propagate that exception without swallowing it."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string causes JsonProcessingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) thrown by deserialize",
+        "description": "An empty string is not valid JSON; the deserialize step should fail and the exception should bubble up from walk."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input string causes JsonProcessingException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"   \\n\\t  \""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) thrown by deserialize",
+        "description": "A string containing only whitespace cannot be parsed as JSON; the method should raise a parsing exception."
+      }
+    ]
+  },
+  {
+    "group": "Null input string causes NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null input string should result in a NullPointerException before deserialization is attempted."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"key\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { throw new RuntimeException(\"output failure\"); } }"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "RuntimeException with message \"output failure\"",
+        "description": "When the supplied OutputFormat throws a RuntimeException while processing validation messages, walk should propagate that exception unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Deserialize throws UnsupportedEncodingException due to malformed URL encoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"%ZZ\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "UnsupportedEncodingException",
+        "description": "If the InputFormat requires URL decoding and the input contains an invalid percent\u2011encoding sequence, the deserialize step should throw UnsupportedEncodingException which must propagate out of walk."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws checked exception wrapped in RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "new ExecutionContext()"
+          },
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "outputFormat",
+            "value": "new CollectingOutputFormat<ValidationResult>()"
+          },
+          {
+            "parameter": "validate",
+            "value": "true"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { try { throw new java.io.IOException(\"io failure\"); } catch (java.io.IOException e) { throw new RuntimeException(e); } }"
+          }
+        ],
+        "expected": "RuntimeException caused by IOException with message \"io failure\"",
+        "description": "When a custom ExecutionContextCustomizer encounters a checked exception and wraps it in a RuntimeException, walk must let that RuntimeException bubble up."
+      }
+    ]
+  }
+]

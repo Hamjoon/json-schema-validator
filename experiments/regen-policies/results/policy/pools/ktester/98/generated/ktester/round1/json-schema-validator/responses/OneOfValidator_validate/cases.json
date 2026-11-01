@@ -1,0 +1,413 @@
+[
+  {
+    "group": "OneOfValidator.validate",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node (root of instance)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "empty Set (validation succeeds because exactly one subschema matches)",
+        "description": "The instance matches only the first subschema (e.g., schema requiring property \"type\" = \"A\"). The validator should return an empty set of ValidationMessage, indicating success."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"B\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with code \"oneOf\" and message indicating no subschema matches",
+        "description": "The instance does not satisfy any of the defined subschemas. The validator must report a oneOf validation error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\",\"extra\":\"value\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with code \"oneOf\" and message indicating multiple subschemas match",
+        "description": "The instance satisfies more than one subschema (e.g., both a schema that requires \"type\":\"A\" and another that allows any object with an \"extra\" field). The validator must report a oneOf validation error because more than one schema matches."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null JsonNode (missing instance)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null JsonNode"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "empty Set (validation succeeds because a missing node is considered valid for oneOf)",
+        "description": "When the instance node is null, the OneOfValidator should treat it as not applicable and return no validation messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextShortCircuitTrue"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "empty Set (validation succeeds and validator short\u2011circuits after first matching subschema)",
+        "description": "The validator\u2019s `canShortCircuit()` returns true. As soon as the first subschema matches, validation stops and returns success without evaluating the remaining subschemas."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextShortCircuitFalse"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "empty Set (validation succeeds after checking all subschemas)",
+        "description": "The validator\u2019s `canShortCircuit()` returns false. Even though the first subschema matches, the validator continues to evaluate all subschemas before returning success."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - array node (no subschema matches)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing [\"A\"]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with code \"oneOf\" indicating that no subschema matches",
+        "description": "The instance is an array, while all subschemas expect an object. The validator must report a oneOf error because none of the subschemas validate the array."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - empty object (none matches)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "Set containing a ValidationMessage with code \"oneOf\" indicating that no subschema matches",
+        "description": "An empty object does not satisfy any of the defined subschemas (e.g., each subschema requires a specific property). Validation should fail with a oneOf error."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - exactly one match despite extra unrelated property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\",\"foo\":\"bar\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "empty Set (validation succeeds because only the first subschema matches; the extra property does not trigger another subschema)",
+        "description": "The instance matches the subschema that requires \"type\":\"A\". Another subschema in the oneOf list only matches objects that contain an \"extra\" field, which this instance lacks, so only one subschema matches and validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.walk - short\u2011circuit enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextShortCircuitTrue"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "shouldValidateSchema",
+            "value": "true"
+          }
+        ],
+        "expected": "empty Set (validation succeeds and walk short\u2011circuits after the first matching subschema)",
+        "description": "Calling the public `walk` method with `shouldValidateSchema=true` should delegate to the internal validation logic with `walk=true`. With `canShortCircuit()` returning true, the validator stops after the first matching subschema and returns success."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - nested instance location",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"inner\":{\"type\":\"A\"}}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"inner\")"
+          }
+        ],
+        "expected": "empty Set (validation succeeds because exactly one subschema matches the nested object)",
+        "description": "The validator is invoked on a nested node (`inner`). The instance location should be reflected in any generated ValidationMessage. Since the nested object matches exactly one subschema, validation succeeds with no messages."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "NullPointerException (executionContext is required)",
+        "description": "Passing a null ExecutionContext should cause the validator to throw a NullPointerException before any schema processing occurs."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - null instanceLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException (instanceLocation must not be null)",
+        "description": "If the JsonNodePath argument is null, the validator cannot compute the location of validation messages and should throw a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - null rootNode with non\u2011null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "NullPointerException (rootNode is required for relative validation)",
+        "description": "When rootNode is null while the instance node is present, internal validation logic that resolves relative references will attempt to use rootNode and raise a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - executionContext that throws during validator lookup",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContextThrowingOnGetValidator"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing {\"type\":\"A\"}"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "RuntimeException (wrapped exception from ExecutionContext while obtaining validator factory)",
+        "description": "If the provided ExecutionContext throws an unexpected RuntimeException when the validator attempts to retrieve the JsonSchemaFactory, the validate method should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.validate - node of unsupported type causing ClassCastException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a binary value (e.g., Base64 encoded string) that the validator treats as an ObjectNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          }
+        ],
+        "expected": "ClassCastException (validator expects an ObjectNode but receives a different JsonNode subtype)",
+        "description": "If the internal validation logic casts the supplied JsonNode to ObjectNode without checking its actual type, supplying a non\u2011object node (e.g., a binary node) will trigger a ClassCastException."
+      }
+    ]
+  }
+]

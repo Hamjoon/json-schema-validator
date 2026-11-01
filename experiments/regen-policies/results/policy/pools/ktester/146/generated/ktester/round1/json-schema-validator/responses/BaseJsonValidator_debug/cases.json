@@ -1,0 +1,281 @@
+[
+  {
+    "group": "debug method - debug enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true and captures debug(String) calls"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "logger.debug is invoked exactly once with the message: \"validate( {\\\"field\\\":1}, {\\\"root\\\":true}, /data/item)\"",
+        "description": "When both execution config debug flag and logger debug flag are true, the method should build the expected string and forward it to logger.debug."
+      }
+    ]
+  },
+  {
+    "group": "debug method - execution config debug disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true and captures debug(String) calls"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns false"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "logger.debug is NOT invoked (zero interactions)",
+        "description": "When the execution configuration disables debug, the method must skip logging even if the logger itself is debug\u2011enabled."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null logger",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "null"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When logger is null the method should throw NullPointerException before any logger method is invoked."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null executionContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When executionContext is null the call to executionContext.getExecutionConfig() should raise NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null executionConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig() returns null"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If ExecutionContext.getExecutionConfig() returns null, invoking isDebugEnabled() on it should throw NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When node is null, the call to node.toString() inside the debug block should raise NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null rootNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "mock JsonNodePath where toString() returns \"/data/item\""
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When rootNode is null, the call to rootNode.toString() should raise NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "debug method - null instanceLocation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "mock JsonNode where toString() returns \"{\\\"field\\\":1}\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "mock JsonNode where toString() returns \"{\\\"root\\\":true}\""
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When instanceLocation is null, the call to instanceLocation.toString() should raise NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "debug method - logger debug disabled but other nulls present",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "logger",
+            "value": "mock Logger where isDebugEnabled() returns false"
+          },
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where getExecutionConfig().isDebugEnabled() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          }
+        ],
+        "expected": "No exception (method returns silently)",
+        "description": "Even if node, rootNode and instanceLocation are null, when logger.isDebugEnabled() is false the method should short\u2011circuit before accessing them, thus no exception is thrown."
+      }
+    ]
+  }
+]

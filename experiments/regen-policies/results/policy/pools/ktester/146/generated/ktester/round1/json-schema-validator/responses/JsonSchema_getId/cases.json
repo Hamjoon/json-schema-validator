@@ -1,0 +1,137 @@
+[
+  {
+    "group": "JsonSchema#getId - basic values",
+    "cases": [
+      {
+        "input": [],
+        "expected": "schema1",
+        "description": "Verify that getId() returns the exact id string that was supplied to the JsonSchema constructor (normal non\u2011empty value)."
+      },
+      {
+        "input": [],
+        "expected": "",
+        "description": "Verify that getId() correctly returns an empty string when the JsonSchema was constructed with an empty id."
+      },
+      {
+        "input": [],
+        "expected": null,
+        "description": "Verify that getId() returns null when the JsonSchema was constructed with a null id (allowed because the field is final but may be null)."
+      },
+      {
+        "input": [],
+        "expected": "http://example.com/schema#fragment",
+        "description": "Verify that getId() returns a complex URI\u2011like id containing special characters and a fragment identifier."
+      },
+      {
+        "input": [],
+        "expected": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "description": "Verify that getId() correctly returns a long id string (100+ characters) without truncation or alteration."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - immutability",
+    "cases": [
+      {
+        "input": [],
+        "expected": "immutable-id",
+        "description": "Call getId() twice on the same JsonSchema instance and ensure both calls return the identical string, confirming the id field is immutable after construction."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - special characters",
+    "cases": [
+      {
+        "input": [],
+        "expected": "!@#$%^&*()_+-=[]{}|;':,.<>?/~`",
+        "description": "Verify that getId() returns an id containing a full range of punctuation and special symbols without alteration."
+      },
+      {
+        "input": [],
+        "expected": "id-with-percent%20encoding",
+        "description": "Verify that getId() correctly returns an id that includes percent\u2011encoded characters (e.g., space encoded as %20)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - whitespace handling",
+    "cases": [
+      {
+        "input": [],
+        "expected": "  leadingSpace",
+        "description": "Confirm that leading whitespace characters are preserved in the returned id."
+      },
+      {
+        "input": [],
+        "expected": "trailingSpace  ",
+        "description": "Confirm that trailing whitespace characters are preserved in the returned id."
+      },
+      {
+        "input": [],
+        "expected": "  both  ",
+        "description": "Confirm that both leading and trailing whitespace are preserved."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - Unicode characters",
+    "cases": [
+      {
+        "input": [],
+        "expected": "\u30b9\u30ad\u30fc\u30deID",
+        "description": "Validate that getId() returns an id containing Japanese characters without corruption."
+      },
+      {
+        "input": [],
+        "expected": "emoji-\ud83d\ude80-test",
+        "description": "Validate that getId() returns an id containing emoji characters correctly."
+      },
+      {
+        "input": [],
+        "expected": "caf\u00e9-\u00f1",
+        "description": "Validate that getId() returns an id with accented Latin characters and diacritics."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - after other method calls",
+    "cases": [
+      {
+        "input": [],
+        "expected": "post-toString-id",
+        "description": "Call toString() on the JsonSchema instance first, then call getId(); ensure the id remains unchanged."
+      },
+      {
+        "input": [],
+        "expected": "post-walk-id",
+        "description": "Invoke walk(JsonNode) on the schema (or any other non\u2011mutating method) before getId(); verify the id is still the original value."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - concurrent access",
+    "cases": [
+      {
+        "input": [],
+        "expected": "concurrent-id",
+        "description": "Spawn multiple threads that simultaneously invoke getId() on the same JsonSchema instance; all should receive the identical id value, demonstrating thread\u2011safety of the getter."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema#getId - null reference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaInstance",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling getId() on a null JsonSchema reference should throw a NullPointerException, as the instance method cannot be invoked without an object."
+      }
+    ]
+  }
+]

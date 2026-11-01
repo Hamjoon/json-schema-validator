@@ -1,0 +1,186 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - normal flow",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance whose internal schemaNode matches the supplied JSON structure.",
+        "description": "Valid JSON string is parsed successfully; the method should create and return a JsonSchema object without throwing any exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{}"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance (empty schema).",
+        "description": "Even when the configuration object is null and the JSON string represents an empty object, the method should still parse the JSON and return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"{invalid json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (caused by IOException from malformed JSON)",
+        "description": "The supplied string is not valid JSON; ObjectMapper.readTree throws an IOException which should be wrapped in a JsonSchemaException by the method."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException is propagated",
+        "description": "When the schema argument itself is null, ObjectMapper.readTree throws IllegalArgumentException which is not caught by the method, so the exception should bubble up."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"   \""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (caused by IOException due to empty/whitespace JSON)",
+        "description": "A string containing only whitespace is not valid JSON; parsing fails and the method must wrap the IOException in a JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (caused by IOException due to empty input)",
+        "description": "An empty string cannot be parsed into a JsonNode; the method should convert the resulting IOException into a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - configuration variations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"{\\\"type\\\":\\\"object\\\",\\\"properties\\\":{\\\"age\\\":{\\\"type\\\":\\\"integer\\\"}}}\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig().setFailFast(true)"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance; the config is stored inside the schema for later validation",
+        "description": "Pass a non\u2011default configuration (e.g., fail\u2011fast enabled) and verify that the method still creates a JsonSchema without throwing, ensuring the config object is accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"{\\\"type\\\":\\\"array\\\",\\\"items\\\":{\\\"type\\\":\\\"string\\\"}}\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Returns a non\u2011null JsonSchema instance (array schema) even when config is null",
+        "description": "Validate that a valid JSON schema representing an array is correctly parsed and returned when the configuration argument is null."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - unknown meta\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"{\\\"$schema\\\":\\\"http://unknown/meta/schema\\\",\\\"type\\\":\\\"object\\\"}\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (unknown meta\u2011schema id cannot be resolved)",
+        "description": "The JSON schema contains a $schema attribute that points to a meta\u2011schema identifier which the factory cannot load. newJsonSchema fails and propagates a JsonSchemaException that is not wrapped by the IOException catch block."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - literal null JSON value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"null\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (schemaNode is NullNode and cannot be used to build a JsonSchema)",
+        "description": "The supplied string is the JSON literal null. ObjectMapper.readTree returns a NullNode; when newJsonSchema is called it validates the node type and throws IllegalArgumentException, which is not caught by the method."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig) - getJsonMapper returns null (NPE)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"{}\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException is thrown (ObjectMapper is null, causing readTree to be invoked on a null reference)",
+        "description": "A test subclass of JsonSchemaFactory overrides protected getJsonMapper() to return null. When getSchema is invoked the method attempts to call readTree on a null ObjectMapper, resulting in a NullPointerException that propagates out of the method."
+      }
+    ]
+  }
+]

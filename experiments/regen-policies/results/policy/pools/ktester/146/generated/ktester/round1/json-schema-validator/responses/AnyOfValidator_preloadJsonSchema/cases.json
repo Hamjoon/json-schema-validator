@@ -1,0 +1,152 @@
+[
+  {
+    "group": "Preload with null schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is called with null argument and canShortCircuit() is invoked exactly once",
+        "description": "Verify that when the AnyOfValidator is constructed with a null schemas list, calling preloadJsonSchema() forwards the null list to preloadJsonSchemas() and still triggers a call to canShortCircuit() for caching."
+      }
+    ]
+  },
+  {
+    "group": "Preload with empty schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is called with an empty list and canShortCircuit() is invoked exactly once",
+        "description": "Ensure that an empty schemas collection does not cause errors; the method should pass the empty list to preloadJsonSchemas() and still call canShortCircuit() to cache the short\u2011circuit flag."
+      }
+    ]
+  },
+  {
+    "group": "Preload with multiple schemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives the exact list of schemas supplied to the validator and canShortCircuit() is invoked exactly once",
+        "description": "Confirm that when the validator holds several JsonSchema objects, preloadJsonSchema() forwards the same list to preloadJsonSchemas() and triggers a single call to canShortCircuit() for caching."
+      }
+    ]
+  },
+  {
+    "group": "Preload does not alter schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the original schemas list remains unchanged after preloadJsonSchema() execution",
+        "description": "Check that preloadJsonSchema() does not modify the internal schemas collection (e.g., by adding, removing, or reordering elements) while still invoking the helper methods."
+      }
+    ]
+  },
+  {
+    "group": "Preload invokes canShortCircuit regardless of exception from preloadJsonSchemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "canShortCircuit() is still called even if preloadJsonSchemas throws a RuntimeException",
+        "description": "Simulate a failure inside preloadJsonSchemas (e.g., by mocking it to throw) and verify that the validator still attempts to call canShortCircuit() before propagating the exception."
+      }
+    ]
+  },
+  {
+    "group": "Preload with list containing null element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is called with a list that includes a null entry and canShortCircuit() is invoked exactly once",
+        "description": "Create an AnyOfValidator with a schemas list containing a valid JsonSchema object followed by a null element. Verify that preloadJsonSchema forwards the list unchanged (including the null) to preloadJsonSchemas and still calls canShortCircuit() once."
+      }
+    ]
+  },
+  {
+    "group": "Preload with unmodifiable schemas list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives the same unmodifiable list instance and canShortCircuit() is invoked exactly once",
+        "description": "Supply an AnyOfValidator with Collections.unmodifiableList([...]) as the schemas collection. Ensure that preloadJsonSchema does not attempt to modify the list (no UnsupportedOperationException) and forwards the list reference to preloadJsonSchemas, then calls canShortCircuit() once."
+      }
+    ]
+  },
+  {
+    "group": "Preload called multiple times (idempotent behavior)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas and canShortCircuit() are each invoked once per call; calling preloadJsonSchema twice results in two total invocations of each helper method",
+        "description": "Invoke preloadJsonSchema() on the same AnyOfValidator instance twice. Verify that each invocation triggers a separate call to preloadJsonSchemas and canShortCircuit(), confirming that the method does not cache a single execution and can be safely called repeatedly."
+      }
+    ]
+  },
+  {
+    "group": "Preload verifies single delegation to preloadJsonSchemas",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas is called exactly once per preloadJsonSchema execution, even if the internal schemas list contains many elements",
+        "description": "Use a spy or mock for the AnyOfValidator that overrides preloadJsonSchemas to count invocations. Provide a list of several JsonSchema objects and call preloadJsonSchema(). Assert that the helper method is invoked only once."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates exception from a schema during preload",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException thrown by a schema's preloadJsonSchema is propagated, and canShortCircuit() is still invoked exactly once before the exception bubbles up",
+        "description": "Mock one JsonSchema in the schemas list so that its preloadJsonSchema() throws a RuntimeException. Call AnyOfValidator.preloadJsonSchema() and verify that the exception is re\u2011thrown while canShortCircuit() has been called."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates exception from canShortCircuit",
+    "cases": [
+      {
+        "input": [],
+        "expected": "Exception thrown by canShortCircuit() is propagated and preloadJsonSchemas is still called beforehand",
+        "description": "Create a subclass of AnyOfValidator that overrides canShortCircuit() to throw a custom RuntimeException. Ensure that preloadJsonSchemas is invoked first, then the exception from canShortCircuit() propagates out of preloadJsonSchema()."
+      }
+    ]
+  },
+  {
+    "group": "Preload with schemas list that is a custom List implementation tracking iteration",
+    "cases": [
+      {
+        "input": [],
+        "expected": "preloadJsonSchemas receives the custom List instance and iterates over it exactly once; canShortCircuit() is invoked once",
+        "description": "Provide a custom List implementation that records each call to get(int) and size(). After calling preloadJsonSchema(), verify that size() and get() are each called the expected number of times (size once, get for each element) and that canShortCircuit() is called once."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates NullPointerException from null schema element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Create an AnyOfValidator whose schemas list contains a null entry. When preloadJsonSchema() invokes preloadJsonSchemas(this.schemas), the internal iteration over the list attempts to call a method on the null schema, causing a NullPointerException which must be propagated out of preloadJsonSchema()."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates exception from schemas list access (UnsupportedOperationException)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "UnsupportedOperationException",
+        "description": "Supply an AnyOfValidator with a custom List implementation whose size() method throws UnsupportedOperationException. The call to preloadJsonSchemas(this.schemas) will trigger the size() call before any schema processing, causing the exception to be thrown and propagated."
+      }
+    ]
+  },
+  {
+    "group": "Preload propagates Error thrown by preloadJsonSchemas (AssertionError)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "AssertionError",
+        "description": "Subclass AnyOfValidator and override preloadJsonSchemas(List<JsonSchema>) to throw an AssertionError. Verify that preloadJsonSchema() does not catch the Error and that the AssertionError propagates to the caller while canShortCircuit() is not invoked."
+      }
+    ]
+  }
+]

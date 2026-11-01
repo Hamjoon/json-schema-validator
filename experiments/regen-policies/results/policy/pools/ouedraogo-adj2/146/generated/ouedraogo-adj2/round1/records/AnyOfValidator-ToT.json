@@ -1,0 +1,58 @@
+{
+  "class_name": "AnyOfValidator",
+  "technique": "ToT",
+  "status": "ok",
+  "attempts": 1,
+  "calls": [
+    {
+      "timestamp": "2026-10-29T16:08:46.596149+00:00",
+      "latency": 46.846,
+      "status": "ok",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "provider": "CoreWeave",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_reported": "openai/gpt-oss-120b",
+      "request_id": "gen-1793290126-KMK9Vkmc1VaZa2h2rhV5",
+      "usage": {
+        "prompt_tokens": 4959,
+        "completion_tokens": 2944,
+        "total_tokens": 7903,
+        "cost": 0.00064925,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00064925,
+          "upstream_inference_prompt_cost": 0.00014877,
+          "upstream_inference_completions_cost": 0.00050048
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1066,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "error_type": null,
+      "prompt_sha256": "0f30fcc50ccf3af17e3e066b902db3d262709fdcc87acc66226a55ccf4068ddb",
+      "response_sha256": "2e59e1ff765831d209edd9c3a6fa50586e80a76be5d34033e00bc1ac899657f1"
+    }
+  ],
+  "extraction": {
+    "msr_detected": true,
+    "csr_v2": true,
+    "class_name": "AnyOfValidatorTest",
+    "package": "com.networknt.schema",
+    "fqcn": "com.networknt.schema.AnyOfValidatorTest",
+    "csr_success": null,
+    "selection": "markers",
+    "marker_pair": true,
+    "braces_balanced": true,
+    "html_detected": false
+  },
+  "file": "generated/ouedraogo-adj2/round1/sources/AnyOfValidator/ToT/AnyOfValidatorTest.java"
+}

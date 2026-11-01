@@ -1,0 +1,58 @@
+{
+  "class_name": "JsonSchemaFactory",
+  "technique": "CoT",
+  "status": "ok",
+  "attempts": 1,
+  "calls": [
+    {
+      "timestamp": "2026-10-29T16:16:17.904797+00:00",
+      "latency": 20.044,
+      "status": "ok",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "provider": "Sail Research",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_reported": "openai/gpt-oss-120b",
+      "request_id": "gen-1793290578-q3G5zkkvq4bPdIJdaVuN",
+      "usage": {
+        "prompt_tokens": 10721,
+        "completion_tokens": 3834,
+        "total_tokens": 14555,
+        "cost": 0.00217494,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 64,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.00217494,
+          "upstream_inference_prompt_cost": 0.00064134,
+          "upstream_inference_completions_cost": 0.0015336
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1162,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "error_type": null,
+      "prompt_sha256": "19109399f6703f787d275e97db53f77f3b5eb084fd6bf1bcee8f22f0f444184d",
+      "response_sha256": "863280697aeaa4fd6c19ce783300be9767cdf420bdab98d8059b7c7cfb236f79"
+    }
+  ],
+  "extraction": {
+    "msr_detected": true,
+    "csr_v2": true,
+    "class_name": "JsonSchemaFactoryTest",
+    "package": "com.networknt.schema",
+    "fqcn": "com.networknt.schema.JsonSchemaFactoryTest",
+    "csr_success": null,
+    "selection": "markers",
+    "marker_pair": true,
+    "braces_balanced": true,
+    "html_detected": false
+  },
+  "file": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java"
+}

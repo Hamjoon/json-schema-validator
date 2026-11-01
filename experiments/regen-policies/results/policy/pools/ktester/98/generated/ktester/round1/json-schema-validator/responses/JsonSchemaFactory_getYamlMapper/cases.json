@@ -1,0 +1,102 @@
+[
+  {
+    "group": "yamlMapper present (non\u2011null field)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ObjectMapper instance that was injected into the JsonSchemaFactory",
+        "description": "When the private final field `yamlMapper` is initialized (non\u2011null), `getYamlMapper()` must return that exact instance rather than delegating to `YamlMapperFactory`. The test creates a JsonSchemaFactory (via reflection or a builder) with a mock ObjectMapper, invokes `getYamlMapper()` and asserts reference equality with the injected mapper."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper absent (null field)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the instance returned by YamlMapperFactory.getInstance()",
+        "description": "When the `yamlMapper` field is null, `getYamlMapper()` should fall back to the singleton provided by `YamlMapperFactory`. The test constructs a JsonSchemaFactory whose `yamlMapper` field is forced to null (reflection), calls `getYamlMapper()`, and verifies that the returned mapper is exactly the same object as `YamlMapperFactory.getInstance()`."
+      },
+      {
+        "input": [],
+        "expected": "subsequent calls return the same YamlMapperFactory instance (no new objects created)",
+        "description": "Ensures the fallback path is deterministic: after the first call returns the factory singleton, a second call to `getYamlMapper()` still returns the same singleton instance, confirming no hidden state changes."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper non\u2011null field immutability",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the injected ObjectMapper instance remains unchanged after getYamlMapper() call",
+        "description": "Create a JsonSchemaFactory with a custom ObjectMapper injected into the private final field `yamlMapper`. After invoking `getYamlMapper()`, use reflection to read the `yamlMapper` field again and assert that it still references the original injected mapper (i.e., the method does not replace or modify the field)."
+      },
+      {
+        "input": [],
+        "expected": "the returned mapper is exactly the same instance as the injected mapper",
+        "description": "Verify that `getYamlMapper()` returns the exact reference that was injected, not a copy or wrapper. The test obtains the injected mapper via reflection, calls `getYamlMapper()`, and checks reference equality."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper null field fallback guarantees",
+    "cases": [
+      {
+        "input": [],
+        "expected": "a non\u2011null ObjectMapper instance",
+        "description": "Force the private `yamlMapper` field to `null` (using reflection). Call `getYamlMapper()` and assert that the result is not `null` and is an instance of `com.fasterxml.jackson.databind.ObjectMapper`."
+      },
+      {
+        "input": [],
+        "expected": "the same instance returned by YamlMapperFactory.getInstance() even if YamlMapperFactory is mocked to return a specific stub",
+        "description": "Using a mocking framework capable of static mocking (e.g., PowerMock), stub `YamlMapperFactory.getInstance()` to return a pre\u2011created mock ObjectMapper. Set `yamlMapper` to `null` and call `getYamlMapper()`. Verify that the returned object is exactly the stubbed mock."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper null field concurrency",
+    "cases": [
+      {
+        "input": [],
+        "expected": "identical ObjectMapper instances across concurrent threads",
+        "description": "Set the `yamlMapper` field to `null`. Spawn a pool of multiple threads (e.g., 10) where each thread invokes `getYamlMapper()` and stores the result in a thread\u2011safe collection. After all threads complete, assert that every collected instance is the same (reference equality) and equals `YamlMapperFactory.getInstance()`. This ensures the fallback path is thread\u2011safe and deterministic."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper field absent but YamlMapperFactory returns null (defensive)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "a non\u2011null ObjectMapper (fallback to a newly created ObjectMapper) or a NullPointerException depending on implementation",
+        "description": "Mock `YamlMapperFactory.getInstance()` to return `null` (if the mocking framework permits). With `yamlMapper` set to `null`, call `getYamlMapper()`. The test verifies that the method never propagates a `null` reference; it should either throw a clear `NullPointerException` or internally create a default `ObjectMapper`. The expected behavior is documented in the test description."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper fallback throws runtime exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException propagated from YamlMapperFactory.getInstance()",
+        "description": "Force the private `yamlMapper` field to `null`. Use a static\u2011mocking framework (e.g., PowerMock, Mockito inline) to make `YamlMapperFactory.getInstance()` throw a `RuntimeException` (or a specific subclass such as `IllegalStateException`). Invoke `getYamlMapper()` and verify that the same exception bubbles up unchanged."
+      }
+    ]
+  },
+  {
+    "group": "yamlMapper fallback returns null (unexpected null handling)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null returned (no exception thrown by getYamlMapper())",
+        "description": "Set the private `yamlMapper` field to `null` and mock `YamlMapperFactory.getInstance()` to return `null`. Call `getYamlMapper()` and assert that the method returns `null` rather than throwing an exception. This documents the edge case where the fallback provider itself is mis\u2011configured."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException when the returned mapper is used",
+        "description": "After the previous setup (fallback returns `null`), attempt to call a method on the returned `ObjectMapper` (e.g., `writeValueAsString`). The call should raise a `NullPointerException`, confirming that the factory does not guard against a `null` fallback."
+      }
+    ]
+  }
+]

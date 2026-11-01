@@ -1,0 +1,278 @@
+package com.networknt.schema;
+
+import static org.junit.Assert.*;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link OneOfValidator}.
+ *
+ * The tests cover:
+ *   • normal construction,
+ *   • successful validation (exactly one subschema matches),
+ *   • all error‑paths (no match, multiple matches, empty schema array),
+ *   • fail‑fast behaviour,
+ *   • both {@code validate} and {@code walk} entry points,
+ *   • the {@code preloadJsonSchema} hook,
+ *   • and the walk‑enabled state flag.
+ *
+ * All objects are created through the public constructors / factory methods
+ * supplied by the library – no mocking or subclassing is performed.
+ */
+public class OneOfValidatorTest {
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private ValidationContext validationContext;
+    private JsonSchema parentSchema;
+    private SchemaLocation baseLocation;
+    private JsonNodePath basePath;
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Before
+    public void setUp() throws Exception {
+        // Minimal, real objects required by the library.
+        validationContext = new ValidationContext(
+                new URIFactory(),
+                new URNFactory(),
+                JsonMetaSchema.getV7(),
+                new JsonSchemaFactory(),
+                new SchemaValidatorsConfig()
+        );
+
+        parentSchema = new JsonSchema(
+                SchemaLocation.DOCUMENT,
+                JsonNodePath.ROOT,
+                MAPPER.createObjectNode(),
+                null,
+                ValidatorTypeCode.OBJECT,
+                validationContext
+        );
+
+        baseLocation = SchemaLocation.DOCUMENT;
+        basePath = JsonNodePath.ROOT;
+    }
+
+    /** Helper – builds a {@link OneOfValidator} from a JSON array string. */
+    private OneOfValidator createOneOfValidator(String schemaArrayJson) throws Exception {
+        JsonNode schemaNode = MAPPER.readTree(schemaArrayJson);
+        return new OneOfValidator(baseLocation, basePath, schemaNode, parentSchema, validationContext);
+    }
+
+    /** Helper – creates a fresh {@link ExecutionContext} with an empty {@link CollectorContext}. */
+    private ExecutionContext freshExecutionContext() {
+        return new ExecutionContext(new CollectorContext());
+    }
+
+    /** Helper – toggles the protected {@code failFast} flag via reflection. */
+    private void enableFailFast(OneOfValidator validator) throws Exception {
+        java.lang.reflect.Field f = BaseJsonValidator.class.getDeclaredField("failFast");
+        f.setAccessible(true);
+        f.setBoolean(validator, true);
+    }
+
+    /* -------------------------------------------------------------
+     *  1. Constructor – verify the internal schema list size.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testConstructorCreatesCorrectNumberOfSchemas() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+
+        java.lang.reflect.Field f = OneOfValidator.class.getDeclaredField("schemas");
+        f.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        List<JsonSchema> list = (List<JsonSchema>) f.get(validator);
+        assertEquals(2, list.size());
+    }
+
+    /* -------------------------------------------------------------
+     *  2. Exactly one subschema matches – validation succeeds.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateExactlyOneMatch() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("\"hello\"");
+
+        Set<ValidationMessage> errors = validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+        assertTrue(errors.isEmpty());
+    }
+
+    /* -------------------------------------------------------------
+     *  3. No subschema matches – a oneOf error is returned.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateNoMatch() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("true");           // boolean – matches none
+
+        Set<ValidationMessage> errors = validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+        assertFalse(errors.isEmpty());
+
+        ValidationMessage first = errors.iterator().next();
+        assertTrue(first.getMessage().toLowerCase().contains("oneof"));
+    }
+
+    /* -------------------------------------------------------------
+     *  4. More than one subschema matches – also a oneOf error.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateMultipleMatches() throws Exception {
+        // string type and an enum that also accepts the same string → two matches
+        String json = "[ {\"type\":\"string\"}, {\"enum\":[\"hello\"]} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("\"hello\"");
+
+        Set<ValidationMessage> errors = validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+        assertFalse(errors.isEmpty());
+
+        ValidationMessage first = errors.iterator().next();
+        assertTrue(first.getMessage().toLowerCase().contains("oneof"));
+    }
+
+    /* -------------------------------------------------------------
+     *  5. Empty schema array – must still emit a oneOf error.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateEmptySchemaArray() throws Exception {
+        String json = "[]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("\"anything\"");
+
+        Set<ValidationMessage> errors = validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+        assertFalse(errors.isEmpty());
+
+        ValidationMessage first = errors.iterator().next();
+        assertTrue(first.getMessage().toLowerCase().contains("oneof"));
+    }
+
+    /* -------------------------------------------------------------
+     *  6. failFast = true – validator throws JsonSchemaException.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateFailFastThrowsException() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        enableFailFast(validator);
+
+        JsonNode instance = MAPPER.readTree("true");   // matches none → error
+
+        thrown.expect(JsonSchemaException.class);
+        validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+    }
+
+    /* -------------------------------------------------------------
+     *  7. walk(…, true) must return exactly the same set as validate().
+     * ----------------------------------------------------------- */
+    @Test
+    public void testWalkValidatePath() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("\"hello\"");
+
+        Set<ValidationMessage> viaValidate = validator.validate(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+
+        Set<ValidationMessage> viaWalk = validator.walk(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT,
+                true
+        );
+
+        assertEquals(viaValidate, viaWalk);
+    }
+
+    /* -------------------------------------------------------------
+     *  8. walk(…, false) – validation is deliberately skipped.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testWalkSkipValidation() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        JsonNode instance = MAPPER.readTree("true");
+
+        Set<ValidationMessage> result = validator.walk(
+                freshExecutionContext(),
+                instance,
+                instance,
+                JsonNodePath.ROOT,
+                false
+        );
+        assertTrue(result.isEmpty());
+    }
+
+    /* -------------------------------------------------------------
+     *  9. preloadJsonSchema() must complete without throwing.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testPreloadJsonSchemaDoesNotFail() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        validator.preloadJsonSchema();   // no exception → success
+    }
+
+    /* -------------------------------------------------------------
+     * 10. Validation when the internal state is “walk‑enabled”.
+     * ----------------------------------------------------------- */
+    @Test
+    public void testValidateWhenWalkEnabled() throws Exception {
+        String json = "[ {\"type\":\"string\"}, {\"type\":\"number\"} ]";
+        OneOfValidator validator = createOneOfValidator(json);
+        ExecutionContext ctx = freshExecutionContext();
+
+        // Force the “walk enabled” flag inside the validator state.
+        ctx.getValidatorState().setWalkEnabled(true);
+
+        JsonNode instance = MAPPER.readTree("\"hello\"");
+        Set<ValidationMessage> errors = validator.validate(
+                ctx,
+                instance,
+                instance,
+                JsonNodePath.ROOT
+        );
+        assertTrue(errors.isEmpty());
+    }
+}

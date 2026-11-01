@@ -1,0 +1,77 @@
+[
+  {
+    "group": "findLexicalRoot scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because getId() is non\u2011null, loop never entered",
+        "description": "Current schema has an id (e.g., \"#root\"). The while condition fails immediately, so the method should return the original object."
+      },
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because getId() is null and getParentSchema() is null, loop breaks on first iteration",
+        "description": "Schema with no id and no parent. The while loop starts, detects a null parent, breaks, and returns the original instance."
+      },
+      {
+        "input": [],
+        "expected": "returns the direct parent JsonSchema instance because parent has a non\u2011null id",
+        "description": "Current schema id is null, parent schema exists and its getId() returns a value (e.g., \"#parent\"). The loop iterates once, sets ancestor to the parent, then exits because parent id is non\u2011null."
+      },
+      {
+        "input": [],
+        "expected": "returns the grand\u2011parent JsonSchema instance because both child and parent ids are null but grand\u2011parent id is non\u2011null",
+        "description": "Chain: child (id null) \u2192 parent (id null) \u2192 grandparent (id \"#grand\"). The loop iterates twice, moving up the hierarchy until it reaches the grand\u2011parent whose id is non\u2011null, then returns it."
+      },
+      {
+        "input": [],
+        "expected": "returns the topmost ancestor (with null parent) because all ancestors have null ids and the chain ends with a null parent",
+        "description": "A chain of three schemas where each getId() returns null and the topmost schema's getParentSchema() returns null. The loop walks up until the parent is null, breaks, and returns that topmost schema."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot additional scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because getId() returns an empty string (non\u2011null), so the while loop is never entered",
+        "description": "Schema's id is \"\" (empty string). The method treats empty string as a valid id, does not iterate, and returns the original instance."
+      },
+      {
+        "input": [],
+        "expected": "returns the same JsonSchema instance because getId() returns a whitespace string (non\u2011null), loop never entered",
+        "description": "Schema's id is \"   \". Whitespace is still a non\u2011null value, therefore the method returns the original schema without climbing the parent chain."
+      },
+      {
+        "input": [],
+        "expected": "returns the direct parent JsonSchema instance even though both child and parent ids are null, because parent has no further parent",
+        "description": "Child schema id = null, parent schema id = null, parent.getParentSchema() = null. The loop runs once, moves to the parent, then breaks on null parent and returns that parent instance."
+      },
+      {
+        "input": [],
+        "expected": "returns the immediate parent JsonSchema instance because it is the closest ancestor with a non\u2011null id, even though a higher ancestor also has an id",
+        "description": "Child id = null, parent id = \"#parent\", grand\u2011parent id = \"#grandparent\". The loop stops after the first iteration when it reaches the parent whose id is non\u2011null, so the method returns the parent, not the grand\u2011parent."
+      },
+      {
+        "input": [],
+        "expected": "returns the top\u2011most ancestor (great\u2011grand\u2011parent) whose id is \"#root\", after climbing through three intermediate ancestors with null ids",
+        "description": "Chain: child (id null) \u2192 level1 (id null) \u2192 level2 (id null) \u2192 level3 (id null) \u2192 great\u2011grand\u2011parent (id \"#root\"). The method iterates four times, moving up the chain until it finds the first non\u2011null id, and returns that great\u2011grand\u2011parent instance."
+      }
+    ]
+  },
+  {
+    "group": "findLexicalRoot exception scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Invoking findLexicalRoot() on a null JsonSchema reference should throw NullPointerException before any method logic is executed."
+      },
+      {
+        "input": [],
+        "expected": "Infinite loop (test timeout)",
+        "description": "If a JsonSchema instance has a parent that references the instance itself (cyclic reference) and both have null ids, the while loop never encounters a non\u2011null id or a null parent, resulting in an infinite loop. The test should verify that the method does not terminate (e.g., by enforcing a timeout)."
+      }
+    ]
+  }
+]

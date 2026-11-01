@@ -1,0 +1,515 @@
+[
+  {
+    "group": "Normal validation \u2013 JSON input, successful walk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> msgs) { return new ArrayList<>(msgs); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setConfig(new SchemaValidatorsConfig())"
+          }
+        ],
+        "expected": "List<ValidationMessage> of size 0 (no validation errors)",
+        "description": "A well\u2011formed JSON document that complies with the schema should be deserialized, walked and produce an empty list of validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Normal validation \u2013 YAML input, successful walk",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage: 30\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Set<ValidationMessage>>() { public Set<ValidationMessage> apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> of size 0",
+        "description": "A well\u2011formed YAML document should be deserialized via YamlMapperFactory and validated without errors. The executionCustomizer is optional and may be null."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON \u2013 parsing error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in a RuntimeException",
+        "description": "The JSON string is malformed (missing closing brace). deserialize() should throw a JsonProcessingException which propagates as an unchecked exception from validate(...)."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML \u2013 parsing error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"name: John\\nage\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in a RuntimeException",
+        "description": "The YAML content is syntactically invalid; deserialization should fail and the method should surface the exception."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Passing a null JSON/YAML string should cause a NullPointerException before deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating unsupported format",
+        "description": "The method should validate that inputFormat is not null and throw an appropriate exception."
+      }
+    ]
+  },
+  {
+    "group": "Null OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the OutputFormat argument is null, the method cannot apply the result and should throw NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContextCustomizer \u2013 should be handled gracefully",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> msgs) { return new ArrayList<>(msgs); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "List<ValidationMessage> of size 0",
+        "description": "The method must accept a null executionCustomizer and still perform validation using the default ExecutionContext."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws runtime exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new IllegalStateException(\"Customizer failure\"); }"
+          }
+        ],
+        "expected": "IllegalStateException propagated from the customizer",
+        "description": "If the provided ExecutionContextCustomizer throws an exception, validate(...) should let it propagate, allowing the caller to see the failure."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported charset handling (internal branch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%E4%BD%A0%E5%A5%BD\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> of size 0 (URL decoding succeeds) \u2013 verifies the branch that catches UnsupportedEncodingException does not fire because StandardCharsets.UTF_8 is always supported.",
+        "description": "The method internally uses URLDecoder.decode(..., StandardCharsets.UTF_8). This branch ensures no UnsupportedEncodingException is thrown; the test confirms normal operation."
+      }
+    ]
+  },
+  {
+    "group": "Validation error \u2013 missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Set<ValidationMessage>>() { public Set<ValidationMessage> apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> of size > 0 containing a message about missing required property 'age'",
+        "description": "The schema requires the property 'age'. Providing JSON without it should produce a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validation error \u2013 type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":\\\"thirty\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> msgs) { return new ArrayList<>(msgs); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "List<ValidationMessage> of size > 0 containing a message about type mismatch for property 'age'",
+        "description": "The schema defines 'age' as an integer. Supplying a string should trigger a type\u2011validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validation error \u2013 additional property not allowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30,\\\"extra\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Set<ValidationMessage>>() { public Set<ValidationMessage> apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "Set<ValidationMessage> of size > 0 containing a message about disallowed additional property 'extra'",
+        "description": "The schema has \"additionalProperties\": false. Supplying an extra field should cause a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Validation succeeds when customizer relaxes additionalProperties",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"name\\\":\\\"John\\\",\\\"age\\\":30,\\\"extra\\\":\\\"value\\\"}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<List<ValidationMessage>>() { public List<ValidationMessage> apply(Set<ValidationMessage> msgs) { return new ArrayList<>(msgs); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.getConfig().setAdditionalProperties(true)"
+          }
+        ],
+        "expected": "List<ValidationMessage> of size 0 (no validation errors)",
+        "description": "The customizer sets the configuration to allow additional properties, so the same input that previously failed now validates successfully."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string \u2013 JSON parsing error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException wrapped in a RuntimeException",
+        "description": "An empty string is not valid JSON; deserialization should fail and the exception should propagate."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException indicating unsupported InputFormat",
+        "description": "Passing an InputFormat value that the validator does not recognise should result in an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid percent\u2011encoding \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"%E4%BD%A0%ZZ\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown by URLDecoder when decoding malformed percent\u2011encoding",
+        "description": "The validator URL\u2011decodes the input using UTF\u20118. Supplying an invalid percent\u2011encoded string should cause URLDecoder.decode to throw IllegalArgumentException, which must propagate out of validate()."
+      }
+    ]
+  },
+  {
+    "group": "OutputFormat.apply throws runtime exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { throw new IllegalStateException(\"Format failure\"); } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalStateException propagated from OutputFormat.apply",
+        "description": "If the OutputFormat implementation throws an unchecked exception while converting the validation messages, validate() must let the exception bubble up to the caller."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\"{\\\"a\\\":1}\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "format",
+            "value": "new OutputFormat<Object>() { public Object apply(Set<ValidationMessage> msgs) { return msgs; } }"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new NullPointerException(\"Customizer NPE\"); }"
+          }
+        ],
+        "expected": "NullPointerException propagated from the ExecutionContextCustomizer",
+        "description": "When the supplied ExecutionContextCustomizer throws a NullPointerException, validate() should not catch it; the exception must be visible to the caller."
+      }
+    ]
+  }
+]

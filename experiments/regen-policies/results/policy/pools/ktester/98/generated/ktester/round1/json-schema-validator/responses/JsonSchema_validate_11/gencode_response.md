@@ -1,0 +1,532 @@
+```java
+package com.networknt.schema;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.networknt.schema.ExecutionContext;
+import com.networknt.schema.ExecutionContextCustomizer;
+import com.networknt.schema.InputFormat;
+import com.networknt.schema.OutputFormat;
+import com.networknt.schema.ValidationMessage;
+import com.networknt.schema.ValidationResult;
+import com.networknt.schema.ValidationException;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+/**
+ * Comprehensive unit tests for {@link JsonSchema#validate(String, InputFormat, ExecutionContextCustomizer)}.
+ *
+ * <p>The tests cover:
+ * <ul>
+ *   <li>valid and invalid JSON/YAML inputs</li>
+ *   <li>URL‑encoded payloads</li>
+ *   <li>null / malformed arguments</li>
+ *   <li>custom {@link ExecutionContextCustomizer} behaviours (fail‑fast, report‑all, exception propagation, attribute setting)</li>
+ *   <li>concurrency safety</li>
+ * </ul>
+ *
+ * <p>All tests reuse a shared {@link JsonSchemaFactory} that is configured once for the whole
+ * test class. Individual test methods create their own {@link JsonSchema} instances from
+ * in‑line schema definitions to keep each scenario isolated.
+ */
+@ExtendWith(MockitoExtension.class)
+class JsonSchema_validate_11_Test {
+
+    /** Shared factory used to create {@link JsonSchema} instances. */
+    private static JsonSchemaFactory factory;
+
+    /** Configuration for the schema (no pre‑loading). */
+    private static SchemaValidatorsConfig config;
+
+    /** The schema under test – created per‑test method. */
+    private JsonSchema schema;
+
+    /** Simple no‑op customizer used by a few tests. */
+    private ExecutionContextCustomizer noopCustomizer;
+
+    @BeforeAll
+    static void setupBeforeAll() {
+        // Build a factory that can resolve external references used in some tests.
+        factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V202012,
+                builder -> builder.schemaLoaders(schemaLoaders -> schemaLoaders
+                        .schemas(Collections.singletonMap(
+                                "http://example.org/ref.json",
+                                // reference schema – a simple object with a required string property
+                                "{\n" +
+                                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                                "  \"$id\": \"http://example.org/ref.json\",\n" +
+                                "  \"type\": \"object\",\n" +
+                                "  \"properties\": {\n" +
+                                "    \"name\": { \"type\": \"string\" }\n" +
+                                "  },\n" +
+                                "  \"required\": [\"name\"]\n" +
+                                "}"))));
+        config = SchemaValidatorsConfig.builder()
+                .preloadJsonSchema(false)
+                .build();
+    }
+
+    @BeforeEach
+    void setupBeforeEach() {
+        // a no‑op customizer – the overload under test accepts any implementation
+        noopCustomizer = executionContext -> {
+            // intentionally left blank
+        };
+    }
+
+    @AfterAll
+    static void teardownAfterAll() {
+        factory = null;
+        config = null;
+    }
+
+    /* --------------------------------------------------------------
+     * Helper to create a JsonSchema from a raw schema definition.
+     * -------------------------------------------------------------- */
+    private JsonSchema createSchema(String schemaData) {
+        return factory.getSchema(schemaData, config);
+    }
+
+    /* --------------------------------------------------------------
+     * Existing tests (kept unchanged)
+     * -------------------------------------------------------------- */
+
+    /**
+     * Validates that the overload accepting an {@link ExecutionContextCustomizer}
+     * correctly delegates to the core validation logic and returns the expected
+     * {@link ValidationMessage}s.
+     */
+    @Test
+    void validate_WithExecutionContextCustomizer_ReturnsExpectedMessages() {
+        // Root schema that references the external schema defined in {@code setupBeforeAll}.
+        String schemaData = "{\n" +
+                "  \"$schema\": \"https://json-schema.org/draft/2019-09/schema\",\n" +
+                "  \"$id\": \"http://example.org/schema.json\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"$ref\": \"http://example.org/ref.json\"\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        // Input that violates the referenced schema (name must be a string).
+        String inputData = "{ \"name\": 1 }";
+
+        // Invoke the method under test.
+        Set<ValidationMessage> messages = schema.validate(inputData, InputFormat.JSON, customizer);
+
+        // The schema should report exactly one validation error (type mismatch).
+        assertEquals(1, messages.size(), "Expected a single validation error");
+
+        // Verify that the message mentions the 'type' keyword.
+        ValidationMessage message = messages.iterator().next();
+        assertTrue(message.getMessage().toLowerCase().contains("type"),
+                "Expected the validation message to mention a type error");
+    }
+
+    /**
+     * A concurrency sanity check that also uses the customizer overload.
+     */
+    @Test
+    void concurrency_WithCustomizer() throws Exception {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"https://json-schema.org/draft/2019-09/schema\",\n" +
+                "  \"$id\": \"http://example.org/schema.json\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"$ref\": \"http://example.org/ref.json\"\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String inputData = "{ \"name\": 1 }";
+        CountDownLatch latch = new CountDownLatch(1);
+        Exception[] captured = new Exception[1];
+
+        Runnable task = () -> {
+            try {
+                latch.await();
+                Set<ValidationMessage> msgs = schema.validate(inputData, InputFormat.JSON, customizer);
+                assertEquals(1, msgs.size());
+            } catch (Exception e) {
+                synchronized (captured) {
+                    captured[0] = e;
+                }
+            }
+        };
+
+        Thread[] threads = new Thread[30];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new Thread(task, "worker-" + i);
+            threads[i].start();
+        }
+
+        latch.countDown(); // release all workers simultaneously
+
+        for (Thread t : threads) {
+            t.join();
+        }
+
+        if (captured[0] != null) {
+            throw captured[0];
+        }
+    }
+
+    /* --------------------------------------------------------------
+     * New test cases derived from the supplied JSON matrix
+     * -------------------------------------------------------------- */
+
+    /** 1. Valid JSON input – should return an empty set. */
+    @Test
+    void validJsonInput_ReturnsEmptySet() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"name\": {\"type\":\"string\"},\n" +
+                "    \"age\": {\"type\":\"integer\"}\n" +
+                "  },\n" +
+                "  \"required\": [\"name\",\"age\"],\n" +
+                "  \"additionalProperties\": false\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":\"John\",\"age\":30}";
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, noopCustomizer);
+        assertTrue(msgs.isEmpty(), "Valid JSON should produce no validation messages");
+    }
+
+    /** 2. Valid YAML input – should return an empty set. */
+    @Test
+    void validYamlInput_ReturnsEmptySet() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"name\": {\"type\":\"string\"},\n" +
+                "    \"age\": {\"type\":\"integer\"}\n" +
+                "  },\n" +
+                "  \"required\": [\"name\",\"age\"],\n" +
+                "  \"additionalProperties\": false\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String yaml = "name: John\nage: 30";
+        Set<ValidationMessage> msgs = schema.validate(yaml, InputFormat.YAML, noopCustomizer);
+        assertTrue(msgs.isEmpty(), "Valid YAML should produce no validation messages");
+    }
+
+    /** 3. Invalid type for property 'age' – expect a type‑mismatch message. */
+    @Test
+    void invalidAgeType_ReturnsTypeMismatchMessage() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\"age\": {\"type\":\"integer\"}},\n" +
+                "  \"required\": [\"age\"]\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"age\":\"thirty\"}";
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, noopCustomizer);
+        assertEquals(1, msgs.size(), "Expected exactly one validation error");
+        ValidationMessage msg = msgs.iterator().next();
+        assertTrue(msg.getMessage().toLowerCase().contains("type"),
+                "Message should mention a type error");
+    }
+
+    /** 4. Malformed JSON – should throw a {@link JsonParseException}. */
+    @Test
+    void malformedJson_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        String malformed = "{\"name\":\"John\""; // missing closing brace
+        assertThrows(JsonParseException.class,
+                () -> schema.validate(malformed, InputFormat.JSON, noopCustomizer),
+                "Malformed JSON must result in a JsonParseException");
+    }
+
+    /** 5. Null input string – should throw {@link IllegalArgumentException}. */
+    @Test
+    void nullInput_ThrowsIllegalArgumentException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> schema.validate(null, InputFormat.JSON, noopCustomizer),
+                "Passing null as input must raise IllegalArgumentException");
+    }
+
+    /** 6. Null {@link InputFormat} – should throw {@link IllegalArgumentException}. */
+    @Test
+    void nullInputFormat_ThrowsIllegalArgumentException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> schema.validate("{}", null, noopCustomizer),
+                "Null InputFormat must raise IllegalArgumentException");
+    }
+
+    /** 7. Valid URL‑encoded JSON – should return an empty set. */
+    @Test
+    void urlEncodedValidJson_ReturnsEmptySet() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\"name\": {\"type\":\"string\"}, \"age\": {\"type\":\"integer\"}},\n" +
+                "  \"required\": [\"name\",\"age\"]\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String urlEncoded = "%7B%22name%22%3A%22John%22%2C%22age%22%3A30%7D";
+        Set<ValidationMessage> msgs = schema.validate(urlEncoded, InputFormat.URL_ENCODED, noopCustomizer);
+        assertTrue(msgs.isEmpty(), "Decoded JSON should be valid");
+    }
+
+    /** 8. URL‑encoded string that decodes to non‑JSON – expect a parsing exception. */
+    @Test
+    void urlEncodedInvalidContent_ThrowsParsingException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        String urlEncoded = "%E4%BD%A0%E5%A5%BD"; // "你好" – not JSON/YAML
+        assertThrows(JsonParseException.class,
+                () -> schema.validate(urlEncoded, InputFormat.URL_ENCODED, noopCustomizer),
+                "Decoding to non‑JSON should result in a parsing exception");
+    }
+
+    /** 9. Empty string with JSON format – parsing exception expected. */
+    @Test
+    void emptyStringJson_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        assertThrows(JsonParseException.class,
+                () -> schema.validate("", InputFormat.JSON, noopCustomizer),
+                "Empty string for JSON input must raise JsonParseException");
+    }
+
+    /** 10. Whitespace‑only JSON – parsing exception expected. */
+    @Test
+    void whitespaceOnlyJson_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        assertThrows(JsonParseException.class,
+                () -> schema.validate("   \n   ", InputFormat.JSON, noopCustomizer),
+                "Whitespace‑only JSON must raise JsonParseException");
+    }
+
+    /** 11. Additional property not allowed – expect a specific validation message. */
+    @Test
+    void additionalProperty_NotAllowed_ReturnsMessage() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\"name\": {\"type\":\"string\"}, \"age\": {\"type\":\"integer\"}},\n" +
+                "  \"required\": [\"name\",\"age\"],\n" +
+                "  \"additionalProperties\": false\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":\"John\",\"age\":30,\"extra\":\"value\"}";
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, noopCustomizer);
+        assertEquals(1, msgs.size(), "One error expected for additional property");
+        ValidationMessage msg = msgs.iterator().next();
+        assertTrue(msg.getMessage().toLowerCase().contains("additional"),
+                "Message should mention additional property");
+    }
+
+    /** 12. Missing required property – expect a required‑property message. */
+    @Test
+    void missingRequiredProperty_ReturnsMessage() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\"name\": {\"type\":\"string\"}, \"age\": {\"type\":\"integer\"}},\n" +
+                "  \"required\": [\"name\",\"age\"]\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":\"John\"}";
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, noopCustomizer);
+        assertEquals(1, msgs.size(), "One error expected for missing required property");
+        ValidationMessage msg = msgs.iterator().next();
+        assertTrue(msg.getMessage().toLowerCase().contains("required"),
+                "Message should mention required property");
+    }
+
+    /** 13. Null value for a non‑nullable property – expect a type‑mismatch message. */
+    @Test
+    void nullValueForNonNullableProperty_ReturnsMessage() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\"name\": {\"type\":\"string\"}, \"age\": {\"type\":\"integer\"}},\n" +
+                "  \"required\": [\"name\",\"age\"]\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":null,\"age\":30}";
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, noopCustomizer);
+        assertEquals(1, msgs.size(), "One error expected for null 'name'");
+        ValidationMessage msg = msgs.iterator().next();
+        assertTrue(msg.getMessage().toLowerCase().contains("type"),
+                "Message should mention a type error for null value");
+    }
+
+    /** 14. Fail‑fast customizer – validation should stop after the first error. */
+    @Test
+    void failFastCustomizer_StopsAfterFirstError() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"name\": {\"type\":\"string\"},\n" +
+                "    \"age\": {\"type\":\"integer\"},\n" +
+                "    \"city\": {\"type\":\"string\"}\n" +
+                "  },\n" +
+                "  \"required\": [\"name\",\"age\"],\n" +
+                "  \"additionalProperties\": false\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":\"John\",\"age\":\"thirty\",\"city\":\"NY\"}";
+        ExecutionContextCustomizer failFast = ctx -> ctx.setFailFast(true);
+
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, failFast);
+        // With fail‑fast we expect exactly one error (either the type error or the additional property)
+        assertEquals(1, msgs.size(), "Fail‑fast should limit the result to a single message");
+    }
+
+    /** 15. Report‑all customizer – both errors should be reported. */
+    @Test
+    void reportAllCustomizer_CollectsAllErrors() {
+        String schemaData = "{\n" +
+                "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n" +
+                "  \"type\": \"object\",\n" +
+                "  \"properties\": {\n" +
+                "    \"name\": {\"type\":\"string\"},\n" +
+                "    \"age\": {\"type\":\"integer\"},\n" +
+                "    \"city\": {\"type\":\"string\"}\n" +
+                "  },\n" +
+                "  \"required\": [\"name\",\"age\"],\n" +
+                "  \"additionalProperties\": false\n" +
+                "}";
+        schema = createSchema(schemaData);
+
+        String input = "{\"name\":\"John\",\"age\":\"thirty\",\"city\":\"NY\"}";
+        ExecutionContextCustomizer reportAll = ctx -> ctx.setReportAllErrors(true);
+
+        Set<ValidationMessage> msgs = schema.validate(input, InputFormat.JSON, reportAll);
+        assertTrue(msgs.size() >= 2, "When reportAll is true we expect at least two messages (type + additional)");
+    }
+
+    /** 16. Customizer that throws – the exception must propagate unchanged. */
+    @Test
+    void customizerThrows_PropagatesRuntimeException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        ExecutionContextCustomizer exploding = ctx -> {
+            throw new RuntimeException("Customizer failure");
+        };
+
+        RuntimeException ex = assertThrows(RuntimeException.class,
+                () -> schema.validate("{\"a\":1}", InputFormat.JSON, exploding));
+        assertEquals("Customizer failure", ex.getMessage(),
+                "Exception message from customizer should be preserved");
+    }
+
+    /** 17. Customizer sets a user‑defined attribute – verify it is stored in the context. */
+    @Test
+    void customizerSetsCustomMessage_AttributeIsStored() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        final ExecutionContext[] captured = new ExecutionContext[1];
+        ExecutionContextCustomizer customizer = ctx -> {
+            ctx.setCustomMessage("myCustomMessage");
+            captured[0] = ctx;
+        };
+
+        // Validation itself should succeed (empty object is valid)
+        Set<ValidationMessage> msgs = schema.validate("{}", InputFormat.JSON, customizer);
+        assertTrue(msgs.isEmpty(), "Valid input should produce no messages");
+
+        assertNotNull(captured[0], "ExecutionContext should have been captured by the customizer");
+        assertEquals("myCustomMessage", captured[0].getCustomMessage(),
+                "Custom message set by the customizer must be retrievable");
+    }
+
+    /** 18. Malformed YAML – should result in a parsing exception. */
+    @Test
+    void malformedYaml_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        String malformedYaml = "name: John\nage: 30: extra";
+        assertThrows(JsonParseException.class,
+                () -> schema.validate(malformedYaml, InputFormat.YAML, noopCustomizer),
+                "Malformed YAML must raise JsonParseException");
+    }
+
+    /** 19. Invalid percent‑encoding – expect an {@link IllegalArgumentException} or {@link UnsupportedEncodingException}. */
+    @Test
+    void invalidPercentEncoding_ThrowsException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        // Incomplete percent sequence
+        String badEncoding = "%E4%BD%A0%E5%A5";
+        Exception ex = assertThrows(RuntimeException.class,
+                () -> schema.validate(badEncoding, InputFormat.URL_ENCODED, noopCustomizer));
+
+        // The library may wrap the underlying exception – we accept either.
+        assertTrue(ex instanceof IllegalArgumentException || ex instanceof UnsupportedEncodingException,
+                "Expected IllegalArgumentException or UnsupportedEncodingException for bad percent‑encoding");
+    }
+
+    /** 20. Empty URL‑encoded input – after decoding we get an empty string, which cannot be parsed. */
+    @Test
+    void emptyUrlEncodedInput_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        assertThrows(JsonParseException.class,
+                () -> schema.validate("", InputFormat.URL_ENCODED, noopCustomizer),
+                "Empty URL‑encoded input should lead to a parsing exception");
+    }
+
+    /** 21. Whitespace‑only URL‑encoded input – decoding yields whitespace, which is invalid JSON/YAML. */
+    @Test
+    void whitespaceUrlEncodedInput_ThrowsJsonParseException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        String whitespaceEncoded = "%20%20%20%0A%20%20";
+        assertThrows(JsonParseException.class,
+                () -> schema.validate(whitespaceEncoded, InputFormat.URL_ENCODED, noopCustomizer),
+                "Whitespace after URL decoding must raise a parsing exception");
+    }
+
+    /** 22. Customizer sets an illegal configuration (negative max depth) – validation should reject it. */
+    @Test
+    void customizerInvalidConfiguration_ThrowsIllegalArgumentException() {
+        String schemaData = "{ \"type\": \"object\" }";
+        schema = createSchema(schemaData);
+
+        ExecutionContextCustomizer badConfig = ctx -> ctx.setMaxDepth(-1);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> schema.validate("{}", InputFormat.JSON, badConfig));
+        assertTrue(ex.getMessage().toLowerCase().contains("maxdepth"),
+                "Exception message should indicate the illegal maxDepth value");
+    }
+}
+```

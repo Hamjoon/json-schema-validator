@@ -1,0 +1,117 @@
+[
+  {
+    "group": "OneOfValidator.canShortCircuit()",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when `canShortCircuit` is null and the parent schema's validators list does **not** contain any validator with keyword \"unevaluatedProperties\" or \"unevaluatedItems\". The loop never flips the flag, so the method should return true and cache the result."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "First invocation when `canShortCircuit` is null and the parent schema's validators list contains a validator whose `getKeyword()` returns \"unevaluatedProperties\". The presence of this keyword forces `canShortCircuit` to be set to false, which is then cached and returned."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "First invocation when `canShortCircuit` is null and the parent schema's validators list contains a validator whose `getKeyword()` returns \"unevaluatedItems\". The method should detect the keyword, set the flag to false, cache it and return false."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "First invocation when the validators list contains **multiple** validators, one of which has the keyword \"unevaluatedProperties\" (or \"unevaluatedItems\"). Even though other validators have unrelated keywords, the presence of the disallowed keyword makes the method return false."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "Second invocation after a previous call has already cached `canShortCircuit` as true. The internal field is no longer null, so the method should bypass the loop and directly return the cached true value."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "Second invocation after a previous call has already cached `canShortCircuit` as false (e.g., because a disallowed keyword was found earlier). The method should return the cached false without re\u2011evaluating the validators."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when the parent schema's validators list is empty. No keywords are examined, the flag stays true, and the method returns true."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.canShortCircuit() - keyword edge cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when the parent schema contains a validator whose `getKeyword()` returns `null`. The equality checks ignore null, so the flag stays true and the method returns true."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when the parent schema contains a validator whose `getKeyword()` returns an empty string. No match with the disallowed keywords, therefore the method returns true."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when the parent schema contains a validator with keyword \"UnevaluatedProperties\" (different case). Equality is case\u2011sensitive, so the method treats it as unrelated and returns true."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when the parent schema contains a validator with keyword \"myunevaluatedProperties\" (keyword is a substring, not an exact match). The method returns true."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.canShortCircuit() - caching after schema change",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "First call on a schema whose validators list does **not** contain disallowed keywords \u2192 caches `true`. Afterwards the schema's validators list is mutated to include a validator with keyword \"unevaluatedProperties\". A second call still returns the cached `true` without re\u2011evaluating the list."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "First call on a schema that contains a validator with keyword \"unevaluatedItems\" \u2192 caches `false`. The list is then cleared of that validator. A second call still returns the cached `false`."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.canShortCircuit() - null validators collection",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "First invocation when `getEvaluationParentSchema().getValidators()` returns `null`. The method should treat the collection as empty, keep the flag `true`, cache it and return `true`."
+      }
+    ]
+  },
+  {
+    "group": "OneOfValidator.canShortCircuit() - exception scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Invocation when `getEvaluationParentSchema()` returns null. The method attempts to call `.getValidators()` on a null reference, causing a NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Invocation when the parent schema's validators collection contains a null element. The enhanced for\u2011loop dereferences the null validator to call `getKeyword()`, resulting in a NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "IllegalArgumentException",
+        "description": "Invocation when a validator in the collection throws an IllegalArgumentException from its `getKeyword()` implementation. The exception propagates out of `canShortCircuit()`."
+      },
+      {
+        "input": [],
+        "expected": "ConcurrentModificationException",
+        "description": "Invocation when the validators collection is modified concurrently during iteration (e.g., a `List` that has an element added inside the loop). The iterator detects the structural change and throws a ConcurrentModificationException."
+      }
+    ]
+  }
+]

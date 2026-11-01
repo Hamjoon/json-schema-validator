@@ -1,0 +1,211 @@
+[
+  {
+    "group": "Discriminator keyword present and disabled in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode (content irrelevant, meta\u2011schema is stubbed)"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with a SchemaValidatorsConfig where discriminatorKeywordEnabled == true and nullableKeywordEnabled == true (original config is unchanged otherwise)",
+        "description": "When the meta\u2011schema contains the \"discriminator\" keyword and the incoming config has discriminatorKeywordEnabled == false, the factory must create a new config enabling both discriminator and nullable keywords."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator keyword present but already enabled in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode (content irrelevant, meta\u2011schema is stubbed)"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(true).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with the same SchemaValidatorsConfig instance that was passed in (no new config is created)",
+        "description": "When the meta\u2011schema contains the \"discriminator\" keyword but the supplied config already has discriminatorKeywordEnabled == true, the method must keep the original config unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema does not contain discriminator keyword",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode (content irrelevant, meta\u2011schema is stubbed without discriminator)"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with the same SchemaValidatorsConfig instance that was passed in (no modification)",
+        "description": "If the meta\u2011schema does not define the \"discriminator\" keyword, the method must not alter the incoming config regardless of its discriminatorKeywordEnabled flag."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator present, config disabled, nullable already true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode whose meta\u2011schema stub contains the \"discriminator\" keyword"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).nullableKeywordEnabled(true).typeLoose(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with a new SchemaValidatorsConfig instance where discriminatorKeywordEnabled == true, nullableKeywordEnabled == true, typeLoose == false (preserved), and all other flags unchanged",
+        "description": "When the meta\u2011schema defines \"discriminator\" and the supplied config has discriminator disabled but nullable already enabled, the factory must create a new config that enables discriminator (leaving nullable as true) while preserving any other custom settings."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator present, config disabled, other flags preserved",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode whose meta\u2011schema stub contains the \"discriminator\" keyword"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).nullableKeywordEnabled(false).typeLoose(true).formatKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with a new SchemaValidatorsConfig instance where discriminatorKeywordEnabled == true, nullableKeywordEnabled == true, typeLoose == true, formatKeywordEnabled == false (preserved)",
+        "description": "Ensures that when a new config is created because discriminator was disabled, all other configuration flags supplied by the caller are retained unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator absent, config discriminator enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode whose meta\u2011schema stub does NOT contain the \"discriminator\" keyword"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(true).nullableKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with the exact same SchemaValidatorsConfig instance that was passed in (no modification)",
+        "description": "If the meta\u2011schema does not define the \"discriminator\" keyword, the factory must leave the supplied config untouched even when discriminatorKeywordEnabled is true."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema absent, config null leads to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode (any content, meta\u2011schema may or may not contain discriminator)"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException thrown because the method dereferences config without null\u2011check",
+        "description": "Verifies the current implementation\u2019s behaviour when a null SchemaValidatorsConfig is supplied; the method is expected to throw NPE."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator present, config disabled, verify new config instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode whose meta\u2011schema stub contains the \"discriminator\" keyword"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "ValidationContext returned with a SchemaValidatorsConfig instance that is NOT the same object as the original config (a new config is created)",
+        "description": "Confirms that when the factory needs to enable discriminator, it creates a brand\u2011new configuration object rather than mutating the original."
+      }
+    ]
+  },
+  {
+    "group": "Schema node null leads to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().build()"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the supplied JsonNode is null, getMetaSchemaOrDefault cannot resolve a meta\u2011schema and the method dereferences the null reference, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Schema node not an object leads to IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "ArrayNode (e.g., JsonNodeFactory.instance.arrayNode().add(1))"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().build()"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "If the provided JsonNode is not an object (e.g., an array), getMetaSchemaOrDefault is expected to reject it and throw IllegalArgumentException because a schema must be a JSON object."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema keywords map null leads to NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "mocked JsonNode (any content, meta\u2011schema stub will be forced to return a JsonMetaSchema with null keywords map)"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().discriminatorKeywordEnabled(false).build()"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When getMetaSchemaOrDefault returns a JsonMetaSchema whose getKeywords() method returns null, the subsequent call to containsKey(\"discriminator\") dereferences a null map, causing a NullPointerException."
+      }
+    ]
+  }
+]

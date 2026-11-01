@@ -1,0 +1,44 @@
+{
+  "index": 10,
+  "sha": "7f1ec11b7a4b391577595e0d31d5825548c9a64f",
+  "status": "evaluated",
+  "imported": true,
+  "methods": [
+    {
+      "class": "com.networknt.schema.Issue575Test",
+      "method": "testValidTimeZoneOffsets",
+      "kind": "parameterized",
+      "file": "dev/src-test-t/java/com/networknt/schema/Issue575Test.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/Issue575Test.java|com.networknt.schema.Issue575Test|testValidTimeZoneOffsets",
+      "state": "pass",
+      "message": "",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.Issue575Test#testValidTimeZoneOffsets(java.lang.String)"
+      ],
+      "baseline_states": [
+        "pass"
+      ]
+    },
+    {
+      "class": "com.networknt.schema.Issue575Test",
+      "method": "testInvalidTimeRepresentations",
+      "kind": "parameterized",
+      "file": "dev/src-test-t/java/com/networknt/schema/Issue575Test.java",
+      "id": "dev/src-test-t/java/com/networknt/schema/Issue575Test.java|com.networknt.schema.Issue575Test|testInvalidTimeRepresentations",
+      "state": "fail",
+      "message": "expected: <false> but was: <true>",
+      "flaky": false,
+      "initial_state": "fail",
+      "selector": [
+        "com.networknt.schema.Issue575Test#testInvalidTimeRepresentations(java.lang.String)"
+      ],
+      "baseline_states": [
+        "fail"
+      ],
+      "retry_state": "fail",
+      "retry_message": "expected: <false> but was: <true>"
+    }
+  ]
+}

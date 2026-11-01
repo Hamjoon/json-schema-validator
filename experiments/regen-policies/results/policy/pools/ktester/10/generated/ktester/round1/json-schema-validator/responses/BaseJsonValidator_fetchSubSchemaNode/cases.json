@@ -1,0 +1,267 @@
+[
+  {
+    "group": "fetchSubSchemaNode - suppressSubSchemaRetrieval flag",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().build()"
+          }
+        ],
+        "expected": "null",
+        "description": "When `suppressSubSchemaRetrieval` is true the method should short\u2011circuit and return `null` regardless of the supplied `ValidationContext` or the content of `schemaNode`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(new JsonSchemaFactory()).build()"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null)",
+        "description": "When `suppressSubSchemaRetrieval` is false the method must delegate to `obtainSubSchemaNode`. With a minimal valid schema (`{\"type\":\"string\"}`) the delegate creates a `JsonSchema` object, therefore the returned value must be a non\u2011null `JsonSchema` instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If a `null` `ValidationContext` is supplied while `suppressSubSchemaRetrieval` is false, the private helper `obtainSubSchemaNode` will be invoked with a `null` argument and is expected to throw a `NullPointerException`. The test verifies that the method does not swallow the exception."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - schemaNode boolean true",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(JsonSchemaFactory.getInstance()).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.booleanNode(true)"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) representing a true schema",
+        "description": "When `suppressSubSchemaRetrieval` is false and the validator's `schemaNode` is the boolean literal `true`, `fetchSubSchemaNode` should delegate to `obtainSubSchemaNode` and return a non\u2011null `JsonSchema` that always validates (the \"true\" schema)."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - empty object schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(JsonSchemaFactory.getInstance()).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode()"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) of type ObjectSchema",
+        "description": "An empty object `{}` is a valid schema that defines an object with no property constraints. With `suppressSubSchemaRetrieval` false the method should return a concrete `JsonSchema` implementation (ObjectSchema) rather than `null`."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - null schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(JsonSchemaFactory.getInstance()).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the validator's `schemaNode` field is `null` and `suppressSubSchemaRetrieval` is false, the private helper `obtainSubSchemaNode` receives a `null` argument and must throw a `NullPointerException`. The test confirms that the method does not mask the error."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - $ref resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder()\n    .schemaFactory(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7))\n    .uriFactory(new UriFactory())\n    .build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"$ref\", \"#/definitions/name\").set(\"definitions\", JsonNodeFactory.instance.objectNode().set(\"name\", JsonNodeFactory.instance.objectNode().put(\"type\", \"string\")))"
+          }
+        ],
+        "expected": "instance of JsonSchema (non\u2011null) whose resolved schemaNode has a \"type\" field equal to \"string\"",
+        "description": "When the validator's `schemaNode` contains a `$ref` to an internal definition, `fetchSubSchemaNode` must resolve the reference via the supplied `ValidationContext`. The returned `JsonSchema` should correspond to the referenced schema (`{\"type\":\"string\"}`), confirming correct reference handling."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - validationContext factory exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder()\n    .schemaFactory(new JsonSchemaFactory() {\n        @Override\n        public JsonSchema getSchema(JsonNode schemaNode, JsonSchemaFactory factory) {\n            throw new RuntimeException(\"Factory failure\");\n        }\n    })\n    .build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"type\", \"string\")"
+          }
+        ],
+        "expected": "RuntimeException with message \"Factory failure\"",
+        "description": "If the `ValidationContext` is built with a custom `JsonSchemaFactory` that throws an exception during schema creation, `fetchSubSchemaNode` should propagate that exception. This test verifies that the method does not catch or alter the factory\u2011thrown exception."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - unsupported numeric schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(JsonSchemaFactory.getInstance()).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.numberNode(42)"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When `suppressSubSchemaRetrieval` is false and the validator's `schemaNode` is a numeric literal (an unsupported schema type), `obtainSubSchemaNode` should reject it and throw an `IllegalArgumentException`."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - unsupported array schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(JsonSchemaFactory.getInstance()).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.arrayNode().add(JsonNodeFactory.instance.objectNode().put(\"type\", \"string\"))"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "An array node is not a valid top\u2011level JSON Schema representation. The method must propagate an `IllegalArgumentException` when such a node is supplied."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - ValidationContext with null schemaFactory",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder().schemaFactory(null).build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"type\", \"string\")"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the `ValidationContext` is built without a `JsonSchemaFactory` (i.e., `null`), the internal call to the factory inside `obtainSubSchemaNode` will trigger a `NullPointerException`. The method must not swallow this exception."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - $ref to missing definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder()\n    .schemaFactory(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7))\n    .uriFactory(new UriFactory())\n    .build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"$ref\", \"#/definitions/unknown\")"
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "When the validator's `schemaNode` contains a `$ref` that points to a non\u2011existent definition, the resolution process should fail and throw a `JsonSchemaException` (or a subclass such as `IllegalArgumentException`). The test confirms that the method propagates the resolution error."
+      }
+    ]
+  },
+  {
+    "group": "fetchSubSchemaNode - $ref external unresolved URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "validationContext",
+            "value": "new ValidationContext.Builder()\n    .schemaFactory(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7))\n    .uriFactory(new UriFactory())\n    .build()"
+          },
+          {
+            "parameter": "suppressSubSchemaRetrieval",
+            "value": "false"
+          },
+          {
+            "parameter": "schemaNode",
+            "value": "JsonNodeFactory.instance.objectNode().put(\"$ref\", \"http://nonexistent.example.com/schema.json\")"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "An external `$ref` that cannot be fetched (e.g., unknown host) should cause the underlying factory to throw a `RuntimeException` (or `JsonSchemaException`). `fetchSubSchemaNode` must let this exception bubble up."
+      }
+    ]
+  }
+]

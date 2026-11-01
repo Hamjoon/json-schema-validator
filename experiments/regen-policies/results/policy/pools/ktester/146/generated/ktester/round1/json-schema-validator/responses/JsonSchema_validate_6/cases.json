@@ -1,0 +1,382 @@
+[
+  {
+    "group": "Valid JSON Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A well\u2011formed JSON string is supplied with the JSON input format. The method should deserialize the string successfully and return an empty validation result because the instance complies with the schema."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML Input",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A well\u2011formed YAML document is supplied with the YAML input format. The method should correctly deserialize the YAML and return no validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON Syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\", \"age\":}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing at least one message that indicates a parsing error (e.g., \"unexpected token\" or \"cannot deserialize\").",
+        "description": "The JSON string is syntactically malformed. Deserialization should fail and the validator must return a validation message describing the parse error."
+      }
+    ]
+  },
+  {
+    "group": "Invalid YAML Syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: : 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a parsing\u2011error message for YAML.",
+        "description": "The YAML document contains an illegal token. The method should catch the parsing exception and surface it as a validation message."
+      }
+    ]
+  },
+  {
+    "group": "Null Input String",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "IllegalArgumentException with message \"Input string cannot be null\" (or similar).",
+        "description": "Passing a null input string should be rejected early, before any deserialization attempt, resulting in an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Empty Input String",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a parsing error indicating empty content.",
+        "description": "An empty string cannot be parsed into a JSON node; the method should return a validation message that reflects the inability to deserialize an empty payload."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.UNKNOWN"
+          }
+        ],
+        "expected": "UnsupportedOperationException (or IllegalArgumentException) stating that the provided InputFormat is not supported.",
+        "description": "When an input format that the validator does not recognise is supplied, the method should throw an exception rather than attempting deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Input with URL\u2011Encoded Characters (UTF\u20118)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22John%22%7D"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED_JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors) after successful URL decoding and JSON deserialization.",
+        "description": "When the input format indicates URL\u2011encoded JSON, the method should first decode the string (using UTF\u20118) and then validate the resulting JSON. No validation errors are expected for a correct payload."
+      }
+    ]
+  },
+  {
+    "group": "Input with Unsupported Character Encoding",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%E4%BD%A0%E5%A5%BD"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED_JSON"
+          }
+        ],
+        "expected": "UnsupportedEncodingException wrapped in a ValidationException or propagated as an IllegalStateException.",
+        "description": "If URL decoding fails because the underlying charset is not supported, the method should surface the error appropriately (commonly as an unchecked exception)."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011Only Input String",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "   \t  \n  "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a parsing\u2011error message indicating that the content is empty or cannot be parsed.",
+        "description": "The input consists only of whitespace characters. After trimming, there is no JSON content, so deserialization should fail and a validation message about empty content is expected."
+      }
+    ]
+  },
+  {
+    "group": "Input with UTF\u20118 Byte Order Mark (BOM)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "\ufeff{\"name\":\"Alice\",\"age\":25}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "A JSON payload prefixed with the UTF\u20118 BOM should be correctly recognized and stripped by the deserializer, resulting in successful validation."
+      }
+    ]
+  },
+  {
+    "group": "Malformed URL\u2011Encoded JSON (invalid percent sequence)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%7B%22name%22%3A%22Bob%22%7"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED_JSON"
+          }
+        ],
+        "expected": "IllegalArgumentException (or a ValidationMessage indicating a URL\u2011decoding error).",
+        "description": "The percent\u2011encoding is incomplete (trailing \u2018%7\u2019). URL decoding should throw an exception which is surfaced as a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011Encoded JSON with URL_ENCODED_JSON format",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"city\":\"Paris\",\"population\":2148000}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED_JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "When the format indicates URL\u2011encoded JSON but the payload is plain JSON, the decoder simply returns the original string, allowing normal deserialization and validation."
+      }
+    ]
+  },
+  {
+    "group": "JSON payload with InputFormat.YAML",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"product\":\"Book\",\"price\":12.99}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "Jackson\u2019s YAML parser can also read pure JSON. Supplying JSON with the YAML format should therefore succeed."
+      }
+    ]
+  },
+  {
+    "group": "YAML payload with InputFormat.JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "title: \"Effective Java\"\nauthor: \"Joshua Bloch\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a parsing\u2011error message because the YAML syntax is not valid JSON.",
+        "description": "Providing a YAML document while the format is set to JSON should cause a parsing failure and a corresponding validation message."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON with Leading/Trailing Whitespace",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "  \n\t { \"status\" : \"ok\" , \"code\" : 200 } \t\n "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "Whitespace surrounding a valid JSON document must be ignored by the deserializer, resulting in successful validation."
+      }
+    ]
+  },
+  {
+    "group": "Array Root JSON (type\u2011mismatch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "[1, 2, 3]"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing at least one message indicating a type mismatch (e.g., expected object but found array).",
+        "description": "The schema used by JsonSchema expects an object at the root. Supplying a JSON array should deserialize correctly but later produce a validation message about the wrong type."
+      }
+    ]
+  },
+  {
+    "group": "Literal JSON null value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "A Set<ValidationMessage> containing a type\u2011mismatch message because the root node is a null literal, not an object.",
+        "description": "The string \"null\" is a valid JSON literal but does not satisfy a schema that expects an object, leading to a validation error."
+      }
+    ]
+  },
+  {
+    "group": "Unicode Characters in JSON String Values",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"greeting\":\"\u3053\u3093\u306b\u3061\u306f\",\"language\":\"Japanese\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          }
+        ],
+        "expected": "An empty Set<ValidationMessage> (no validation errors).",
+        "description": "JSON strings may contain Unicode characters. The deserializer should handle UTF\u20118 correctly and validation should succeed."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"key\":\"value\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating that the InputFormat argument cannot be null.",
+        "description": "Passing a non\u2011null JSON string while the InputFormat argument is null should cause the method to reject the call early, throwing an IllegalArgumentException (or NPE) before any deserialization occurs."
+      }
+    ]
+  }
+]

@@ -1,0 +1,542 @@
+[
+  {
+    "group": "Valid input, validation enabled, default execution context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors",
+        "description": "A well\u2011formed JSON document that conforms to the schema should walk the tree, perform validation and return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid input, validation disabled, default execution context",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"age\":{\"type\":\"integer\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors (validation flag ignored)",
+        "description": "When the validate flag is false the walk method should still parse the input and return a successful result without performing schema validation."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{invalidJson: true,"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains a parsing error",
+        "description": "Malformed JSON should cause the internal deserialize method to throw an exception; walk must catch it and return a ValidationResult indicating failure."
+      }
+    ]
+  },
+  {
+    "group": "Null input string \u2013 argument validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException (or ValidationResult.success == false with a null\u2011input error message)",
+        "description": "Passing a null input should be rejected early, either by throwing NPE or by returning a failed ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported input format \u2013 branch for format handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "<root><a>1</a></root>"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage mentions unsupported format",
+        "description": "If the supplied InputFormat is not supported by the deserialize method, walk should return a failure result indicating the problem."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011null ExecutionContextCustomizer \u2013 customizer invoked",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.setAttribute(\"custom\", true)"
+          }
+        ],
+        "expected": "ValidationResult.success == true and the ExecutionContext used during walk contains attribute \"custom\" = true",
+        "description": "When a custom ExecutionContextCustomizer is supplied it must be invoked; the test verifies that the customizer mutates the context as expected."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws exception \u2013 error propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException propagated (or ValidationResult.success == false with a customizer error message)",
+        "description": "If the customizer throws an exception, walk should not swallow it silently; the test confirms that the exception bubbles up or is reported in the result."
+      }
+    ]
+  },
+  {
+    "group": "Valid input with required property missing \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"required\":[\"name\"],\"properties\":{\"name\":{\"type\":\"string\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains a 'required' error for property 'name'",
+        "description": "The JSON document does not contain the required property 'name'. Walk should parse the document, run validation and return a failure result with the appropriate required\u2011property message."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON array input against object schema \u2013 validation error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "[{\"type\":\"object\"}]"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage mentions type mismatch (expected object, found array)",
+        "description": "The schema expects an object at the root, but the input is a JSON array. Walk must detect the type mismatch and report it."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "type: object\nproperties:\n  id:\n    type: integer"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors",
+        "description": "When the library supports YAML, a well\u2011formed YAML schema should be deserialized, validated and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Recursive schema anchor \u2013 validation succeeds without stack overflow",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"$id\":\"#\",\"$recursiveAnchor\":true,\"type\":\"object\",\"properties\":{\"self\":{\"$ref\":\"#\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors (walk terminates correctly)",
+        "description": "The schema contains a recursive anchor referencing itself. Walk must handle the recursion guard and finish without infinite recursion."
+      }
+    ]
+  },
+  {
+    "group": "Schema with $ref to external definition \u2013 reference resolved",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"address\":{\"$ref\":\"#/definitions/address\"}},\"definitions\":{\"address\":{\"type\":\"object\",\"properties\":{\"city\":{\"type\":\"string\"}}}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors",
+        "description": "The schema uses a $ref to an internal definition. Walk must resolve the reference and validate successfully."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer disables format validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\",\"format\":\"email\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> ctx.getValidationContext().getConfig().setFormatEnabled(false)"
+          }
+        ],
+        "expected": "ValidationResult.success == true and no ValidationMessage errors (format validator disabled)",
+        "description": "The customizer turns off format validation. Even though the instance contains an invalid email format, walk should succeed because the format check is disabled."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false but customizer throws exception \u2013 exception propagates",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new RuntimeException(\"customizer failure\"); }"
+          }
+        ],
+        "expected": "RuntimeException with message 'customizer failure' is thrown",
+        "description": "Even when validation is disabled, the supplied ExecutionContextCustomizer must be invoked. An exception thrown by the customizer should propagate out of walk."
+      }
+    ]
+  },
+  {
+    "group": "Empty string input \u2013 deserialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains a parsing error indicating empty input",
+        "description": "An empty string is not valid JSON. Walk should catch the deserialization error and return a failed ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat \u2013 argument validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown because inputFormat is null",
+        "description": "The walk method must reject a null InputFormat before attempting deserialization."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContextCustomizer throws AssertionError \u2013 error propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "ctx -> { throw new AssertionError(\"customizer assertion failure\"); }"
+          }
+        ],
+        "expected": "AssertionError with message 'customizer assertion failure' propagates out of walk",
+        "description": "Even though the exception is an Error (not a RuntimeException), walk must not catch it and should let it bubble up."
+      }
+    ]
+  },
+  {
+    "group": "Deep recursive schema without $recursiveAnchor \u2013 stack overflow protection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\",\"properties\":{\"a\":{\"$ref\":\"#/properties/b\"},\"b\":{\"$ref\":\"#/properties/a\"}}}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage mentions recursion depth limit or StackOverflowError is avoided",
+        "description": "A schema that references each other without a $recursiveAnchor should be detected as too deep; the implementation must guard against infinite recursion and return a failure result rather than crashing."
+      }
+    ]
+  },
+  {
+    "group": "Invalid percent\u2011encoding in input \u2013 UnsupportedEncodingException handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%ZZ%GG"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.URL_ENCODED"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "ValidationResult.success == false and ValidationMessage contains a decoding error (UnsupportedEncodingException)",
+        "description": "When the input format expects URL\u2011encoded data, malformed percent\u2011encoding should trigger an UnsupportedEncodingException which must be reported as a parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported enum constant for InputFormat \u2013 illegal argument handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.CSV"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException thrown indicating that the supplied InputFormat is not supported",
+        "description": "If a caller passes an InputFormat value that the deserialize method does not handle (e.g., CSV), walk must reject it with an appropriate exception."
+      }
+    ]
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "group": "BaseJsonValidator.getNodeFieldType - branch and value coverage",
+    "cases": [
+      {
+        "input": [],
+        "expected": "object",
+        "description": "Parent schema's schemaNode contains a \"type\" field with textual value \"object\". The method should retrieve the node, detect it is non\u2011null and return its text representation."
+      },
+      {
+        "input": [],
+        "expected": "array",
+        "description": "Parent schema's schemaNode contains a \"type\" field with textual value \"array\". Verifies that the method correctly returns the string \"array\"."
+      },
+      {
+        "input": [],
+        "expected": null,
+        "description": "Parent schema's schemaNode does **not** contain a \"type\" field. The call to get(\"type\") returns null, so the method should follow the else\u2011branch and return null."
+      },
+      {
+        "input": [],
+        "expected": "",
+        "description": "Parent schema's schemaNode contains a \"type\" field whose value is explicit JSON null (Jackson NullNode). The node is non\u2011null, so the method enters the true branch and returns NullNode.asText(), which is an empty string."
+      },
+      {
+        "input": [],
+        "expected": "5",
+        "description": "Parent schema's schemaNode contains a \"type\" field with a numeric value (e.g., 5). Although the value is not textual, the node is non\u2011null and asText() yields the string representation \"5\". The method should return this string."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.getNodeFieldType - additional type variations",
+    "cases": [
+      {
+        "input": [],
+        "expected": "true",
+        "description": "Parent schema's schemaNode contains a \"type\" field with a boolean true value. The node is non\u2011null, so the method returns the result of asText() which for a BooleanNode is the string \"true\"."
+      },
+      {
+        "input": [],
+        "expected": "false",
+        "description": "Parent schema's schemaNode contains a \"type\" field with a boolean false value. The method should return the string \"false\"."
+      },
+      {
+        "input": [],
+        "expected": "",
+        "description": "Parent schema's schemaNode contains a \"type\" field whose value is a JSON object (e.g., {\"a\":1}). For container nodes Jackson's asText() yields an empty string, so the method should return \"\"."
+      },
+      {
+        "input": [],
+        "expected": "",
+        "description": "Parent schema's schemaNode contains a \"type\" field whose value is a JSON array (e.g., [1,2,3]). asText() on an ArrayNode returns an empty string, therefore the method returns \"\"."
+      },
+      {
+        "input": [],
+        "expected": "  object  ",
+        "description": "Parent schema's schemaNode contains a \"type\" field with a textual value that includes leading and trailing whitespace. The method should return the exact text as stored, preserving the whitespace."
+      },
+      {
+        "input": [],
+        "expected": "\u03c0",
+        "description": "Parent schema's schemaNode contains a \"type\" field with a Unicode character (Greek pi). The method should return the Unicode string unchanged."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.getNodeFieldType - exception scenarios",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The validator's parent schema is null. Calling getParentSchema() returns null, so the subsequent call to getSchemaNode() triggers a NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "The parent schema exists but its schemaNode is null. The call to getParentSchema().getSchemaNode() returns null, and invoking .get(\"type\") on a null reference throws a NullPointerException."
+      },
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "The parent schema's schemaNode is a mock that throws a RuntimeException when its get(\"type\") method is invoked. This simulates an unexpected failure inside the JSON node handling."
+      }
+    ]
+  }
+]

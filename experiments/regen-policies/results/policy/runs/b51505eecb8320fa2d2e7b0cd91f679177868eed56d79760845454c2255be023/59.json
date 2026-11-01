@@ -1,0 +1,600 @@
+{
+  "index": 59,
+  "sha": "d592ac01d4b6b8c62f5ee2d2fd52c04ec8f82d37",
+  "status": "evaluated",
+  "imported": false,
+  "coverage_version": 2,
+  "coverage_status": "complete",
+  "coverage_reason": "",
+  "methods": [
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testBuilderCreatesFactory",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testBuilderCreatesFactory",
+      "body_hash": "652c35b18b6c04a48a7eaf3b9bde741bd01d19052b5ef0a2855624683947791d",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testBuilderCreatesFactory()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testBuilderCreatesFactory",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testCheckVersionNull",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionNull",
+      "body_hash": "9dcfbf8e184f90691ece90aed101d4b9a82acc96ddfd2114cb82e62b4bc14357",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionNull()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionNull",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testCheckVersionSupported",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionSupported",
+      "body_hash": "362aa7a2264014a4917a1e0d60a4ae319eb634e350d0906d8ad77d0df76cc360",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testCheckVersionSupported()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testCheckVersionSupported",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetInstanceDefault",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetInstanceDefault",
+      "body_hash": "7d82b94cba2452f02f16b0f4a307fd504ab272d0efdbcfa3359a1d3b484fba7d",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetInstanceDefault()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetInstanceDefault",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromStringValid",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromStringValid",
+      "body_hash": "278c7d4eaaf90f47eb11f3f4d8cfe3b11616cac73322af696bb5adffb9b64b23",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromStringValid()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromStringValid",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromStringInvalidJson",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromStringInvalidJson",
+      "body_hash": "6b68c6418623085034fd1b59a452046514c6c07d32cefb69549cdc4eeeaf5b7a",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromStringInvalidJson()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromStringInvalidJson",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromInputStreamInvalid",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromInputStreamInvalid",
+      "body_hash": "5f9aa66227874aadcd1a0c24674e6b1b61a95e1fd050a835a6511b450f2277c6",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromInputStreamInvalid()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromInputStreamInvalid",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromUriFileJson",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriFileJson",
+      "body_hash": "94330a3f641e8d066d517174af5cf2cc0ff8e60bad0f73c29fd1bb0e8ba6de1b",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromUriFileJson()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriFileJson",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromUriFileYaml",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriFileYaml",
+      "body_hash": "965e69bda6016ba3e40a1ab23c4d00e72cb082e62dac5a5e48e2195010764672",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromUriFileYaml()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriFileYaml",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testUriSchemaCacheEnabled",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriSchemaCacheEnabled",
+      "body_hash": "1267a297820923503a24b7e3a8455b81846212632e0b6de172d7945426e46736",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testUriSchemaCacheEnabled()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriSchemaCacheEnabled",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testUriSchemaCacheDisabled",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriSchemaCacheDisabled",
+      "body_hash": "d053a17e3fb203dcc9977fbbe6f5e5ceaded0b1e8532f97950278817ece14b81",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testUriSchemaCacheDisabled()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriSchemaCacheDisabled",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testIsYamlDetection",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testIsYamlDetection",
+      "body_hash": "31a2291d1b0e178dc9a2fa379967975654b0a2a63f4f2f0a2e18b1f6f47cc73f",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testIsYamlDetection()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testIsYamlDetection",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testUriTranslatorMappings",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriTranslatorMappings",
+      "body_hash": "ddee5e076d3da80e0dd4247f79bd103b0a3990a2e40e97e6786acb2b3d27598e",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testUriTranslatorMappings()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testUriTranslatorMappings",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaWithIdMatchingSourceUri",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaWithIdMatchingSourceUri",
+      "body_hash": "07e159fa209cac878c4563d7ccf5d52caf073890ad4f35dbae22da683470ec79",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithIdMatchingSourceUri()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaWithIdMatchingSourceUri",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaUnknownMetaSchema",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaUnknownMetaSchema",
+      "body_hash": "edf1d3c47148a71c1d71a12822615b2a212213445191152742365b7b2540fe5e",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaUnknownMetaSchema()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaUnknownMetaSchema",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaWithNullConfig",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaWithNullConfig",
+      "body_hash": "394909620a1c0149dac0c0e6b7a259614e543bcabf59886409bc6fd6171b5b95",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaWithNullConfig()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaWithNullConfig",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromJsonNode",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromJsonNode",
+      "body_hash": "0070279a7a0882f0eb4ed64f636ef28a7fc74f241b354c041268b39d474d541d",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromJsonNode()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromJsonNode",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetSchemaFromUriAndJsonNode",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriAndJsonNode",
+      "body_hash": "193b7bb5fa71a415b6016b25f04cef99f3738471971a78e098c518a14330dbc8",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetSchemaFromUriAndJsonNode()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetSchemaFromUriAndJsonNode",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    },
+    {
+      "file": "work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java",
+      "class": "com.networknt.schema.JsonSchemaFactoryTest",
+      "method": "testGetUriFactory",
+      "kind": "plain",
+      "id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetUriFactory",
+      "body_hash": "42eef61ae7350a5d2deffd3dc304950117cd3c2ca1c381df0903545682a81688",
+      "round": "round1",
+      "technique": "CoT",
+      "state": "compile-fail",
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:2: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URIFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:8: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URITranslator;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:9: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFactory;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:10: error: package com.networknt.schema.uri does not exist\nimport com.networknt.schema.uri.URISchemeFetcher;\n                               ^\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:37: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:39: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:48: error: cannot find symbol\n        assertNotNull(factory.getUriFactory());\n                             ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:49: error: cannot find symbol\n        assertNotNull(factory.getUriTranslator());\n                             ^\n  symbol:   method getUriTranslator()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                            ^\n  symbol:   method getUriFactory()\n  location: variable factory of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:71: error: cannot find symbol\n        assertEquals(factory.getUriFactory().getClass(), f.getUriFactory().getClass());\n                                                          ^\n  symbol:   method getUriFactory()\n  location: variable f of type JsonSchemaFactory\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:155: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:157: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class JsonMetaSchema\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:208: error: cannot find symbol\n                .objectMapper(objectMapper)\n                ^\n  symbol:   method objectMapper(ObjectMapper)\n  location: class Builder\n/repo/experiments/regen-policies/work/policy-survive/59/sources/2/JsonSchemaFactoryTest.java:210: error: cannot find symbol\n                .defaultMetaSchemaURI(JsonMetaSchema.getV4().getUri())\n                                                            ^\n  symbol:   method getUri()\n  location: class J",
+      "flaky": false,
+      "initial_state": "pass",
+      "selector": [
+        "com.networknt.schema.JsonSchemaFactoryTest#testGetUriFactory()"
+      ],
+      "baseline_states": [
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "file_hash": "991df04f28012435c06753c82a42607807150eac0d3c4384aac95ce033f88e83",
+      "execution_hash": "b51505eecb8320fa2d2e7b0cd91f679177868eed56d79760845454c2255be023",
+      "source_root": "work/policy-survive/59/sources/2",
+      "source_tree_hash": "c295d22501baaaa59bec823bdfa3dd91220a329bc0733b9d6ec85666a792260b",
+      "resource_tree_hash": "64b8f6150081f7511e1bd5f8c261d8f4d49c052aa22ed00fb55b039caf3d07df",
+      "unit": "com.networknt.schema.JsonSchemaFactory",
+      "origin_id": "generated/ouedraogo-adj2/round1/sources/JsonSchemaFactory/CoT/JsonSchemaFactoryTest.java|com.networknt.schema.JsonSchemaFactoryTest|testGetUriFactory",
+      "resource_root": "results/policy/pools/ouedraogo-adj2/4/dev/src-test-t",
+      "lines": []
+    }
+  ]
+}

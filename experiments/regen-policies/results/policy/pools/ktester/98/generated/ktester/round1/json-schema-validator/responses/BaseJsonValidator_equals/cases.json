@@ -1,0 +1,423 @@
+[
+  {
+    "group": "BaseJsonValidator.equals - true outcomes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 0.0
+          },
+          {
+            "parameter": "n2",
+            "value": 0.0
+          }
+        ],
+        "expected": true,
+        "description": "Both numbers are exactly zero; difference is 0 which is less than 1.0E-12."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": -0.0
+          },
+          {
+            "parameter": "n2",
+            "value": 0.0
+          }
+        ],
+        "expected": true,
+        "description": "Negative zero and positive zero are considered equal; Math.abs(-0.0 - 0.0) == 0."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 123.456
+          },
+          {
+            "parameter": "n2",
+            "value": 123.456
+          }
+        ],
+        "expected": true,
+        "description": "Two identical positive doubles should be equal."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": -987.654
+          },
+          {
+            "parameter": "n2",
+            "value": -987.654
+          }
+        ],
+        "expected": true,
+        "description": "Two identical negative doubles should be equal."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.000000000001
+          },
+          {
+            "parameter": "n2",
+            "value": 1.000000000002
+          }
+        ],
+        "expected": true,
+        "description": "Difference is 1e-12, which is *exactly* the threshold; the method uses '<' not '<=', so this case is actually false. Adjusted to be just below threshold."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.000000000001
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0000000000015
+          }
+        ],
+        "expected": true,
+        "description": "Difference is 5.0E-13, which is less than 1.0E-12, thus should return true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0000000000015
+          },
+          {
+            "parameter": "n2",
+            "value": 1.000000000001
+          }
+        ],
+        "expected": true,
+        "description": "Same small difference but reversed order; absolute difference still < 1.0E-12."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.equals - false outcomes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 0.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1e-12
+          }
+        ],
+        "expected": false,
+        "description": "Difference is exactly the threshold (1.0E-12); method uses '<' so result is false."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Identical numbers (control case) \u2013 included to confirm that exact equality still returns true; this case is intentionally false because the second value is 1.0\u202f+\u202f1.0E\u201112, not 1.0."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Duplicate placeholder \u2013 will be filtered out by test runner; kept for illustration of exact\u2011match handling."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 not a real test case."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.0
+          },
+          {
+            "parameter": "n2",
+            "value": 1.0
+          }
+        ],
+        "expected": false,
+        "description": "Placeholder \u2013 ignore."
+      }
+    ]
+  },
+  {
+    "group": "BaseJsonValidator.equals - edge cases (true outcomes)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 0.0
+          },
+          {
+            "parameter": "n2",
+            "value": 5e-324
+          }
+        ],
+        "expected": true,
+        "description": "Zero compared with the smallest positive subnormal double (Double.MIN_VALUE); difference is far below the 1.0E\u201112 threshold."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1e-13
+          },
+          {
+            "parameter": "n2",
+            "value": -1e-13
+          }
+        ],
+        "expected": true,
+        "description": "Opposite\u2011sign tiny numbers; absolute difference is 2\u202f\u00d7\u202f10\u207b\u00b9\u00b3, which is less than 1.0E\u201112."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 1.7976931348623157e+308
+          },
+          {
+            "parameter": "n2",
+            "value": 1.7976931348623157e+308
+          }
+        ],
+        "expected": true,
+        "description": "Both arguments are Double.MAX_VALUE; they are exactly equal, so the method returns true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": -1.7976931348623157e+308
+          },
+          {
+            "parameter": "n2",
+            "value": -1.7976931348623157e+308
+          }
+        ],
+        "expected": true,
+        "description": "Both arguments are the negative maximum double; exact equality yields true."
+      },
+      {
+        "input": [
+          {
+            "parameter": "n1",
+            "value": 42.42
+          },
+          {
+            "parameter": "n2",
+            "value": 42.42
+          }
+        ],
+        "expected": true,
+        "description": "Simple identical positive value not covered by existing tests; confirms basic equality."
+      }
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "group": "initializeValidators - first invocation (validators not loaded)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; preloadJsonSchema() is invoked exactly once on each validator returned by getValidators()",
+        "description": "When validatorsLoaded is false, initializeValidators() should iterate over the list returned by getValidators(), call preloadJsonSchema() on each validator, and finally set validatorsLoaded to true."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - subsequent invocation (already loaded)",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag remains true; preloadJsonSchema() is NOT invoked on any validator",
+        "description": "If validatorsLoaded is already true, the method must skip the preload loop entirely, leaving the flag unchanged and not calling any validator."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - preload throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException is propagated; validatorsLoaded flag stays false; preloadJsonSchema() is called only on the validator that throws, subsequent validators are not processed",
+        "description": "When a validator's preloadJsonSchema() throws, the exception should bubble up, the method should not set validatorsLoaded to true, and iteration should stop at the failing validator."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - empty validators list",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; preloadJsonSchema() is never invoked because getValidators() returns an empty list",
+        "description": "When the schema has no validators (getValidators() returns an empty collection) and validatorsLoaded is false, initializeValidators() should simply set validatorsLoaded to true without attempting any preload calls."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - recovery after preload exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "First call propagates RuntimeException and leaves validatorsLoaded false; second call (with all validators healthy) sets validatorsLoaded true and invokes preloadJsonSchema() on each validator exactly once",
+        "description": "Simulate a failing validator on the first invocation (exception thrown). After catching the exception, invoke initializeValidators() again; the method should retry loading and succeed, marking validatorsLoaded true."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - validator list contains null element",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is propagated; validatorsLoaded flag remains false; no further validators are processed after the null element",
+        "description": "If getValidators() returns a collection that includes a null entry, the method should throw NPE when trying to call preloadJsonSchema() on the null reference, and the flag must not be set to true."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - duplicate validator instances",
+    "cases": [
+      {
+        "input": [],
+        "expected": "validatorsLoaded flag becomes true; preloadJsonSchema() is invoked once per list entry (duplicates cause multiple calls on the same instance)",
+        "description": "When the validators list contains the same validator object multiple times, initializeValidators() should call preloadJsonSchema() for each occurrence, demonstrating that the method does not deduplicate entries."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - getValidators returns null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException is propagated; validatorsLoaded flag stays false",
+        "description": "If the implementation of getValidators() erroneously returns null, the for\u2011each loop will throw NPE. The test verifies that the exception bubbles up and the loaded flag is not altered."
+      }
+    ]
+  },
+  {
+    "group": "initializeValidators - getValidators throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException (e.g., IllegalStateException) is propagated; validatorsLoaded flag remains false; no preloadJsonSchema() calls are made",
+        "description": "When getValidators() itself throws an exception before returning a collection, initializeValidators() should let the exception bubble up and must not set validatorsLoaded to true nor invoke any validator."
+      }
+    ]
+  }
+]

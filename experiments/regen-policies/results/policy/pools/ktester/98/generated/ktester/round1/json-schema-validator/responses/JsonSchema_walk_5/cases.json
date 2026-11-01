@@ -1,0 +1,480 @@
+[
+  {
+    "group": "Valid JSON input \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A well\u2011formed JSON document is supplied. The method should deserialize the string, create an ExecutionContext and walk the schema with validation turned on, returning a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON input \u2013 validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "When validation flag is false the walk should still succeed (no schema checks are performed) and return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON syntax",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\", \"age\":}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a parsing error message (e.g., \"Unexpected token '}'\")",
+        "description": "The JSON string is malformed. The deserialize step should throw a parsing exception that is captured and reported in the ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a message indicating that the InputFormat is null or unsupported",
+        "description": "Passing a null InputFormat forces the method to take the default path or raise an error; the test verifies that the method handles this branch gracefully."
+      },
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success if the library can parse YAML, otherwise failure with a parsing error",
+        "description": "When a non\u2011JSON InputFormat (e.g., YAML) is supplied, the deserialize method follows a different branch. The test confirms correct handling for supported alternative formats."
+      }
+    ]
+  },
+  {
+    "group": "Empty input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": ""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a message such as \"Empty input\" or a parsing error",
+        "description": "An empty string should trigger the branch that checks for empty input before deserialization."
+      }
+    ]
+  },
+  {
+    "group": "Null input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": null
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a NullPointerException wrapped in a ValidationResult",
+        "description": "Passing a null input string exercises the null\u2011check branch inside the method (or inside deserialize) and should be reported as a failure rather than causing the test to crash."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext customizer \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success with ExecutionContext having custom attribute set (e.g., \"customFlag\" = true)",
+        "description": "When a custom ExecutionContextCustomizer is supplied (via the overload that eventually calls this method), the method must create the context, apply the customizer, and then walk. This case verifies that the customizer branch is exercised and does not affect validation outcome."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A well\u2011formed YAML document is supplied. The method should deserialize using the YAML branch, create an ExecutionContext and walk the schema with validation on, returning a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Valid YAML input \u2013 validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "Same YAML payload but validation flag is false; the walk should succeed without applying schema constraints."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011only input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "   \n\t  "
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a parsing error message such as \"No content to map due to end-of-input\"",
+        "description": "An input that contains only whitespace should be treated as empty by the deserializer, resulting in a parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "JSON array as root node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "[{\"id\":1},{\"id\":2}]"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A JSON array is a valid JSON document. Assuming the schema does not forbid arrays, the walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "JSON primitive number as root node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "42"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A JSON numeric literal is syntactically valid. The method should deserialize it to a JsonNode and walk the schema without errors."
+      }
+    ]
+  },
+  {
+    "group": "JSON primitive boolean as root node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "true"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A JSON boolean literal is valid. The walk should complete successfully."
+      }
+    ]
+  },
+  {
+    "group": "Null InputFormat with validation disabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"name\":\"John\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": null
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.failure with a message indicating that InputFormat is null or unsupported",
+        "description": "Even when validation is turned off, a null InputFormat should be detected early and reported as a failure."
+      }
+    ]
+  },
+  {
+    "group": "Unsupported InputFormat (XML)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "<person><name>John</name></person>"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.XML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a message stating that InputFormat.XML is not supported",
+        "description": "The library does not handle XML input; the method should fail fast with an appropriate error."
+      }
+    ]
+  },
+  {
+    "group": "Large JSON payload",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"items\":[{\"id\":0},{\"id\":1},{\"id\":2},{\"id\":3},{\"id\":4},{\"id\":5},{\"id\":6},{\"id\":7},{\"id\":8},{\"id\":9},{\"id\":10},{\"id\":11},{\"id\":12},{\"id\":13},{\"id\":14},{\"id\":15},{\"id\":16},{\"id\":17},{\"id\":18},{\"id\":19},{\"id\":20},{\"id\":21},{\"id\":22},{\"id\":23},{\"id\":24},{\"id\":25},{\"id\":26},{\"id\":27},{\"id\":28},{\"id\":29},{\"id\":30},{\"id\":31},{\"id\":32},{\"id\":33},{\"id\":34},{\"id\":35},{\"id\":36},{\"id\":37},{\"id\":38},{\"id\":39},{\"id\":40},{\"id\":41},{\"id\":42},{\"id\":43},{\"id\":44},{\"id\":45},{\"id\":46},{\"id\":47},{\"id\":48},{\"id\":49},{\"id\":50}]}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "A relatively large JSON document is processed to ensure the method can handle bigger inputs without performance\u2011related failures."
+      }
+    ]
+  },
+  {
+    "group": "Unicode characters in JSON string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"message\":\"Hello, \u4e16\u754c \ud83c\udf0d\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.success (no errors, isValid == true)",
+        "description": "The input contains multibyte Unicode characters and an emoji. The deserializer must correctly handle UTF\u20118 encoded text and the walk should succeed."
+      }
+    ]
+  },
+  {
+    "group": "Malformed YAML input \u2013 validation enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "name: John\nage: 30:\n"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a parsing error message (e.g., \"while scanning for the next token\" or \"could not find expected ':'\")",
+        "description": "The YAML payload is syntactically incorrect (extra colon). The deserialize step should throw a YAML parsing exception that is captured and reported in the ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Invalid percent\u2011encoding in input string",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "%GG%ZZ"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException (or ValidationResult.failure wrapping it) caused by URLDecoder when encountering malformed percent\u2011encoding",
+        "description": "The input contains malformed percent\u2011encoded sequences. During deserialization the code calls URLDecoder.decode, which throws IllegalArgumentException for invalid hex digits. The test verifies that this exception is propagated as a failure."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON escape sequence",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "input",
+            "value": "{\"path\":\"C:\\\\temp\\\\file\\x\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.failure with a parsing error message indicating an illegal escape character (e.g., \"Invalid escape sequence: \\x\")",
+        "description": "The JSON string contains an illegal escape sequence (\\x). The Jackson parser throws a JsonParseException, which should be captured and reported as a validation failure."
+      }
+    ]
+  }
+]

@@ -1,0 +1,457 @@
+[
+  {
+    "group": "Null node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message indicating that the instance node is null",
+        "description": "When the supplied JsonNode is null the method should immediately return an invalid ValidationResult with an appropriate error message, regardless of the validate flag."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message indicating that the instance node is null",
+        "description": "Even when validation is disabled, a null instance node is considered an error and must be reported."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag true \u2013 valid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty()",
+        "description": "A well\u2011formed JSON node that satisfies the schema should produce a successful ValidationResult when validation is enabled."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag true \u2013 invalid instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"name\":123,\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains messages for type mismatches on 'name' and 'age'",
+        "description": "When validation is enabled and the instance violates type constraints, the walk method must return an invalid ValidationResult with the corresponding error messages."
+      }
+    ]
+  },
+  {
+    "group": "Validate flag false \u2013 skip validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"name\":123,\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty()",
+        "description": "When validation is disabled the method should walk the schema tree without performing any checks, therefore it must return a successful ValidationResult even if the instance is technically invalid."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing a self\u2011referencing structure that triggers a recursive anchor"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no StackOverflowError is thrown",
+        "description": "If the schema contains a recursive anchor, walk must detect it via JsonSchema.isRecursiveAnchor() and avoid infinite recursion, returning a valid result for a correctly\u2011structured instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing a self\u2011referencing structure that violates the recursive anchor constraints"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message describing the recursive anchor violation",
+        "description": "When the recursive anchor is present but the instance does not satisfy the anchor\u2019s schema, walk must report the violation rather than looping forever."
+      }
+    ]
+  },
+  {
+    "group": "Schema resource root handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing a valid instance for a schema that is marked as a resource root (JsonSchema.isSchemaResourceRoot() == true)"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty()",
+        "description": "When the current schema is the resource root, walk should still perform normal validation and return a successful result for a valid instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing an invalid instance for a schema that is marked as a resource root"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains appropriate validation messages",
+        "description": "Even for a resource\u2011root schema, validation errors must be reported correctly."
+      }
+    ]
+  },
+  {
+    "group": "Exception handling \u2013 unsupported encoding in $ref resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing a $ref with an illegal URL\u2011encoded fragment"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about UnsupportedEncodingException",
+        "description": "If a $ref contains a fragment that cannot be URL\u2011decoded, walk should catch UnsupportedEncodingException and return an invalid ValidationResult with a clear error message."
+      }
+    ]
+  },
+  {
+    "group": "JSON null node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing JSON literal null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty() (schema type includes \"null\")",
+        "description": "When the instance is a JSON null value and the schema permits the null type, walk should consider the instance valid."
+      },
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "JsonNode representing JSON literal null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about type mismatch (schema does not allow null)",
+        "description": "When the instance is a JSON null value but the schema does not list \"null\" as an allowed type, walk must report a type\u2011mismatch error."
+      }
+    ]
+  },
+  {
+    "group": "Missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a required\u2011property message for \"name\"",
+        "description": "The schema declares \"name\" as required; the instance omits it, so walk should return an invalid result with a required\u2011property error."
+      }
+    ]
+  },
+  {
+    "group": "Array constraints \u2013 minItems",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ArrayNode representing [1]"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about failing minItems (expected >=2)",
+        "description": "Schema defines an array with minItems = 2; the instance contains only one element, therefore walk must flag the minItems violation."
+      }
+    ]
+  },
+  {
+    "group": "String pattern validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "TextNode representing \"abc123\""
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a pattern\u2011mismatch message",
+        "description": "The schema requires the string to match the regex ^[A-Z]+$; the supplied lower\u2011case alphanumeric string does not match, so walk should report a pattern error."
+      }
+    ]
+  },
+  {
+    "group": "$ref resolution success",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"$ref\":\"#/definitions/person\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty() (the referenced definition validates the instance)",
+        "description": "The instance contains a $ref that points to a valid definition within the same schema; walk must resolve the reference and validate successfully."
+      }
+    ]
+  },
+  {
+    "group": "AdditionalProperties false",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30,\"extra\":\"value\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about disallowed additional property \"extra\"",
+        "description": "Schema sets additionalProperties = false; the instance includes an unexpected property, so walk should report an additional\u2011property violation."
+      }
+    ]
+  },
+  {
+    "group": "Numeric range violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "NumericNode representing -5"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about value being less than the minimum (0)",
+        "description": "Schema defines a minimum of 0 for the numeric field; the instance provides -5, causing a range\u2011error that walk must surface."
+      }
+    ]
+  },
+  {
+    "group": "Conditional validation \u2013 then branch passes",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"type\":\"A\",\"value\":10}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and getMessages().isEmpty() (if condition matches and then schema validates)",
+        "description": "Schema uses if/then/else where if \"type\" == \"A\" then \"value\" must be an integer >=0. The instance satisfies both, so walk returns a valid result."
+      }
+    ]
+  },
+  {
+    "group": "Conditional validation \u2013 else branch violation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"type\":\"B\",\"value\":\"oops\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and contains a message about type mismatch for \"value\" in the else schema",
+        "description": "The instance does not meet the if condition, so the else schema applies, which expects \"value\" to be a number. The provided string triggers a validation error."
+      }
+    ]
+  },
+  {
+    "group": "External $ref resolution \u2013 I/O error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"$ref\":\"http://nonexistent.example.com/missing-schema.json\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IOException is caught and ValidationResult.isValid() == false with a message containing \"I/O error\" or \"cannot read\"",
+        "description": "When the schema contains a $ref that points to an external resource which cannot be accessed, walk should propagate the IOException (or wrap it) and return an invalid ValidationResult indicating the I/O problem."
+      }
+    ]
+  },
+  {
+    "group": "Internal $ref resolution \u2013 missing definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"$ref\":\"#/definitions/unknown\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "JsonSchemaException (or ValidationException) is thrown indicating that the reference '#/definitions/unknown' cannot be resolved",
+        "description": "If a $ref points to a fragment that does not exist in the current schema, walk must raise a schema\u2011resolution exception rather than silently succeed."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref URI \u2013 illegal characters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"$ref\":\"http://example.com/invalid[ref].json\"}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown with a message about malformed URI or illegal characters in $ref",
+        "description": "A $ref containing characters that are not allowed in a URI should cause the parser to throw an IllegalArgumentException before any validation is performed."
+      }
+    ]
+  },
+  {
+    "group": "Schema with unsupported keyword \u2013 validator initialization failure",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing {\"unexpectedKeyword\":123}"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown during validator initialization because the schema contains an unknown/unsupported keyword",
+        "description": "When the JsonSchema instance is built from a schema that includes a keyword not recognized by the library, walk should fail early with an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor without proper detection \u2013 StackOverflowError fallback",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "node",
+            "value": "ObjectNode representing a deeply nested self\u2011referencing structure that exceeds recursion guard limits"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "StackOverflowError is thrown (indicating that the recursive\u2011anchor guard failed)",
+        "description": "If the schema contains a recursive anchor but the implementation fails to recognise it (e.g., due to a bug), walking a self\u2011referencing instance should eventually cause a StackOverflowError."
+      }
+    ]
+  }
+]

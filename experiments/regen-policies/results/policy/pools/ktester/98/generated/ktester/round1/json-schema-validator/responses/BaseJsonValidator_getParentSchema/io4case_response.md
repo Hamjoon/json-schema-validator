@@ -1,0 +1,54 @@
+{
+    "testCases": [
+        {
+            "group": "ParentSchema Retrieval - Consistency Across Calls",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "same instance on repeated calls",
+                    "description": "Create a concrete validator with a non‑null `JsonSchema` mock. Invoke `getParentSchema()` twice and verify that both returned objects are the same instance (reference equality). This ensures the getter does not create a new object on each call."
+                }
+            ]
+        },
+        {
+            "group": "ParentSchema Retrieval - Different JsonSchema Implementations",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "instance of CustomJsonSchema",
+                    "description": "Supply a custom implementation of `JsonSchema` (e.g., a subclass that overrides `toString()` or adds extra state). Verify that `getParentSchema()` returns exactly that custom instance, confirming that the method works with any concrete `JsonSchema` implementation."
+                }
+            ]
+        },
+        {
+            "group": "ParentSchema Retrieval - After Sub‑Schema Fetch",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "original parent schema unchanged",
+                    "description": "Construct a validator with a known parent schema, then call a method that may internally fetch a sub‑schema (e.g., `fetchSubSchemaNode`). After this call, invoke `getParentSchema()` and assert that the returned reference is still the original parent schema, proving that other operations do not mutate the field."
+                }
+            ]
+        },
+        {
+            "group": "ParentSchema Retrieval - Thread‑Safety",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "same instance across threads",
+                    "description": "Create a validator with a non‑null parent schema and start multiple threads that concurrently call `getParentSchema()`. Collect the returned references and assert that all are identical (reference equality). This checks that the getter is safe for concurrent access."
+                }
+            ]
+        },
+        {
+            "group": "ParentSchema Retrieval - Null After Reset",
+            "cases": [
+                {
+                    "input": [],
+                    "expected": "null after explicit reset",
+                    "description": "Using a test subclass that exposes a method to set the protected `parentSchema` field to `null` after construction, verify that `getParentSchema()` returns `null` after the reset. This validates that the getter reflects the current state of the field."
+                }
+            ]
+        }
+    ]
+}

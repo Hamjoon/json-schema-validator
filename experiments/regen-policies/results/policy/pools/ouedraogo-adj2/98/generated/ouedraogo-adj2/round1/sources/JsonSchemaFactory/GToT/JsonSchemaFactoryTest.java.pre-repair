@@ -1,0 +1,321 @@
+package com.networknt.schema;
+
+import static org.junit.Assert.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.SpecVersion.VersionFlag;
+
+/**
+ * Comprehensive JUnit‑4 test suite for {@link JsonSchemaFactory}.
+ *
+ * <p>The tests are organised according to the steps described in the
+ * problem statement:</p>
+ *
+ * <ol>
+ *   <li>Extraction of public API.</li>
+ *   <li>Basic happy‑path tests for each public method.</li>
+ *   <li>Identification of edge‑cases / exceptional scenarios.</li>
+ *   <li>Targeted tests for those edge‑cases.</li>
+ *   <li>All tests merged into a single JUnit‑4 test class.</li>
+ * </ol>
+ *
+ * <p>No mocking frameworks are used – every object is created through the
+ * public constructors / factory methods that exist in the supplied source
+ * code.</p>
+ */
+public class JsonSchemaFactoryTest {
+
+    private JsonSchemaFactory factory;
+    private ObjectMapper mapper = new ObjectMapper();
+
+    @Before
+    public void setUp() {
+        // Use the V4 dialect – it is the simplest and always available.
+        factory = JsonSchemaFactory.getInstance(VersionFlag.V4);
+    }
+
+    /* --------------------------------------------------------------
+     *  1.  Public API extraction (for reference – not a test)
+     * --------------------------------------------------------------
+     *
+     *  public static Builder builder()
+     *  public static JsonSchemaFactory getInstance(VersionFlag)
+     *  public static JsonSchemaFactory getInstance(VersionFlag, Consumer<Builder>)
+     *  public static JsonSchemaVersion checkVersion(VersionFlag)
+     *  public static Builder builder(JsonSchemaFactory)
+     *  public SchemaLoader getSchemaLoader()
+     *  public JsonSchema create(ValidationContext, SchemaLocation, JsonNodePath,
+     *                           JsonNode, JsonSchema)
+     *  public JsonSchema getSchema(String)
+     *  public JsonSchema getSchema(String, InputFormat)
+     *  public JsonSchema getSchema(String, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(String, InputFormat, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(InputStream)
+     *  public JsonSchema getSchema(InputStream, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(InputStream, InputFormat)
+     *  public JsonSchema getSchema(InputStream, InputFormat, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(SchemaLocation, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(SchemaLocation)
+     *  public JsonSchema getSchema(SchemaLocation, JsonNode, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(SchemaLocation, JsonNode)
+     *  public JsonSchema getSchema(JsonNode, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(JsonNode)
+     *  public JsonSchema getSchema(URI)
+     *  public JsonSchema getSchema(URI, JsonNode, SchemaValidatorsConfig)
+     *  public JsonSchema getSchema(URI, JsonNode)
+     *  public JsonMetaSchema getMetaSchema(String, SchemaValidatorsConfig)
+     *  protected JsonMetaSchema loadMetaSchema(String, SchemaValidatorsConfig)
+     *  protected JsonNode readTree(String, InputFormat) throws IOException
+     *  protected JsonNode readTree(InputStream, InputFormat) throws IOException
+     *  public ObjectMapper getObjectMapper(InputFormat)
+     *  protected SchemaValidatorsConfig createSchemaValidatorsConfig()
+     *  protected JsonSchema getMappedSchema(SchemaLocation, SchemaValidatorsConfig)
+     *  protected JsonSchema loadSchema(SchemaLocation, SchemaValidatorsConfig)
+     *  protected boolean isYaml(SchemaLocation)
+     *  static protected String normalizeMetaSchemaUri(String)
+     */
+
+    /* --------------------------------------------------------------
+     *  2.  Basic happy‑path tests for each public method
+     * -------------------------------------------------------------- */
+
+    @Test
+    public void testBuilderWithoutCustomization() {
+        JsonSchemaFactory.Builder b = JsonSchemaFactory.builder();
+        // Must be able to set a meta‑schema and default IRI before building
+        JsonMetaSchema v4 = JsonMetaSchema.getV4();
+        JsonSchemaFactory f = b.defaultMetaSchemaIri(v4.getIri())
+                              .metaSchema(v4)
+                              .build();
+        assertNotNull(f);
+    }
+
+    @Test
+    public void testGetInstanceSimple() {
+        JsonSchemaFactory f = JsonSchemaFactory.getInstance(VersionFlag.V7);
+        assertNotNull(f);
+    }
+
+    @Test
+    public void testGetInstanceWithCustomizer() {
+        JsonSchemaFactory f = JsonSchemaFactory.getInstance(VersionFlag.V6, b -> {
+            // add an additional (dummy) meta‑schema – we reuse V4 for simplicity
+            b.metaSchema(JsonMetaSchema.getV4());
+        });
+        assertNotNull(f);
+    }
+
+    @Test
+    public void testCheckVersion_null() {
+        assertNull(JsonSchemaFactory.checkVersion(null));
+    }
+
+    @Test
+    public void testCheckVersion_supported() {
+        JsonSchemaVersion v = JsonSchemaFactory.checkVersion(VersionFlag.V202012);
+        assertNotNull(v);
+        assertEquals(JsonMetaSchema.getV202012().getIri(), v.getInstance().getIri());
+    }
+
+    @Test
+    public void testBuilderFromExistingFactory() {
+        JsonSchemaFactory.Builder b = JsonSchemaFactory.builder(factory);
+        JsonSchemaFactory rebuilt = b.build();
+        assertNotNull(rebuilt);
+        // the rebuilt factory must have the same default meta‑schema IRI
+        assertEquals(factory.defaultMetaSchemaIri, rebuilt.defaultMetaSchemaIri);
+    }
+
+    @Test
+    public void testGetSchemaLoader_isNotNull() {
+        SchemaLoader loader = factory.getSchemaLoader();
+        assertNotNull(loader);
+    }
+
+    @Test
+    public void testCreateDirectly() {
+        JsonNode node = mapper.createObjectNode().put("type", "object");
+        ValidationContext ctx = new ValidationContext(JsonMetaSchema.getV4(), factory,
+                new SchemaValidatorsConfig());
+        JsonSchema schema = factory.create(ctx, SchemaLocation.DOCUMENT,
+                new JsonNodePath(PathType.JSON_POINTER), node, null);
+        assertNotNull(schema);
+    }
+
+    @Test
+    public void testGetSchema_fromString_JSON() {
+        String schema = "{\"type\":\"object\"}";
+        JsonSchema s = factory.getSchema(schema);
+        assertNotNull(s);
+        // a simple schema should validate an empty object
+        Set<ValidationMessage> msgs = s.validate(mapper.createObjectNode());
+        assertTrue(msgs.isEmpty());
+    }
+
+    @Test
+    public void testGetSchema_fromString_YAML() {
+        String yaml = "type: object";
+        JsonSchema s = factory.getSchema(yaml, InputFormat.YAML);
+        assertNotNull(s);
+        Set<ValidationMessage> msgs = s.validate(mapper.createObjectNode());
+        assertTrue(msgs.isEmpty());
+    }
+
+    @Test
+    public void testGetSchema_fromString_WithConfig() {
+        String schema = "{\"type\":\"string\"}";
+        SchemaValidatorsConfig cfg = new SchemaValidatorsConfig();
+        cfg.setFailFast(true);
+        JsonSchema s = factory.getSchema(schema, cfg);
+        assertNotNull(s);
+        Set<ValidationMessage> msgs = s.validate(mapper.textNode("hello"));
+        assertTrue(msgs.isEmpty());
+    }
+
+    @Test
+    public void testGetSchema_fromInputStream_JSON() throws IOException {
+        String json = "{\"type\":\"integer\"}";
+        InputStream is = new ByteArrayInputStream(json.getBytes("UTF‑8"));
+        JsonSchema s = factory.getSchema(is);
+        assertNotNull(s);
+        Set<ValidationMessage> msgs = s.validate(mapper.numberNode(5));
+        assertTrue(msgs.isEmpty());
+    }
+
+    @Test
+    public void testGetSchema_fromInputStream_YAML() throws IOException {
+        String yaml = "type: boolean";
+        InputStream is = new ByteArrayInputStream(yaml.getBytes("UTF‑8"));
+        JsonSchema s = factory.getSchema(is, InputFormat.YAML);
+        assertNotNull(s);
+        Set<ValidationMessage> msgs = s.validate(mapper.booleanNode(true));
+        assertTrue(msgs.isEmpty());
+    }
+
+    @Test
+    public void testGetSchema_fromSchemaLocation_fileUri() throws IOException {
+        // write a temporary schema file
+        File tmp = File.createTempFile("tmp-schema", ".json");
+        tmp.deleteOnExit();
+        String json = "{\"type\":\"null\"}";
+        java.nio.file.Files.write(tmp.toPath(), json.getBytes("UTF‑8"));
+
+        URI uri = tmp.toURI();
+        JsonSchema s1 = factory.getSchema(uri);
+        JsonSchema s2 = factory.getSchema(uri); // second call should be cached
+        assertNotNull(s1);
+        assertNotNull(s2);
+        assertSame("Factory should cache schemas when cache is enabled", s1, s2);
+    }
+
+    @Test
+    public void testGetMetaSchema_knownIri() {
+        JsonMetaSchema meta = factory.getMetaSchema(JsonMetaSchema.getV4().getIri(),
+                new SchemaValidatorsConfig());
+        assertNotNull(meta);
+        assertEquals(JsonMetaSchema.getV4().getIri(), meta.getIri());
+    }
+
+    @Test
+    public void testNormalizeMetaSchemaUri_unormalized() throws Exception {
+        // an un‑normalized draft‑07 IRI
+        String unnorm = "http://json-schema.org/draft-07/schema#";
+        // use reflection because the method is protected static
+        java.lang.reflect.Method m = JsonSchemaFactory.class
+                .getDeclaredMethod("normalizeMetaSchemaUri", String.class);
+        m.setAccessible(true);
+        String normalized = (String) m.invoke(null, unnorm);
+        assertEquals(JsonMetaSchema.getV7().getIri(), normalized);
+    }
+
+    /* --------------------------------------------------------------
+     *  3.  Edge‑case / exception handling tests
+     * -------------------------------------------------------------- */
+
+    @Test(expected = JsonSchemaException.class)
+    public void testGetSchema_invalidJson_throwsException() {
+        String badJson = "{\"type\":\"object\""; // missing closing brace
+        factory.getSchema(badJson);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilder_missingMetaSchema_throwsException() {
+        // Build a factory without providing any meta‑schema – should fail in ctor
+        JsonSchemaFactory.Builder b = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(JsonMetaSchema.getV4().getIri());
+        // No metaSchema added -> IllegalArgumentException from private ctor
+        b.build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBuilder_nullDefaultMetaSchemaIri_throwsException() {
+        JsonSchemaFactory.Builder b = JsonSchemaFactory.builder()
+                .defaultMetaSchemaIri(null)
+                .metaSchema(JsonMetaSchema.getV4());
+        b.build();
+    }
+
+    @Test
+    public void testGetObjectMapper_unsupportedFormat() {
+        try {
+            factory.getObjectMapper(null);
+            fail("Expected IllegalArgumentException for null InputFormat");
+        } catch (IllegalArgumentException e) {
+            // expected
+        }
+    }
+
+    @Test
+    public void testIsYaml_detection() throws Exception {
+        // use reflection because isYaml is protected
+        java.lang.reflect.Method m = JsonSchemaFactory.class
+                .getDeclaredMethod("isYaml", SchemaLocation.class);
+        m.setAccessible(true);
+
+        SchemaLocation yamlLoc = SchemaLocation.of("file:/tmp/schema.yaml");
+        SchemaLocation jsonLoc = SchemaLocation.of("file:/tmp/schema.json");
+
+        assertTrue((Boolean) m.invoke(factory, yamlLoc));
+        assertFalse((Boolean) m.invoke(factory, jsonLoc));
+    }
+
+    /* --------------------------------------------------------------
+     *  4.  Additional sanity checks
+     * -------------------------------------------------------------- */
+
+    @Test
+    public void testCreateSchemaWithFragment() throws IOException {
+        // a schema that contains a definitions sub‑schema
+        String schema = "{"
+                + "\"$defs\": {"
+                + "   \"myInt\": {\"type\":\"integer\"}"
+                + "},"
+                + "\"type\":\"object\","
+                + "\"properties\":{"
+                + "   \"x\": {\"$ref\":\"#/$defs/myInt\"}"
+                + "}"
+                + "}";
+        JsonSchema full = factory.getSchema(schema);
+        assertNotNull(full);
+
+        // retrieve the sub‑schema via a fragment URI
+        SchemaLocation fragment = SchemaLocation.of("#/$defs/myInt");
+        JsonSchema sub = factory.getSchema(fragment, new SchemaValidatorsConfig());
+        assertNotNull(sub);
+        Set<ValidationMessage> msgs = sub.validate(mapper.numberNode(10));
+        assertTrue(msgs.isEmpty());
+    }
+}

@@ -1,0 +1,259 @@
+// public API of com.networknt.schema.BaseJsonValidator
+public abstract class BaseJsonValidator extends ValidationMessageHandler implements JsonValidator {
+  public BaseJsonValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ValidatorTypeCode validatorType, ValidationContext validationContext);
+  public BaseJsonValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ErrorMessageType errorMessageType, Keyword keyword, ValidationContext validationContext, boolean suppressSubSchemaRetrieval);
+  protected BaseJsonValidator(boolean suppressSubSchemaRetrieval, JsonNode schemaNode, ValidationContext validationContext, ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonSchema evaluationParentSchema, Map<String, String> errorMessage);
+  protected static boolean equals(double n1, double n2);
+  public static void debug(Logger logger, ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation);
+  protected static void checkDiscriminatorMatch(DiscriminatorContext currentDiscriminatorContext, ObjectNode discriminator, String discriminatorPropertyValue, JsonSchema jsonSchema);
+  protected static void registerAndMergeDiscriminator(DiscriminatorContext currentDiscriminatorContext, ObjectNode discriminator, JsonSchema schema, JsonNodePath instanceLocation);
+  public SchemaLocation getSchemaLocation();
+  public JsonNodePath getEvaluationPath();
+  public String getKeyword();
+  public JsonNode getSchemaNode();
+  public JsonSchema getParentSchema();
+  public JsonSchema getEvaluationParentSchema();
+  protected JsonSchema fetchSubSchemaNode(ValidationContext validationContext);
+  public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node);
+  protected String getNodeFieldType();
+  protected void preloadJsonSchemas(Collection<JsonSchema> schemas);
+  protected JsonNodePath atRoot();
+  public String toString();
+  protected boolean hasAdjacentKeywordInEvaluationPath(String keyword);
+  protected MessageSourceValidationMessage.Builder message();
+  protected boolean collectAnnotations(ExecutionContext executionContext);
+  protected boolean collectAnnotations(ExecutionContext executionContext, String keyword);
+  protected void putAnnotation(ExecutionContext executionContext, Consumer<JsonNodeAnnotation.Builder> customizer);
+}
+
+// public API of com.networknt.schema.ValidationMessageHandler
+public abstract class ValidationMessageHandler {
+  protected ValidationMessageHandler(ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath);
+  protected ValidationMessageHandler(ErrorMessageType errorMessageType, String errorMessageKeyword, MessageSource messageSource, Keyword keyword, JsonSchema parentSchema, SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonSchema evaluationParentSchema, Map<String, String> errorMessage);
+  protected MessageSourceValidationMessage.Builder message();
+  protected ErrorMessageType getErrorMessageType();
+  protected Map<String, String> getErrorMessage(String errorMessageKeyword, JsonNode schemaNode, String keyword);
+  protected JsonNode getMessageNode(String errorMessageKeyword, JsonNode schemaNode, JsonSchema parentSchema, String pname);
+}
+
+// public API of com.networknt.schema.JsonValidator
+public interface JsonValidator extends JsonSchemaWalker {
+   Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation);
+  default void preloadJsonSchema() throws JsonSchemaException;
+  default Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema);
+  public SchemaLocation getSchemaLocation();
+  public JsonNodePath getEvaluationPath();
+  public String getKeyword();
+}
+
+// public API of com.networknt.schema.walk.JsonSchemaWalker
+public interface JsonSchemaWalker {
+   Set<ValidationMessage> walk(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation, boolean shouldValidateSchema);
+}
+
+// public API of com.networknt.schema.ValidationContext
+public class ValidationContext {
+  public ValidationContext(JsonMetaSchema metaSchema, JsonSchemaFactory jsonSchemaFactory, SchemaValidatorsConfig config);
+  public ValidationContext(JsonMetaSchema metaSchema, JsonSchemaFactory jsonSchemaFactory, SchemaValidatorsConfig config, ConcurrentMap<String, JsonSchema> schemaReferences, ConcurrentMap<String, JsonSchema> schemaResources, ConcurrentMap<String, JsonSchema> dynamicAnchors);
+  public JsonSchema newSchema(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema);
+  public JsonValidator newValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, String keyword, JsonNode schemaNode, JsonSchema parentSchema);
+  public String resolveSchemaId(JsonNode schemaNode);
+  public JsonSchemaFactory getJsonSchemaFactory();
+  public SchemaValidatorsConfig getConfig();
+  public ConcurrentMap<String, JsonSchema> getSchemaReferences();
+  public ConcurrentMap<String, JsonSchema> getSchemaResources();
+  public ConcurrentMap<String, JsonSchema> getDynamicAnchors();
+  public JsonMetaSchema getMetaSchema();
+  public Optional<VersionFlag> activeDialect();
+}
+
+// public API of com.networknt.schema.SchemaLocation
+public class SchemaLocation {
+  public static final SchemaLocation DOCUMENT;
+  public SchemaLocation(AbsoluteIri absoluteIri, JsonNodePath fragment);
+  public SchemaLocation(AbsoluteIri absoluteIri);
+  public AbsoluteIri getAbsoluteIri();
+  public JsonNodePath getFragment();
+  public SchemaLocation append(String token);
+  public SchemaLocation append(int index);
+  public static SchemaLocation of(String iri);
+  public SchemaLocation resolve(String absoluteIriReferenceOrFragment);
+  public static String resolve(SchemaLocation schemaLocation, String absoluteIriReferenceOrFragment);
+  public static Builder builder();
+  public String toString();
+  public int hashCode();
+  public boolean equals(Object obj);
+}
+
+// public API of com.networknt.schema.JsonNodePath
+public class JsonNodePath implements Comparable<JsonNodePath> {
+  public JsonNodePath(PathType type);
+  public JsonNodePath getParent();
+  public JsonNodePath append(String token);
+  public JsonNodePath append(int index);
+  public PathType getPathType();
+  public String getName(int index);
+  public Object getElement(int index);
+  public int getNameCount();
+  public boolean startsWith(JsonNodePath other);
+  public boolean contains(String segment);
+  public String toString();
+  public int hashCode();
+  public boolean equals(Object obj);
+  public int compareTo(JsonNodePath other);
+}
+
+// public API of com.networknt.schema.TypeValidator
+public class TypeValidator extends BaseJsonValidator {
+  public TypeValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ValidationContext validationContext);
+  public JsonType getSchemaType();
+  public boolean equalsToSchemaType(JsonNode node);
+  public Set<ValidationMessage> validate(ExecutionContext executionContext, JsonNode node, JsonNode rootNode, JsonNodePath instanceLocation);
+}
+
+// public API of com.networknt.schema.ErrorMessageType
+public interface ErrorMessageType {
+   String getErrorCode();
+  default String getErrorCodeValue();
+}
+
+// public API of com.networknt.schema.i18n.MessageSource
+public interface MessageSource {
+   String getMessage(String key, Supplier<String> defaultMessageSupplier, Locale locale, Object... args);
+  default String getMessage(String key, String defaultMessage, Locale locale, Object... args);
+  default String getMessage(String key, Locale locale, Object... args);
+}
+
+// public API of com.networknt.schema.Keyword
+public interface Keyword {
+   String getValue();
+   JsonValidator newValidator(SchemaLocation schemaLocation, JsonNodePath evaluationPath, JsonNode schemaNode, JsonSchema parentSchema, ValidationContext validationContext) throws JsonSchemaException, Exception;
+}
+
+// public API of com.networknt.schema.SchemaValidatorsConfig
+public class SchemaValidatorsConfig {
+  public static final String ALL_KEYWORD_WALK_LISTENER_KEY;
+  public static final int DEFAULT_PRELOAD_JSON_SCHEMA_REF_MAX_NESTING_DEPTH;
+  public SchemaValidatorsConfig();
+  public void addItemWalkListener(JsonSchemaWalkListener itemWalkListener);
+  public void addItemWalkListeners(List<JsonSchemaWalkListener> itemWalkListeners);
+  public void addKeywordWalkListener(JsonSchemaWalkListener keywordWalkListener);
+  public void addKeywordWalkListener(String keyword, JsonSchemaWalkListener keywordWalkListener);
+  public void addKeywordWalkListeners(List<JsonSchemaWalkListener> keywordWalkListeners);
+  public void addKeywordWalkListeners(String keyword, List<JsonSchemaWalkListener> keywordWalkListeners);
+  public void addPropertyWalkListener(JsonSchemaWalkListener propertyWalkListener);
+  public void addPropertyWalkListeners(List<JsonSchemaWalkListener> propertyWalkListeners);
+  public ApplyDefaultsStrategy getApplyDefaultsStrategy();
+  public List<JsonSchemaWalkListener> getArrayItemWalkListeners();
+  public ExecutionContextCustomizer getExecutionContextCustomizer();
+  public Boolean getFormatAssertionsEnabled();
+  public Map<String, List<JsonSchemaWalkListener>> getKeywordWalkListenersMap();
+  public Locale getLocale();
+  public MessageSource getMessageSource();
+  public PathType getPathType();
+  public int getPreloadJsonSchemaRefMaxNestingDepth();
+  public List<JsonSchemaWalkListener> getPropertyWalkListeners();
+  public RegularExpressionFactory getRegularExpressionFactory();
+  public JsonSchemaIdValidator getSchemaIdValidator();
+  public boolean isCacheRefs();
+  public boolean isCustomMessageSupported();
+  public String getErrorMessageKeyword();
+  public boolean isEcma262Validator();
+  public boolean isFailFast();
+  public boolean isHandleNullableField();
+  public boolean isNullableKeywordEnabled();
+  public boolean isJavaSemantics();
+  public boolean isLosslessNarrowing();
+  public boolean isOpenAPI3StyleDiscriminators();
+  public boolean isDiscriminatorKeywordEnabled();
+  public boolean isPreloadJsonSchema();
+  public boolean isReadOnly();
+  public boolean isStrict(String keyword);
+  public boolean isStrict(String keyword, Boolean defaultValue);
+  public boolean isTypeLoose();
+  public boolean isWriteOnly();
+  public void setApplyDefaultsStrategy(ApplyDefaultsStrategy applyDefaultsStrategy);
+  public void setCacheRefs(boolean cacheRefs);
+  public void setCustomMessageSupported(boolean customMessageSupported);
+  public void setEcma262Validator(boolean ecma262Validator);
+  public void setExecutionContextCustomizer(ExecutionContextCustomizer executionContextCustomizer);
+  public void setFailFast(boolean failFast);
+  public void setFormatAssertionsEnabled(Boolean formatAssertionsEnabled);
+  public void setHandleNullableField(boolean handleNullableField);
+  public void setJavaSemantics(boolean javaSemantics);
+  public void setLocale(Locale locale);
+  public void setLosslessNarrowing(boolean losslessNarrowing);
+  public void setMessageSource(MessageSource messageSource);
+  public void setOpenAPI3StyleDiscriminators(boolean openAPI3StyleDiscriminators);
+  public void setPathType(PathType pathType);
+  public void setPreloadJsonSchema(boolean preloadJsonSchema);
+  public void setPreloadJsonSchemaRefMaxNestingDepth(int preloadJsonSchemaRefMaxNestingDepth);
+  public void setReadOnly(boolean readOnly);
+  public void setRegularExpressionFactory(RegularExpressionFactory regularExpressionFactory);
+  public void setSchemaIdValidator(JsonSchemaIdValidator schemaIdValidator);
+  public void setStrict(String keyword, boolean strict);
+  public void setTypeLoose(boolean typeLoose);
+  public void setWriteOnly(boolean writeOnly);
+  public static Builder builder();
+  public static Builder builder(SchemaValidatorsConfig config);
+  public boolean isWriteMode();
+  public void setLoadCollectors(boolean loadCollectors);
+  public boolean doLoadCollectors();
+  public SchemaValidatorsConfig disableUnevaluatedAnalysis();
+  public SchemaValidatorsConfig disableUnevaluatedItems();
+  public SchemaValidatorsConfig disableUnevaluatedProperties();
+  public SchemaValidatorsConfig enableUnevaluatedAnalysis();
+  public SchemaValidatorsConfig enableUnevaluatedItems();
+  public SchemaValidatorsConfig enableUnevaluatedProperties();
+  public boolean isUnevaluatedItemsAnalysisDisabled();
+  public boolean isUnevaluatedItemsAnalysisEnabled();
+  public boolean isUnevaluatedPropertiesAnalysisDisabled();
+  public boolean isUnevaluatedPropertiesAnalysisEnabled();
+}
+
+// public API of com.networknt.schema.ExecutionContext
+public class ExecutionContext {
+  public ExecutionContext();
+  public ExecutionContext(CollectorContext collectorContext);
+  public ExecutionContext(ExecutionConfig executionConfig);
+  public ExecutionContext(ExecutionConfig executionConfig, CollectorContext collectorContext);
+  public CollectorContext getCollectorContext();
+  public void setCollectorContext(CollectorContext collectorContext);
+  public ExecutionConfig getExecutionConfig();
+  public void setExecutionConfig(ExecutionConfig executionConfig);
+  public JsonNodeAnnotations getAnnotations();
+  public JsonNodeResults getResults();
+  public boolean isFailFast();
+  public void setFailFast(boolean failFast);
+  public DiscriminatorContext getCurrentDiscriminatorContext();
+  public void enterDiscriminatorContext(DiscriminatorContext ctx, JsonNodePath instanceLocation);
+  public void leaveDiscriminatorContextImmediately(JsonNodePath instanceLocation);
+}
+
+// public API of com.networknt.schema.ValidationMessage
+public class ValidationMessage {
+  public String getCode();
+  public JsonNodePath getInstanceLocation();
+  public JsonNodePath getEvaluationPath();
+  public SchemaLocation getSchemaLocation();
+  public JsonNode getInstanceNode();
+  public JsonNode getSchemaNode();
+  public String getProperty();
+  public Object[] getArguments();
+  public Map<String, Object> getDetails();
+  public String getMessage();
+  public String getMessageKey();
+  public boolean isValid();
+  public String getError();
+  public String toString();
+  public boolean equals(Object o);
+  public int hashCode();
+  public String getType();
+  public static Builder builder();
+}
+
+// public API of com.networknt.schema.ExecutionContextCustomizer
+public interface ExecutionContextCustomizer {
+   void customize(ExecutionContext executionContext, ValidationContext validationContext);
+}
+

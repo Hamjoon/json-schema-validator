@@ -1,0 +1,777 @@
+[
+  {
+    "group": "Successful validation \u2013 simple schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects",
+        "description": "Walks a node that conforms to a simple schema (type object with required string property \"name\"). The method should return a successful ValidationResult."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"age\": 30 } (object missing required \"name\" property)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about missing required property \"name\"",
+        "description": "The node does not satisfy the required property constraint of the schema, causing the walkAtNode method to collect an error."
+      }
+    ]
+  },
+  {
+    "group": "Validation disabled \u2013 should skip validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"any\": 123 } (any JSON)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": false
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects (validation skipped)",
+        "description": "When the `validate` flag is false the method should bypass all validators and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Null node handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about node being null or missing",
+        "description": "The method should detect a null instance node and produce a validation error rather than throwing NPE."
+      }
+    ]
+  },
+  {
+    "group": "Recursive anchor handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where JsonSchema.isRecursiveAnchor() returns true"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing a self\u2011referencing object (e.g., { \"$ref\": \"#\" })"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no infinite recursion occurs (walk terminates correctly)",
+        "description": "When the schema is marked as a recursive anchor the walkAtNode method must handle the self\u2011reference without entering an endless loop."
+      }
+    ]
+  },
+  {
+    "group": "Exception handling \u2013 UnsupportedEncodingException from InputFormat parsing",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with a custom InputFormat that throws UnsupportedEncodingException when parsing"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON (won't be used)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "walkAtNode propagates a RuntimeException wrapping UnsupportedEncodingException",
+        "description": "If an underlying InputFormat fails with UnsupportedEncodingException, walkAtNodeInternal should surface the problem as a runtime exception."
+      }
+    ]
+  },
+  {
+    "group": "Exception handling \u2013 IOException from schema loading",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where schema retrieval throws IOException"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing any JSON"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "walkAtNode propagates a RuntimeException wrapping IOException",
+        "description": "When the schema cannot be read (e.g., network error), the method should not swallow the IOException but wrap and re\u2011throw it."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext \u2013 consumer modifies context before validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with a mutable flag `skipAll` initially false"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage indicates validation was skipped because consumer set `skipAll` to true",
+        "description": "When a Consumer<ExecutionContext> customizer is supplied (via the overloaded walkAtNodeInternal), it can change the context to disable validation. The test verifies that the change is respected."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 $ref to external schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where getSchemaNode for URI \"http://example.com/address\" returns schema { \"type\": \"object\", \"properties\": { \"street\": { \"type\": \"string\" } }, \"required\": [\"street\"] }"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"address\": { \"street\": \"Main St\" } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects (the $ref is resolved and the instance satisfies the referenced schema)",
+        "description": "The schema contains a $ref to an external schema (address). The ExecutionContext is mocked to provide that schema. walkAtNode should resolve the reference, apply the referenced validators, and return a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 $ref to external schema with missing required property",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where getSchemaNode for URI \"http://example.com/address\" returns schema { \"type\": \"object\", \"properties\": { \"street\": { \"type\": \"string\" } }, \"required\": [\"street\"] }"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"address\": { \"city\": \"Metropolis\" } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about missing required property \"street\" in the referenced schema",
+        "description": "The $ref resolves to a schema that requires \"street\". The instance lacks this property, so walkAtNode must report the missing\u2011property error coming from the referenced schema."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 enum constraint",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema contains enum [\"red\",\"green\",\"blue\"])"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing \"green\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects",
+        "description": "The schema restricts the value to an enum. The provided value matches one of the allowed enum entries, so validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 enum constraint mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema contains enum [\"red\",\"green\",\"blue\"])"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing \"yellow\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about value not being one of the allowed enum values",
+        "description": "The instance value is not present in the enum list, so walkAtNode should report an enum violation."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 oneOf with matching subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema contains oneOf: [{\"type\":\"string\"},{\"type\":\"integer\"}])"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing 42"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects (the integer matches the second subschema)",
+        "description": "The schema uses oneOf with a string and an integer option. The instance is an integer, so validation should succeed via the matching subschema."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 oneOf with no matching subschema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema contains oneOf: [{\"type\":\"string\"},{\"type\":\"integer\"}])"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing true"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about failing oneOf validation",
+        "description": "The instance is a boolean, which does not satisfy any of the subschemas in the oneOf clause, so walkAtNode must report a oneOf failure."
+      }
+    ]
+  },
+  {
+    "group": "Successful validation \u2013 array items validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema: {\"type\":\"array\",\"items\":{\"type\":\"integer\"}})"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing [1, 2, 3]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects",
+        "description": "The schema requires an array of integers. All elements are integers, so validation succeeds."
+      }
+    ]
+  },
+  {
+    "group": "Validation failure \u2013 array items type mismatch",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema: {\"type\":\"array\",\"items\":{\"type\":\"integer\"}})"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing [1, \"two\", 3]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains a message about element at index 1 not being an integer",
+        "description": "One array element violates the items schema (string instead of integer). walkAtNode should report the specific location and type error."
+      }
+    ]
+  },
+  {
+    "group": "Instance location propagation \u2013 nested property validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema: {\"type\":\"object\",\"properties\":{\"person\":{\"type\":\"object\",\"required\":[\"age\"],\"properties\":{\"age\":{\"type\":\"integer\"}}}}})"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"person\": { \"age\": \"twenty\" } }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and ValidationMessage contains instance location \"/person/age\"",
+        "description": "The validation error occurs deep inside the instance. walkAtNode must correctly build the JsonNodePath so the message points to \"/person/age\"."
+      }
+    ]
+  },
+  {
+    "group": "Root node differs from node \u2013 sub\u2011node validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings (schema: {\"type\":\"string\",\"minLength\":5})"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing \"short\" (length 5) \u2013 this is the sub\u2011node to validate"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "JsonNode representing { \"title\": \"short\", \"description\": \"A longer description\" }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/title\")"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == true and no ValidationMessage objects (validation succeeds on the sub\u2011node while rootNode is larger)",
+        "description": "walkAtNode is invoked on a sub\u2011node (the value of \"/title\"). The method must use the provided rootNode for $ref resolution but validate only the supplied node, returning a successful result."
+      }
+    ]
+  },
+  {
+    "group": "Configuration \u2013 failFast stops after first error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with SchemaValidatorsConfig.failFast = true (schema has two failing constraints: required \"name\" and type integer for \"age\")"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"age\": \"not-an-int\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "ValidationResult.isValid() == false and exactly one ValidationMessage (the first detected error, e.g., missing required property \"name\")",
+        "description": "When failFast is enabled, walkAtNode should abort after the first validation error, not collecting subsequent errors."
+      }
+    ]
+  },
+  {
+    "group": "Null parameter handling \u2013 executionContext is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "walkAtNode should immediately fail with NPE when the required ExecutionContext argument is null."
+      }
+    ]
+  },
+  {
+    "group": "Null parameter handling \u2013 instanceLocation is null",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"age\": 30 }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "null"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "NullPointerException is thrown",
+        "description": "The method relies on a non\u2011null JsonNodePath to build error locations; passing null should cause an NPE."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JsonNodePath \u2013 malformed pointer",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with default settings"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.of(\"/invalid~path\")"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (malformed JSON Pointer)",
+        "description": "JsonNodePath internally validates JSON\u2011Pointer syntax. Supplying a pointer with an illegal '~' escape should trigger an IllegalArgumentException."
+      }
+    ]
+  },
+  {
+    "group": "Unresolvable $ref fragment \u2013 IllegalArgumentException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext where getRefSchemaNode(\"#/nonexistent\") returns null"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"$ref\": \"#/nonexistent\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalArgumentException is thrown (cannot resolve $ref fragment)",
+        "description": "When a $ref points to a fragment that does not exist in the schema, walkAtNode should raise an IllegalArgumentException rather than silently ignoring it."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext method throws RuntimeException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext whose getValidators() throws IllegalStateException(\"custom failure\")"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing { \"name\": \"John\" }"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "IllegalStateException is propagated",
+        "description": "If the ExecutionContext encounters an unexpected error while providing validators, walkAtNode must not swallow the exception; it should propagate the original RuntimeException."
+      }
+    ]
+  },
+  {
+    "group": "Schema contains unsupported format \u2013 DateTimeParseException wrapped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mocked ExecutionContext with schema containing { \"type\": \"string\", \"format\": \"date-time\" }"
+          },
+          {
+            "parameter": "node",
+            "value": "JsonNode representing \"not-a-date\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same JsonNode as above (root)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "validate",
+            "value": true
+          }
+        ],
+        "expected": "RuntimeException wrapping DateTimeParseException is thrown",
+        "description": "When a string fails the built\u2011in \"date-time\" format validator, the underlying parser throws DateTimeParseException. walkAtNode should surface this as a RuntimeException (the library wraps format errors in a runtime exception)."
+      }
+    ]
+  }
+]

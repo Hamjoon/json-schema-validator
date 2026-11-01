@@ -1,0 +1,382 @@
+[
+  {
+    "group": "Normal operation \u2013 typical reference resolution",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance with default config, id=\"parent\", recursiveAnchor=false, validationContext having metaSchema=MetaSchema.V4, config=SchemaValidatorsConfig.DEFAULT"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/properties/name\")"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema object is returned. Its `getValidationContext()` contains the same meta\u2011schema and config as the parent schema, its `getEvaluationPath()` equals the supplied JsonNodePath, and its `getEvaluationParentSchema()` equals the supplied parent schema. No exception is thrown.",
+        "description": "Verifies that fromRef creates a new schema with the evaluation path and parent schema correctly propagated when all inputs are valid."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with recursive anchor enabled",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance where `recursiveAnchor` is true (set via `setRecursiveAnchor(true)`) and other fields default"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"#/definitions/address\")"
+          }
+        ],
+        "expected": "Returned JsonSchema has `isRecursiveAnchor()` equal to true (inherited from the parent). All other fields are identical to the normal case. No exception is thrown.",
+        "description": "Ensures that the recursive\u2011anchor flag is copied from the parent schema into the newly created schema."
+      }
+    ]
+  },
+  {
+    "group": "Null evaluation path \u2013 fallback handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "Valid JsonSchema instance with default configuration"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "null"
+          }
+        ],
+        "expected": "Returned JsonSchema has a `null` evaluation path (or the constructor substitutes `JsonNodePath.empty()` \u2013 whichever the implementation does). No NullPointerException is thrown.",
+        "description": "Checks that passing a null JsonNodePath does not cause a failure and the new schema is still created."
+      }
+    ]
+  },
+  {
+    "group": "Null parent schema \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "null"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException if the method validates arguments) because the method dereferences `refEvaluationParentSchema.validationContext`.",
+        "description": "Validates that the method does not silently accept a null parent schema and fails fast."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with custom ValidationContext configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose ValidationContext has a custom `SchemaValidatorsConfig` (e.g., `typeLoose = true`) and a non\u2011empty `schemaReferences` map"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"#/definitions/custom\")"
+          }
+        ],
+        "expected": "Returned JsonSchema\u2019s ValidationContext contains the same custom config and the same schemaReferences map as the parent. All other fields are correctly propagated.",
+        "description": "Ensures that complex objects inside ValidationContext (config, references, resources, dynamic anchors) are copied correctly."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with suppressed sub\u2011schema retrieval flag set",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance created with `suppressSubSchemaRetrieval = true`"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"#/definitions/ignore\")"
+          }
+        ],
+        "expected": "Returned JsonSchema has `suppressSubSchemaRetrieval` set to true (inherited from the parent). No exception is thrown.",
+        "description": "Verifies that the boolean flag controlling sub\u2011schema retrieval is propagated to the new schema."
+      }
+    ]
+  },
+  {
+    "group": "Id propagation \u2013 parent schema id retained",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance with id=\"parent-schema-id\", default config, validationContext non\u2011null"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/properties/name\")"
+          }
+        ],
+        "expected": "Returned JsonSchema is non\u2011null and its getId() equals \"parent-schema-id\". No exception is thrown.",
+        "description": "Ensures that the identifier of the parent schema is copied to the schema created by fromRef."
+      }
+    ]
+  },
+  {
+    "group": "Dynamic anchors propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose ValidationContext contains a dynamicAnchors map with entry {\"myAnchor\" -> some JsonSchema}"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"#/definitions/obj\")"
+          }
+        ],
+        "expected": "Returned JsonSchema\u2019s ValidationContext.getDynamicAnchors() contains the same entry {\"myAnchor\" -> same JsonSchema object}. No exception is thrown.",
+        "description": "Verifies that dynamic anchors stored in the parent\u2019s ValidationContext are correctly copied to the new schema."
+      }
+    ]
+  },
+  {
+    "group": "Schema resources map propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose ValidationContext has a non\u2011empty schemaResources map (e.g., {\"http://example.com/schema\" -> JsonNode})"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"#/components/schemas/Item\")"
+          }
+        ],
+        "expected": "Returned JsonSchema\u2019s ValidationContext.getSchemaResources() is the same map instance (or contains the same entries). No exception is thrown.",
+        "description": "Checks that schema resource references are propagated unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Evaluation path with URL\u2011encoded characters",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "Valid JsonSchema instance with default configuration"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/properties/%20name\")"
+          }
+        ],
+        "expected": "Returned JsonSchema\u2019s getEvaluationPath() equals the supplied JsonNodePath (the encoded segment is preserved). No exception is thrown.",
+        "description": "Ensures that fromRef does not attempt to decode or otherwise alter an already URL\u2011encoded path."
+      }
+    ]
+  },
+  {
+    "group": "Root evaluation path \u2013 empty JsonNodePath",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "Valid JsonSchema instance with default configuration"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "JsonNodePath.empty()"
+          }
+        ],
+        "expected": "Returned JsonSchema\u2019s evaluationPath is empty (represents the root of the schema). No exception is thrown.",
+        "description": "Validates handling of a reference that points to the root of the schema."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema with null ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal validationContext field is deliberately set to null"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Method throws NullPointerException (or IllegalArgumentException) because it dereferences parentSchema.validationContext.",
+        "description": "Confirms that the method fails fast when the parent schema lacks a ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Returned schema is a distinct instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance with id=\"parent\", default config"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/properties/age\")"
+          }
+        ],
+        "expected": "The object returned by fromRef is not the same reference as refEvaluationParentSchema (reference inequality). No exception is thrown.",
+        "description": "Ensures that fromRef creates a new JsonSchema object rather than returning the parent."
+      }
+    ]
+  },
+  {
+    "group": "Validators list remains null until explicit initialization",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "Valid JsonSchema instance with default configuration"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/properties/email\")"
+          }
+        ],
+        "expected": "Immediately after fromRef, calling getValidators() on the returned schema returns null (or an empty list) because validators are not loaded yet. No exception is thrown.",
+        "description": "Verifies that the internal validators collection is not pre\u2011populated; it will be loaded later via initializeValidators()."
+      }
+    ]
+  },
+  {
+    "group": "Null config in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `config = null` (all other fields non\u2011null)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException if ValidationContext constructor validates) because `refEvaluationParentSchema.getValidationContext().getConfig()` is null and is dereferenced while constructing the new ValidationContext.",
+        "description": "Ensures that a missing SchemaValidatorsConfig in the parent\u2019s ValidationContext is detected and the method fails fast."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaReferences map in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `schemaReferences = null` (other fields valid)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the constructor of ValidationContext receives a null `schemaReferences` map.",
+        "description": "Verifies that the method does not silently accept a null map of schema references and throws an exception."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaResources map in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `schemaResources = null` (other fields valid)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because a null `schemaResources` map is passed to the new ValidationContext.",
+        "description": "Confirms that missing schema resource mappings cause a failure rather than being silently ignored."
+      }
+    ]
+  },
+  {
+    "group": "Null dynamicAnchors map in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `dynamicAnchors = null` (other fields valid)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the ValidationContext constructor receives a null `dynamicAnchors` map.",
+        "description": "Ensures that the method validates the presence of the dynamic anchors collection."
+      }
+    ]
+  },
+  {
+    "group": "Null meta\u2011schema in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `metaSchema = null` (other fields valid)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because a null meta\u2011schema is supplied to the new ValidationContext.",
+        "description": "Validates that the method does not accept a parent schema lacking a meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Null JsonSchemaFactory in parent ValidationContext \u2013 defensive error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "refEvaluationParentSchema",
+            "value": "JsonSchema instance whose internal ValidationContext has `jsonSchemaFactory = null` (other fields valid)"
+          },
+          {
+            "parameter": "refEvaluationPath",
+            "value": "new JsonNodePath(\"/any\")"
+          }
+        ],
+        "expected": "Throws NullPointerException (or IllegalArgumentException) because the ValidationContext constructor receives a null `jsonSchemaFactory`.",
+        "description": "Checks that the method fails fast when the factory required to create further schemas is missing."
+      }
+    ]
+  }
+]

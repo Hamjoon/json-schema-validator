@@ -1,0 +1,17 @@
+[
+  {
+    "group": "BaseJsonValidator.getSchemaLocation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "returns the same non\u2011null SchemaLocation instance that was set on the validator",
+        "description": "Verify that getSchemaLocation() returns the exact SchemaLocation object that was assigned to the validator (e.g., via constructor or reflection). This tests the normal path where the field is non\u2011null."
+      },
+      {
+        "input": [],
+        "expected": "returns null when the internal schemaLocation field has not been set",
+        "description": "Verify that getSchemaLocation() returns null when the validator's schemaLocation field is null. This exercises the edge case where the field was never initialized."
+      }
+    ]
+  }
+]

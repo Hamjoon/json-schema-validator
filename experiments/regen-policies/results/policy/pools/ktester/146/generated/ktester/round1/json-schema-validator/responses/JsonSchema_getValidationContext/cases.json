@@ -1,0 +1,82 @@
+[
+  {
+    "group": "getValidationContext - returns the context set during creation",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance that was supplied to JsonSchema.from(...)",
+        "description": "Create a ValidationContext mock (or real instance) and use the static JsonSchema.from(...) factory method to construct a JsonSchema with that context. Calling getValidationContext() should return the exact same object (reference equality)."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - returns null when the internal field is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "null",
+        "description": "Instantiate a JsonSchema via reflection (or a subclass) without initializing the private field `validationContext`. After the field is forced to null, invoking getValidationContext() must return null."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - does not modify the returned context",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the original ValidationContext instance unchanged",
+        "description": "Obtain the ValidationContext via getValidationContext(), then mutate a mutable property of the returned object (if any). A subsequent call to getValidationContext() should still return the same instance reflecting the mutation, confirming that the method returns the stored reference without creating a copy."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - consistent across multiple calls",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance on every call (reference equality)",
+        "description": "Create a JsonSchema via the JsonSchema.from(...) factory with a known ValidationContext. Call getValidationContext() several times in a row and assert that each returned reference is identical to the original instance."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - inherited schema via fromRef shares the same context",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance as the parent schema (reference equality)",
+        "description": "Build a parent JsonSchema with a specific ValidationContext, then obtain a child schema using parentSchema.fromRef(...). Verify that childSchema.getValidationContext() returns the exact same ValidationContext object that was supplied to the parent."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - unchanged after withConfig call",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the original ValidationContext instance (reference equality)",
+        "description": "Create a JsonSchema with a ValidationContext, invoke schema.withConfig(customConfig) to obtain a new JsonSchema instance, and confirm that the new instance's getValidationContext() still returns the original ValidationContext object."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - remains the same after validation execution",
+    "cases": [
+      {
+        "input": [],
+        "expected": "the same ValidationContext instance as before validation (reference equality)",
+        "description": "Construct a JsonSchema with a known ValidationContext and a simple valid JSON schema. Call schema.validate(someJsonNode) to trigger validation logic, then call getValidationContext() again and verify that the returned object is still the original ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "getValidationContext - thread\u2011safety of concurrent reads",
+    "cases": [
+      {
+        "input": [],
+        "expected": "identical ValidationContext instance returned by all concurrent threads (reference equality)",
+        "description": "Create a JsonSchema with a ValidationContext. Start multiple threads (e.g., 10) that concurrently invoke getValidationContext() and store the returned reference. After all threads complete, assert that every stored reference points to the same ValidationContext object, confirming that the getter is safe for concurrent access."
+      }
+    ]
+  }
+]

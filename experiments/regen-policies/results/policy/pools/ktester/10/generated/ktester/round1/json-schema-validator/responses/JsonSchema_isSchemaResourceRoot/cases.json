@@ -1,0 +1,87 @@
+[
+  {
+    "group": "JsonSchema.isSchemaResourceRoot - branch coverage",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "Schema has a non\u2011null id. The first `if (getId() != null)` branch is taken, method returns true regardless of parent or location."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "Schema id is null and there is no parent schema (`getParentSchema() == null`). The second `if` branch is taken, method returns true."
+      },
+      {
+        "input": [],
+        "expected": true,
+        "description": "Schema id is null, a parent schema exists, but the absolute IRI of this schema differs from the parent\u2019s absolute IRI. The third `if (!Objects.equals(...))` branch is taken, method returns true."
+      },
+      {
+        "input": [],
+        "expected": false,
+        "description": "Schema id is null, a parent schema exists, and both schemas share the same absolute IRI. None of the early `if` conditions match, so the method falls through and returns false."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isSchemaResourceRoot - edge cases",
+    "cases": [
+      {
+        "input": [],
+        "expected": "True",
+        "description": "Schema id is an empty string (non\u2011null). The first `if (getId() != null)` branch is taken, confirming that any non\u2011null id \u2013 even empty \u2013 causes the method to return true."
+      },
+      {
+        "input": [],
+        "expected": "True",
+        "description": "Schema id is whitespace (non\u2011null). Verifies that the method treats any non\u2011null id as truthy, regardless of its content."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Schema id is null, a parent schema exists, but the parent\u2019s `getSchemaLocation()` returns null while the child\u2019s location is non\u2011null. Accessing `parent.getSchemaLocation().getAbsoluteIri()` should throw NPE, confirming that the method does not guard against a null parent location."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Schema id is null, a parent schema exists, the child\u2019s `getSchemaLocation()` returns null while the parent\u2019s location is non\u2011null. The call to `getSchemaLocation().getAbsoluteIri()` on the child triggers NPE, testing the method\u2019s behavior when the child location is missing."
+      },
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "Both the schema and its parent have null `SchemaLocation`. The method attempts to call `getAbsoluteIri()` on a null reference, resulting in NPE. This case validates that the implementation assumes non\u2011null locations."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isSchemaResourceRoot - getId throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "A subclass of JsonSchema overrides `getId()` to throw a RuntimeException. The method should not catch it, so the exception propagates."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isSchemaResourceRoot - getSchemaLocation throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "`getSchemaLocation()` returns a mock object whose `getAbsoluteIri()` throws a RuntimeException. Since the method does not guard against this, the exception is expected to bubble up."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchema.isSchemaResourceRoot - parent getSchemaLocation throws exception",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "The parent schema's `getSchemaLocation()` returns a mock that throws a RuntimeException when `getAbsoluteIri()` is invoked. The call inside `Objects.equals` should propagate the exception."
+      }
+    ]
+  }
+]

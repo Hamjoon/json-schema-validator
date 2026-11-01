@@ -1,0 +1,137 @@
+[
+  {
+    "group": "registerAndMergeDiscriminator_noSchemaDiscriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mock DiscriminatorContext where getDiscriminatorForPath(any) returns null"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "empty ObjectNode"
+          },
+          {
+            "parameter": "schema",
+            "value": "JsonSchema whose schemaNode does NOT contain a \"discriminator\" field"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "\"/root\" (JsonNodePath instance)"
+          }
+        ],
+        "expected": "No exception thrown; currentDiscriminatorContext.registerDiscriminator called once with schema.schemaLocation and the original discriminator (unchanged)",
+        "description": "When the schema does not define a discriminator, the method should simply register the supplied discriminator without attempting any merge."
+      }
+    ]
+  },
+  {
+    "group": "registerAndMergeDiscriminator_redefinePropertyName",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mock DiscriminatorContext where getDiscriminatorForPath(any) returns a non\u2011null discriminator ObjectNode"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "empty ObjectNode (no \"mapping\" field)"
+          },
+          {
+            "parameter": "schema",
+            "value": "JsonSchema whose schemaNode contains {\"discriminator\": {\"propertyName\": \"type\"}}"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "\"/root\" (JsonNodePath instance)"
+          }
+        ],
+        "expected": "JsonSchemaException thrown with message containing \"attempts redefining the discriminator property\"",
+        "description": "When the schema defines a discriminator that already contains a \"propertyName\" field, the method must reject the redefinition and throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "registerAndMergeDiscriminator_mappingRedefinition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mock DiscriminatorContext where getDiscriminatorForPath(any) returns a discriminator ObjectNode that already has a \"mapping\" field"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with mapping {\"A\": \"#/components/schemas/A\"}"
+          },
+          {
+            "parameter": "schema",
+            "value": "JsonSchema whose schemaNode contains {\"discriminator\": {\"mapping\": {\"A\": \"#/components/schemas/OtherA\", \"B\": \"#/components/schemas/B\"}}}"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "\"/root\" (JsonNodePath instance)"
+          }
+        ],
+        "expected": "JsonSchemaException thrown with message containing \"discriminator mapping redefinition from A\" and the two different mapping values",
+        "description": "When both the root discriminator and the nested schema provide a mapping for the same key but with different values, the method must detect the conflict and throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "registerAndMergeDiscriminator_contextMappingNotObjectNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mock DiscriminatorContext where getDiscriminatorForPath(any) returns a discriminator ObjectNode"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode where \"mapping\" field is a TextNode (e.g., \"notAnObject\")"
+          },
+          {
+            "parameter": "schema",
+            "value": "JsonSchema whose schemaNode contains {\"discriminator\": {\"mapping\": {\"C\": \"#/components/schemas/C\"}}}"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "\"/root\" (JsonNodePath instance)"
+          }
+        ],
+        "expected": "ClassCastException thrown when casting the existing \"mapping\" field of the root discriminator to ObjectNode",
+        "description": "If the existing root discriminator's \"mapping\" field is not an ObjectNode, the cast to ObjectNode fails, resulting in a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "registerAndMergeDiscriminator_schemaMappingNotObjectNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mock DiscriminatorContext where getDiscriminatorForPath(any) returns a discriminator ObjectNode with a valid \"mapping\" ObjectNode"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with a proper \"mapping\" ObjectNode (e.g., {\"X\": \"#/components/schemas/X\"})"
+          },
+          {
+            "parameter": "schema",
+            "value": "JsonSchema whose schemaNode contains {\"discriminator\": {\"mapping\": \"notAnObject\"}} (mapping is a TextNode)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "\"/root\" (JsonNodePath instance)"
+          }
+        ],
+        "expected": "ClassCastException thrown when casting the schema's \"mapping\" field to ObjectNode",
+        "description": "If the nested schema's discriminator \"mapping\" field is not an ObjectNode, the cast fails and a ClassCastException is thrown before any merge logic runs."
+      }
+    ]
+  }
+]

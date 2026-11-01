@@ -1,0 +1,352 @@
+[
+  {
+    "group": "Default meta\u2011schema selection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema (e.g., Draft\u20117) and config is the supplied instance",
+        "description": "When the schema JSON does not contain a \"$schema\" attribute, the factory should fall back to its default meta\u2011schema. This verifies the branch where getMetaSchemaOrDefault returns the default."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema and config is null (or the factory creates a default config internally)",
+        "description": "Ensures that a null SchemaValidatorsConfig does not break the method and the default meta\u2011schema is still selected."
+      }
+    ]
+  },
+  {
+    "group": "Custom meta\u2011schema via $schema attribute",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema corresponds to Draft\u201104 (the meta\u2011schema identified by the $schema URI)",
+        "description": "When the schema JSON contains a known \"$schema\" URI, getMetaSchemaOrDefault should resolve and return the matching meta\u2011schema. This covers the branch that looks up a meta\u2011schema by ID."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"http://unknown/schema#\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema (fallback because the $schema URI is not recognised)",
+        "description": "When the \"$schema\" attribute points to an unknown or unmapped URI, the factory should fall back to the default meta\u2011schema. This exercises the fallback branch inside getMetaSchemaOrDefault."
+      }
+    ]
+  },
+  {
+    "group": "Null schemaNode handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "NullPointerException (or IllegalArgumentException) thrown by createValidationContext",
+        "description": "The method expects a non\u2011null JsonNode; passing null should trigger an exception, covering the defensive\u2011programming branch."
+      }
+    ]
+  },
+  {
+    "group": "Custom configuration influencing meta\u2011schema selection",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().setValidateAgainstMetaSchema(false).build()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is still the default meta\u2011schema, but the config flag validateAgainstMetaSchema is false",
+        "description": "Even when validation against the meta\u2011schema is disabled via config, the factory still creates a ValidationContext; this verifies that config is passed unchanged to the context."
+      }
+    ]
+  },
+  {
+    "group": "Known $schema with null config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema corresponds to Draft\u201104 (the meta\u2011schema identified by the $schema URI) and whose config reference is null (or a default\u2011created SchemaValidatorsConfig)",
+        "description": "When a recognised $schema URI is present but the caller supplies a null configuration, the factory must still resolve the correct meta\u2011schema and handle the null config gracefully."
+      }
+    ]
+  },
+  {
+    "group": "Empty $schema value falls back to default",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema (e.g., Draft\u20117) and config is the supplied instance",
+        "description": "An empty string for the $schema attribute should be treated as absent; the method must therefore fall back to the default meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Whitespace\u2011padded $schema URI treated as unknown",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"   http://json-schema.org/draft-04/schema#   \",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema because the whitespace\u2011padded URI is not recognised",
+        "description": "The implementation does not trim the $schema value; therefore a URI with leading/trailing spaces should be considered unknown and trigger the fallback logic."
+      }
+    ]
+  },
+  {
+    "group": "$schema attribute with explicit null value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":null,\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema (fallback) and config is the supplied instance",
+        "description": "A JSON null for $schema should be ignored, causing the factory to use the default meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "Configuration with multiple flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().setValidateAgainstMetaSchema(true).setTypeLoose(true).setFailFast(true).build()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema is the factory's default meta\u2011schema and whose config reflects validateAgainstMetaSchema=true, typeLoose=true, failFast=true",
+        "description": "Ensures that a fully\u2011populated SchemaValidatorsConfig is passed unchanged into the created ValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Recognised newer draft (2020\u201112) via $schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"https://json-schema.org/draft/2020-12/schema\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema corresponds to Draft\u20112020\u201112 (the meta\u2011schema identified by the $schema URI)",
+        "description": "Verifies that the factory can resolve a newer, supported draft URI and create a ValidationContext with that meta\u2011schema."
+      }
+    ]
+  },
+  {
+    "group": "$schema URI containing fragment identifier",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#/definitions/foo\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "ValidationContext whose JsonMetaSchema corresponds to Draft\u201104 (the fragment part is ignored for meta\u2011schema resolution)",
+        "description": "The fragment identifier after the meta\u2011schema URI should not affect the lookup; the factory must still resolve to Draft\u201104."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011object schemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "[\"item1\", \"item2\"]"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) thrown because the schemaNode is not a JSON object",
+        "description": "The factory expects the root schema node to be an object; providing an array should trigger an argument\u2011validation exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "42"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) thrown because the schemaNode is a primitive value",
+        "description": "Supplying a numeric primitive instead of an object should be rejected by createValidationContext."
+      }
+    ]
+  },
+  {
+    "group": "Non\u2011text $schema value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":123,\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown when $schema field is not a text node",
+        "description": "The $schema attribute must be a string; providing a numeric value should cause the method to raise an exception during meta\u2011schema resolution."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":true,\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown when $schema field is a boolean",
+        "description": "A boolean $schema value is invalid and should be detected, resulting in an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":{},\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown when $schema field is an object",
+        "description": "When $schema is a JSON object instead of a string, the factory cannot resolve a meta\u2011schema and must fail."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $schema URI",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"http://[invalid]/schema#\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown because the $schema URI is syntactically invalid",
+        "description": "A $schema value that does not conform to URI syntax should cause the factory to raise an exception rather than silently falling back."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaNode",
+            "value": "{\"$schema\":\"ht!tp://bad^uri\",\"type\":\"object\"}"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown due to malformed URI in $schema",
+        "description": "Even when config is null, a malformed $schema string must be detected and result in an exception."
+      }
+    ]
+  }
+]

@@ -1,0 +1,205 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing a minimal valid JSON schema: {\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema object is returned (the method completes without throwing).",
+        "description": "Happy\u2011path: the InputStream can be read, readTree returns a JsonNode and newJsonSchema creates a JsonSchema instance. This verifies the normal execution branch of the try block."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "A custom InputStream whose read method throws IOException (e.g., new InputStream() { public int read() throws IOException { throw new IOException(\"forced\"); } })"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown and its cause is the original IOException.",
+        "description": "Error\u2011path: readTree propagates an IOException which is caught, logged and re\u2011thrown as JsonSchemaException. This tests the catch block."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - null InputStream",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "null"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (cause is NullPointerException) because readTree receives a null InputStream.",
+        "description": "Verify that passing a null InputStream results in an exception rather than silently succeeding."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - null InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing a minimal valid JSON schema: {\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (cause is NullPointerException) because the mapper cannot be selected for a null InputFormat.",
+        "description": "Ensure that a null InputFormat is not accepted and the method fails early in the readTree call."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - null Config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing a minimal valid JSON schema: {\"type\":\"object\"}"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema object is returned; the method tolerates a null config (it is passed through to newJsonSchema).",
+        "description": "Confirm that the method works when the optional SchemaValidatorsConfig argument is omitted (null)."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - YAML InputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing a minimal valid YAML schema: \"type: object\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.YAML"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema object is returned (the YAML is correctly parsed into a JsonNode).",
+        "description": "Validate that the method correctly handles YAML input by delegating to the YAML mapper."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - empty schema content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing an empty string \"\""
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (cause is JsonProcessingException) because an empty document cannot be parsed into a JsonNode.",
+        "description": "Check that an empty schema leads to a parsing failure that is wrapped in JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - malformed JSON",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing malformed JSON: {\"type\":\"object\"",
+            "note": "missing closing brace"
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException is thrown (cause is JsonProcessingException) indicating a parsing error.",
+        "description": "Ensure that syntactically invalid JSON is reported as a JsonSchemaException rather than returning a schema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(InputStream, InputFormat, SchemaValidatorsConfig) - large valid schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ByteArrayInputStream containing a large valid JSON schema (e.g., an object with 1000 properties of type string)."
+          },
+          {
+            "parameter": "inputFormat",
+            "value": "InputFormat.JSON"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A non\u2011null JsonSchema object is returned; the method handles large schemas without error.",
+        "description": "Stress\u2011test the method with a considerably sized schema to verify no resource\u2011related failures (e.g., stack overflow, OOM) occur."
+      }
+    ]
+  }
+]

@@ -1,0 +1,464 @@
+[
+  {
+    "group": "Null and Empty Inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Calling validate with a null JsonNode and a null customizer should throw NPE because the method expects a non\u2011null root node."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {} (empty JSON object)"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Validate an empty JSON object with no execution customizer. The schema (assumed to have no required properties) should produce no validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Valid JSON Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op lambda () -> {}"
+          }
+        ],
+        "expected": "empty set",
+        "description": "A JSON document that fully complies with the schema (e.g., required string and integer fields) should return an empty ValidationMessage set."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30,\"extra\":\"value\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setValidateSchema(false)"
+          }
+        ],
+        "expected": "empty set",
+        "description": "When the customizer disables schema validation, even a document containing unknown properties should return no validation messages."
+      }
+    ]
+  },
+  {
+    "group": "Invalid JSON Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":123,\"age\":\"thirty\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op lambda"
+          }
+        ],
+        "expected": "set containing messages: ['type mismatch for property name', 'type mismatch for property age']",
+        "description": "A JSON document with wrong types for required fields should produce ValidationMessages for each type error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "no\u2011op lambda"
+          }
+        ],
+        "expected": "set containing message: ['required property name is missing']",
+        "description": "Missing a required property should generate a single required\u2011property ValidationMessage."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Effects",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that adds a custom attribute to ExecutionContext (e.g., ctx.setAttribute(\"test\", true))"
+          }
+        ],
+        "expected": "empty set",
+        "description": "A customizer that mutates the ExecutionContext but does not alter validation behavior should still return a successful validation result."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that throws RuntimeException(\"customizer failure\")"
+          }
+        ],
+        "expected": "RuntimeException with message 'customizer failure'",
+        "description": "If the consumer throws an exception, validate should propagate that exception."
+      }
+    ]
+  },
+  {
+    "group": "Branch Coverage for Internal Flags",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setRecursiveAnchor(true)"
+          }
+        ],
+        "expected": "empty set",
+        "description": "When the customizer enables the recursive\u2011anchor flag, the validator should still succeed for a conforming document, covering the branch that checks `isRecursiveAnchor()`."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setSchemaResourceRoot(false)"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Disabling the schema\u2011resource\u2011root flag exercises the branch that decides whether to treat the current schema as a resource root."
+      }
+    ]
+  },
+  {
+    "group": "Array Schema Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [1, 2, 3]"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Schema defines type: \"array\" with items of type \"integer\". A valid integer array should produce no validation messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ArrayNode representing [1, \"two\", 3]"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "set containing message: ['type mismatch for array element at index 1']",
+        "description": "Array schema with integer items receives a non\u2011integer element; validator must report the type mismatch for the offending index."
+      }
+    ]
+  },
+  {
+    "group": "Boolean Schema Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"any\":\"value\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Schema is the boolean literal true (accepts any JSON). Validation should always succeed regardless of the document."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"any\":\"value\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "set containing message: ['instance does not match schema (boolean false)']",
+        "description": "Schema is the boolean literal false (rejects any JSON). Validation must always return a failure message."
+      }
+    ]
+  },
+  {
+    "group": "Complex Constraint Validation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"id\":\"123e4567-e89b-12d3-a456-426614174000\",\"age\":25,\"email\":\"john@example.com\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Schema combines multiple constraints: \"id\" must match UUID pattern, \"age\" integer minimum 18, \"email\" format \"email\". All constraints satisfied \u2192 no messages."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"id\":\"not-a-uuid\",\"age\":15,\"email\":\"not-an-email\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "set containing messages: ['pattern mismatch for property id', 'value 15 is less than minimum 18 for property age', 'format validation failed for property email']",
+        "description": "Same schema as above but each property violates a different constraint, exercising pattern, minimum, and format validation branches."
+      }
+    ]
+  },
+  {
+    "group": "Reference ($ref) Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"address\":{\"street\":\"Main St\",\"zip\":\"12345\"}}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Schema contains a $ref to an external definition for \"address\" (type object with required street and zip). The instance complies, confirming that `fromRef` resolution works."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"address\":{\"street\":10,\"zip\":\"12345\"}}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "set containing message: ['type mismatch for property street in $ref address']",
+        "description": "Same $ref schema but the referenced object has a type error, ensuring the validator reports errors originating from referenced schemas."
+      }
+    ]
+  },
+  {
+    "group": "Custom ExecutionContext Flags Interaction",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setValidateSchema(false)"
+          }
+        ],
+        "expected": "empty set",
+        "description": "Disabling schema validation via the execution context should suppress all validation messages, even if required properties are missing."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setValidateSchema(true) and ExecutionContext.setValidateSchemaRoot(false)"
+          }
+        ],
+        "expected": "set containing message: ['required property age is missing']",
+        "description": "Enabling validation but marking the current schema as not a root should still validate the instance, confirming that `isSchemaResourceRoot` flag is respected."
+      }
+    ]
+  },
+  {
+    "group": "Invalid ExecutionCustomizer Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that throws IllegalArgumentException(\"bad customizer\")"
+          }
+        ],
+        "expected": "IllegalArgumentException with message 'bad customizer'",
+        "description": "When the consumer throws a checked exception wrapped in a runtime exception, `validate` must propagate the original exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that modifies ExecutionContext and then throws NullPointerException"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Ensures that any exception (including NPE) thrown after mutating the context is not swallowed by the validator."
+      }
+    ]
+  },
+  {
+    "group": "Malformed $ref Handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"refField\":\"value\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing 'Unable to resolve $ref'",
+        "description": "The schema contains a $ref with an illegal URI encoding (e.g., \"%ZZ\") that triggers URLDecoder to throw IllegalArgumentException. The validate method should surface this as a JsonSchemaException."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"refField\":\"value\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'Invalid $ref'",
+        "description": "The $ref points to a non\u2011existent definition within the schema. During validation the resolver throws IllegalArgumentException, which must be propagated by the validate method."
+      }
+    ]
+  },
+  {
+    "group": "Invalid Schema Definition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "IllegalArgumentException with message containing 'Invalid type keyword'",
+        "description": "The compiled schema contains an unsupported value for the \"type\" keyword (e.g., \"unknownType\"). When validate is called the schema parser throws IllegalArgumentException, which should be propagated."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "null"
+          }
+        ],
+        "expected": "JsonProcessingException",
+        "description": "The schema definition includes a malformed JSON fragment (e.g., missing a closing brace). Loading the schema triggers JsonProcessingException, which the validate method must not swallow."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionCustomizer Throws Error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\",\"age\":30}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that throws AssertionError(\"customizer assertion failure\")"
+          }
+        ],
+        "expected": "AssertionError with message 'customizer assertion failure'",
+        "description": "When the consumer throws an Error (not a RuntimeException), validate should propagate it unchanged."
+      },
+      {
+        "input": [
+          {
+            "parameter": "rootNode",
+            "value": "ObjectNode representing {\"name\":\"John\"}"
+          },
+          {
+            "parameter": "executionCustomizer",
+            "value": "lambda that sets ExecutionContext.setValidateSchema(true) then throws NullPointerException"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Even if the customizer mutates the ExecutionContext before failing, the original NullPointerException must be propagated."
+      }
+    ]
+  }
+]

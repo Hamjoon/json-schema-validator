@@ -1,0 +1,380 @@
+[
+  {
+    "group": "No discriminator on schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "EmptyDiscriminatorContext"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{}"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/root\", \"schemaNode\": {} }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Discriminator registered in context with empty mapping; no exception thrown.",
+        "description": "When the schema does not contain a \"discriminator\" property, the method should skip all conditional logic and simply register the provided discriminator."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator present but no existing context entry",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithoutEntry"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{}"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/root\", \"schemaNode\": { \"discriminator\": { \"propertyName\": \"type\" } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Discriminator registered in context; no exception thrown.",
+        "description": "Even though the schema defines a discriminator, because the context does not already have a discriminator for the schema location, the method should bypass the merging logic and just register the discriminator."
+      }
+    ]
+  },
+  {
+    "group": "Redefine discriminator propertyName throws",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminator"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": {} }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"propertyName\": \"type\", \"mapping\": {} } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"attempts redefining the discriminator property\"",
+        "description": "When a nested schema tries to redefine the discriminator's propertyName, the method must throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Add mapping when root has no mapping",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminatorNoMapping"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\" }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { \"dog\": { \"$ref\": \"#/definitions/Dog\" } } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Root discriminator now contains mapping { \"dog\": { \"$ref\": \"#/definitions/Dog\" } }; no exception thrown.",
+        "description": "If the root discriminator lacks a \"mapping\" field but the nested schema provides one, the method should copy the entire mapping object to the root discriminator."
+      }
+    ]
+  },
+  {
+    "group": "Merge mappings without conflict",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMapping"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/Cat\" } } }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { \"dog\": { \"$ref\": \"#/definitions/Dog\" }, \"cat\": { \"$ref\": \"#/definitions/Cat\" } } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Root mapping now contains both \"cat\" and \"dog\" entries; the existing \"cat\" entry is unchanged because the node reference is identical; no exception thrown.",
+        "description": "When both root and child discriminators have mappings, the method should merge new keys and ignore keys that already exist with the same JsonNode instance."
+      }
+    ]
+  },
+  {
+    "group": "Merge mappings with conflict throws",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMappingConflict"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/OldCat\" } } }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/NewCat\" } } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"discriminator mapping redefinition from cat\"",
+        "description": "If a child schema attempts to map a key that already exists in the root discriminator but points to a different JsonNode, the method must throw a JsonSchemaException."
+      }
+    ]
+  },
+  {
+    "group": "Both mappings null \u2013 no merge performed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminatorNoMapping"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\" }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": {} } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Root discriminator unchanged (still no mapping); no exception thrown.",
+        "description": "When both the root discriminator and the child discriminator lack a \"mapping\" field, the method should simply register the discriminator without attempting any merge."
+      }
+    ]
+  },
+  {
+    "group": "Schema without discriminator but context already has one \u2013 registration overwrites",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMappingAndEntry"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/root\", \"schemaNode\": { } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "The discriminator stored in the context for \"/root\" becomes the empty object passed in (i.e., previous mapping is overwritten). No exception is thrown.",
+        "description": "When the schema does not contain a \"discriminator\" property but the context already holds a discriminator for the same schema location, the method should skip merging logic and simply register the supplied discriminator, effectively replacing the previous entry."
+      }
+    ]
+  },
+  {
+    "group": "Child mapping null \u2013 root mapping unchanged",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMapping"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/Cat\" } } }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Root discriminator mapping remains exactly { \"cat\": { \"$ref\": \"#/definitions/Cat\" } }. No exception is thrown.",
+        "description": "The child schema defines a discriminator object without a \"mapping\" field. Since the root already has a mapping, the method should perform no merge and leave the root mapping untouched."
+      }
+    ]
+  },
+  {
+    "group": "Child mapping empty object \u2013 no merge performed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMapping"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/Cat\" } } }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "Root discriminator mapping stays unchanged (contains only \"cat\"). No exception is thrown.",
+        "description": "The child discriminator provides an empty \"mapping\" object. The merge loop iterates over zero fields, so the existing root mapping should remain unchanged."
+      }
+    ]
+  },
+  {
+    "group": "Mapping key redefinition with equal content but different JsonNode instances throws",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootMappingDifferentInstance"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/Cat\" } } }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { \"cat\": { \"$ref\": \"#/definitions/Cat\" } } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"discriminator mapping redefinition from cat\" is thrown.",
+        "description": "Both root and child discriminators map the same key \"cat\" to JSON objects that are structurally identical but are distinct JsonNode instances. Because the implementation compares node references (using !=), this situation is treated as a conflict and must raise an exception."
+      }
+    ]
+  },
+  {
+    "group": "Null discriminator argument throws NPE",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminator"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "null"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"propertyName\": \"type\" } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When the supplied discriminator argument is null, the method attempts to call discriminator.get(\"mapping\") and throws a NullPointerException before any registration."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator mapping non-object node throws ClassCastException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminator"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": \"notAnObject\" }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": { \"dog\": { \"$ref\": \"#/definitions/Dog\" } } } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "The discriminator argument contains a \"mapping\" field that is a JSON string (or any non\u2011ObjectNode). The method casts it to ObjectNode, causing a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "Schema discriminator mapping non-object node throws ClassCastException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "ContextWithRootDiscriminator"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "{ \"propertyName\": \"type\", \"mapping\": {} }"
+          },
+          {
+            "parameter": "schema",
+            "value": "{ \"schemaLocation\": \"/child\", \"schemaNode\": { \"discriminator\": { \"mapping\": \"notAnObject\" } } }"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "/instance"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "The schema's discriminator contains a \"mapping\" field that is a JSON string (or any non\u2011ObjectNode). When the method casts it to ObjectNode, a ClassCastException is thrown."
+      }
+    ]
+  }
+]

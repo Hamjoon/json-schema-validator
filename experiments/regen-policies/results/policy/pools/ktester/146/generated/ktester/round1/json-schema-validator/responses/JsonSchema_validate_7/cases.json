@@ -1,0 +1,345 @@
+[
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 delegation behavior",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"OK\""
+          }
+        ],
+        "expected": "OK",
+        "description": "Normal flow \u2013 non\u2011null ExecutionContext, JsonNode and OutputFormat. The method should delegate to the overloaded validate(executionContext, node, format, null) and return the value produced by the OutputFormat (here the mock returns the string \"OK\")."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "executionContext is null \u2013 the delegate call should propagate a NullPointerException (the overloaded method expects a non\u2011null ExecutionContext)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "node is null \u2013 the method should fail early with a NullPointerException because the underlying validation logic cannot operate on a null JsonNode."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "null"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "format is null \u2013 the method must throw a NullPointerException as it cannot forward a null OutputFormat to the overloaded implementation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"array\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat capturing ExecutionContext and Node"
+          }
+        ],
+        "expected": "capturedExecutionContext == MockExecutionContext && capturedNode == MockJsonNode{\"type\":\"array\"}",
+        "description": "Verify that the delegated call passes the original ExecutionContext and JsonNode unchanged (no ExecutionContextCustomizer is supplied). The mock OutputFormat records the parameters it receives; the test asserts that they match the inputs."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 exception propagation from OutputFormat",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"string\",\"value\":\"abc\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat that throws IllegalStateException(\"format failure\") on apply"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "The OutputFormat throws an unchecked exception during its apply call. The validate method should not catch it and the same exception must propagate to the caller."
+      },
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"number\",\"value\":42}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat that throws RuntimeException(\"unexpected\") on apply"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "Another unchecked exception scenario to verify that any RuntimeException from the OutputFormat is bubbled up unchanged."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 handling of JSON null node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"null\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"NULL_OK\""
+          }
+        ],
+        "expected": "NULL_OK",
+        "description": "A JsonNode that represents JSON null is still a non\u2011null Java object. The method should delegate normally and return the value produced by the OutputFormat."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 format returns complex object",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"array\",\"items\":[1,2,3]}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning List.of(\"A\",\"B\",\"C\")"
+          }
+        ],
+        "expected": "[\"A\",\"B\",\"C\"]",
+        "description": "The generic type T can be any object. Verify that the method returns the exact object supplied by the OutputFormat (a List in this case)."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 OutputFormat invoked exactly once",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\",\"properties\":{}}"
+          },
+          {
+            "parameter": "format",
+            "value": "SpyOutputFormat that records number of apply calls"
+          }
+        ],
+        "expected": "applyCallCount == 1",
+        "description": "Using a spy (e.g., Mockito) ensure that the delegated validate method calls the OutputFormat's apply method exactly once."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 empty object node",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\",\"properties\":{}}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"EMPTY_OBJ_OK\""
+          }
+        ],
+        "expected": "EMPTY_OBJ_OK",
+        "description": "Validate that an empty JSON object node is handled like any other node and the OutputFormat's result is returned unchanged."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 executionContext with custom state",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext with attribute \"mode\"=\"STRICT\""
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"string\",\"value\":\"test\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat that returns executionContext.getAttribute(\"mode\")"
+          }
+        ],
+        "expected": "STRICT",
+        "description": "The OutputFormat may inspect the ExecutionContext. Verify that the same ExecutionContext instance is passed through the delegation, allowing the format to read custom attributes."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 propagation of schema parsing exception",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"object\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"OK\""
+          }
+        ],
+        "expected": "JsonSchemaException",
+        "description": "The JsonSchema instance was created from an invalid schema definition (e.g., contains an unknown keyword). When validate is invoked, the internal validation logic throws a JsonSchemaException. The method must not catch it; the same exception should propagate to the caller."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 propagation of ExecutionContext internal error",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext that throws IllegalStateException(\"context broken\") on any method call"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"string\",\"value\":\"test\"}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"OK\""
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "During validation the JsonSchema implementation interacts with the supplied ExecutionContext (e.g., to retrieve configuration or to record path information). The mock ExecutionContext throws an IllegalStateException when accessed. The validate method must let this exception propagate unchanged."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 checked exception from OutputFormat is wrapped",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MockJsonNode{\"type\":\"number\",\"value\":123}"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat that throws IOException(\"IO failure\") in apply"
+          }
+        ],
+        "expected": "RuntimeException caused by IOException",
+        "description": "OutputFormat.apply is declared to throw a checked exception (e.g., IOException). The validate method cannot declare a checked exception, so it should wrap the IOException in a RuntimeException (or propagate as is if already unchecked). The test verifies that a RuntimeException is thrown and its cause is the original IOException."
+      }
+    ]
+  },
+  {
+    "group": "validate(ExecutionContext, JsonNode, OutputFormat) \u2013 handling of Jackson MissingNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "MockExecutionContext"
+          },
+          {
+            "parameter": "node",
+            "value": "MissingNode.instance (Jackson representation of a missing value)"
+          },
+          {
+            "parameter": "format",
+            "value": "MockOutputFormat returning \"MISSING_OK\""
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When the supplied JsonNode is a Jackson MissingNode (which represents a missing property rather than a concrete JSON value), JsonSchema.validate should reject it and throw an IllegalArgumentException, because validation cannot be performed on a non\u2011existent node."
+      }
+    ]
+  }
+]

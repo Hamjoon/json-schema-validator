@@ -1,0 +1,142 @@
+[
+  {
+    "group": "canShortCircuit - initial evaluation, no blocking keywords",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When `canShortCircuit` field is null and the parent schema's validators list does not contain any validator whose keyword is \"unevaluatedProperties\" or \"unevaluatedItems\", the method should compute `true` and store it."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - initial evaluation, contains \"unevaluatedProperties\" keyword",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` field is null and at least one validator in the parent schema returns the keyword \"unevaluatedProperties\", the method must set `canShortCircuit` to false and return false."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - initial evaluation, contains \"unevaluatedItems\" keyword",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` field is null and at least one validator in the parent schema returns the keyword \"unevaluatedItems\", the method must set `canShortCircuit` to false and return false."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - cached true value",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "If `canShortCircuit` field has already been set to `true` (by a previous call), the method should return the cached value without iterating over validators."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - cached false value",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "If `canShortCircuit` field has already been set to `false` (by a previous call), the method should return the cached value without iterating over validators."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - initial evaluation, mixed validators including blocking keyword",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "When `canShortCircuit` is null and the parent schema contains several validators, some of which have the keywords \"unevaluatedProperties\" or \"unevaluatedItems\" among other non\u2011blocking validators, the method must detect the blocking keyword and set `canShortCircuit` to false."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - initial evaluation, multiple non\u2011blocking validators",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When `canShortCircuit` is null and the parent schema contains multiple validators but none of them return the keywords \"unevaluatedProperties\" or \"unevaluatedItems\", the method should compute and cache `true`."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - initial evaluation, validator with null keyword",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "When a validator in the parent schema returns `null` (or an empty string) for `getKeyword()`, it must be ignored as a non\u2011blocking keyword, resulting in `canShortCircuit` being true."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - cached true persists after parent schema changes",
+    "cases": [
+      {
+        "input": [],
+        "expected": true,
+        "description": "After the first call computes `true` and caches it, modify the parent schema to add a validator with a blocking keyword. A subsequent call must return the cached `true` without re\u2011evaluating the updated validators list."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - cached false persists after parent schema changes",
+    "cases": [
+      {
+        "input": [],
+        "expected": false,
+        "description": "After the first call computes `false` (because a blocking keyword was present) and caches it, change the parent schema to remove the blocking validator. A later call must still return the cached `false`."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - parent schema is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When `getEvaluationParentSchema()` returns null, the method attempts to call `getValidators()` on a null reference, causing a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - validators list is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the parent schema exists but its `getValidators()` method returns null, iterating over a null collection triggers a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - validator element is null",
+    "cases": [
+      {
+        "input": [],
+        "expected": "NullPointerException",
+        "description": "When the validators list contains a `null` element, the loop attempts to invoke `validator.getKeyword()` on a null reference, resulting in a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit - validator.getKeyword() throws RuntimeException",
+    "cases": [
+      {
+        "input": [],
+        "expected": "RuntimeException",
+        "description": "If a validator's `getKeyword()` implementation throws a RuntimeException (e.g., due to internal errors), the method propagates that exception without handling it."
+      }
+    ]
+  }
+]

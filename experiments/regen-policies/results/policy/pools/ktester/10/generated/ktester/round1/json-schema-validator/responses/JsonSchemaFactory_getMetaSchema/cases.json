@@ -1,0 +1,313 @@
+[
+  {
+    "group": "Well\u2011known dialect handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://json-schema.org/draft-07/schema#\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A JsonMetaSchema instance that equals JsonSchemaVersion.DRAFT_07.getInstance() (i.e., the meta\u2011schema for Draft\u201107). No call to loadMetaSchema should occur.",
+        "description": "The supplied id is a recognised JSON\u2011Schema dialect. The method should detect the version, map it through checkVersion, obtain the corresponding JsonSchemaVersion instance and return its JsonMetaSchema. This covers the true\u2011branch of the Optional.map chain."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"https://json-schema.org/draft/2020-12/schema\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A JsonMetaSchema instance that equals JsonSchemaVersion.DRAFT_2020_12.getInstance().",
+        "description": "Another well\u2011known dialect (2020\u201112). Verifies that the method works for any dialect that SpecVersionDetector can resolve, not just Draft\u201107."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://json-schema.org/draft-04/schema#\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "A JsonMetaSchema instance that equals JsonSchemaVersion.DRAFT_04.getInstance().",
+        "description": "Ensures older dialects are also correctly resolved via the Optional path."
+      }
+    ]
+  },
+  {
+    "group": "Custom meta\u2011schema handling (fallback branch)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"urn:custom:my-meta-schema\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by JsonSchemaFactory.loadMetaSchema(\"urn:custom:my-meta-schema\", config). The test should verify that loadMetaSchema is invoked exactly once and that its result is returned.",
+        "description": "The id is not recognised by SpecVersionDetector, so the Optional is empty and the lambda supplied to orElseGet is executed. This covers the fallback branch."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(null, config). The method should not throw NPE; it should delegate to loadMetaSchema.",
+        "description": "Edge case where the id argument is null. The detection step should return Optional.empty, causing the fallback to be taken. Verifies robust handling of null ids."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"\", config).",
+        "description": "Empty string id, also not a known dialect, should trigger the fallback branch."
+      }
+    ]
+  },
+  {
+    "group": "Config parameter variations",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://json-schema.org/draft-07/schema#\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "A JsonMetaSchema instance equal to JsonSchemaVersion.DRAFT_07.getInstance(). The method must handle a null SchemaValidatorsConfig without throwing, and must not invoke loadMetaSchema.",
+        "description": "Null config with a well\u2011known dialect should still resolve the dialect via SpecVersionDetector and return the corresponding meta\u2011schema, proving that the config argument is optional for the true branch."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"urn:custom:my-meta-schema\""
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"urn:custom:my-meta-schema\", null). The fallback branch must be taken and the null config must be forwarded to loadMetaSchema.",
+        "description": "Null config with an unknown id forces the fallback; verifies that the method forwards a null config unchanged to loadMetaSchema and does not throw NPE."
+      }
+    ]
+  },
+  {
+    "group": "Id string variations (whitespace & case)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"  http://json-schema.org/draft-07/schema#  \""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"  http://json-schema.org/draft-07/schema#  \", config). Because the id contains surrounding whitespace, SpecVersionDetector does not recognise it, so the fallback branch is executed.",
+        "description": "Tests that the detection logic is strict about whitespace; the method should treat the id as unknown and delegate to loadMetaSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"HTTP://JSON-SCHEMA.ORG/DRAFT-07/SCHEMA#\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"HTTP://JSON-SCHEMA.ORG/DRAFT-07/SCHEMA#\", config). Upper\u2011case scheme/host makes the id unrecognised, causing fallback.",
+        "description": "Ensures that id matching is case\u2011sensitive; a well\u2011known dialect written in upper case should not be detected and must trigger the custom\u2011schema path."
+      }
+    ]
+  },
+  {
+    "group": "Malformed or non\u2011URI ids",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"not a uri\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"not a uri\", config). SpecVersionDetector cannot parse the string, so Optional.empty leads to fallback.",
+        "description": "Validates that arbitrary non\u2011URI strings are safely handed over to loadMetaSchema without causing an exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://[invalid-ip]/schema#\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "The JsonMetaSchema returned by loadMetaSchema(\"http://[invalid-ip]/schema#\", config). Even though the URI is syntactically invalid, the method should not attempt to resolve it as a known dialect and must fall back.",
+        "description": "Checks robustness when the id is a malformed URI; the method should treat it as unknown and delegate to loadMetaSchema."
+      }
+    ]
+  },
+  {
+    "group": "Repeated calls with same unknown id (caching behavior)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"urn:custom:cached-schema\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "First call: loadMetaSchema is invoked and its result cached. Second call: loadMetaSchema is NOT invoked again; the cached JsonMetaSchema is returned.",
+        "description": "Ensures that for an unknown id the factory caches the loaded meta\u2011schema, preventing duplicate loading on subsequent calls."
+      }
+    ]
+  },
+  {
+    "group": "SpecVersionDetector parsing errors",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://[invalid-host]/schema#\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or a subclass such as URISyntaxException wrapped in IllegalArgumentException) thrown by SpecVersionDetector.detectOptionalVersion because the supplied id is not a syntactically valid URI.",
+        "description": "The id contains an illegal host component that cannot be parsed as a URI. The detector should fail before the Optional chain is built, causing the method to propagate the exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"\\u0000\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown by SpecVersionDetector.detectOptionalVersion due to presence of a control character in the URI string.",
+        "description": "A string containing a null character is not a valid URI. The detector is expected to reject it and throw an IllegalArgumentException, which should bubble up from getMetaSchema."
+      }
+    ]
+  },
+  {
+    "group": "LoadMetaSchema resource not found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"classpath:/nonexistent-meta-schema.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or a custom ResourceNotFoundException) thrown by loadMetaSchema because the class\u2011path resource cannot be located.",
+        "description": "The id points to a class\u2011path location that does not exist. The fallback branch is taken, and loadMetaSchema should raise an exception indicating that the meta\u2011schema cannot be loaded."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"file:/tmp/does-not-exist/schema.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException thrown by loadMetaSchema when it attempts to read a non\u2011existent file.",
+        "description": "A file\u2011URI that points to a missing file forces loadMetaSchema to fail, verifying that the method propagates the appropriate exception rather than silently returning null."
+      }
+    ]
+  },
+  {
+    "group": "LoadMetaSchema I/O error handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"http://example.com/unstable-schema.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "UncheckedIOException (or IOException wrapped in a RuntimeException) thrown by loadMetaSchema when a network\u2011level I/O problem occurs while fetching the schema.",
+        "description": "The id resolves to a remote HTTP resource. Simulating a network failure (e.g., by mocking the HTTP client to throw IOException) should cause loadMetaSchema to propagate an unchecked I/O exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "id",
+            "value": "\"jar:file:/nonexistent.jar!/meta-schema.json\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "UncheckedIOException thrown by loadMetaSchema when it cannot open the JAR entry.",
+        "description": "Accessing a JAR\u2011URL that points to a non\u2011existent JAR file triggers an I/O error inside loadMetaSchema, which must be wrapped and re\u2011thrown as an unchecked exception."
+      }
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+{
+  "class_name": "BaseJsonValidator",
+  "technique": "FSL",
+  "status": "ok",
+  "attempts": 1,
+  "calls": [
+    {
+      "timestamp": "2026-10-29T21:07:35.212669+00:00",
+      "latency": 105.645,
+      "status": "ok",
+      "http_status": 200,
+      "finish_reason": "stop",
+      "provider": "Mancer 2",
+      "model_requested": "openai/gpt-oss-120b",
+      "model_reported": "openai/gpt-oss-120b",
+      "request_id": "gen-1793308055-o2UEnSuzrNkTaJEG9Oq2",
+      "usage": {
+        "prompt_tokens": 5794,
+        "completion_tokens": 5510,
+        "total_tokens": 11304,
+        "cost": 0.001665,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.001665,
+          "upstream_inference_prompt_cost": 0.00028931771833013434,
+          "upstream_inference_completions_cost": 0.0013756822816698656
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2850,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "error_type": null,
+      "prompt_sha256": "ff37be28078b366415df5637ed0353e1a66ff435f18cee06f33e535dffedc6c9",
+      "response_sha256": "61cc1b34a9acf423bc2064111a7dcbbc3a6df0cbf52d93298b0f4199437a5f99"
+    }
+  ],
+  "extraction": {
+    "msr_detected": true,
+    "csr_v2": true,
+    "class_name": "BaseJsonValidatorTest",
+    "package": "com.networknt.schema",
+    "fqcn": "com.networknt.schema.BaseJsonValidatorTest",
+    "csr_success": null,
+    "selection": "markers",
+    "marker_pair": true,
+    "braces_balanced": true,
+    "html_detected": false
+  },
+  "file": "generated/ouedraogo-adj2/round1/sources/BaseJsonValidator/FSL/BaseJsonValidatorTest.java"
+}

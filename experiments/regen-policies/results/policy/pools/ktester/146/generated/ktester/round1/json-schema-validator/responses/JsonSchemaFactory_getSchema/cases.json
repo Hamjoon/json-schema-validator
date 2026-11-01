@@ -1,0 +1,329 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(String, SchemaValidatorsConfig)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is the default draft\u20117 and which validates a simple object correctly",
+        "description": "Happy\u2011path: a well\u2011formed JSON schema string with a default (empty) configuration should be parsed and a JsonSchema object returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"age\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig.builder().setFailFast(true).build()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that respects the supplied config (e.g., fail\u2011fast mode is enabled)",
+        "description": "Verify that a custom `SchemaValidatorsConfig` is propagated to the created schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "null"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) indicating that the schema string must not be null",
+        "description": "Calling `getSchema` with a `null` schema string should result in an exception rather than a silent failure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\"\""
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException stating that the schema string is empty or blank",
+        "description": "An empty string cannot be parsed as a JSON schema; the method should reject it early."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"unknown\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or a parsing exception) because the schema contains an unknown type",
+        "description": "Invalid JSON schema content should cause a parsing/validation exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"#/definitions/Person\", \"definitions\": { \"Person\": { \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance with the $ref correctly resolved",
+        "description": "Schema containing an internal `$ref` should be resolved during loading; the returned schema must be usable."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance using the factory's default configuration",
+        "description": "When `config` is `null` the method should fall back to the factory's default `SchemaValidatorsConfig` rather than throwing NPE."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "name: John\nage: 30"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) because the default input format is JSON but the content is YAML",
+        "description": "The overload called defaults to `InputFormat.JSON`; providing YAML content should trigger a parsing error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\", \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is Draft\u201104 (the `$schema` keyword is honoured) and that validates an object with an integer `id` correctly",
+        "description": "Schema explicitly declares Draft\u201104 via `$schema`; the factory must load the corresponding meta\u2011schema and associate it with the returned JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "true"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that always validates (i.e., `validate` never reports errors) because the schema is the boolean `true` per the JSON\u2011Schema spec",
+        "description": "A boolean schema `true` is a valid JSON\u2011Schema that matches any instance; the method should accept it and produce a permissive JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "false"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that always fails validation (i.e., `validate` always returns an error) because the schema is the boolean `false`",
+        "description": "A boolean schema `false` is a valid JSON\u2011Schema that matches no instance; the factory must return a JsonSchema that rejects everything."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"http://nonexistent.example.com/schema.json\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or a subclass) indicating that the external `$ref` could not be resolved",
+        "description": "External `$ref` pointing to a non\u2011existent URI should cause schema loading to fail with a clear exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"definitions\": { \"A\": { \"$ref\": \"#/definitions/B\" }, \"B\": { \"$ref\": \"#/definitions/A\" } }, \"$ref\": \"#/definitions/A\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or a specific cyclic\u2011reference exception) because the schema contains a cyclic `$ref` that cannot be resolved",
+        "description": "Detect and report a cyclic reference within the same document; the factory must not enter an infinite loop."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\" \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException (or IOException) caused by malformed JSON (missing comma between fields)",
+        "description": "Invalid JSON syntax should be caught during parsing and reported as a schema\u2011loading exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\ufeff{ \"type\": \"object\", \"properties\": { \"code\": { \"type\": \"string\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance; the leading UTF\u20118 BOM is ignored and the schema is parsed successfully",
+        "description": "A schema string that starts with a Unicode Byte Order Mark should still be accepted."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$id\": \"http://example.com/root.json\", \"type\": \"object\", \"definitions\": { \"inner\": { \"type\": \"string\" } }, \"properties\": { \"inner\": { \"$ref\": \"root.json#/definitions/inner\" } } }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance where the `$ref` resolves to the local definition via the base URI derived from `$id`",
+        "description": "Tests proper handling of `$id` and relative `$ref` resolution within the same document."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"anyOf\": [ { \"type\": \"string\" }, { \"type\": \"integer\" } ] }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance that validates a value if it is either a string or an integer",
+        "description": "Schema using the `anyOf` combinator should be loaded without error; the resulting JsonSchema must correctly apply the combinator semantics."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-99/schema#\", \"type\": \"object\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException indicating that the `$schema` URI refers to an unknown or unsupported meta\u2011schema version",
+        "description": "The `$schema` keyword points to a draft version that the factory does not recognise; loading should fail with a clear exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$id\": \"ht!tp://[invalid]\", \"type\": \"object\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException (or URISyntaxException) caused by an invalid URI in `$id`",
+        "description": "A malformed URI in the `$id` keyword should be detected early and result in an exception rather than an undefined behavior."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "[ { \"type\": \"object\" } ]"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException because the top\u2011level schema is a JSON array; only an object or boolean is allowed",
+        "description": "The JSON Schema specification requires the root schema to be an object or a boolean. Supplying an array must be rejected."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"http://example.com/not-a-schema.json\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException indicating that the referenced document is not a valid JSON Schema",
+        "description": "An external `$ref` that resolves to a JSON document which is not a schema should cause loading to fail."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"#/invalid~\" }"
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "JsonSchemaException caused by a malformed JSON\u2011Pointer fragment in the `$ref` value",
+        "description": "The `$ref` contains an illegal escape sequence (`~` not followed by `0` or `1`), which must be detected and reported."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "   \\t\\n  "
+          },
+          {
+            "parameter": "config",
+            "value": "new SchemaValidatorsConfig()"
+          }
+        ],
+        "expected": "IllegalArgumentException stating that the schema string is blank or contains only whitespace",
+        "description": "A string that consists solely of whitespace cannot be parsed as a JSON Schema and should be rejected up\u2011front."
+      }
+    ]
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "group": "JsonSchemaFactory.getSchema(String)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": null
+          }
+        ],
+        "expected": "IllegalArgumentException (or NullPointerException) because the schema string is null",
+        "description": "Verify that passing a null argument is rejected \u2013 the method should not attempt to load a schema and must throw an exception immediately."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": ""
+          }
+        ],
+        "expected": "IllegalArgumentException because an empty string cannot be resolved to a schema location",
+        "description": "Check the guard that validates the input string is not empty before any loading logic is executed."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is the default (Draft\u201107) and which validates the supplied JSON structure",
+        "description": "Supply a minimal valid JSON schema as a raw string. The method should parse it, create a JsonSchema object and return it without trying to resolve an external URI."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "classpath:/schemas/simple-schema.json"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance loaded from the class\u2011path resource",
+        "description": "Pass a class\u2011path location. The implementation should recognise the prefix, load the resource via the class\u2011loader and return the parsed schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "http://example.com/schemas/remote-schema.json"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance loaded from the remote HTTP URI",
+        "description": "Provide a URL. The method must treat the string as a URI, use the configured SchemaLoader to fetch the content and return the resulting JsonSchema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "file:/tmp/local-schema.json"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance loaded from the file system",
+        "description": "Test a file\u2011URI scheme. The factory should resolve the file location, read the JSON content and produce a schema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "---\ntype: object\nproperties:\n  name:\n    type: string\n"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) because the default input format is JSON and the content is YAML",
+        "description": "Supply a YAML document while the overload assumes JSON. The parser should fail, exposing the branch that validates the input format."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$schema\": \"http://json-schema.org/draft-04/schema#\", \"type\": \"object\" }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance whose meta\u2011schema is Draft\u201104 (detected via the $schema keyword)",
+        "description": "The schema string explicitly declares a different meta\u2011schema version. The method must detect the $schema attribute, load the corresponding meta\u2011schema and use it for validation."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"unknown\" } } }"
+          }
+        ],
+        "expected": "JsonSchemaCreationException (or a validation exception) because the schema contains an unknown type",
+        "description": "Even though the string is syntactically valid JSON, the content is semantically invalid. The branch that validates the parsed JsonNode against the meta\u2011schema should raise an error."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "   { \"type\": \"object\" }   "
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance (whitespace trimmed correctly)",
+        "description": "Verify that leading/trailing whitespace does not affect schema parsing \u2013 the method should trim or otherwise handle it before delegating to the parser."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String) - additional cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "   "
+          }
+        ],
+        "expected": "IllegalArgumentException because the string contains only whitespace and cannot be resolved to a schema location",
+        "description": "Verify that a schema string consisting solely of whitespace is rejected early, similar to an empty string."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "http:/example.com/malformed-uri"
+          }
+        ],
+        "expected": "IllegalArgumentException (or URISyntaxException wrapped) because the URI syntax is invalid",
+        "description": "Pass a malformed URI (missing second slash after the scheme) to ensure the method validates URI syntax before attempting to load."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "classpath:/schemas/missing-schema.json"
+          }
+        ],
+        "expected": "IllegalArgumentException (or SchemaNotFoundException) because the class\u2011path resource does not exist",
+        "description": "Request a class\u2011path resource that cannot be found; the factory should fail fast with a clear exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "file:/nonexistent/path/schema.json"
+          }
+        ],
+        "expected": "IOException (or IllegalArgumentException) because the file cannot be read",
+        "description": "Provide a file\u2011URI that points to a non\u2011existent file to test error handling for inaccessible file resources."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{}"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance representing an empty schema (valid according to Draft\u201107 meta\u2011schema)",
+        "description": "Supply the minimal valid JSON schema \u2013 an empty object \u2013 and verify that the factory returns a schema object without errors."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "[{\"type\":\"object\"}]"
+          }
+        ],
+        "expected": "JsonSchemaCreationException (or ValidationException) because the root node is an array, not an object",
+        "description": "Pass a JSON array as the top\u2011level schema node; the method should reject it as an invalid schema structure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "\ufeff{ \"type\": \"object\", \"properties\": { \"name\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance; the leading UTF\u20118 BOM is ignored and the schema is parsed successfully",
+        "description": "Test that a schema string beginning with a Unicode BOM is handled correctly by the parser."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"#/definitions/foo\", \"definitions\": { \"foo\": { \"type\": \"string\" } } }"
+          }
+        ],
+        "expected": "non\u2011null JsonSchema instance with a resolved $ref to an internal definition",
+        "description": "Provide a schema that uses $ref to reference an internal definition; the factory must resolve the reference and produce a valid JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String) - parsing error cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"type\": \"object\", \"properties\": { \"id\": { \"type\": \"integer\" }"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) because the JSON is malformed and cannot be parsed",
+        "description": "Provide a schema string with missing closing braces. The parser should fail during tree construction, exposing the branch that validates raw JSON syntax."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "ftp://example.com/schema.json"
+          }
+        ],
+        "expected": "IllegalArgumentException because the URI scheme 'ftp' is not supported by the factory",
+        "description": "Pass a URI with an unsupported scheme. The method should reject it early rather than attempting to load the resource."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "http://example.com/nonexistent-schema.json"
+          }
+        ],
+        "expected": "IOException (or JsonSchemaException) indicating that the HTTP resource could not be retrieved (e.g., 404 Not Found)",
+        "description": "Use a well\u2011formed HTTP URI that points to a non\u2011existent remote schema. The loader should attempt the request and surface the I/O failure."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"#/definitions/a\", \"definitions\": { \"a\": { \"$ref\": \"#/definitions/b\" }, \"b\": { \"$ref\": \"#/definitions/a\" } } }"
+          }
+        ],
+        "expected": "JsonSchemaException (or IllegalStateException) because a circular $ref is detected during schema resolution",
+        "description": "Supply a schema containing mutually recursive internal references. The factory must detect the cycle and abort with a clear exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "{ \"$ref\": \"http://example.com/missing.json#/def\" }"
+          }
+        ],
+        "expected": "JsonSchemaCreationException (or ValidationException) because the external $ref cannot be resolved",
+        "description": "Provide a schema that references an external definition that does not exist. Resolution should fail and propagate a creation\u2011time exception."
+      }
+    ]
+  },
+  {
+    "group": "JsonSchemaFactory.getSchema(String) - resource handling error cases",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "file:/tmp/"
+          }
+        ],
+        "expected": "IOException (or IllegalArgumentException) because the path points to a directory, not a readable file",
+        "description": "Pass a file\u2011URI that resolves to a directory. The loader should reject it as an invalid schema source."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schema",
+            "value": "file:/tmp/plain.txt"
+          }
+        ],
+        "expected": "JsonProcessingException (or IOException) because the file content is not valid JSON/YAML for a schema",
+        "description": "Reference a file that exists but contains plain text rather than JSON/YAML. Parsing should fail, exposing the content\u2011validation branch."
+      }
+    ]
+  }
+]

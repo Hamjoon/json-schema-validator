@@ -1,0 +1,261 @@
+[
+  {
+    "group": "Valid inputs",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "instance of JsonSchema representing the supplied schema",
+        "description": "When a non\u2011null InputStream containing a well\u2011formed JSON schema and a non\u2011null SchemaValidatorsConfig are supplied, getSchema should parse the stream and return a JsonSchema object."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "instance of JsonSchema (default configuration applied)",
+        "description": "If the config argument is null the method should fall back to the factory\u2019s default SchemaValidatorsConfig and still return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null handling",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "A null InputStream is not acceptable; the method must throw a NullPointerException (or IllegalArgumentException) before attempting to read."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": null
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "Both arguments null \u2013 the method should still fail fast with a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Invalid / empty content",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "emptyStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IOException or JsonProcessingException indicating empty content",
+        "description": "An InputStream with no bytes cannot be parsed into a JSON tree; the method should propagate an IOException (or a Jackson parsing exception)."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "invalidJsonStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IOException or JsonProcessingException indicating malformed JSON",
+        "description": "When the stream contains syntactically invalid JSON, getSchema must throw an exception from the underlying JsonNodeReader."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "yamlSchemaStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IOException or JsonProcessingException because the default InputFormat is JSON",
+        "description": "Supplying a YAML document while the method forces InputFormat.JSON should result in a parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "Custom configuration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStream"
+          },
+          {
+            "parameter": "config",
+            "value": "customConfig{typeLoose:true,failFast:true}"
+          }
+        ],
+        "expected": "instance of JsonSchema (custom configuration applied)",
+        "description": "A well\u2011formed JSON schema stream together with a non\u2011default SchemaValidatorsConfig (e.g., typeLoose and failFast enabled). The factory must return a JsonSchema object that has been created using the supplied configuration."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStreamWithBOM"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "instance of JsonSchema",
+        "description": "The InputStream starts with a UTF\u20118 Byte Order Mark (BOM) followed by a valid JSON schema. The method should ignore the BOM and successfully parse the schema."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "validJsonSchemaStreamWithTrailingWhitespace"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "instance of JsonSchema (default configuration applied)",
+        "description": "A valid JSON schema that contains extra whitespace characters after the closing brace. With a null config the factory falls back to its default configuration and must still return a JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Edge stream conditions",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "emptyStream"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "IOException or JsonProcessingException indicating empty content",
+        "description": "An empty InputStream with a null config should behave the same as with a non\u2011null config: the method must propagate an exception because there is no content to parse."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "invalidJsonStream"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "IOException or JsonProcessingException indicating malformed JSON",
+        "description": "A stream containing syntactically invalid JSON together with a null config must still result in a parsing exception."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "yamlSchemaStream"
+          },
+          {
+            "parameter": "config",
+            "value": null
+          }
+        ],
+        "expected": "IOException or JsonProcessingException because the default InputFormat is JSON",
+        "description": "Supplying a YAML document while the method forces InputFormat.JSON and passing a null config should still cause a parsing failure."
+      }
+    ]
+  },
+  {
+    "group": "Exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "ioExceptionThrowingStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IOException propagated from underlying stream",
+        "description": "The InputStream throws an IOException during read(). The method must not swallow the exception; it should propagate it to the caller."
+      },
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "closedStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "IOException indicating stream is closed",
+        "description": "The InputStream has already been closed before being passed to getSchema. Attempting to read should result in an IOException that is propagated."
+      }
+    ]
+  },
+  {
+    "group": "UnresolvedReference",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "schemaStream",
+            "value": "jsonSchemaWithUnresolvableRefStream"
+          },
+          {
+            "parameter": "config",
+            "value": "defaultConfig"
+          }
+        ],
+        "expected": "JsonSchemaException (or RuntimeException) indicating that $ref could not be resolved",
+        "description": "The InputStream contains a valid JSON schema that includes a $ref to a non\u2011existent external schema. The factory should attempt to resolve the reference during loading and throw an exception because the reference cannot be found."
+      }
+    ]
+  }
+]

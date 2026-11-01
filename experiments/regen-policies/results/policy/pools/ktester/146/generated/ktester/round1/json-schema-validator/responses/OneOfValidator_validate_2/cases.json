@@ -1,0 +1,777 @@
+[
+  {
+    "group": "No discriminator \u2013 exactly one schema validates (happy path)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that satisfies schema[0] and fails schema[1]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "empty ValidationMessage set (no errors) \u2013 numberOfValidSchema == 1, errors stays null",
+        "description": "When discriminator is disabled and exactly one of the supplied schemas validates, OneOfValidator must return an empty error set."
+      }
+    ]
+  },
+  {
+    "group": "No discriminator \u2013 no schema validates",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that fails all schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf\" and argument \"0\" (no valid schemas)",
+        "description": "When none of the schemas validate, OneOfValidator must produce a oneOf error with numberOfValidSchema == 0."
+      }
+    ]
+  },
+  {
+    "group": "No discriminator \u2013 multiple schemas validate, short\u2011circuit allowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that satisfies schema[0] and schema[1]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf.indexes\", arguments \"2\" and \"0, 1\" (two valid schemas). Child errors may be present if schemas produce them, but the main message must be oneOf.indexes.",
+        "description": "When more than one schema validates and canShortCircuit() returns true, the loop breaks after the second match; the validator must still report a oneOf.indexes error because numberOfValidSchema != 1."
+      }
+    ]
+  },
+  {
+    "group": "No discriminator \u2013 multiple schemas validate, short\u2011circuit NOT allowed",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that satisfies three schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf.indexes\", arguments \"3\" and \"0, 1, 2\" (three valid schemas). Loop iterates over all schemas because canShortCircuit() returns false.",
+        "description": "Ensures the validator does not break early when short\u2011circuiting is disabled and still reports a oneOf.indexes error."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 matching discriminator found",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with property \"type\":\"A\" (discriminator property present)"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "empty ValidationMessage set if the schema referenced by \"$ref\" matches the discriminator value; otherwise a oneOf error as in the non\u2011discriminator case.",
+        "description": "When discriminator is enabled and the node contains the discriminator property that maps to a $ref of the currently evaluated schema, the validator marks a match, collects child errors only from the matching schema and ultimately returns no error if that schema validates."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator property missing (ignore path)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node without the discriminator property"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationMessage set containing a oneOf error (same rules as without discriminator) because the context is marked as ignore and childErrors are aggregated from all schemas.",
+        "description": "If the discriminator property is absent, the context is marked ignore; the validator must fall back to normal handling and report a oneOf error when the number of valid schemas is not exactly one."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 no matching schema and not ignored",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"UNKNOWN\" that does not match any $ref"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message built from message().instanceNode(...).arguments(\"based on the provided discriminator. No alternative could be chosen based on the discriminator property\")",
+        "description": "When discriminator is enabled, a discriminator validator exists, but none of the schemas match the discriminator value, the validator must produce the special error indicating that no alternative could be chosen."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 mapping overrides discriminator value",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\" (mapping contains \"A\" -> \"B\")"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "empty ValidationMessage set because the discriminator mapping changes the value from \"A\" to \"B\" and the schema being evaluated has a $ref of \"B\", thus a match is recorded and the matched schema validates.",
+        "description": "When a discriminator is enabled and the discriminator property value is remapped via the discriminator's mapping, the validator must use the mapped value to compare against the schema's $ref. If they match and the schema validates, the result should be success (no errors)."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 discriminator present but schema lacks $ref",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf\" and argument \"0\" (no valid schemas). The lack of $ref means the discriminator cannot mark a match, so normal one\u2011of logic applies.",
+        "description": "If the discriminator property is present but the candidate schema does not contain a $ref, the discriminator matching logic cannot succeed. The validator should fall back to the regular oneOf evaluation and report an error when no schema validates."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 matching discriminator but schema validation fails",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\" that maps to a schema whose internal validation fails"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf\" and argument \"0\" plus the child errors produced by the failing schema. Because a discriminator match was found but the matched schema is invalid, the validator must report the normal oneOf error together with the child errors.",
+        "description": "When a discriminator match is identified but the matched schema itself produces validation errors, the validator should not return the special \"no alternative could be chosen\" message. Instead it should behave like a normal oneOf failure, reporting the oneOf error and the child errors from the matched schema."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 exactly one schema validates (happy path with discriminator)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=true, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"B\" that matches the $ref of schema[1] and satisfies that schema"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "empty ValidationMessage set (no errors) \u2013 numberOfValidSchema == 1, errors stays null, childErrors contain only errors from the matched schema (which are none).",
+        "description": "The typical successful path when discriminators are enabled: the node contains the discriminator property, it maps to a $ref that points to exactly one schema, and that schema validates. The validator should return an empty set."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator enabled \u2013 multiple schemas validate (oneOf.indexes error despite match)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator enabled, DiscriminatorContext active, canShortCircuit=false)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"C\" that matches schema[0] $ref, but the node also satisfies schema[1] and schema[2]"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "ValidationMessage set containing a single message with key \"oneOf.indexes\", arguments \"3\" and \"0, 1, 2\" (three valid schemas). The presence of a discriminator match does not suppress the oneOf.indexes error because more than one schema validates.",
+        "description": "Even when a discriminator match is found, the oneOf rule still requires exactly one matching schema. If several schemas validate, the validator must report a oneOf.indexes error listing all matching indexes."
+      }
+    ]
+  },
+  {
+    "group": "ExecutionContext failFast flag restoration",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (initial failFast=true, discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that fails all schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "After validate() returns, executionContext.isFailFast() == true (original value restored). The method returns a ValidationMessage set with key \"oneOf\" and argument \"0\".",
+        "description": "The validator temporarily sets failFast to false while iterating over child schemas. This test verifies that the original failFast flag is restored in the finally block, regardless of validation outcome."
+      }
+    ]
+  },
+  {
+    "group": "Walk flag true with discriminator enabled \u2013 matching discriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (failFast=false, discriminator enabled, DiscriminatorContext active)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"D\" that matches $ref of schema[0] and the schema validates only when walk() is used"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "empty ValidationMessage set \u2013 the validator called schema.walk() for each child schema, the discriminator matched, and the matched schema produced no errors.",
+        "description": "Ensures that when walk == true the validator invokes the walk() method on child schemas, and that discriminator handling works identically for the walk path."
+      }
+    ]
+  },
+  {
+    "group": "Null ExecutionContext \u2013 NPE on isFailFast",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "null"
+          },
+          {
+            "parameter": "node",
+            "value": "any valid JsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When executionContext is null the first call to executionContext.isFailFast() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Null node with discriminator enabled \u2013 NPE on node.get",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled, failFast=true)"
+          },
+          {
+            "parameter": "node",
+            "value": "null"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "null"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When discriminator is enabled the validator accesses node.get(propertyName). If node is null a NPE is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Null validationContext in OneOfValidator \u2013 NPE on getConfig",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If the OneOfValidator instance has its validationContext field set to null, the call this.validationContext.getConfig() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Parent schema missing \u2013 NPE on getValidators",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When getParentSchema() returns null, the subsequent call .getValidators() results in NPE while trying to locate a discriminator validator."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator validator type mismatch \u2013 ClassCastException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "ClassCastException",
+        "description": "If a validator with keyword \"discriminator\" is present but is not an instance of DiscriminatorValidator, the cast ((DiscriminatorValidator) \u2026) throws ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator property name null \u2013 NPE on isEmpty",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled, DiscriminatorValidator.propertyName = null)"
+          },
+          {
+            "parameter": "node",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "When discriminator.getPropertyName() returns null, the subsequent call .isEmpty() throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "Discriminator mapping null \u2013 NPE on getOrDefault",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled, DiscriminatorValidator.mapping = null)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If discriminator.getMapping() returns null, the call .getOrDefault(...) throws NPE while trying to resolve the mapped value."
+      }
+    ]
+  },
+  {
+    "group": "Schema node null \u2013 NPE on get(\"$ref\")",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator enabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node with discriminator property \"type\":\"A\""
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "NullPointerException",
+        "description": "If a child schema's getSchemaNode() returns null, the later call .get(\"$ref\") on a null object throws NPE."
+      }
+    ]
+  },
+  {
+    "group": "enterDiscriminatorContext throws RuntimeException \u2013 propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext where enterDiscriminatorContext throws IllegalStateException"
+          },
+          {
+            "parameter": "node",
+            "value": "any JsonNode"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "IllegalStateException",
+        "description": "When discriminator is enabled the validator calls executionContext.enterDiscriminatorContext. If that method throws, the exception propagates out of validate()."
+      }
+    ]
+  },
+  {
+    "group": "canShortCircuit overridden to throw \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator disabled)"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that validates at least two schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "false"
+          }
+        ],
+        "expected": "RuntimeException",
+        "description": "A subclass of OneOfValidator overrides canShortCircuit() to throw RuntimeException. The validate() method does not catch it, so the exception bubbles up."
+      }
+    ]
+  },
+  {
+    "group": "reportChildErrors throws \u2013 exception propagation",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "executionContext",
+            "value": "mock ExecutionContext (discriminator disabled) where reportChildErrors throws IllegalArgumentException"
+          },
+          {
+            "parameter": "node",
+            "value": "JSON node that fails all schemas"
+          },
+          {
+            "parameter": "rootNode",
+            "value": "same as node"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath.root()"
+          },
+          {
+            "parameter": "walk",
+            "value": "true"
+          }
+        ],
+        "expected": "IllegalArgumentException",
+        "description": "When discriminator is disabled and a schema produces errors, validate() calls reportChildErrors(executionContext). If that method throws, the exception propagates."
+      }
+    ]
+  }
+]

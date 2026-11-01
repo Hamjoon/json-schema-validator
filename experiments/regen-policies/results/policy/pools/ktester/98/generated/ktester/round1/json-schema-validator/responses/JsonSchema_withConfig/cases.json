@@ -1,0 +1,257 @@
+[
+  {
+    "group": "First if condition true \u2013 discriminator keyword present and disabled in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=false, nullableKeywordEnabled=false"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is NOT the same as the original (new instance). The config used inside the new instance has discriminatorKeywordEnabled=true and nullableKeywordEnabled=true (builder auto\u2011enabled).",
+        "description": "Create a JsonSchema whose ValidationContext.metaSchema.keywords contains the key \"discriminator\". Pass a config where isDiscriminatorKeywordEnabled() returns false. The method should enter the first if\u2011block, build a new config with both discriminatorKeywordEnabled and nullableKeywordEnabled set to true, and because this new config differs from the original ValidationContext.config, the second if\u2011block creates and returns a new JsonSchema instance."
+      }
+    ]
+  },
+  {
+    "group": "First if condition false \u2013 discriminator keyword absent in meta\u2011schema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=false, nullableKeywordEnabled=false"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is NOT the same as the original (new instance) because the supplied config differs from the current ValidationContext.config.",
+        "description": "Mock ValidationContext.metaSchema.keywords to NOT contain \"discriminator\". Pass a config with discriminator disabled. The first if\u2011condition evaluates to false, so the original config is used. Since the supplied config is different from the context's config, the second if\u2011condition is true and a new JsonSchema instance is returned."
+      },
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig identical to the one held by ValidationContext.config"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is the same object (this).",
+        "description": "Meta\u2011schema does not contain \"discriminator\" and the passed config equals the config already stored in ValidationContext. Both if\u2011conditions evaluate to false, so the method returns `this`."
+      }
+    ]
+  },
+  {
+    "group": "First if condition false \u2013 discriminator keyword present but already enabled in config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=true, nullableKeywordEnabled=true"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is NOT the same as the original (new instance) because the supplied config differs from the current ValidationContext.config.",
+        "description": "Mock ValidationContext.metaSchema.keywords to contain \"discriminator\". Pass a config where isDiscriminatorKeywordEnabled() returns true, so the first if\u2011block is skipped. Since the passed config is different from the one stored in ValidationContext, the second if\u2011condition creates a new JsonSchema instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig identical to the one held by ValidationContext.config (discriminator enabled)"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is the same object (this).",
+        "description": "Meta\u2011schema contains \"discriminator\" but the supplied config already has discriminator enabled and is equal to the context's config. Both conditions are false; the method returns `this`."
+      }
+    ]
+  },
+  {
+    "group": "Second if condition true \u2013 config changed after first if (or originally different)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=false, nullableKeywordEnabled=false"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is a newly constructed object (different reference). The internal ValidationContext uses the (possibly rebuilt) config.",
+        "description": "Arrange a JsonSchema whose current ValidationContext.config is NOT equal to the supplied config (e.g., the context config has discriminatorKeywordEnabled=true). The method should skip the first if\u2011block (or rebuild config) and then satisfy the second condition, constructing a new JsonSchema with the supplied config."
+      }
+    ]
+  },
+  {
+    "group": "Second if condition false \u2013 supplied config equals current context config",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig exactly equal to ValidationContext.config"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is the same reference as the original (this).",
+        "description": "Mock ValidationContext.getConfig() to return a specific SchemaValidatorsConfig instance. Pass that exact instance (or an equal one) to withConfig. Neither the first nor the second if\u2011condition becomes true, so the method returns the original JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "First if true \u2013 rebuilt config equals current ValidationContext.config (no new instance)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=false, nullableKeywordEnabled=false"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is the same object (this). The meta\u2011schema contains the \"discriminator\" keyword, the method rebuilds the config (enabling discriminator and nullable). Because the original ValidationContext already holds a config with discriminatorKeywordEnabled=true and nullableKeywordEnabled=true, the rebuilt config equals the existing one, so the second if\u2011condition is false.",
+        "description": "Create a JsonSchema whose ValidationContext.metaSchema.keywords includes \"discriminator\" and whose current ValidationContext.config already has discriminatorKeywordEnabled=true and nullableKeywordEnabled=true. Pass a config where both flags are false. The method should enter the first if\u2011block, rebuild the config to enable the flags, detect that this rebuilt config is equal to the current context config, skip the second if\u2011block and return the original instance."
+      }
+    ]
+  },
+  {
+    "group": "Meta\u2011schema without discriminator \u2013 config enables discriminator (new instance)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with discriminatorKeywordEnabled=true, nullableKeywordEnabled=false"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is a newly constructed object (different reference). Because the meta\u2011schema does not contain the \"discriminator\" keyword, the first if\u2011block is skipped. The supplied config differs from the ValidationContext.config, so the second if\u2011condition creates a new JsonSchema.",
+        "description": "Mock ValidationContext.metaSchema.keywords to NOT contain \"discriminator\". Ensure the current ValidationContext.config has discriminatorKeywordEnabled=false. Pass a config with discriminatorKeywordEnabled=true. The method should return a new JsonSchema instance."
+      },
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig identical to the one held by ValidationContext.config (discriminator enabled)"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is the same object (this). Both if\u2011conditions evaluate to false because the meta\u2011schema lacks \"discriminator\" and the supplied config equals the current context config.",
+        "description": "Same setup as above but the ValidationContext.config already has discriminatorKeywordEnabled=true and nullableKeywordEnabled=false. Pass the exact same config instance (or an equal one). The method should return the original JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Config differs only in nullableKeywordEnabled flag (new instance)",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with nullableKeywordEnabled=true (all other flags same as current context config)"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is a new instance (different reference). The first if\u2011block is not triggered (discriminator keyword state unchanged). The second if\u2011condition sees the config inequality and creates a new JsonSchema.",
+        "description": "Set up a JsonSchema whose ValidationContext.config has nullableKeywordEnabled=false. Pass a config that is identical except nullableKeywordEnabled=true. Verify that a new JsonSchema is returned."
+      }
+    ]
+  },
+  {
+    "group": "Config differs only in a non\u2011discriminator flag (e.g., typeLoose) \u2013 new instance",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "SchemaValidatorsConfig with typeLoose=true (all other flags same as current context config)"
+          }
+        ],
+        "expected": "Returned JsonSchema instance is a new instance (different reference). The first if\u2011block is skipped because discriminator keyword handling is unchanged. The second if\u2011condition detects the inequality of the supplied config and constructs a new JsonSchema.",
+        "description": "Assume the current ValidationContext.config has typeLoose=false. Pass a config where only typeLoose is true. Verify that the method returns a newly created JsonSchema."
+      }
+    ]
+  },
+  {
+    "group": "Null config argument \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "null"
+          }
+        ],
+        "expected": "Throws NullPointerException when invoking withConfig(null). The method dereferences config to call isDiscriminatorKeywordEnabled(), causing the NPE.",
+        "description": "Call withConfig(null) on any JsonSchema instance. The test should assert that a NullPointerException is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Null ValidationContext \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "valid SchemaValidatorsConfig instance"
+          }
+        ],
+        "expected": "Throws NullPointerException because this.getValidationContext() returns null and the method attempts to call getMetaSchema() on it.",
+        "description": "Create a JsonSchema instance whose internal ValidationContext field is null (e.g., via reflection or a test double). Call withConfig(validConfig). The method should dereference a null ValidationContext and raise a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null MetaSchema in ValidationContext \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "valid SchemaValidatorsConfig instance"
+          }
+        ],
+        "expected": "Throws NullPointerException because ValidationContext.getMetaSchema() returns null and the method attempts to call getKeywords() on it.",
+        "description": "Mock the JsonSchema's ValidationContext so that getMetaSchema() returns null while getConfig() returns a non\u2011null config. Invoke withConfig(validConfig) and verify that a NullPointerException is thrown."
+      }
+    ]
+  },
+  {
+    "group": "Null Keywords map in MetaSchema \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "valid SchemaValidatorsConfig instance"
+          }
+        ],
+        "expected": "Throws NullPointerException because MetaSchema.getKeywords() returns null and the method attempts to call containsKey(\"discriminator\").",
+        "description": "Provide a JsonSchema whose ValidationContext returns a MetaSchema whose getKeywords() method is stubbed to return null. Call withConfig(validConfig) and expect a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "Null Config in ValidationContext \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "valid SchemaValidatorsConfig instance"
+          }
+        ],
+        "expected": "Throws NullPointerException because ValidationContext.getConfig() returns null and the method attempts to invoke equals(config) on it.",
+        "description": "Mock the ValidationContext of a JsonSchema so that getConfig() returns null while other parts (metaSchema, keywords) are valid. Invoke withConfig(validConfig) and verify that a NullPointerException is thrown."
+      }
+    ]
+  },
+  {
+    "group": "ValidationContext constructor receives null arguments \u2013 NullPointerException",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "config",
+            "value": "valid SchemaValidatorsConfig instance"
+          }
+        ],
+        "expected": "Throws NullPointerException inside the ValidationContext constructor because one of its required arguments (e.g., metaSchema, jsonSchemaFactory, schemaReferences, etc.) is null.",
+        "description": "Arrange a JsonSchema where the first if\u2011block is skipped, the second if\u2011condition evaluates to true, and the existing ValidationContext has a null metaSchema (or another required field). When the method tries to create a new ValidationContext with the null argument, the constructor throws a NullPointerException."
+      }
+    ]
+  }
+]

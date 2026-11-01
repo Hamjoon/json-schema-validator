@@ -1,0 +1,299 @@
+[
+  {
+    "group": "noDiscriminatorOnSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (no discriminator for schema location, register called)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "empty ObjectNode"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode without \"discriminator\" field)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "no exception; context.registerDiscriminator called with schemaLocation and unchanged discriminator",
+        "description": "When the schema does not contain a \"discriminator\" keyword the method should simply register the supplied discriminator without modifying it."
+      }
+    ]
+  },
+  {
+    "group": "propertyNameRedefinition",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with empty \"mapping\""
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains {\"discriminator\": {\"propertyName\": \"type\"}})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"attempts redefining the discriminator property\"",
+        "description": "If a nested schema defines a discriminator that also defines a \"propertyName\", the method must reject it because the root discriminator already defines the property name."
+      }
+    ]
+  },
+  {
+    "group": "mappingOnlyOnSchema",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location, its \"mapping\" field is null)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with no \"mapping\" field"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains {\"discriminator\": {\"mapping\": {\"dog\": \"#/components/schemas/Dog\"}}})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "no exception; discriminator now has a \"mapping\" field equal to the schema's mapping object",
+        "description": "When the root discriminator has no mapping but the nested schema provides one, the method should copy the nested mapping to the root discriminator."
+      }
+    ]
+  },
+  {
+    "group": "mergeMappingsNoConflict",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location with mapping {\"cat\": \"#/schemas/Cat\"})"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with mapping {\"cat\": \"#/schemas/Cat\"}"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains {\"discriminator\": {\"mapping\": {\"dog\": \"#/schemas/Dog\"}}})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "no exception; discriminator.mapping now contains both \"cat\" and \"dog\" entries",
+        "description": "When both the root and nested discriminators have a mapping and there is no key overlap, the method should merge the mappings."
+      }
+    ]
+  },
+  {
+    "group": "mergeMappingsWithSameValue",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location with mapping {\"cat\": \"#/schemas/Cat\"})"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with mapping {\"cat\": \"#/schemas/Cat\"}"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains {\"discriminator\": {\"mapping\": {\"cat\": \"#/schemas/Cat\"}}})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "no exception; discriminator.mapping unchanged (still contains the original entry)",
+        "description": "If the nested discriminator defines a mapping entry that already exists in the root with the identical value, the method should silently accept it."
+      }
+    ]
+  },
+  {
+    "group": "mergeMappingsWithConflict",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location with mapping {\"cat\": \"#/schemas/Cat\"})"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with mapping {\"cat\": \"#/schemas/Cat\"}"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains {\"discriminator\": {\"mapping\": {\"cat\": \"#/schemas/AnotherCat\"}}})"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "JsonSchemaException with message containing \"discriminator mapping redefinition from cat\"",
+        "description": "When the nested discriminator tries to redefine an existing mapping key with a different value, the method must throw an exception indicating the conflict."
+      }
+    ]
+  },
+  {
+    "group": "nullCurrentDiscriminatorContext",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "null"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "empty ObjectNode"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (any valid schemaNode)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when method tries to call getDiscriminatorForPath on a null context)",
+        "description": "Passing a null DiscriminatorContext should cause a NullPointerException because the method dereferences the context without a null\u2011check."
+      }
+    ]
+  },
+  {
+    "group": "nullDiscriminatorNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns no discriminator for the schema location)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "null"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode without \"discriminator\" field)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when method attempts discriminator.get(\"mapping\"))",
+        "description": "If the supplied discriminator ObjectNode is null, the first call to discriminator.get(...) will raise a NullPointerException."
+      }
+    ]
+  },
+  {
+    "group": "nonObjectMappingInRootDiscriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location with a non\u2011object \"mapping\" field, e.g. a text node \"foo\")"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with \"mapping\" set to a TextNode \"foo\""
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains a valid \"discriminator\" with no \"mapping\" field)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "ClassCastException (thrown when casting discriminator.get(\"mapping\") to ObjectNode)",
+        "description": "When the root discriminator\u2019s \"mapping\" field exists but is not an ObjectNode, the cast to ObjectNode fails, resulting in a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "nonObjectMappingInSchemaDiscriminator",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (returns a discriminator for the schema location with an empty ObjectNode mapping)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "ObjectNode with empty \"mapping\" ObjectNode"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode contains \"discriminator\" whose \"mapping\" field is a TextNode \"invalid\")"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "ClassCastException (thrown when casting discriminatorOnSchema.get(\"mapping\") to ObjectNode)",
+        "description": "If the nested schema\u2019s discriminator defines a \"mapping\" that is not an ObjectNode, the cast to ObjectNode triggers a ClassCastException."
+      }
+    ]
+  },
+  {
+    "group": "nullSchemaNode",
+    "cases": [
+      {
+        "input": [
+          {
+            "parameter": "currentDiscriminatorContext",
+            "value": "mockContext (any valid context)"
+          },
+          {
+            "parameter": "discriminator",
+            "value": "empty ObjectNode"
+          },
+          {
+            "parameter": "schema",
+            "value": "mockSchema (schemaNode == null)"
+          },
+          {
+            "parameter": "instanceLocation",
+            "value": "JsonNodePath \"/instance\""
+          }
+        ],
+        "expected": "NullPointerException (thrown when accessing schema.schemaNode.get(\"discriminator\"))",
+        "description": "When the supplied JsonSchema has a null schemaNode, the method attempts to call get on a null reference, causing a NullPointerException."
+      }
+    ]
+  }
+]
