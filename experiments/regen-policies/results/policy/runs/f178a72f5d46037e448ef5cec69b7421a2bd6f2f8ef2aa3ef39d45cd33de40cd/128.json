@@ -2,13 +2,12 @@
   "index": 128,
   "sha": "2e3fa10362b024a6a11643e1948bfb57939b1444",
   "status": "evaluated",
-  "imported": true,
   "coverage_version": 3,
-  "coverage_status": "missing",
-  "coverage_reason": "imported evidence has no per-test coverage",
+  "coverage_status": "complete",
+  "coverage_reason": "",
   "methods": [
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "kind": "plain",
@@ -24,77 +23,695 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "error",
-      "message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "initial_state": "error",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull()"
-      ],
-      "baseline_states": [
-        "error"
-      ],
-      "retry_state": "error",
-      "retry_message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
-      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
-      "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
-      "kind": "plain",
-      "body_hash": "e78a8ce61a2e9a27fa28430099a71b3d63cacb89c61934294be21b6e7bcb4a5a",
-      "round": "round1",
-      "technique": "KTester",
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
-      "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
-      "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
-      "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
-      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
-      "resource_root": "results/policy/baseline-sources/dev/src-test-t",
+      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
+      "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided()"
-      ],
-      "baseline_states": [
-        "pass"
+      "lines": [
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          45
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          47
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          52
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          53
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          54
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          56
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          57
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          58
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          61
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          62
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          63
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          64
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          273
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          278
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          287
+        ],
+        [
+          "src/main/java/com/networknt/schema/BaseJsonValidator.java",
+          298
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          54
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          60
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          61
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          62
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          63
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          66
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          70
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          71
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          76
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          77
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          104
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          110
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          112
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          113
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          126
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          128
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          129
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          130
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          135
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          136
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          143
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          144
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          151
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          152
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          500
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          514
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          516
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          517
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          518
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          519
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          520
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          521
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          523
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          524
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          526
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          542
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          544
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          545
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          547
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          549
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          550
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          551
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          556
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          559
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          564
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          567
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          581
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1315
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1316
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1318
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1331
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1332
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1333
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1334
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1340
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchema.java",
+          1342
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          53
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          55
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          56
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          57
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          58
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          60
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          61
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          62
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          63
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          64
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          114
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          115
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          124
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          125
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          172
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          194
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          198
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          199
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          210
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          211
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          212
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          214
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          216
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          219
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          220
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          221
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          222
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          223
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          224
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          225
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          226
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          227
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          228
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          229
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          230
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          244
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          255
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          268
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          269
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          270
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          271
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          272
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          275
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          287
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          288
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          290
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          333
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          334
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          335
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          336
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          337
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          347
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          352
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          360
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          362
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          369
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          387
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          388
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          400
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          414
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          418
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          419
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          420
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          426
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          430
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          431
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          436
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          440
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          441
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          444
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          445
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          456
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          457
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          458
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          482
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          483
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          490
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          491
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          572
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          588
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          589
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          656
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          824
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          825
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          826
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          827
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          828
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          831
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          847
+        ]
       ]
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
-      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
-      "method": "shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
-      "kind": "plain",
-      "body_hash": "a0bc9cb0f9c50f82e30c44f4054647182f28f23717ee9706b0b249d7726f6152",
-      "round": "round1",
-      "technique": "KTester",
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
-      "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
-      "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
-      "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
-      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
-      "resource_root": "results/policy/baseline-sources/dev/src-test-t",
+      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
+      "method": "shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldThrowJsonSchemaExceptionWhenInputStreamIsNull()"
-      ],
-      "baseline_states": [
-        "pass"
+      "lines": [
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          482
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          490
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          491
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          656
+        ]
       ]
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValid",
       "kind": "parameterized",
@@ -110,45 +727,36 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValid",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "error",
-      "message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "initial_state": "error",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValid(com.networknt.schema.JsonSchemaFactory_getSchema_6_Test$SuccessCase)"
-      ],
-      "baseline_states": [
-        "error"
-      ],
-      "retry_state": "error",
-      "retry_message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
-      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
-      "method": "shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
-      "kind": "plain",
-      "body_hash": "95d904df5de0089c2c09c7f5a465750ecadf3203abb634a72864a69a61536330",
-      "round": "round1",
-      "technique": "KTester",
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
-      "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
-      "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
-      "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
-      "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
-      "resource_root": "results/policy/baseline-sources/dev/src-test-t",
+      "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
+      "method": "shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull()"
-      ],
-      "baseline_states": [
-        "pass"
+      "lines": [
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          482
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          490
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          491
+        ],
+        [
+          "src/main/java/com/networknt/schema/JsonSchemaFactory.java",
+          656
+        ]
       ]
     }
   ]

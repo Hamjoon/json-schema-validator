@@ -2,13 +2,12 @@
   "index": 151,
   "sha": "e880dd0aa16a52098aa6eea25d688275ac1590d9",
   "status": "evaluated",
-  "imported": true,
   "coverage_version": 3,
-  "coverage_status": "missing",
-  "coverage_reason": "imported evidence has no per-test coverage",
+  "coverage_status": "complete",
+  "coverage_reason": "",
   "methods": [
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "kind": "plain",
@@ -24,12 +23,13 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "compile-fail",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "kind": "plain",
@@ -39,18 +39,18 @@
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
+      "source_root": "work/policy-survive/151/sources/0",
       "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
       "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "compile-fail",
-      "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n"
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n",
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "kind": "plain",
@@ -60,18 +60,18 @@
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
+      "source_root": "work/policy-survive/151/sources/0",
       "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
       "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "compile-fail",
-      "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n"
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n",
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValid",
       "kind": "parameterized",
@@ -87,12 +87,13 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValid",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "compile-fail",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "kind": "plain",
@@ -102,15 +103,15 @@
       "id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "file_hash": "c60a4c33e222f8db74dc1c691f27dfd68366488d62d7c8b5e0daab53f5faf757",
       "execution_hash": "f178a72f5d46037e448ef5cec69b7421a2bd6f2f8ef2aa3ef39d45cd33de40cd",
-      "source_root": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes",
+      "source_root": "work/policy-survive/151/sources/0",
       "source_tree_hash": "844f0dc53fc39356697ede03d5e8ef1611effc3b48dda17d0934a36802d59b8c",
       "resource_tree_hash": "6194d5218dc45beb39c9de9b6ae2d7021ab93783b0e8445622d3894c0551ecba",
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "compile-fail",
-      "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n"
+      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:19: error: cannot find symbol\n    private static JsonSchemaFactory factory;\n                   ^\n  symbol:   class JsonSchemaFactory\n  location: class JsonSchemaFactory_getSchema_6_Test\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:30: error: cannot find symbol\n        final SchemaValidatorsConfig config;\n              ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n/repo/experiments/regen-policies/work/policy-survive/151/sources/0/JsonSchemaFactory_getSchema_6_Test.java:32: error: cannot find symbol\n        SuccessCase(String json, SchemaValidatorsConfig config) {\n                                 ^\n  symbol:   class SchemaValidatorsConfig\n  location: class SuccessCase\n3 errors\n",
+      "lines": []
     }
   ]
 }

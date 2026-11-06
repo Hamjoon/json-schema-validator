@@ -2,13 +2,12 @@
   "index": 208,
   "sha": "51dab248335c4e738652b7c88d5ed7b6bf9fb71c",
   "status": "evaluated",
-  "imported": true,
   "coverage_version": 3,
-  "coverage_status": "missing",
-  "coverage_reason": "imported evidence has no per-test coverage",
+  "coverage_status": "complete",
+  "coverage_reason": "",
   "methods": [
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
       "class": "com.networknt.schema.JsonSchema_validate_2_Test",
       "method": "shouldReturnEmptyValidationMessagesForValidJson",
       "kind": "plain",
@@ -24,12 +23,13 @@
       "unit": "com.networknt.schema.JsonSchema#validate(JsonNode)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java|com.networknt.schema.JsonSchema_validate_2_Test|shouldReturnEmptyValidationMessagesForValidJson",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "compile-fail",
+      "state": "dead",
+      "message": "not executed; failed at index 151",
       "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:3: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.JsonNode;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:4: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.ObjectMapper;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:15: error: cannot find symbol\n    private JsonSchema jsonSchema;\n            ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:20: error: cannot find symbol\n    private static final ObjectMapper MAPPER = new ObjectMapper();\n                         ^\n  symbol:   class ObjectMapper\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:44: error: cannot find symbol\n    private static JsonNode node(String json) {\n                   ^\n  symbol:   class JsonNode\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:55: error: cannot find symbol\n    private static JsonSchema schema(String schemaJson) {\n                   ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:63: error: cannot find symbol\n    private static String firstMessage(Set<ValidationMessage> messages) {\n                                           ^\n  symbol:   class ValidationMessage\n  location: class JsonSchema_validate_2_Test\n7 errors\n"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
       "class": "com.networknt.schema.JsonSchema_validate_2_Test",
       "method": "shouldReturnEmptyValidationMessagesWhenRootNodeIsNull",
       "kind": "plain",
@@ -45,12 +45,13 @@
       "unit": "com.networknt.schema.JsonSchema#validate(JsonNode)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java|com.networknt.schema.JsonSchema_validate_2_Test|shouldReturnEmptyValidationMessagesWhenRootNodeIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "compile-fail",
+      "state": "dead",
+      "message": "not executed; failed at index 151",
       "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:3: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.JsonNode;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:4: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.ObjectMapper;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:15: error: cannot find symbol\n    private JsonSchema jsonSchema;\n            ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:20: error: cannot find symbol\n    private static final ObjectMapper MAPPER = new ObjectMapper();\n                         ^\n  symbol:   class ObjectMapper\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:44: error: cannot find symbol\n    private static JsonNode node(String json) {\n                   ^\n  symbol:   class JsonNode\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:55: error: cannot find symbol\n    private static JsonSchema schema(String schemaJson) {\n                   ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:63: error: cannot find symbol\n    private static String firstMessage(Set<ValidationMessage> messages) {\n                                           ^\n  symbol:   class ValidationMessage\n  location: class JsonSchema_validate_2_Test\n7 errors\n"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java",
       "class": "com.networknt.schema.JsonSchema_validate_2_Test",
       "method": "shouldNotThrowWhenRootNodeIsNull",
       "kind": "plain",
@@ -66,9 +67,10 @@
       "unit": "com.networknt.schema.JsonSchema#validate(JsonNode)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java|com.networknt.schema.JsonSchema_validate_2_Test|shouldNotThrowWhenRootNodeIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "compile-fail",
+      "state": "dead",
+      "message": "not executed; failed at index 151",
       "flaky": false,
-      "message": "Picked up _JAVA_OPTIONS: -Duser.language=en -Duser.country=US -Dfile.encoding=UTF-8\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:3: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.JsonNode;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:4: error: package com.fasterxml.jackson.databind does not exist\nimport com.fasterxml.jackson.databind.ObjectMapper;\n                                     ^\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:15: error: cannot find symbol\n    private JsonSchema jsonSchema;\n            ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:20: error: cannot find symbol\n    private static final ObjectMapper MAPPER = new ObjectMapper();\n                         ^\n  symbol:   class ObjectMapper\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:44: error: cannot find symbol\n    private static JsonNode node(String json) {\n                   ^\n  symbol:   class JsonNode\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:55: error: cannot find symbol\n    private static JsonSchema schema(String schemaJson) {\n                   ^\n  symbol:   class JsonSchema\n  location: class JsonSchema_validate_2_Test\n/repo/experiments/commit-survival-run2/generated/ktester/round1/json-schema-validator/test_classes/JsonSchema_validate_2_Test.java:63: error: cannot find symbol\n    private static String firstMessage(Set<ValidationMessage> messages) {\n                                           ^\n  symbol:   class ValidationMessage\n  location: class JsonSchema_validate_2_Test\n7 errors\n"
+      "lines": []
     }
   ]
 }

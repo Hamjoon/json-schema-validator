@@ -2,13 +2,12 @@
   "index": 149,
   "sha": "19b2207b709fea5cb87aedcc34895682efa9dbdc",
   "status": "evaluated",
-  "imported": true,
   "coverage_version": 3,
   "coverage_status": "missing",
-  "coverage_reason": "imported evidence has no per-test coverage",
+  "coverage_reason": "batch JVM failed or timed out",
   "methods": [
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "kind": "plain",
@@ -24,21 +23,13 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "error",
-      "message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "initial_state": "error",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsNull()"
-      ],
-      "baseline_states": [
-        "error"
-      ],
-      "retry_state": "error",
-      "retry_message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided",
       "kind": "plain",
@@ -56,17 +47,10 @@
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValidAndConfigIsProvided()"
-      ],
-      "baseline_states": [
-        "pass"
-      ]
+      "flaky": false
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldThrowJsonSchemaExceptionWhenInputStreamIsNull",
       "kind": "plain",
@@ -84,17 +68,10 @@
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldThrowJsonSchemaExceptionWhenInputStreamIsNull()"
-      ],
-      "baseline_states": [
-        "pass"
-      ]
+      "flaky": false
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldReturnJsonSchemaWhenInputStreamIsValid",
       "kind": "parameterized",
@@ -110,21 +87,13 @@
       "unit": "com.networknt.schema.JsonSchemaFactory#getSchema(InputStream, SchemaValidatorsConfig)",
       "origin_id": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java|com.networknt.schema.JsonSchemaFactory_getSchema_6_Test|shouldReturnJsonSchemaWhenInputStreamIsValid",
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
-      "state": "error",
-      "message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null",
+      "state": "dead",
+      "message": "not executed; failed at index 18",
       "flaky": false,
-      "initial_state": "error",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldReturnJsonSchemaWhenInputStreamIsValid(com.networknt.schema.JsonSchemaFactory_getSchema_6_Test$SuccessCase)"
-      ],
-      "baseline_states": [
-        "error"
-      ],
-      "retry_state": "error",
-      "retry_message": "Cannot invoke \"com.networknt.schema.SchemaValidatorsConfig.isPreloadJsonSchema()\" because \"config\" is null"
+      "lines": []
     },
     {
-      "file": "generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
+      "file": "results/policy/baseline-sources/generated/ktester/round1/json-schema-validator/test_classes/JsonSchemaFactory_getSchema_6_Test.java",
       "class": "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test",
       "method": "shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull",
       "kind": "plain",
@@ -142,14 +111,7 @@
       "resource_root": "results/policy/baseline-sources/dev/src-test-t",
       "state": "pass",
       "message": "",
-      "flaky": false,
-      "initial_state": "pass",
-      "selector": [
-        "com.networknt.schema.JsonSchemaFactory_getSchema_6_Test#shouldThrowIllegalArgumentExceptionWhenInputStreamIsNull()"
-      ],
-      "baseline_states": [
-        "pass"
-      ]
+      "flaky": false
     }
   ]
 }
